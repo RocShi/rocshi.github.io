@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>使用Hexo + GitHub Pages搭建个人博客站点</title>
+    <url>/2020/01/30/%E4%BD%BF%E7%94%A8Hexo-GitHub-Pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><h3 id="功能需求"><a href="#功能需求" class="headerlink" title="功能需求"></a>功能需求</h3><ul>
+<li>本地记录：笔记，个人wiki</li>
+<li>线上分享：博客</li>
+</ul>
+<h3 id="产品需求"><a href="#产品需求" class="headerlink" title="产品需求"></a>产品需求</h3><ul>
+<li>简洁、美观、流畅</li>
+<li>部署简单，不需要后台与数据库（最好静态页面）？</li>
+<li>支持多级分类（满足知识的分类性）、标签</li>
+<li>分类目录可展开和收缩</li>
+<li>展开分类时可直接看到该分类下所有条目</li>
+<li>支持全文搜索</li>
+<li>支持<code>markdown</code></li>
+<li>适合单人的修改与更新内容</li>
+<li>最好支持查看历史版本</li>
+</ul>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><ul>
+<li>markdown编辑器的选择<ul>
+<li>vscode</li>
+<li>Typora</li>
+</ul>
+</li>
+</ul>
+<h2 id="产品分析"><a href="#产品分析" class="headerlink" title="产品分析"></a>产品分析</h2><h3 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h3><ul>
+<li>基本内容</li>
+<li>安装<ul>
+<li>Node</li>
+<li>Git</li>
+<li>Hexo</li>
+</ul>
+</li>
+<li>初始化</li>
+<li>配置<ul>
+<li>主站配置</li>
+<li>主题配置<ul>
+<li>安装<a href="https://github.com/theme-next/hexo-theme-next" target="_blank" rel="noopener">NexT主题</a></li>
+<li>配置sidebar的<code>关于</code> <code>分类</code> <code>便签</code>等按钮</li>
+<li><a href="http://jeffyang.top/Hexo/Hexo%E4%B8%BB%E9%A2%98Next%E7%BE%8E%E5%8C%96/" target="_blank" rel="noopener">修改文章内链接的样式</a>：最新版本中添加位置为<code>hexo/themes/next/source/css/main.styl</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>新建文章<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new [layout] <span class="string">"postName"</span></span><br></pre></td></tr></table></figure></li>
+<li>生成静态页面</li>
+<li>本地启动</li>
+<li>部署到GitHub Pages<ul>
+<li>申请GitHub账号</li>
+<li>配置GitHub Pages</li>
+<li>购买域名</li>
+<li>修改DNS</li>
+</ul>
+</li>
+</ul>
+<h3 id="Leanote（蚂蚁笔记）"><a href="#Leanote（蚂蚁笔记）" class="headerlink" title="Leanote（蚂蚁笔记）"></a>Leanote（蚂蚁笔记）</h3><h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.v2ex.com/amp/t/347176/3" target="_blank" rel="noopener">用 Hexo 做个人 Wiki 知识管理系统</a></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</title>
+    <url>/2019/05/18/Git%E7%89%88%E6%9C%AC%E5%BA%93%E7%AE%A1%E7%90%86%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94%E4%BB%A5%E8%B7%9F%E8%B8%AA%E4%BB%93%E5%BA%93%E6%8C%87%E5%AE%9A%E5%88%86%E6%94%AF%E4%B8%8B%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B8%BA%E4%BE%8B/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><blockquote>
+<p>在本地同步追踪某个远程仓库的某一分支（以develop分支为例）。</p>
+</blockquote>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>起初先进行了如下操作：</p>
+<ul>
+<li>创建一个文件夹，初始化为git仓库：<code>git init</code></li>
+<li>进行用户基本信息配置：<code>git config</code></li>
+<li>创建本地仓库的develop分支：<code>git checkout -b</code></li>
+<li>关联远程仓库git地址：<code>git remote add</code></li>
+</ul>
+<p>接下来，尝试通过<code>git branch --set-upstream-to</code>将本地仓库develop分支与远程仓库develop分支进行关联时报错：develop分支不存在。使用<code>git branch -r</code>发现远程仓库分支为空，其实使用<code>git branch -a</code>可以发现根本看不到任何分支。</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>因为仅仅是关联了远程仓库，本地仓库并未获取远程仓库的修改（包括分支信息），所以本地看不到远程仓库的分支，也就无法进行分支关联操作。以<a href="https://www.cnblogs.com/leodaxin/p/8569061.html" target="_blank" rel="noopener">参考1</a>中的建议，在将本地仓库分支与远程仓库分支进行关联前，可先通过<code>git fetch origin</code>命令拉取远程仓库的修改，这样便可获取远程仓库分支信息，但还无法看到本地分支。最佳实践是使用<code>git pull origin develop</code>命令（前提是你必须知道想要将远程仓库的哪个分支并入本地分支），便可看到远程仓库的develop分支和本地仓库的develop分支（当前分支），进而可进行分支关联操作。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>总结一下最佳实践：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git checkout -b local_branch</span><br><span class="line">git remote add origin repo_addr</span><br><span class="line">git pull origin repo_branch</span><br><span class="line">git branch --<span class="built_in">set</span>-upstream-to=origin/repo_branch local_branch</span><br><span class="line">git fetch --all</span><br></pre></td></tr></table></figure>
+
+<p>当然，直接使用<code>git clone</code>也是可以的（<strong>这才应该算是最佳实践！</strong>）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch</span><br></pre></td></tr></table></figure>
+
+<p><code>git checkout target_repo_branch</code>将自动在本地创建一个名为target_repo_branch的分支，并将其与远程仓库中的target_repo_branch分支进行关联。执行完<code>git clone</code>后，默认在本地仓库创建的是master分支，并将其与远程仓库的master分支进行关联，但通常情况下，maser分支仅用于版本释放，我们并不会直接向mater分支推送修改，而是在其它分支（如develop分支）完成开发与调试后，再通过<code>git merge</code>将分支上的工作并入master分支。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.cnblogs.com/leodaxin/p/8569061.html" target="_blank" rel="noopener">1. Git branch -r 无法获取远程分支，ui可以看见分支但是git 命令无法查看解决方案</a></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+</search>
