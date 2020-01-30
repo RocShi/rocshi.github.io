@@ -31,16 +31,15 @@
 <li><span class="exturl" data-url="aHR0cDovL2plZmZ5YW5nLnRvcC9IZXhvL0hleG8lRTQlQjglQkIlRTklQTIlOThOZXh0JUU3JUJFJThFJUU1JThDJTk2Lw==" title="http://jeffyang.top/Hexo/Hexo%E4%B8%BB%E9%A2%98Next%E7%BE%8E%E5%8C%96/">修改文章内链接的样式<i class="fa fa-external-link"></i></span>：最新版本中添加位置为<code>hexo/themes/next/source/css/main.styl</code></li>
 </ul>
 </li>
-<li>新建文章<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new [layout] <span class="string">"postName"</span></span><br></pre></td></tr></table></figure></li>
-<li>生成静态页面<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure></li>
-<li>本地启动<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure></li>
-<li>部署到GitHub Pages<ul>
-<li>申请GitHub账号</li>
-<li>配置GitHub Pages</li>
 </ul>
-</li>
-</ul>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><span class="exturl" data-url="aHR0cHM6Ly93d3cudjJleC5jb20vYW1wL3QvMzQ3MTc2LzM=" title="https://www.v2ex.com/amp/t/347176/3">用 Hexo 做个人 Wiki 知识管理系统<i class="fa fa-external-link"></i></span></p>
+<h1 id="新建文章"><a href="#新建文章" class="headerlink" title="新建文章"></a>新建文章</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new [layout] <span class="string">"postName"</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="生成静态页面"><a href="#生成静态页面" class="headerlink" title="生成静态页面"></a>生成静态页面</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<h1 id="本地启动"><a href="#本地启动" class="headerlink" title="本地启动"></a>本地启动</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<h1 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h1><pre><code>* 申请GitHub账号
+* 配置GitHub Pages</code></pre><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cudjJleC5jb20vYW1wL3QvMzQ3MTc2LzM=" title="https://www.v2ex.com/amp/t/347176/3">用 Hexo 做个人 Wiki 知识管理系统<i class="fa fa-external-link"></i></span></p>
 ]]></content>
       <categories>
         <category>技术</category>
