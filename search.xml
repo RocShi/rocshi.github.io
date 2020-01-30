@@ -29,6 +29,7 @@
 <li>配置reading_progress</li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9ob3hpcy5naXRodWIuaW8vSGV4bytOZXh0JTIwU0VPJUU0JUJDJTk4JUU1JThDJTk2Lmh0bWw=" title="https://hoxis.github.io/Hexo+Next%20SEO%E4%BC%98%E5%8C%96.html">配置SEO<i class="fa fa-external-link"></i></span>：HTML元标记中的content直接添加至_config.yml对应位置即可，无需添加至head.swig</li>
 <li><span class="exturl" data-url="aHR0cDovL2plZmZ5YW5nLnRvcC9IZXhvL0hleG8lRTQlQjglQkIlRTklQTIlOThOZXh0JUU3JUJFJThFJUU1JThDJTk2Lw==" title="http://jeffyang.top/Hexo/Hexo%E4%B8%BB%E9%A2%98Next%E7%BE%8E%E5%8C%96/">修改文章内链接的样式<i class="fa fa-external-link"></i></span>：最新版本中添加位置为<code>hexo/themes/next/source/css/main.styl</code></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9mNDY1OGRmNjZhMTU=" title="https://www.jianshu.com/p/f4658df66a15">配置valine评论系统<i class="fa fa-external-link"></i></span></li>
 </ul>
 </li>
 </ul>
@@ -38,8 +39,16 @@
 
 <h1 id="本地启动"><a href="#本地启动" class="headerlink" title="本地启动"></a>本地启动</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
 
-<h1 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h1><pre><code>* 申请GitHub账号
-* 配置GitHub Pages</code></pre><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cudjJleC5jb20vYW1wL3QvMzQ3MTc2LzM=" title="https://www.v2ex.com/amp/t/347176/3">用 Hexo 做个人 Wiki 知识管理系统<i class="fa fa-external-link"></i></span></p>
+<h1 id="部署到GitHub-Pages"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages</h1><ul>
+<li>申请GitHub账号</li>
+<li>配置GitHub Pages</li>
+<li>部署<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cudjJleC5jb20vYW1wL3QvMzQ3MTc2LzM=" title="https://www.v2ex.com/amp/t/347176/3">用 Hexo 做个人 Wiki 知识管理系统<i class="fa fa-external-link"></i></span></li>
+</ol>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -70,7 +79,9 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch</span><br></pre></td></tr></table></figure>
 
 <p><code>git checkout target_repo_branch</code>将自动在本地创建一个名为target_repo_branch的分支，并将其与远程仓库中的target_repo_branch分支进行关联。执行完<code>git clone</code>后，默认在本地仓库创建的是master分支，并将其与远程仓库的master分支进行关联，但通常情况下，maser分支仅用于版本释放，我们并不会直接向mater分支推送修改，而是在其它分支（如develop分支）完成开发与调试后，再通过<code>git merge</code>将分支上的工作并入master分支。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">1. Git branch -r 无法获取远程分支，ui可以看见分支但是git 命令无法查看解决方案<i class="fa fa-external-link"></i></span></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">Git branch -r 无法获取远程分支，ui可以看见分支但是git 命令无法查看解决方案<i class="fa fa-external-link"></i></span></li>
+</ol>
 ]]></content>
       <categories>
         <category>技术</category>
