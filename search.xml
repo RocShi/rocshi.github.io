@@ -42,10 +42,14 @@
 
 <h1 id="部署到GitHub-Pages" class="heading-control"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages<a class="heading-anchor" href="#部署到GitHub-Pages" aria-hidden="true"></a></h1><ul>
 <li>申请GitHub账号并进行配置</li>
-<li>配置GitHub Pages</li>
+<li>创建GitHub Pages项目</li>
 <li>部署<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
 
 </li>
+</ul>
+<h1 id="GitHub-Pages绑定到个人域名" class="heading-control"><a href="#GitHub-Pages绑定到个人域名" class="headerlink" title="GitHub Pages绑定到个人域名"></a>GitHub Pages绑定到个人域名<a class="heading-anchor" href="#GitHub-Pages绑定到个人域名" aria-hidden="true"></a></h1><ul>
+<li>购买域名</li>
+<li>域名提供商处添加解析记录</li>
 </ul>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cudjJleC5jb20vYW1wL3QvMzQ3MTc2LzM=" title="https://www.v2ex.com/amp/t/347176/3">用 Hexo 做个人 Wiki 知识管理系统<i class="fa fa-external-link"></i></span></li>
