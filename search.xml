@@ -153,22 +153,6 @@
       </tags>
   </entry>
   <entry>
-    <title>git?cherry-pick??</title>
-    <url>/git%E7%9A%84cherry-pick%E5%91%BD%E4%BB%A4.html</url>
-    <content><![CDATA[<h1 id class="heading-control"><a href="#" class="headerlink" title="??"></a>??<a class="heading-anchor" href="#" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDUyNjIzL2FydGljbGUvZGV0YWlscy83OTQ0OTUzNA==" title="https://blog.csdn.net/qq_32452623/article/details/79449534">Git - ? cherry-pick ???????<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxMjg5NzU0Mg==" title="https://segmentfault.com/a/1190000012897542">Git ? cherry-pick<i class="fa fa-external-link"></i></span></li>
-</ol>
-]]></content>
-      <categories>
-        <category>??</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</title>
     <url>/Git%E7%89%88%E6%9C%AC%E5%BA%93%E7%AE%A1%E7%90%86%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94%E4%BB%A5%E8%B7%9F%E8%B8%AA%E4%BB%93%E5%BA%93%E6%8C%87%E5%AE%9A%E5%88%86%E6%94%AF%E4%B8%8B%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B8%BA%E4%BE%8B.html</url>
     <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><blockquote>
