@@ -122,8 +122,8 @@
 </li>
 <li><p>设置GitHub Pages项目<br><code>Custom domain</code>添加待绑定域名，，我的是二级域名 blog.shipengx.com，开启<code>Enforce HTTPS</code>。可能会遇到以下问题：</p>
 <ul>
-<li>问题1 - 绑定到二级域名浏览器提示不安全，绑定到一级域名安全<br>起初绑定的为一级域名 shipengx.com，后改为了二级域名 blog.shipengx.com，出现此问题的原因为浏览器缓存了绑定一级域名时的SSL证书，关闭浏览器并清理浏览器缓存即可解决</li>
-<li>问题2 - 绑定域名后valine评论系统不可用<br>绑定域名后评论框下方提示：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Code 403: 访问被api域名白名单拒绝,请检查你的安全域名设置.</span><br></pre></td></tr></table></figure>
+<li><strong>问题1 - 绑定到二级域名浏览器提示不安全，绑定到一级域名安全</strong><br>起初绑定的为一级域名 shipengx.com，后改为了二级域名 blog.shipengx.com，出现此问题的原因为浏览器缓存了绑定一级域名时的SSL证书，关闭浏览器并清理浏览器缓存即可解决</li>
+<li><strong>问题2 - 绑定域名后valine评论系统不可用</strong><br>绑定域名后评论框下方提示：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Code 403: 访问被api域名白名单拒绝,请检查你的安全域名设置.</span><br></pre></td></tr></table></figure>
 原因为为将所绑定域名添加至LeanCloud的Web安全域名白名单，添加即可解决</li>
 </ul>
 </li>
@@ -150,6 +150,22 @@
       <tags>
         <tag>Hexo</tag>
         <tag>Blog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git的cherry-pick命令</title>
+    <url>/git%E7%9A%84cherry-pick%E5%91%BD%E4%BB%A4.html</url>
+    <content><![CDATA[<h1 id class="heading-control"><a href="#" class="headerlink" title="??"></a>??<a class="heading-anchor" href="#" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDUyNjIzL2FydGljbGUvZGV0YWlscy83OTQ0OTUzNA==" title="https://blog.csdn.net/qq_32452623/article/details/79449534">Git - ? cherry-pick ???????<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxMjg5NzU0Mg==" title="https://segmentfault.com/a/1190000012897542">Git ? cherry-pick<i class="fa fa-external-link"></i></span></li>
+</ol>
+]]></content>
+      <categories>
+        <category>??</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
       </tags>
   </entry>
   <entry>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://blog.shipengx.com/git%E7%9A%84cherry-pick%E5%91%BD%E4%BB%A4.html</loc>
+    <lastmod>2020-02-01</lastmod>
+  </url>  <url>
     <loc>https://blog.shipengx.com/%E4%BD%BF%E7%94%A8Hexo-GitHub-Pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9.html</loc>
     <lastmod>2020-02-01</lastmod>
   </url>  <url>
