@@ -3,15 +3,18 @@
   <entry>
     <title>使用Hexo + GitHub Pages搭建个人博客站点</title>
     <url>/%E4%BD%BF%E7%94%A8Hexo-GitHub-Pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9.html</url>
-    <content><![CDATA[<h1 id="环境安装" class="heading-control"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装<a class="heading-anchor" href="#环境安装" aria-hidden="true"></a></h1><ul>
-<li>Node</li>
+    <content><![CDATA[<h1 id="环境安装-1" class="heading-control"><a href="#环境安装-1" class="headerlink" title="环境安装^1"></a>环境安装<a href="[hexo你的博客](http://ibruce.info/2013/11/22/hexo-your-blog)">^1</a><a class="heading-anchor" href="#环境安装-1" aria-hidden="true"></a></h1><ul>
+<li>Node.js<blockquote>
+<p>Windows平台直接到到<span class="exturl" data-url="aHR0cHM6Ly9ub2RlanMub3JnL2VuLw==" title="https://nodejs.org/en/">Node.js官网<i class="fa fa-external-link"></i></span>下载最新安装包进行安装；Linux平台（以Ubuntu为例）直接通过终端命令进行安装：</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install nodejs</span><br><span class="line">sudo apt-get install npm</span><br></pre></td></tr></table></figure></li>
 <li>Git</li>
 <li>Hexo</li>
 </ul>
 <h1 id="初始化" class="heading-control"><a href="#初始化" class="headerlink" title="初始化"></a>初始化<a class="heading-anchor" href="#初始化" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
 
 <h1 id="主题安装" class="heading-control"><a href="#主题安装" class="headerlink" title="主题安装"></a>主题安装<a class="heading-anchor" href="#主题安装" aria-hidden="true"></a></h1><ul>
-<li>安装<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0" title="https://github.com/theme-next/hexo-theme-next">NexT主题<i class="fa fa-external-link"></i></span></li>
+<li>安装<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0" title="https://github.com/theme-next/hexo-theme-next">NexT主题<i class="fa fa-external-link"></i></span>（<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3p0aHh4eC9oZXhvLXRoZW1lLVdpa2l0dGVu" title="https://github.com/zthxxx/hexo-theme-Wikitten">Wikitten主题<i class="fa fa-external-link"></i></span>也很不错）</li>
 </ul>
 <h1 id="配置" class="heading-control"><a href="#配置" class="headerlink" title="配置"></a>配置<a class="heading-anchor" href="#配置" aria-hidden="true"></a></h1><ul>
 <li>主站配置（hexo/_config.yml）</li>
@@ -20,15 +23,24 @@
 <li>配置footer</li>
 <li>配置Creative Commons 4.0 International License</li>
 <li>配置Scheme</li>
-<li>配置menu：新建about/tags/categories各自对应的page，修改各自的index.md文件，修改配置文件</li>
+<li>配置menu<blockquote>
+<p>新建about/tags/categories各自对应的page，修改各自的index.md文件，修改配置文件</p>
+</blockquote>
+</li>
 <li>配置sidebar、avatar、social、social_icons</li>
 <li>配置symbols_count_time</li>
 <li>配置reward</li>
 <li>配置mobile_layout_economy</li>
 <li>配置codeblock</li>
 <li>配置reading_progress</li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ob3hpcy5naXRodWIuaW8vSGV4bytOZXh0JTIwU0VPJUU0JUJDJTk4JUU1JThDJTk2Lmh0bWw=" title="https://hoxis.github.io/Hexo+Next%20SEO%E4%BC%98%E5%8C%96.html">配置SEO<i class="fa fa-external-link"></i></span>：HTML元标记中的content直接添加至_config.yml对应位置即可，无需添加至head.swig</li>
-<li><span class="exturl" data-url="aHR0cDovL2plZmZ5YW5nLnRvcC9IZXhvL0hleG8lRTQlQjglQkIlRTklQTIlOThOZXh0JUU3JUJFJThFJUU1JThDJTk2Lw==" title="http://jeffyang.top/Hexo/Hexo%E4%B8%BB%E9%A2%98Next%E7%BE%8E%E5%8C%96/">修改文章内链接的样式<i class="fa fa-external-link"></i></span>：最新版本中添加位置为<code>hexo/themes/next/source/css/main.styl</code></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ob3hpcy5naXRodWIuaW8vSGV4bytOZXh0JTIwU0VPJUU0JUJDJTk4JUU1JThDJTk2Lmh0bWw=" title="https://hoxis.github.io/Hexo+Next%20SEO%E4%BC%98%E5%8C%96.html">配置SEO<i class="fa fa-external-link"></i></span><blockquote>
+<p>HTML元标记中的content直接添加至_config.yml对应位置即可，无需添加至head.swig</p>
+</blockquote>
+</li>
+<li><span class="exturl" data-url="aHR0cDovL2plZmZ5YW5nLnRvcC9IZXhvL0hleG8lRTQlQjglQkIlRTklQTIlOThOZXh0JUU3JUJFJThFJUU1JThDJTk2Lw==" title="http://jeffyang.top/Hexo/Hexo%E4%B8%BB%E9%A2%98Next%E7%BE%8E%E5%8C%96/">修改文章内链接的样式<i class="fa fa-external-link"></i></span><blockquote>
+<p>最新版本中添加位置为<code>hexo/themes/next/source/css/main.styl</code></p>
+</blockquote>
+</li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9mNDY1OGRmNjZhMTU=" title="https://www.jianshu.com/p/f4658df66a15">配置valine评论系统<i class="fa fa-external-link"></i></span></li>
 <li>配置标题锚点</li>
 </ul>
@@ -48,18 +60,30 @@
 </li>
 </ul>
 <h1 id="GitHub-Pages绑定到个人域名" class="heading-control"><a href="#GitHub-Pages绑定到个人域名" class="headerlink" title="GitHub Pages绑定到个人域名"></a>GitHub Pages绑定到个人域名<a class="heading-anchor" href="#GitHub-Pages绑定到个人域名" aria-hidden="true"></a></h1><ul>
-<li>购买域名</li>
-<li>域名提供商处添加解析记录</li>
+<li>域名提供商处购买顶级域名（以<span class="exturl" data-url="aHR0cHM6Ly9kbnNwb2QuY2xvdWQudGVuY2VudC5jb20v" title="https://dnspod.cloud.tencent.com/">腾讯云<i class="fa fa-external-link"></i></span>为例）<blockquote>
+<p>shipengx.com</p>
+</blockquote>
+</li>
+<li>添加CNAME解析记录<blockquote>
+<p>主机记录设置为<code>blog</code>（以二级域名为例，其它也可），记录值设置为GitHub Pages仓库名<code>rocshi.github.io</code></p>
+</blockquote>
+</li>
+<li>设置GitHub Pages项目<blockquote>
+<p>添加<code>Custom domain</code>，开启<code>Enforce HTTPS</code>。可能会遇到以下问题：</p>
+</blockquote>
+</li>
 </ul>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="* 参考"></a>* 参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cudjJleC5jb20vYW1wL3QvMzQ3MTc2LzM=" title="https://www.v2ex.com/amp/t/347176/3">用 Hexo 做个人 Wiki 知识管理系统<i class="fa fa-external-link"></i></span></li>
 </ol>
 ]]></content>
       <categories>
         <category>技术</category>
+        <category>建站</category>
       </categories>
       <tags>
         <tag>Hexo</tag>
+        <tag>Blog</tag>
       </tags>
   </entry>
   <entry>
@@ -90,6 +114,7 @@
 ]]></content>
       <categories>
         <category>技术</category>
+        <category>Git</category>
       </categories>
       <tags>
         <tag>Git</tag>
