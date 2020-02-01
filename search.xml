@@ -100,8 +100,12 @@
 <p>再进入到博客目录下通过终端命令新建文章：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo n post postName</span><br></pre></td></tr></table></figure>
 
-<h1 id="生成静态页面" class="heading-control"><a href="#生成静态页面" class="headerlink" title="生成静态页面"></a>生成静态页面<a class="heading-anchor" href="#生成静态页面" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+<h1 id="生成静态页面" class="heading-control"><a href="#生成静态页面" class="headerlink" title="生成静态页面"></a>生成静态页面<a class="heading-anchor" href="#生成静态页面" aria-hidden="true"></a></h1><ul>
+<li>如果仅修改或增删了文章，请在博客目录下执行：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure></li>
+<li>如果主题配置或样式等也做了修改，请在博客目录下执行：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
 
+</li>
+</ul>
 <h1 id="本地启动" class="heading-control"><a href="#本地启动" class="headerlink" title="本地启动"></a>本地启动<a class="heading-anchor" href="#本地启动" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
 
 <h1 id="部署到GitHub-Pages" class="heading-control"><a href="#部署到GitHub-Pages" class="headerlink" title="部署到GitHub Pages"></a>部署到GitHub Pages<a class="heading-anchor" href="#部署到GitHub-Pages" aria-hidden="true"></a></h1><ul>
