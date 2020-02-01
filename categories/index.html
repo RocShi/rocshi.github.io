@@ -239,7 +239,7 @@
 
       <h3 class="post-title">
           <a class="post-title-link" href="/git%E7%9A%84cherry-pick%E5%91%BD%E4%BB%A4.html" itemprop="url">
-            <span itemprop="name">git的cherry-pick命令</span>
+            <span itemprop="name">git?cherry-pick??</span>
           </a>
       </h3>
 
@@ -523,34 +523,6 @@ window.addEventListener('pjax:success', () => {
 NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
     var GUEST = ['nick', 'mail', 'link'];
-    var guest = 'nick,mail,link';
-    guest = guest.split(',').filter(item => {
-      return GUEST.includes(item);
-    });
-    new Valine({
-      el: '#valine-comments',
-      verify: false,
-      notify: false,
-      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
-      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
-      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱",
-      avatar: 'monsterid',
-      meta: guest,
-      pageSize: '10' || 10,
-      visitor: false,
-      lang: 'zh-cn' || 'zh-cn',
-      path: location.pathname,
-      recordIP: true,
-      serverURLs: ''
-    });
-  }, window.Valine);
-});
-</script>
-
-    </div>
-</body>
-</html>
-il', 'link'];
     var guest = 'nick,mail,link';
     guest = guest.split(',').filter(item => {
       return GUEST.includes(item);
