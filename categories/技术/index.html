@@ -24,7 +24,7 @@
     hostname: new URL('https://blog.shipengx.com').hostname,
     root: '/',
     scheme: 'Gemini',
-    version: '7.7.0',
+    version: '7.7.1',
     exturl: true,
     sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
     copycode: {"enable":true,"show_result":true,"style":null},
@@ -411,7 +411,10 @@
     </span>
     <span title="站点阅读时长">6 分钟</span>
 </div>
-  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> v7.7.1
   </div>
 
         
@@ -517,26 +520,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script pjax>
-  if (CONFIG.page.isPost) {
-    wpac_init = window.wpac_init || [];
-    wpac_init.push({
-      widget: 'Rating',
-      id: ,
-      el: 'wpac-rating',
-      color: 'fc6423'
-    });
-    (function() {
-      if ('WIDGETPACK_LOADED' in window) return;
-      WIDGETPACK_LOADED = true;
-      var mc = document.createElement('script');
-      mc.type = 'text/javascript';
-      mc.async = true;
-      mc.src = '//embed.widgetpack.com/widget.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
-    })();
-  }
-  </script>
 
   
 <script src="/js/local-search.js"></script>

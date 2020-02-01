@@ -4,19 +4,19 @@
     <title>使用Hexo + GitHub Pages搭建个人博客站点</title>
     <url>/%E4%BD%BF%E7%94%A8Hexo-GitHub-Pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9.html</url>
     <content><![CDATA[<h1 id="环境安装" class="heading-control"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装<a class="heading-anchor" href="#环境安装" aria-hidden="true"></a></h1><ul>
-<li>Node.js<br>Windows平台直接到到<span class="exturl" data-url="aHR0cHM6Ly9ub2RlanMub3JnL2VuLw==" title="https://nodejs.org/en/">Node.js官网<i class="fa fa-external-link"></i></span>下载最新安装包进行安装；Linux平台（以Ubuntu为例）直接通过终端命令进行安装：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install nodejs</span><br><span class="line">sudo apt-get install npm</span><br></pre></td></tr></table></figure></li>
-<li>Git<br>Windows平台直接到到<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb3dubG9hZHM=" title="https://git-scm.com/downloads">Git官网<i class="fa fa-external-link"></i></span>下载最新安装包进行安装，安装完成后需配置Git相关环境变量，不再赘述；Linux平台（以Ubuntu为例）直接通过终端命令进行安装：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure></li>
-<li>Hexo<br>直接通过终端命令进行安装：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo</span><br></pre></td></tr></table></figure>
+<li>Node.js<br>Windows平台直接到到<span class="exturl" data-url="aHR0cHM6Ly9ub2RlanMub3JnL2VuLw==" title="https://nodejs.org/en/">Node.js官网<i class="fa fa-external-link"></i></span>下载最新安装包进行安装（本文中所使用版本为v12.14.1）；Linux平台（以Ubuntu为例）直接通过终端命令进行安装：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install nodejs</span><br><span class="line">sudo apt-get install npm</span><br></pre></td></tr></table></figure></li>
+<li>Git<br>Windows平台直接到到<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb3dubG9hZHM=" title="https://git-scm.com/downloads">Git官网<i class="fa fa-external-link"></i></span>下载最新安装包进行安装（本文中所使用版本为v2.20.1），安装完成后需配置Git相关环境变量，不再赘述；Linux平台（以Ubuntu为例）直接通过终端命令进行安装：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure></li>
+<li>Hexo<br>直接通过终端命令进行安装（本文中所使用版本为v4.2）：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h1 id="初始化" class="heading-control"><a href="#初始化" class="headerlink" title="初始化"></a>初始化<a class="heading-anchor" href="#初始化" aria-hidden="true"></a></h1><p>新建博客目录，进入该目录后通过终端命令进行初始化：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
 
-<h1 id="主题安装" class="heading-control"><a href="#主题安装" class="headerlink" title="主题安装"></a>主题安装<a class="heading-anchor" href="#主题安装" aria-hidden="true"></a></h1><p>安装<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0" title="https://github.com/theme-next/hexo-theme-next">NexT主题<i class="fa fa-external-link"></i></span>（<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3p0aHh4eC9oZXhvLXRoZW1lLVdpa2l0dGVu" title="https://github.com/zthxxx/hexo-theme-Wikitten">Wikitten主题<i class="fa fa-external-link"></i></span>也很不错），两种方式：</p>
+<h1 id="主题安装" class="heading-control"><a href="#主题安装" class="headerlink" title="主题安装"></a>主题安装<a class="heading-anchor" href="#主题安装" aria-hidden="true"></a></h1><p>安装<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0" title="https://github.com/theme-next/hexo-theme-next">NexT主题<i class="fa fa-external-link"></i></span>（本文中所使用版本为v7.7.1。此外，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3p0aHh4eC9oZXhvLXRoZW1lLVdpa2l0dGVu" title="https://github.com/zthxxx/hexo-theme-Wikitten">Wikitten主题<i class="fa fa-external-link"></i></span>也很不错），两种方式：</p>
 <ul>
 <li>方法1 - 直接下载主题zip压缩包，解压到hexo/themes目录下</li>
-<li>方法2 - 进入hexo/themes目录，克隆NexT主题：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+<li>方法2 - 进入hexo/themes目录，克隆NexT主题：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>将解压或克隆后的主题目录修改为next（其它名称也可，与hexo/_config.yml中的配置保持一致即可）</p>
 </blockquote>
