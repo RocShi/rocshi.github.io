@@ -59,7 +59,7 @@
 <meta property="og:description" content="gitignore与gitkeep在git版本管理中是非常常见的两个文件，本文分析了它们各自的作用">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-10-21T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-02-03T10:12:45.014Z">
+<meta property="article:modified_time" content="2020-02-03T10:17:25.426Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Git gitignore gitkeep">
 <meta name="twitter:card" content="summary">
@@ -251,7 +251,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-03 18:12:45" itemprop="dateModified" datetime="2020-02-03T18:12:45+08:00">2020-02-03</time>
+                <time title="修改时间：2020-02-03 18:17:25" itemprop="dateModified" datetime="2020-02-03T18:17:25+08:00">2020-02-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -290,7 +290,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-file-word-o"></i>
               </span>
-              <span>511</span>
+              <span>433</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -312,7 +312,7 @@
         <h1 id="gitignore" class="heading-control"><a href="#gitignore" class="headerlink" title=".gitignore"></a>.gitignore<a class="heading-anchor" href="#gitignore" aria-hidden="true"></a></h1><p>.gitignore用于指定版本库中的某些文件或目录将被git系统忽略，例如，个人在腾讯云的git服务器上维护某工程时，.gitignore中的内容如下所示，用以忽略工程根目录下的build目录以及所有包目录内的一些并不参与编译的目录：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;build</span><br><span class="line">**&#x2F;0000_Common</span><br><span class="line">**&#x2F;0600_Toolkit</span><br><span class="line">**&#x2F;0900_System&#x2F;01_core</span><br><span class="line">**&#x2F;0900_System&#x2F;03_flashing</span><br><span class="line">**&#x2F;0900_System&#x2F;04_model</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>其中的“*<em>”可以匹配工程目录内的多级目录，参考[TIPS：.gitignore 忽略多层文件夹用 *</em>](<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDIp44CC" title="https://blog.csdn.net/ljb_wh/article/details/51083402)。">https://blog.csdn.net/ljb_wh/article/details/51083402)。<i class="fa fa-external-link"></i></span></p>
+<p>其中的“**”可以匹配工程目录内的多级目录，参考<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDI=" title="https://blog.csdn.net/ljb_wh/article/details/51083402">这里<i class="fa fa-external-link"></i></span>。</p>
 </blockquote>
 <h1 id="gitkeep" class="heading-control"><a href="#gitkeep" class="headerlink" title=".gitkeep"></a>.gitkeep<a class="heading-anchor" href="#gitkeep" aria-hidden="true"></a></h1><p>git系统并不会追踪版本库中的空目录，通过在空目录中创建一个.gitkeep文件即可让git系统对这个空目录进行追踪，.gitkeep实则是一个占位符，并没有其它特性，通俗点讲，.fu*k可以实现和.gitkeep相同的功能。</p>
 
