@@ -342,4 +342,17 @@
         <tag>Git</tag>
       </tags>
   </entry>
+  <entry>
+    <title>安装第三方python库过程中的egg-info与dist-info文件夹</title>
+    <url>/%E5%AE%89%E8%A3%85%E7%AC%AC%E4%B8%89%E6%96%B9python%E5%BA%93%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84egg-info%E4%B8%8Edist-info%E6%96%87%E4%BB%B6%E5%A4%B9.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在安装第三方python库过程中，在site-packages目录中与安装结果同时生成的后缀名为egg-info或dist-info的文件夹：<br>用应用程序安装生成egg-info文件夹，用whl或tar安装生成dist-info文件夹。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
 </search>
