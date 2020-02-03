@@ -201,7 +201,13 @@
   <entry>
     <title>gitignore与gitkeep的作用</title>
     <url>/gitignore%E4%B8%8Egitkeep%E7%9A%84%E4%BD%9C%E7%94%A8.html</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h1 id="gitignore" class="heading-control"><a href="#gitignore" class="headerlink" title=".gitignore"></a>.gitignore<a class="heading-anchor" href="#gitignore" aria-hidden="true"></a></h1><p>.gitignore用于指定版本库中的某些文件或目录将被git系统忽略，例如，个人在腾讯云的git服务器上维护某工程时，.gitignore中的内容如下所示，用以忽略工程根目录下的build目录以及所有包目录内的一些并不参与编译的目录：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;build</span><br><span class="line">**&#x2F;0000_Common</span><br><span class="line">**&#x2F;0600_Toolkit</span><br><span class="line">**&#x2F;0900_System&#x2F;01_core</span><br><span class="line">**&#x2F;0900_System&#x2F;03_flashing</span><br><span class="line">**&#x2F;0900_System&#x2F;04_model</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中的“*<em>”可以匹配工程目录内的多级目录，参考[TIPS：.gitignore 忽略多层文件夹用 *</em>](<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDIp44CC" title="https://blog.csdn.net/ljb_wh/article/details/51083402)。">https://blog.csdn.net/ljb_wh/article/details/51083402)。<i class="fa fa-external-link"></i></span></p>
+</blockquote>
+<h1 id="gitkeep" class="heading-control"><a href="#gitkeep" class="headerlink" title=".gitkeep"></a>.gitkeep<a class="heading-anchor" href="#gitkeep" aria-hidden="true"></a></h1><p>git系统并不会追踪版本库中的空目录，通过在空目录中创建一个.gitkeep文件即可让git系统对这个空目录进行追踪，.gitkeep实则是一个占位符，并没有其它特性，通俗点讲，.fu*k可以实现和.gitkeep相同的功能。</p>
+]]></content>
       <categories>
         <category>技术</category>
         <category>Git</category>
@@ -213,7 +219,21 @@
   <entry>
     <title>在腾讯云上搭建个人Git服务器</title>
     <url>/%E5%9C%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BAGit%E6%9C%8D%E5%8A%A1%E5%99%A8.html</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><blockquote>
+<p>在腾讯云搭建Git服务器，托管个人工程代码，实现多地协同开发。</p>
+</blockquote>
+<h1 id="最佳实践" class="heading-control"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践<a class="heading-anchor" href="#最佳实践" aria-hidden="true"></a></h1><h2 id="安装Git" class="heading-control"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git<a class="heading-anchor" href="#安装Git" aria-hidden="true"></a></h2><p>以Linux Ubuntu为例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建证书登录" class="heading-control"><a href="#创建证书登录" class="headerlink" title="创建证书登录"></a>创建证书登录<a class="heading-anchor" href="#创建证书登录" aria-hidden="true"></a></h2><p>收集所有需要登录的用户的公钥，即个人主机<code>~/.ssh</code>目录中id_rsa.pub公钥文件中的内容，把所有公钥导入到服务器<code>~/.ssh/authorized_keys</code>文件里，一行一个，id_rsa.pub公钥文件不存在的话使用<code>ssh-keygen</code>命令生成：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -C “your email address”</span><br></pre></td></tr></table></figure>
+
+<h2 id="初始化Git仓库" class="heading-control"><a href="#初始化Git仓库" class="headerlink" title="初始化Git仓库"></a>初始化Git仓库<a class="heading-anchor" href="#初始化Git仓库" aria-hidden="true"></a></h2><p>选定一个目录作为Git仓库目录，例如~/Code/example，<code>cd</code>到该目录，输入命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git init --bare example.git</span><br></pre></td></tr></table></figure>
+
+<h2 id="在client端克隆仓库，并向远程仓库贡献代码" class="heading-control"><a href="#在client端克隆仓库，并向远程仓库贡献代码" class="headerlink" title="在client端克隆仓库，并向远程仓库贡献代码"></a>在client端克隆仓库，并向远程仓库贡献代码<a class="heading-anchor" href="#在client端克隆仓库，并向远程仓库贡献代码" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> server_username@server_addr:~/Code/example/example.git</span><br></pre></td></tr></table></figure>
+<p>server_username是你登录腾讯云服务器的用户名，server_addr是服务器IP地址或域名。</p>
+]]></content>
       <categories>
         <category>技术</category>
         <category>Git</category>
@@ -225,7 +245,24 @@
   <entry>
     <title>Git版本库管理最佳实践——以创建新分支加入某个项目为例</title>
     <url>/Git%E7%89%88%E6%9C%AC%E5%BA%93%E7%AE%A1%E7%90%86%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94%E4%BB%A5%E5%88%9B%E5%BB%BA%E6%96%B0%E5%88%86%E6%94%AF%E5%8A%A0%E5%85%A5%E6%9F%90%E4%B8%AA%E9%A1%B9%E7%9B%AE%E4%B8%BA%E4%BE%8B.html</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><blockquote>
+<p>公司项目存放于GitLab服务器，想要加入该项目贡献代码</p>
+</blockquote>
+<h1 id="最佳实践" class="heading-control"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践<a class="heading-anchor" href="#最佳实践" aria-hidden="true"></a></h1><h2 id="添加SSH公钥至GitLab服务器" class="heading-control"><a href="#添加SSH公钥至GitLab服务器" class="headerlink" title="添加SSH公钥至GitLab服务器"></a>添加SSH公钥至GitLab服务器<a class="heading-anchor" href="#添加SSH公钥至GitLab服务器" aria-hidden="true"></a></h2><ul>
+<li>生成SSH公钥<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -C “your email address”</span><br></pre></td></tr></table></figure></li>
+<li>添加公钥至GitLab服务器（不再赘述）</li>
+</ul>
+<h2 id="配置git全局（或工程）用户名和邮箱" class="heading-control"><a href="#配置git全局（或工程）用户名和邮箱" class="headerlink" title="配置git全局（或工程）用户名和邮箱"></a>配置git全局（或工程）用户名和邮箱<a class="heading-anchor" href="#配置git全局（或工程）用户名和邮箱" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name “your user name”</span><br><span class="line">git config --global user.email “your email address”</span><br></pre></td></tr></table></figure>
+
+<h2 id="克隆仓库、创建个人分支、提交代码" class="heading-control"><a href="#克隆仓库、创建个人分支、提交代码" class="headerlink" title="克隆仓库、创建个人分支、提交代码"></a>克隆仓库、创建个人分支、提交代码<a class="heading-anchor" href="#克隆仓库、创建个人分支、提交代码" aria-hidden="true"></a></h2><p>克隆仓库，切换到将要merge进去的目标分支，在该分支下创建个人分支，在新建的个人分支下进行文件修改，将个人分支push到远程仓库并建立追踪关系（push后加–set-upstream参数）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch_to_merge</span><br><span class="line">git checkout -b branch_name</span><br><span class="line"><span class="comment"># 进行文件修改</span></span><br><span class="line">git add --all</span><br><span class="line">git commit -m “Your commit content.”</span><br><span class="line">git push --<span class="built_in">set</span>-upstream origin branch_name  <span class="comment"># 成功push过一次后可以简化为git push</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="将个人分支merge到目标分支、打好tag" class="heading-control"><a href="#将个人分支merge到目标分支、打好tag" class="headerlink" title="将个人分支merge到目标分支、打好tag"></a>将个人分支merge到目标分支、打好tag<a class="heading-anchor" href="#将个人分支merge到目标分支、打好tag" aria-hidden="true"></a></h2><p>Web界面操作即可</p>
+<h1 id="一些说明" class="heading-control"><a href="#一些说明" class="headerlink" title="一些说明"></a>一些说明<a class="heading-anchor" href="#一些说明" aria-hidden="true"></a></h1><p>执行完<code>git clone</code>后，将拉取远程仓库的所有分支、各分支上的修改、tag等全部内容，并将在本地的克隆仓库中创建master分支（自动与远程仓库的master分支相关联，远程仓库别名缺省为origin），在创建个人分支前，务必先checkout到将要merged到的分支（示例中为develop），然后再进行分支创建操作，否则在GitLab服务器上进行merge操作时，可能会发生冲突与逆向merge（develop分支merge到了个人分支）。原因：</p>
+<blockquote>
+<p>初次完成仓库克隆时，所在分支为master分支，此时若立即创建个人分支将是基于master分支创建的，而master分支与将要merge的分支很有可能是不同的，后续将做过修改的个人分支向develop分支进行merge时大概率会出现问题。当然，即使这样做了，也可能在进行merge操作时发生冲突与逆向merge（从develop分支创建个人分支后，修改文件期间有人向develop分支push了新的提交）。</p>
+</blockquote>
+]]></content>
       <categories>
         <category>技术</category>
         <category>Git</category>
