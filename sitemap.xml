@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.shipengx.com/%E5%85%B3%E4%BA%8Emake%E3%80%81makefile%E3%80%81cmake%E3%80%81cmakelist%E3%80%81qmake%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB.html</loc>
+    
+    <lastmod>2020-02-03T11:33:49.799Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.shipengx.com/Linux%E4%B8%AD%E7%9A%84ld-so%E4%B8%8Eld-linux-so.html</loc>
+    
+    <lastmod>2020-02-03T11:12:47.452Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.shipengx.com/gitignore%E4%B8%8Egitkeep%E7%9A%84%E4%BD%9C%E7%94%A8.html</loc>
     
     <lastmod>2020-02-03T10:17:25.426Z</lastmod>

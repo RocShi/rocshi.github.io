@@ -199,6 +199,22 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux中的ld-so与ld-linux-so</title>
+    <url>/Linux%E4%B8%AD%E7%9A%84ld-so%E4%B8%8Eld-linux-so.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>动态链接器/加载器，<code>ld.so</code>和 <code>ld-linux.so*</code>查找并加载程序运行时所需要的共享对象（共享库），然后准备好程序并运行它，Linux二进制文件需要在运行时进行动态链接，除非在程序编译期间为ld（GNU链接器）指定了<code>-static</code>选项。<code>ld.so</code>程序处理a.out二进制格式（一种年代久远的二进制格式），<code>ld-linux.so*</code>（于libc5而言是/lib/ld-linux.so.1，于glibc2而言是/lib/ld-linux.so.2）处理更加现代的ELF二进制格式。两个程序具有相同的行为，使用相同的支持文件和程序（ldd、ldconfig和/etc/ld.so.conf）。<strong>ld.so与ld-linux.so是相似的，于程序运行期间起作用</strong>。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cDovL21hbjcub3JnL2xpbnV4L21hbi1wYWdlcy9tYW44L2xkLWxpbnV4LnNvLjguaHRtbA==" title="http://man7.org/linux/man-pages/man8/ld-linux.so.8.html">ld.so, ld-linux.so - dynamic linker/loader<i class="fa fa-external-link"></i></span></li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>gitignore与gitkeep的作用</title>
     <url>/gitignore%E4%B8%8Egitkeep%E7%9A%84%E4%BD%9C%E7%94%A8.html</url>
     <content><![CDATA[<h1 id="gitignore" class="heading-control"><a href="#gitignore" class="headerlink" title=".gitignore"></a>.gitignore<a class="heading-anchor" href="#gitignore" aria-hidden="true"></a></h1><p>.gitignore用于指定版本库中的某些文件或目录将被git系统忽略，例如，个人在腾讯云的git服务器上维护某工程时，.gitignore中的内容如下所示，用以忽略工程根目录下的build目录以及所有包目录内的一些并不参与编译的目录：</p>
@@ -269,6 +285,27 @@
       </categories>
       <tags>
         <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于make、makefile、cmake、cmakelist、qmake等的区别</title>
+    <url>/%E5%85%B3%E4%BA%8Emake%E3%80%81makefile%E3%80%81cmake%E3%80%81cmakelist%E3%80%81qmake%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>首先，开发人员根据项目目录结构编写cmakelist文件；然后，cmake根据编写的cmakelist文件生成makefile文件；最后，make根据生成的makefile文件对代码进行预处理、编译、汇编、链接等操作，生成可执行文件或共享库。流程如下图所示：</p>
+<p><img src="/%E5%85%B3%E4%BA%8Emake%E3%80%81makefile%E3%80%81cmake%E3%80%81cmakelist%E3%80%81qmake%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB/_posts/%E5%85%B3%E4%BA%8Emake%E3%80%81makefile%E3%80%81cmake%E3%80%81cmakelist%E3%80%81qmake%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB/cmake%E5%B7%A5%E4%BD%9C%E6%B5%81.png" alt="cmake工作流"></p>
+<p>qmake——与cmake同等地位的工具。<br>综上，<strong>重点是cmakelist文件的编写</strong>。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC94dW54dW4vYmxvZy84Njc4MQ==" title="https://my.oschina.net/xunxun/blog/86781">CMake与Make<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FpeWFuZ2hvbmcvYXJ0aWNsZS9kZXRhaWxzLzg2NTAxNzIw" title="https://blog.csdn.net/Aiyanghong/article/details/86501720">make、makefile、cmake之间的区别与联系<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYW5nX3hpbnhpbmcvYXJ0aWNsZS9kZXRhaWxzLzcyODI3NjY0" title="https://blog.csdn.net/jiang_xinxing/article/details/72827664">编译过程，make,makefile,cmake,qmake,cmakelist总结<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vY2oyMDE0L3AvNjExMTYzNC5odG1s" title="https://www.cnblogs.com/cj2014/p/6111634.html">make makefile cmake qmake都是什么，有什么区别<i class="fa fa-external-link"></i></span></li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>make</category>
+      </categories>
+      <tags>
+        <tag>make</tag>
       </tags>
   </entry>
   <entry>
