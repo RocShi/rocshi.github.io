@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ac4bc6;
+  background: #ff9970;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2386,7 +2386,7 @@ hr {
   padding: 10px 0;
 }
 .footer-inner {
-  text-align: left;
+  text-align: center;
 }
 @media (max-width: 767px) {
   .footer-inner {
@@ -2563,7 +2563,7 @@ hr {
   background: #222;
 }
 .posts-expand .post-body img {
-  margin-left: 0;
+  margin-left: 0 auto;
 }
 .posts-expand .post-tags {
   text-align: left;
