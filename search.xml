@@ -233,6 +233,25 @@
       </tags>
   </entry>
   <entry>
+    <title>VS Code C++程序中cout输出中文显示乱码</title>
+    <url>/VS-Code-C-%E7%A8%8B%E5%BA%8F%E4%B8%ADcout%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA%E4%B9%B1%E7%A0%81.html</url>
+    <content><![CDATA[<h1 id="问题描述" class="heading-control"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述<a class="heading-anchor" href="#问题描述" aria-hidden="true"></a></h1><p>有如下代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Please input your string: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">'\n'</span> &lt;&lt; <span class="string">"The string is: "</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>起初使用Code Runner插件的OUTPUT窗口进行调试，发现OUTPUT窗口只读，无法进行输入交互；后勾选了Code Runner插件的“Run In Terminal”选项（勾选方法不再赘述），从而在VS Code Terminal中进行调试，发现cin读取中文后，cout输出为乱码。</p>
+<h1 id="问题解决" class="heading-control"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决<a class="heading-anchor" href="#问题解决" aria-hidden="true"></a></h1><p>将Windows自带的CMD终端的属性设置为旧版，<strong>但这会导致点击TERMINAL时弹出系统终端，而非vscode内置终端</strong>：</p>
+<p><img src="https://i.loli.net/2020/02/03/1SUhtc3kCjzlmQ6.png" alt="附图"></p>
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>Windows自带CMD终端属性的修改影响所有IDE及代码编辑器。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>C/C++</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>VS Code</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>在腾讯云上搭建个人Git服务器</title>
     <url>/%E5%9C%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BAGit%E6%9C%8D%E5%8A%A1%E5%99%A8.html</url>
     <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><blockquote>
