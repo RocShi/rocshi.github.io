@@ -173,6 +173,26 @@
       </tags>
   </entry>
   <entry>
+    <title>Shell中设置文字输出的颜色及字体格式</title>
+    <url>/Shell%E4%B8%AD%E8%AE%BE%E7%BD%AE%E6%96%87%E5%AD%97%E8%BE%93%E5%87%BA%E7%9A%84%E9%A2%9C%E8%89%B2%E5%8F%8A%E5%AD%97%E4%BD%93%E6%A0%BC%E5%BC%8F.html</url>
+    <content><![CDATA[<h1 id="描述" class="heading-control"><a href="#描述" class="headerlink" title="描述"></a>描述<a class="heading-anchor" href="#描述" aria-hidden="true"></a></h1><p>在shell脚本中，有时会定制特殊格式的字符串用以强调一些信息，例如以下字符串：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gbError=<span class="string">"\033[1;31m[ERROR]\033[0m"</span></span><br><span class="line">gbWarning=<span class="string">"\033[1;33m[WARNING]\033[0m"</span></span><br><span class="line">gbInfo=<span class="string">"\033[1;32m[INFO]\033[0m"</span></span><br><span class="line">gbGood=<span class="string">"\033[1;32m[GOOD]\033[0m"</span></span><br><span class="line">gbCancel=<span class="string">"\033[1;4;35mCTRL + C\033[0m"</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>以<code>gbCancel=&quot;\033[1;4;35mCTRL + C\033[0m&quot;</code>为例：<br><code>\033[</code>表示转义序列开始，接下来的<code>1</code>表示加粗字体，<code>4</code>表示添加下划线，<code>35</code>表示文本颜色为紫红色，<code>m</code>表示终止转义序列，<code>CTRL + C</code>为待格式化的目标文本，<code>\033[0m</code>表示格式化效果仅对目标文本生效（若无此字段将导致后面的文本输出都被格式化）。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLjUxY3RvLmNvbS9sb25nbGVpLzIzNTc4OTg/c291cmNlPWRyYQ==" title="https://blog.51cto.com/longlei/2357898?source=dra">shell中设置文字输出的颜色及字体格式<i class="fa fa-external-link"></i></span></li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Shell</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git的cherry-pick命令</title>
     <url>/git%E7%9A%84cherry-pick%E5%91%BD%E4%BB%A4.html</url>
     <content><![CDATA[<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
@@ -315,6 +335,47 @@
       </categories>
       <tags>
         <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Win10/Ubuntu 18.04.2双系统安装与卸载</title>
+    <url>/Win10-Ubuntu-18-04-2%E5%8F%8C%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD.html</url>
+    <content><![CDATA[<h1 id="Win10安装" class="heading-control"><a href="#Win10安装" class="headerlink" title="Win10安装"></a>Win10安装<a class="heading-anchor" href="#Win10安装" aria-hidden="true"></a></h1><h2 id="系统盘制作" class="heading-control"><a href="#系统盘制作" class="headerlink" title="系统盘制作"></a>系统盘制作<a class="heading-anchor" href="#系统盘制作" aria-hidden="true"></a></h2><p>老毛桃Win10系统盘制作工具，注意根据主机BIOS选择传统版或支持UEFI的最新版。</p>
+<h2 id="安装" class="heading-control"><a href="#安装" class="headerlink" title="安装"></a>安装<a class="heading-anchor" href="#安装" aria-hidden="true"></a></h2><p>U盘启动进入WinPE后，首先使用WinPE中集成的DiskGenius工具对硬盘进行格式化并分区。对于传统BIOS，分区格式必须为设置为MBR格式；对于UEFI BIOS，分区格式可设置为MBR或GUID（GPT）格式（推荐GUID），安装细节不再赘述。</p>
+<h1 id="Ubuntu-18-04-2安装与卸载" class="heading-control"><a href="#Ubuntu-18-04-2安装与卸载" class="headerlink" title="Ubuntu 18.04.2安装与卸载"></a>Ubuntu 18.04.2安装与卸载<a class="heading-anchor" href="#Ubuntu-18-04-2安装与卸载" aria-hidden="true"></a></h1><h2 id="系统盘制作-1" class="heading-control"><a href="#系统盘制作-1" class="headerlink" title="系统盘制作"></a>系统盘制作<a class="heading-anchor" href="#系统盘制作-1" aria-hidden="true"></a></h2><p>假设已安装好Win10系统，在安装Ubuntu前首先应在Win10系统中关闭快速启动，并在BIOS中关闭Security Boot选项。使用<span class="exturl" data-url="aHR0cHM6Ly9ydWZ1cy5pZS8=" title="https://rufus.ie/">rufus<i class="fa fa-external-link"></i></span>系统盘制作工具进行Ubuntu系统盘制作，制作过程中应根据主机的BIOS类型进行系统盘类型选择（MBR or GPT）。</p>
+<h2 id="安装-1" class="heading-control"><a href="#安装-1" class="headerlink" title="安装"></a>安装<a class="heading-anchor" href="#安装-1" aria-hidden="true"></a></h2><p>安装前，首先应在Windows盘中压缩出一定空间用于Ubuntu安装，本文中同时实践了老式笔记本（Lenovo G475，传统BIOS）与新式笔记本（HP暗影精灵4，UEFI BIOS）下的Win10/Ubuntu 18.04.2双系统安装，两台笔记本的配置均为SSD/HDD双硬盘，本文中将HDD压缩出150G用于挂载/home目录（CARLA安装使用），SSD压缩100G用于其它目录挂载使用。在BIOS中设置U盘启动（启用USB启动，并将EFI模式下的启动项顺序），设置细节不再赘述。Ubuntu系统安装过程中最重要的部分为分区挂载。</p>
+<h3 id="a-传统BIOS" class="heading-control"><a href="#a-传统BIOS" class="headerlink" title="a. 传统BIOS"></a>a. 传统BIOS<a class="heading-anchor" href="#a-传统BIOS" aria-hidden="true"></a></h3><p>最佳分区挂载实践为：</p>
+<ul>
+<li>新建SWAP交换分区，SSD中分配两倍内存空间</li>
+<li>新建分区，SSD中分配空间1G，主分区格式，挂载点/boot</li>
+<li>新建分区，SSD中剩余空间全部分配，主分区格式，挂载点/</li>
+<li>新建分区，HDD中空间全部分配，主分区格式，挂载点/home</li>
+</ul>
+<p><strong>分区挂载完成后，启动引导器安装在/boot目录所挂载分区。</strong> 完成Ubuntu系统安装后重启，默认会直接进入Win10，可通过<span class="exturl" data-url="aHR0cHM6Ly9uZW9zbWFydC5uZXQvRWFzeUJDRC8=" title="https://neosmart.net/EasyBCD/">easyBCD<i class="fa fa-external-link"></i></span>工具添加Ubuntu启动引导项，具体细节不再赘述。</p>
+<h3 id="b-UEFI-BIOS" class="heading-control"><a href="#b-UEFI-BIOS" class="headerlink" title="b. UEFI BIOS"></a>b. UEFI BIOS<a class="heading-anchor" href="#b-UEFI-BIOS" aria-hidden="true"></a></h3><p>最佳分区挂载实践为：</p>
+<ul>
+<li>新建SWAP交换分区，SSD中分配两倍内存空间</li>
+<li>新建EFI系统分区，SSD中分配空间1G，主分区格式</li>
+<li>新建分区，SSD中剩余空间全部分配，主分区格式，挂载点/</li>
+<li>新建分区，HDD中空间全部分配，主分区格式，挂载点/home</li>
+</ul>
+<p><strong>分区挂载完成后，启动引导器安装在EFI系统分区。</strong> 完成Ubuntu系统安装后重启，默认会直接进入GRUB引导界面，此时可选择进入Ubuntu系统或Win10系统，可以不通过GRUB引导直接进入Win10吗？UEFI BIOS模式下无法通过类似easyBCD的工具直接添加Ubuntu启动引导项，可在BIOS中进行系统引导选择，对于本文中的HP暗影精灵4，具体实现方式为：开机或重启后长按ESC进入配置界面，然后按F9进行系统引导选择，此外还可在BIOS中设置Windows和ubuntu的启动引导项顺序。</p>
+<blockquote>
+<p>通过观察上述步骤可以发现，无论是传统BIOS还是UEFI BIOS，在安装Ubuntu时，启动引导器均未覆盖Windows的启动引导项所在分区，而是分别安装在了/boot目录所挂载分区（对于传统BIOS而言）或EFI系统分区（对于UEFI BIOS而言）。为什么要这样做？直接将启动引导器安装在Windows的启动引导项所在分区当然是可行的，但是这样将导致Windows系统引导分区被改写，此后只能通过GRUB引导才能进入Windows，这样便埋下了隐患：一旦Ubuntu引导项被破坏，Windows也将无法进入。而本文中的安装方式则实现了Windows/Ubuntu的引导解耦，任一操作系统引导项的损坏都不会对另一系统造成影响，即使这样，仍然建议通过傲梅的“轻松备份”工具定期对系统引导区进行备份。本文中实践过程中，受一篇博文启发较大，链接找不到了，找到了再补上。</p>
+</blockquote>
+<h2 id="卸载" class="heading-control"><a href="#卸载" class="headerlink" title="卸载"></a>卸载<a class="heading-anchor" href="#卸载" aria-hidden="true"></a></h2><p>先在Win10下使用傲梅分区助手删除各分区，再使用easyEFI或easy BCD删除Ubuntu的GRUB启动引导项。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9hMzk0ZGQ1MzA0MTI=" title="https://www.jianshu.com/p/a394dd530412">Win10 与 ubuntu 双系统，卸载 ubuntu 系统的方法<i class="fa fa-external-link"></i></span></li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>系统安装</tag>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
