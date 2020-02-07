@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>将Hexo搭建的GitHub Pages博客站点迁移到腾讯云VPS</title>
+    <url>/%E5%B0%86Hexo%E6%90%AD%E5%BB%BA%E7%9A%84GitHub-Pages%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9%E8%BF%81%E7%A7%BB%E5%88%B0%E8%85%BE%E8%AE%AF%E4%BA%91VPS.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>使用Hexo + GitHub Pages搭建个人博客站点</title>
     <url>/%E4%BD%BF%E7%94%A8Hexo-GitHub-Pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9.html</url>
     <content><![CDATA[<h1 id="环境安装" class="heading-control"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装<a class="heading-anchor" href="#环境安装" aria-hidden="true"></a></h1><h2 id="Node-js" class="heading-control"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js<a class="heading-anchor" href="#Node-js" aria-hidden="true"></a></h2><p>Windows平台直接到到<span class="exturl" data-url="aHR0cHM6Ly9ub2RlanMub3JnL2VuLw==" title="https://nodejs.org/en/">Node.js官网<i class="fa fa-external-link"></i></span>下载最新安装包进行安装（本文中所使用版本为v12.14.1）；Linux平台（以Ubuntu为例）直接通过终端命令进行安装：</p>
@@ -211,9 +216,9 @@
 <h2 id="几种特殊的替换结构" class="heading-control"><a href="#几种特殊的替换结构" class="headerlink" title="几种特殊的替换结构"></a>几种特殊的替换结构<a class="heading-anchor" href="#几种特殊的替换结构" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$&#123;var:-string&#125;</span>,<span class="variable">$&#123;var:+string&#125;</span>,<span class="variable">$&#123;var:=string&#125;</span>,<span class="variable">$&#123;var:?string&#125;</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>${var:-string}</code>和<code>${var:=string}</code>：若变量var为空，则用在命令行中用string来替换<code>${var:-string}</code>，否则变量var不为空时，则用变量var的值来替换${var:-string}；对于${var:=string}的替换规则和${var:-string}是一样的，所不同之处是${var:=string}若var为空时，用string替换${var:=string}的同时，把string赋给变量var： ${var:=string}很常用的一种用法是，判断某个变量是否赋值，没有的话则给它赋上一个默认值。</li>
+<li><code>${var:+string}</code>的替换规则和上面的相反，即只有当var不是空的时候才替换成string，若var为空时则不替换或者说是替换成变量 var的值，即空值。(因为变量var此时为空，所以这两种说法是等价的)</li>
+<li><code>${var:?string}</code>替换规则为：若变量var不为空，则用变量var的值来替换${var:?string}；若变量var为空，则把string输出到标准错误中，并从脚本中退出。我们可利用此特性来检查是否设置了变量的值。</li>
 </ul>
-<p>　　② ${var:+string}的替换规则和上面的相反，即只有当var不是空的时候才替换成string，若var为空时则不替换或者说是替换成变量 var的值，即空值。(因为变量var此时为空，所以这两种说法是等价的)</p>
-<p>　　③${var:?string}替换规则为：若变量var不为空，则用变量var的值来替换${var:?string}；若变量var为空，则把string输出到标准错误中，并从脚本中退出。我们可利用此特性来检查是否设置了变量的值。</p>
 <p>　　补充扩展：在上面这五种替换结构中string不一定是常值的，可用另外一个变量的值或是一种命令的输出。</p>
 <h2 id="四种模式匹配替换结构" class="heading-control"><a href="#四种模式匹配替换结构" class="headerlink" title="四种模式匹配替换结构"></a>四种模式匹配替换结构<a class="heading-anchor" href="#四种模式匹配替换结构" aria-hidden="true"></a></h2><h2 id="字符串提取和替换" class="heading-control"><a href="#字符串提取和替换" class="headerlink" title="字符串提取和替换"></a>字符串提取和替换<a class="heading-anchor" href="#字符串提取和替换" aria-hidden="true"></a></h2><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1>]]></content>
       <categories>
