@@ -241,7 +241,7 @@
 <li>第二种模式：<code>${variable%%pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern结尾，如果是，就从命令行把variable中的内容<strong>去掉右边最长</strong>的匹配模式。</li>
 <li>第三种模式：<code>${variable#pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern开始，如果是，就从命令行把variable中的内容<strong>去掉左边最短</strong>的匹配模式。</li>
 <li>第四种模式：<code>${variable##pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern开始，如果是，就从命令行把variable中的内容<strong>去掉左边最长</strong>的匹配模式。<blockquote>
-<p>这四种模式中都不会改变variable的值，其中，只有在pattern中使用了<em>匹配符号时，%和%%，#和##才有区别。*</em>结构中的pattern支持通配符，*表示零个或多个任意字符，?表示仅与一个任意字符匹配，[…]表示匹配中括号里面的字符，[!…]表示不匹配中括号里面的字符。**</p>
+<p>这四种模式中都不会改变variable的值，其中，只有在pattern中使用了*匹配符号时，%和%%，#和##才有区别。结构中的pattern支持通配符，<em>表示零个或多个任意字符，?表示仅与一个任意字符匹配，[…]表示匹配中括号里面的字符，[!…]表示不匹配中括号里面的字符。*</em></p>
 </blockquote>
 </li>
 </ul>
