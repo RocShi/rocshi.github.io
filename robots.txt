@@ -10,5 +10,5 @@ Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
 
-Sitemap: https://rocshi.github.io/sitemap.xml
-Sitemap: https://rocshi.github.io/baidusitemap.xml
+Sitemap: https://blog.shipengx.com/sitemap.xml
+Sitemap: https://blog.shipengx.com/baidusitemap.xml
