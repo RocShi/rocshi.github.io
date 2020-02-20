@@ -167,7 +167,7 @@
 <ul>
 <li><strong>问题1 - 绑定到二级域名浏览器提示不安全，绑定到一级域名安全</strong><br>起初绑定的为一级域名 shipengx.com，后改为了二级域名 blog.shipengx.com，出现此问题的原因为浏览器缓存了绑定一级域名时的SSL证书，关闭浏览器并清理浏览器缓存即可解决</li>
 <li><strong>问题2 - 绑定域名后valine评论系统不可用</strong><br>绑定域名后评论框下方提示：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Code 403: 访问被api域名白名单拒绝,请检查你的安全域名设置.</span><br></pre></td></tr></table></figure>
-原因为为将所绑定域名添加至LeanCloud的Web安全域名白名单，添加即可解决</li>
+原因为未将所绑定域名添加至LeanCloud的Web安全域名白名单，添加即可解决</li>
 </ul>
 </li>
 <li><p>在hexo/source目录下创建无扩展名的CNAME文件，内容为待绑定域名，我的是二级域名 blog.shipengx.com</p>
