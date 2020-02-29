@@ -51,16 +51,16 @@
   };
 </script>
 
-  <meta name="description" content="描述了make、makefile、cmake、cmakelist、qmake间的区别">
+  <meta name="description" content="描述了make、makefile、cmake、cmakelist、qmake间的区别。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于make、makefile、cmake、cmakelist、qmake等的区别">
 <meta property="og:url" content="https://blog.shipengx.com/%E5%85%B3%E4%BA%8Emake%E3%80%81makefile%E3%80%81cmake%E3%80%81cmakelist%E3%80%81qmake%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB.html">
 <meta property="og:site_name" content="朝花夕拾">
-<meta property="og:description" content="描述了make、makefile、cmake、cmakelist、qmake间的区别">
+<meta property="og:description" content="描述了make、makefile、cmake、cmakelist、qmake间的区别。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2020/02/03/EasPfXOzWQdV4A9.png">
 <meta property="article:published_time" content="2019-06-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-02-07T10:22:27.906Z">
+<meta property="article:modified_time" content="2020-02-29T16:24:22.982Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="make">
 <meta name="twitter:card" content="summary">
@@ -253,7 +253,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-07 18:22:27" itemprop="dateModified" datetime="2020-02-07T18:22:27+08:00">2020-02-07</time>
+                <time title="修改时间：2020-03-01 00:24:22" itemprop="dateModified" datetime="2020-03-01T00:24:22+08:00">2020-03-01</time>
               </span>
 
           <br>
@@ -290,7 +290,7 @@
   </span>
   
   
-            <div class="post-description">描述了make、makefile、cmake、cmakelist、qmake间的区别</div>
+            <div class="post-description">描述了make、makefile、cmake、cmakelist、qmake间的区别。</div>
 
         </div>
       </header>
@@ -301,10 +301,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>首先，开发人员根据项目目录结构编写cmakelist文件；然后，cmake根据编写的cmakelist文件生成makefile文件；最后，make根据生成的makefile文件对代码进行预处理、编译、汇编、链接等操作，生成可执行文件或共享库。流程如下图所示：</p>
+        <h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>首先，开发人员根据项目目录结构编写cmakelist文件；然后，cmake根据编写的cmakelist文件生成makefile文件；最后，make根据生成的makefile文件对代码进行预处理、编译、汇编、链接等操作，生成可执行文件或共享库。流程如下图所示：</p>
 <p><img src="https://i.loli.net/2020/02/03/EasPfXOzWQdV4A9.png" alt="cmake工作流"></p>
 <p>qmake——与cmake同等地位的工具。<br>综上，<strong>重点是cmakelist文件的编写</strong>。</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC94dW54dW4vYmxvZy84Njc4MQ==" title="https://my.oschina.net/xunxun/blog/86781">CMake与Make<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FpeWFuZ2hvbmcvYXJ0aWNsZS9kZXRhaWxzLzg2NTAxNzIw" title="https://blog.csdn.net/Aiyanghong/article/details/86501720">make、makefile、cmake之间的区别与联系<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYW5nX3hpbnhpbmcvYXJ0aWNsZS9kZXRhaWxzLzcyODI3NjY0" title="https://blog.csdn.net/jiang_xinxing/article/details/72827664">编译过程，make,makefile,cmake,qmake,cmakelist总结<i class="fa fa-external-link"></i></span></li>
@@ -433,7 +433,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#结论"><span class="nav-text">结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-结论"><span class="nav-text">1 结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-参考"><span class="nav-text">2 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
