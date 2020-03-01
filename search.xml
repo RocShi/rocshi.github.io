@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>（十五）再识图像之高级车道线检测</title>
+    <url>/%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89%E5%86%8D%E8%AF%86%E5%9B%BE%E5%83%8F%E4%B9%8B%E9%AB%98%E7%BA%A7%E8%BD%A6%E9%81%93%E7%BA%BF%E6%A3%80%E6%B5%8B.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>将Hexo搭建的博客站点从GitHub Pages迁移到腾讯云VPS</title>
     <url>/%E5%B0%86Hexo%E6%90%AD%E5%BB%BA%E7%9A%84GitHub-Pages%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9%E8%BF%81%E7%A7%BB%E5%88%B0%E8%85%BE%E8%AE%AF%E4%BA%91VPS.html</url>
     <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
@@ -645,6 +650,34 @@
       </tags>
   </entry>
   <entry>
+    <title>（十四）初识图像之初级车道线检测</title>
+    <url>/%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89%E5%88%9D%E8%AF%86%E5%9B%BE%E5%83%8F%E4%B9%8B%E5%88%9D%E7%BA%A7%E8%BD%A6%E9%81%93%E7%BA%BF%E6%A3%80%E6%B5%8B.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>无人驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>无人驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（十三）手把手教你写卡尔曼滤波器</title>
+    <url>/%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%99%A8.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>无人驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>无人驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>安装第三方python库过程中的egg-info与dist-info文件夹</title>
     <url>/%E5%AE%89%E8%A3%85%E7%AC%AC%E4%B8%89%E6%96%B9python%E5%BA%93%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84egg-info%E4%B8%8Edist-info%E6%96%87%E4%BB%B6%E5%A4%B9.html</url>
     <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在安装第三方python库过程中，在site-packages目录中与安装结果同时生成的后缀名为egg-info或dist-info的文件夹：<br>用应用程序安装生成egg-info文件夹，用whl或tar安装生成dist-info文件夹。</p>
@@ -657,6 +690,132 @@
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（十二）无人驾驶中的坐标转换</title>
+    <url>/%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89%E6%97%A0%E4%BA%BA%E9%A9%BE%E9%A9%B6%E4%B8%AD%E7%9A%84%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>无人驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>无人驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（十一）无人驾驶中的CAN消息解析</title>
+    <url>/%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E6%97%A0%E4%BA%BA%E9%A9%BE%E9%A9%B6%E4%B8%AD%E7%9A%84CAN%E6%B6%88%E6%81%AF%E8%A7%A3%E6%9E%90.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>无人驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>无人驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（十）看不见的“传感器”高精度地图</title>
+    <url>/%EF%BC%88%E5%8D%81%EF%BC%89%E7%9C%8B%E4%B8%8D%E8%A7%81%E7%9A%84%E2%80%9C%E4%BC%A0%E6%84%9F%E5%99%A8%E2%80%9D%E9%AB%98%E7%B2%BE%E5%BA%A6%E5%9C%B0%E5%9B%BE.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>无人驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>无人驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（九）与生俱来的VCU信号</title>
+    <url>/%EF%BC%88%E4%B9%9D%EF%BC%89%E4%B8%8E%E7%94%9F%E4%BF%B1%E6%9D%A5%E7%9A%84VCU%E4%BF%A1%E5%8F%B7.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>无人驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>无人驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（八）被严重低估的传感器超声波雷达</title>
+    <url>/%EF%BC%88%E5%85%AB%EF%BC%89%E8%A2%AB%E4%B8%A5%E9%87%8D%E4%BD%8E%E4%BC%B0%E7%9A%84%E4%BC%A0%E6%84%9F%E5%99%A8%E8%B6%85%E5%A3%B0%E6%B3%A2%E9%9B%B7%E8%BE%BE.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>无人驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>无人驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（七）量产必备的毫米波雷达</title>
+    <url>/%EF%BC%88%E4%B8%83%EF%BC%89%E9%87%8F%E4%BA%A7%E5%BF%85%E5%A4%87%E7%9A%84%E6%AF%AB%E7%B1%B3%E6%B3%A2%E9%9B%B7%E8%BE%BE.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>无人驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>无人驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（六）工程师又爱又恨的激光雷达</title>
+    <url>/%EF%BC%88%E5%85%AD%EF%BC%89%E5%B7%A5%E7%A8%8B%E5%B8%88%E5%8F%88%E7%88%B1%E5%8F%88%E6%81%A8%E7%9A%84%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BE.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>无人驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>无人驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（五）没有视觉传感器，还谈什么无人驾驶</title>
+    <url>/%EF%BC%88%E4%BA%94%EF%BC%89%E6%B2%A1%E6%9C%89%E8%A7%86%E8%A7%89%E4%BC%A0%E6%84%9F%E5%99%A8%EF%BC%8C%E8%BF%98%E8%B0%88%E4%BB%80%E4%B9%88%E6%97%A0%E4%BA%BA%E9%A9%BE%E9%A9%B6.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>无人驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>无人驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（四）百度无人车传感器IMU深入剖析</title>
+    <url>/%EF%BC%88%E5%9B%9B%EF%BC%89%E7%99%BE%E5%BA%A6%E6%97%A0%E4%BA%BA%E8%BD%A6%E4%BC%A0%E6%84%9F%E5%99%A8IMU%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>无人驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>无人驾驶</tag>
       </tags>
   </entry>
   <entry>
