@@ -644,4 +644,32 @@
         <tag>Python</tag>
       </tags>
   </entry>
+  <entry>
+    <title>（三）百度无人车传感器GPS深入剖析.md</title>
+    <url>/%EF%BC%88%E4%B8%89%EF%BC%89%E7%99%BE%E5%BA%A6%E6%97%A0%E4%BA%BA%E8%BD%A6%E4%BC%A0%E6%84%9F%E5%99%A8GPS%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90-md.html</url>
+    <content><![CDATA[<blockquote>
+<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">这里<i class="fa fa-external-link"></i></span>。</p>
+</blockquote>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>百度Apollo 1.0技术框架如下图所示：</p>
+<p><img src="https://i.loli.net/2020/03/01/XgGkhdfU2eSiKNc.jpg" alt="百度Apollo 1.0技术框架"></p>
+<p>GPS全球定位系统（Global Position System）定位原理为<strong>三角定位法（Triangulation）</strong>，如下图所示，通过测量无人车分别距三颗卫星的距离来对无人车进行唯一定位：</p>
+<p><img src="https://i.loli.net/2020/03/01/niauPdXFYyBHIg3.jpg" alt="三角定位法原理图"></p>
+<p>为降低天气、云层对定位的影响，引入了差分GPS的技术，原理如下图所示：</p>
+<p><img src="https://i.loli.net/2020/03/01/BCnQa5P9RheEbA4.jpg" alt="差分GPS技术原理图"></p>
+<p>在地面上建立基站（Base Station），基站在建立时可得到其精确的位置信息（经纬度），同时基站具有接收卫星信号的功能。当基站的GPS接收机与车载GPS接收机相距较近时（&lt;30km），可以认为两者的GPS信号通过的是同一片大气区域，即两者的信号误差基本一致。<strong>根据基站的精确位置和信号传播时间，可反推此时天气原因导致的信号传播误差，之后利用该误差便可修正车载GPS信号，从而降低云层、天气情况等对信号传输的影响。</strong>利用差分GPS技术，可使无人车定位精度由十米级别提升至米级。<strong>差分GPS技术可以解决定位的精度问题，但是无法解决遮挡和反射问题</strong>，当无人车在高楼林立的环境中行驶时，会发生信号丢失和多路径信号（Multi-Path Signal）的问题：</p>
+<p><img src="https://i.loli.net/2020/03/01/Rlh5aZ26CzQmuxj.jpg" alt="多路径信号问题示意图"></p>
+<p>同时，GPS定位频率不高，相当于定位实时性较差。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">无人驾驶技术入门（三）| 百度无人车传感器 GPS 深入剖析<i class="fa fa-external-link"></i></span></li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>无人驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>无人驾驶</tag>
+      </tags>
+  </entry>
 </search>

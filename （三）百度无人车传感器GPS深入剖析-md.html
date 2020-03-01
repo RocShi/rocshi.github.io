@@ -51,17 +51,25 @@
   };
 </script>
 
-  <meta name="description" content="Stay hungry, stay foolish.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="朝花夕拾">
-<meta property="og:url" content="https://blog.shipengx.com/archives/2019/page/2/index.html">
+  <meta name="description" content="无人车中的GPS定位原理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="（三）百度无人车传感器GPS深入剖析.md">
+<meta property="og:url" content="https://blog.shipengx.com/%EF%BC%88%E4%B8%89%EF%BC%89%E7%99%BE%E5%BA%A6%E6%97%A0%E4%BA%BA%E8%BD%A6%E4%BC%A0%E6%84%9F%E5%99%A8GPS%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90-md.html">
 <meta property="og:site_name" content="朝花夕拾">
-<meta property="og:description" content="Stay hungry, stay foolish.">
+<meta property="og:description" content="无人车中的GPS定位原理。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/03/01/XgGkhdfU2eSiKNc.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/03/01/niauPdXFYyBHIg3.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/03/01/BCnQa5P9RheEbA4.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/03/01/Rlh5aZ26CzQmuxj.jpg">
+<meta property="article:published_time" content="2018-08-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-01T09:24:33.677Z">
 <meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="无人驾驶">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/03/01/XgGkhdfU2eSiKNc.jpg">
 
-<link rel="canonical" href="https://blog.shipengx.com/archives/2019/page/2/">
+<link rel="canonical" href="https://blog.shipengx.com/%EF%BC%88%E4%B8%89%EF%BC%89%E7%99%BE%E5%BA%A6%E6%97%A0%E4%BA%BA%E8%BD%A6%E4%BC%A0%E6%84%9F%E5%99%A8GPS%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90-md.html">
 
 
 <script id="page-configurations">
@@ -69,11 +77,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>归档 | 朝花夕拾</title>
+  <title>（三）百度无人车传感器GPS深入剖析.md | 朝花夕拾</title>
   
 
 
@@ -213,76 +221,184 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/%EF%BC%88%E4%B8%89%EF%BC%89%E7%99%BE%E5%BA%A6%E6%97%A0%E4%BA%BA%E8%BD%A6%E4%BC%A0%E6%84%9F%E5%99%A8GPS%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90-md.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          （三）百度无人车传感器GPS深入剖析.md
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-01 00:00:00" itemprop="dateCreated datePublished" datetime="2018-09-01T00:00:00+08:00">2018-09-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-01 17:24:33" itemprop="dateModified" datetime="2020-03-01T17:24:33+08:00">2020-03-01</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E6%97%A0%E4%BA%BA%E9%A9%BE%E9%A9%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">无人驾驶</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E6%97%A0%E4%BA%BA%E9%A9%BE%E9%A9%B6/%E6%97%A0%E4%BA%BA%E9%A9%BE%E9%A9%B6%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/" itemprop="url" rel="index">
+                    <span itemprop="name">无人驾驶技术入门</span>
+                  </a>
+                </span>
+            </span>
+
+          
   
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 16 篇日志。 继续努力。</span>
-      </div>
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/%EF%BC%88%E4%B8%89%EF%BC%89%E7%99%BE%E5%BA%A6%E6%97%A0%E4%BA%BA%E8%BD%A6%E4%BC%A0%E6%84%9F%E5%99%A8GPS%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90-md.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/%EF%BC%88%E4%B8%89%EF%BC%89%E7%99%BE%E5%BA%A6%E6%97%A0%E4%BA%BA%E8%BD%A6%E4%BC%A0%E6%84%9F%E5%99%A8GPS%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90-md.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">无人车中的GPS定位原理。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h2 class="collection-header">2019</h2>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-06-19T00:00:00+08:00"
-              content="2019-06-19">
-          06-19
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/%E5%85%B3%E4%BA%8Emake%E3%80%81makefile%E3%80%81cmake%E3%80%81cmakelist%E3%80%81qmake%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB.html" itemprop="url">
-            <span itemprop="name">关于make、makefile、cmake、cmakelist、qmake等的区别</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-05-18T00:00:00+08:00"
-              content="2019-05-18">
-          05-18
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/Git%E7%89%88%E6%9C%AC%E5%BA%93%E7%AE%A1%E7%90%86%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94%E4%BB%A5%E8%B7%9F%E8%B8%AA%E4%BB%93%E5%BA%93%E6%8C%87%E5%AE%9A%E5%88%86%E6%94%AF%E4%B8%8B%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B8%BA%E4%BE%8B.html" itemprop="url">
-            <span itemprop="name">Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
+        <blockquote>
+<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">这里<i class="fa fa-external-link"></i></span>。</p>
+</blockquote>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>百度Apollo 1.0技术框架如下图所示：</p>
+<p><img src="https://i.loli.net/2020/03/01/XgGkhdfU2eSiKNc.jpg" alt="百度Apollo 1.0技术框架"></p>
+<p>GPS全球定位系统（Global Position System）定位原理为<strong>三角定位法（Triangulation）</strong>，如下图所示，通过测量无人车分别距三颗卫星的距离来对无人车进行唯一定位：</p>
+<p><img src="https://i.loli.net/2020/03/01/niauPdXFYyBHIg3.jpg" alt="三角定位法原理图"></p>
+<p>为降低天气、云层对定位的影响，引入了差分GPS的技术，原理如下图所示：</p>
+<p><img src="https://i.loli.net/2020/03/01/BCnQa5P9RheEbA4.jpg" alt="差分GPS技术原理图"></p>
+<p>在地面上建立基站（Base Station），基站在建立时可得到其精确的位置信息（经纬度），同时基站具有接收卫星信号的功能。当基站的GPS接收机与车载GPS接收机相距较近时（&lt;30km），可以认为两者的GPS信号通过的是同一片大气区域，即两者的信号误差基本一致。<strong>根据基站的精确位置和信号传播时间，可反推此时天气原因导致的信号传播误差，之后利用该误差便可修正车载GPS信号，从而降低云层、天气情况等对信号传输的影响。</strong>利用差分GPS技术，可使无人车定位精度由十米级别提升至米级。<strong>差分GPS技术可以解决定位的精度问题，但是无法解决遮挡和反射问题</strong>，当无人车在高楼林立的环境中行驶时，会发生信号丢失和多路径信号（Multi-Path Signal）的问题：</p>
+<p><img src="https://i.loli.net/2020/03/01/Rlh5aZ26CzQmuxj.jpg" alt="多路径信号问题示意图"></p>
+<p>同时，GPS定位频率不高，相当于定位实时性较差。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">无人驾驶技术入门（三）| 百度无人车传感器 GPS 深入剖析<i class="fa fa-external-link"></i></span></li>
+</ol>
 
     </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
   </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/%EF%BC%88%E4%B8%89%EF%BC%89%E7%99%BE%E5%BA%A6%E6%97%A0%E4%BA%BA%E8%BD%A6%E4%BC%A0%E6%84%9F%E5%99%A8GPS%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90-md.html" title="（三）百度无人车传感器GPS深入剖析.md">https://blog.shipengx.com/（三）百度无人车传感器GPS深入剖析-md.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%97%A0%E4%BA%BA%E9%A9%BE%E9%A9%B6/" rel="tag"><i class="fa fa-tag"></i> 无人驾驶</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/%E5%AE%89%E8%A3%85%E7%AC%AC%E4%B8%89%E6%96%B9python%E5%BA%93%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84egg-info%E4%B8%8Edist-info%E6%96%87%E4%BB%B6%E5%A4%B9.html" rel="next" title="安装第三方python库过程中的egg-info与dist-info文件夹">
+      安装第三方python库过程中的egg-info与dist-info文件夹 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
   
   
   
 
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/2019/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/archives/2019/">1</a><span class="page-number current">2</span>
-  </nav>
-
+  </div>
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -329,6 +445,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-正文"><span class="nav-text">1 正文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-参考"><span class="nav-text">2 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
