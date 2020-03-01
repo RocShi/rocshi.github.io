@@ -51,22 +51,20 @@
   };
 </script>
 
-  <meta name="description" content="描述了make、makefile、cmake、cmakelist、qmake间的区别。">
+  <meta name="description" content="Linux中的动态链接器&#x2F;加载器。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于make、makefile、cmake、cmakelist、qmake等的区别">
-<meta property="og:url" content="https://blog.shipengx.com/%E5%85%B3%E4%BA%8Emake%E3%80%81makefile%E3%80%81cmake%E3%80%81cmakelist%E3%80%81qmake%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB.html">
+<meta property="og:title" content="Linux中的ld-so与ld-linux-so">
+<meta property="og:url" content="https://blog.shipengx.com/archives/c5106d85.html">
 <meta property="og:site_name" content="朝花夕拾">
-<meta property="og:description" content="描述了make、makefile、cmake、cmakelist、qmake间的区别。">
+<meta property="og:description" content="Linux中的动态链接器&#x2F;加载器。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2020/02/03/EasPfXOzWQdV4A9.png">
-<meta property="article:published_time" content="2019-06-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-01T09:53:42.085Z">
+<meta property="article:published_time" content="2019-10-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-01T09:54:55.668Z">
 <meta property="article:author" content="ShiPeng">
-<meta property="article:tag" content="make">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2020/02/03/EasPfXOzWQdV4A9.png">
 
-<link rel="canonical" href="https://blog.shipengx.com/%E5%85%B3%E4%BA%8Emake%E3%80%81makefile%E3%80%81cmake%E3%80%81cmakelist%E3%80%81qmake%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB.html">
+<link rel="canonical" href="https://blog.shipengx.com/archives/c5106d85.html">
 
 
 <script id="page-configurations">
@@ -78,7 +76,7 @@
   };
 </script>
 
-  <title>关于make、makefile、cmake、cmakelist、qmake等的区别 | 朝花夕拾</title>
+  <title>Linux中的ld-so与ld-linux-so | 朝花夕拾</title>
   
 
 
@@ -223,7 +221,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/%E5%85%B3%E4%BA%8Emake%E3%80%81makefile%E3%80%81cmake%E3%80%81cmakelist%E3%80%81qmake%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB.html">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/c5106d85.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -236,7 +234,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          关于make、makefile、cmake、cmakelist、qmake等的区别
+          Linux中的ld-so与ld-linux-so
         </h2>
 
         <div class="post-meta">
@@ -246,14 +244,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-06-19 00:00:00" itemprop="dateCreated datePublished" datetime="2019-06-19T00:00:00+08:00">2019-06-19</time>
+              <time title="创建时间：2019-10-24 00:00:00" itemprop="dateCreated datePublished" datetime="2019-10-24T00:00:00+08:00">2019-10-24</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-01 17:53:42" itemprop="dateModified" datetime="2020-03-01T17:53:42+08:00">2020-03-01</time>
+                <time title="修改时间：2020-03-01 17:54:55" itemprop="dateModified" datetime="2020-03-01T17:54:55+08:00">2020-03-01</time>
               </span>
 
           <br>
@@ -269,8 +267,8 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/make/" itemprop="url" rel="index">
-                    <span itemprop="name">make</span>
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
                   </a>
                 </span>
             </span>
@@ -284,13 +282,13 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/%E5%85%B3%E4%BA%8Emake%E3%80%81makefile%E3%80%81cmake%E3%80%81cmakelist%E3%80%81qmake%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/%E5%85%B3%E4%BA%8Emake%E3%80%81makefile%E3%80%81cmake%E3%80%81cmakelist%E3%80%81qmake%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB.html" itemprop="commentCount"></span>
+    <a title="valine" href="/archives/c5106d85.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/c5106d85.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-            <div class="post-description">描述了make、makefile、cmake、cmakelist、qmake间的区别。</div>
+            <div class="post-description">Linux中的动态链接器/加载器。</div>
 
         </div>
       </header>
@@ -301,14 +299,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>首先，开发人员根据项目目录结构编写cmakelist文件；然后，cmake根据编写的cmakelist文件生成makefile文件；最后，make根据生成的makefile文件对代码进行预处理、编译、汇编、链接等操作，生成可执行文件或共享库。流程如下图所示：</p>
-<p><img src="https://i.loli.net/2020/02/03/EasPfXOzWQdV4A9.png" alt="cmake工作流"></p>
-<p>qmake——与cmake同等地位的工具。<br>综上，<strong>重点是cmakelist文件的编写</strong>。</p>
+        <h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>动态链接器/加载器，<code>ld.so</code>和 <code>ld-linux.so*</code>查找并加载程序运行时所需要的共享对象（共享库），然后准备好程序并运行它，Linux二进制文件需要在运行时进行动态链接，除非在程序编译期间为ld（GNU链接器）指定了<code>-static</code>选项。<code>ld.so</code>程序处理a.out二进制格式（一种年代久远的二进制格式），<code>ld-linux.so*</code>（于libc5而言是/lib/ld-linux.so.1，于glibc2而言是/lib/ld-linux.so.2）处理更加现代的ELF二进制格式。两个程序具有相同的行为，使用相同的支持文件和程序（ldd、ldconfig和/etc/ld.so.conf）。<strong>ld.so与ld-linux.so是相似的，于程序运行期间起作用</strong>。</p>
 <h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC94dW54dW4vYmxvZy84Njc4MQ==" title="https://my.oschina.net/xunxun/blog/86781">CMake与Make<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FpeWFuZ2hvbmcvYXJ0aWNsZS9kZXRhaWxzLzg2NTAxNzIw" title="https://blog.csdn.net/Aiyanghong/article/details/86501720">make、makefile、cmake之间的区别与联系<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYW5nX3hpbnhpbmcvYXJ0aWNsZS9kZXRhaWxzLzcyODI3NjY0" title="https://blog.csdn.net/jiang_xinxing/article/details/72827664">编译过程，make,makefile,cmake,qmake,cmakelist总结<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vY2oyMDE0L3AvNjExMTYzNC5odG1s" title="https://www.cnblogs.com/cj2014/p/6111634.html">make makefile cmake qmake都是什么，有什么区别<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL21hbjcub3JnL2xpbnV4L21hbi1wYWdlcy9tYW44L2xkLWxpbnV4LnNvLjguaHRtbA==" title="http://man7.org/linux/man-pages/man8/ld-linux.so.8.html">ld.so, ld-linux.so - dynamic linker/loader<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 
@@ -318,6 +311,18 @@
     
     
       
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\a1691b48.html" rel="bookmark">Shell中设置文字输出的颜色及字体格式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\17a8c28.html" rel="bookmark">Shell中各种括号的作用</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\87091124.html" rel="bookmark">Win10/Ubuntu 18.04.2双系统安装与卸载</a></div>
+    </li>
+  </ul>
 
         <div class="reward-container">
   <div>Thank you for your donate!</div>
@@ -348,7 +353,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.shipengx.com/%E5%85%B3%E4%BA%8Emake%E3%80%81makefile%E3%80%81cmake%E3%80%81cmakelist%E3%80%81qmake%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB.html" title="关于make、makefile、cmake、cmakelist、qmake等的区别">https://blog.shipengx.com/关于make、makefile、cmake、cmakelist、qmake等的区别.html</a>
+    <a href="https://blog.shipengx.com/archives/c5106d85.html" title="Linux中的ld-so与ld-linux-so">https://blog.shipengx.com/archives/c5106d85.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -360,7 +365,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/make/" rel="tag"><i class="fa fa-tag"></i> make</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
           </div>
 
         
@@ -369,12 +374,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/Git%E7%89%88%E6%9C%AC%E5%BA%93%E7%AE%A1%E7%90%86%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94%E4%BB%A5%E8%B7%9F%E8%B8%AA%E4%BB%93%E5%BA%93%E6%8C%87%E5%AE%9A%E5%88%86%E6%94%AF%E4%B8%8B%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B8%BA%E4%BE%8B.html" rel="prev" title="Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例">
-      <i class="fa fa-chevron-left"></i> Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例
+    <a href="/archives/ba569070.html" rel="prev" title="gitignore与gitkeep的作用">
+      <i class="fa fa-chevron-left"></i> gitignore与gitkeep的作用
     </a></div>
       <div class="post-nav-item">
-    <a href="/Win10-Ubuntu-18-04-2%E5%8F%8C%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD.html" rel="next" title="Win10/Ubuntu 18.04.2双系统安装与卸载">
-      Win10/Ubuntu 18.04.2双系统安装与卸载 <i class="fa fa-chevron-right"></i>
+    <a href="/archives/732ab93b.html" rel="next" title="如何检出git仓库中最新的tag号">
+      如何检出git仓库中最新的tag号 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

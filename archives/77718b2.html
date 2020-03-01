@@ -51,23 +51,20 @@
   };
 </script>
 
-  <meta name="description" content="勾选Code Runner插件的“Run In Terminal”选项，在VS Code Terminal中调试C++代码，cout输出中文乱码。">
+  <meta name="description" content="在本地同步追踪某个远程仓库的某一分支（以develop分支为例）。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="VS Code C++程序中cout输出中文显示乱码">
-<meta property="og:url" content="https://blog.shipengx.com/VS-Code-C-%E7%A8%8B%E5%BA%8F%E4%B8%ADcout%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA%E4%B9%B1%E7%A0%81.html">
+<meta property="og:title" content="Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例">
+<meta property="og:url" content="https://blog.shipengx.com/archives/77718b2.html">
 <meta property="og:site_name" content="朝花夕拾">
-<meta property="og:description" content="勾选Code Runner插件的“Run In Terminal”选项，在VS Code Terminal中调试C++代码，cout输出中文乱码。">
+<meta property="og:description" content="在本地同步追踪某个远程仓库的某一分支（以develop分支为例）。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2020/02/03/1SUhtc3kCjzlmQ6.png">
-<meta property="article:published_time" content="2019-08-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-01T09:55:23.735Z">
+<meta property="article:published_time" content="2019-05-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-01T09:54:31.084Z">
 <meta property="article:author" content="ShiPeng">
-<meta property="article:tag" content="C&#x2F;C++">
-<meta property="article:tag" content="VS Code">
+<meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2020/02/03/1SUhtc3kCjzlmQ6.png">
 
-<link rel="canonical" href="https://blog.shipengx.com/VS-Code-C-%E7%A8%8B%E5%BA%8F%E4%B8%ADcout%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA%E4%B9%B1%E7%A0%81.html">
+<link rel="canonical" href="https://blog.shipengx.com/archives/77718b2.html">
 
 
 <script id="page-configurations">
@@ -79,7 +76,7 @@
   };
 </script>
 
-  <title>VS Code C++程序中cout输出中文显示乱码 | 朝花夕拾</title>
+  <title>Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例 | 朝花夕拾</title>
   
 
 
@@ -224,7 +221,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/VS-Code-C-%E7%A8%8B%E5%BA%8F%E4%B8%ADcout%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA%E4%B9%B1%E7%A0%81.html">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/77718b2.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -237,7 +234,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          VS Code C++程序中cout输出中文显示乱码
+          Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例
         </h2>
 
         <div class="post-meta">
@@ -247,14 +244,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-08-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-08-15T00:00:00+08:00">2019-08-15</time>
+              <time title="创建时间：2019-05-18 00:00:00" itemprop="dateCreated datePublished" datetime="2019-05-18T00:00:00+08:00">2019-05-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-01 17:55:23" itemprop="dateModified" datetime="2020-03-01T17:55:23+08:00">2020-03-01</time>
+                <time title="修改时间：2020-03-01 17:54:31" itemprop="dateModified" datetime="2020-03-01T17:54:31+08:00">2020-03-01</time>
               </span>
 
           <br>
@@ -270,14 +267,8 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E7%A8%8B%E5%BA%8F%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
-                    <span itemprop="name">程序语言</span>
-                  </a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E7%A8%8B%E5%BA%8F%E8%AF%AD%E8%A8%80/C-C/" itemprop="url" rel="index">
-                    <span itemprop="name">C/C++</span>
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
                   </a>
                 </span>
             </span>
@@ -291,13 +282,13 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/VS-Code-C-%E7%A8%8B%E5%BA%8F%E4%B8%ADcout%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA%E4%B9%B1%E7%A0%81.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/VS-Code-C-%E7%A8%8B%E5%BA%8F%E4%B8%ADcout%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA%E4%B9%B1%E7%A0%81.html" itemprop="commentCount"></span>
+    <a title="valine" href="/archives/77718b2.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/77718b2.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-            <div class="post-description">勾选Code Runner插件的“Run In Terminal”选项，在VS Code Terminal中调试C++代码，cout输出中文乱码。</div>
+            <div class="post-description">在本地同步追踪某个远程仓库的某一分支（以develop分支为例）。</div>
 
         </div>
       </header>
@@ -308,12 +299,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1-问题描述" class="heading-control"><a href="#1-问题描述" class="headerlink" title="1 问题描述"></a>1 问题描述<a class="heading-anchor" href="#1-问题描述" aria-hidden="true"></a></h1><p>有如下代码片段：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Please input your string: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">'\n'</span> &lt;&lt; <span class="string">"The string is: "</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>起初使用Code Runner插件的OUTPUT窗口进行调试，发现OUTPUT窗口只读，无法进行输入交互；后勾选了Code Runner插件的“Run In Terminal”选项（勾选方法不再赘述），从而在VS Code Terminal中进行调试，发现cin读取中文后，cout输出为乱码。</p>
-<h1 id="2-问题解决" class="heading-control"><a href="#2-问题解决" class="headerlink" title="2 问题解决"></a>2 问题解决<a class="heading-anchor" href="#2-问题解决" aria-hidden="true"></a></h1><p>将Windows自带的CMD终端的属性设置为旧版，<strong>但这会导致点击TERMINAL时弹出系统终端，而非vscode内置终端</strong>：</p>
-<p><img src="https://i.loli.net/2020/02/03/1SUhtc3kCjzlmQ6.png" alt="附图"></p>
-<h1 id="3-结论" class="heading-control"><a href="#3-结论" class="headerlink" title="3 结论"></a>3 结论<a class="heading-anchor" href="#3-结论" aria-hidden="true"></a></h1><p>Windows自带CMD终端属性的修改影响所有IDE及代码编辑器。</p>
+        <h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
+<p>在本地同步追踪某个远程仓库的某一分支（以develop分支为例）。</p>
+</blockquote>
+<h1 id="2-问题" class="heading-control"><a href="#2-问题" class="headerlink" title="2 问题"></a>2 问题<a class="heading-anchor" href="#2-问题" aria-hidden="true"></a></h1><p>起初先进行了如下操作：</p>
+<ul>
+<li>创建一个文件夹，初始化为git仓库：<code>git init</code></li>
+<li>进行用户基本信息配置：<code>git config</code></li>
+<li>创建本地仓库的develop分支：<code>git checkout -b</code></li>
+<li>关联远程仓库git地址：<code>git remote add</code></li>
+</ul>
+<p>接下来，尝试通过<code>git branch --set-upstream-to</code>将本地仓库develop分支与远程仓库develop分支进行关联时报错：develop分支不存在。使用<code>git branch -r</code>发现远程仓库分支为空，其实使用<code>git branch -a</code>可以发现根本看不到任何分支。</p>
+<h1 id="3-解决" class="heading-control"><a href="#3-解决" class="headerlink" title="3 解决"></a>3 解决<a class="heading-anchor" href="#3-解决" aria-hidden="true"></a></h1><p>因为仅仅是关联了远程仓库，本地仓库并未获取远程仓库的修改（包括分支信息），所以本地看不到远程仓库的分支，也就无法进行分支关联操作。以<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">参考1<i class="fa fa-external-link"></i></span>中的建议，在将本地仓库分支与远程仓库分支进行关联前，可先通过<code>git fetch origin</code>命令拉取远程仓库的修改，这样便可获取远程仓库分支信息，但还无法看到本地分支。最佳实践是使用<code>git pull origin develop</code>命令（前提是你必须知道想要将远程仓库的哪个分支并入本地分支），便可看到远程仓库的develop分支和本地仓库的develop分支（当前分支），进而可进行分支关联操作。</p>
+<h1 id="4-结论" class="heading-control"><a href="#4-结论" class="headerlink" title="4 结论"></a>4 结论<a class="heading-anchor" href="#4-结论" aria-hidden="true"></a></h1><p>总结一下最佳实践：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git checkout -b local_branch</span><br><span class="line">git remote add origin repo_addr</span><br><span class="line">git pull origin repo_branch</span><br><span class="line">git branch --<span class="built_in">set</span>-upstream-to=origin/repo_branch local_branch</span><br><span class="line">git fetch --all</span><br></pre></td></tr></table></figure>
+
+<p>当然，直接使用<code>git clone</code>也是可以的（<strong>这才应该算是最佳实践！</strong>）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch</span><br></pre></td></tr></table></figure>
+
+<p><code>git checkout target_repo_branch</code>将自动在本地创建一个名为target_repo_branch的分支，并将其与远程仓库中的target_repo_branch分支进行关联。执行完<code>git clone</code>后，默认在本地仓库创建的是master分支，并将其与远程仓库的master分支进行关联，但通常情况下，maser分支仅用于版本释放，我们并不会直接向mater分支推送修改，而是在其它分支（如develop分支）完成开发与调试后，再通过<code>git merge</code>将分支上的工作并入master分支。</p>
+<h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">Git branch -r 无法获取远程分支，ui可以看见分支但是git 命令无法查看解决方案<i class="fa fa-external-link"></i></span></li>
+</ol>
 <hr>
 
     </div>
@@ -322,6 +329,24 @@
     
     
       
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\586b7559.html" rel="bookmark">Git版本库管理最佳实践——以创建新分支加入某个项目为例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\ba569070.html" rel="bookmark">gitignore与gitkeep的作用</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f390ae43.html" rel="bookmark">git的cherry-pick命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\296a9967.html" rel="bookmark">在腾讯云上搭建个人Git服务器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\732ab93b.html" rel="bookmark">如何检出git仓库中最新的tag号</a></div>
+    </li>
+  </ul>
 
         <div class="reward-container">
   <div>Thank you for your donate!</div>
@@ -352,7 +377,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.shipengx.com/VS-Code-C-%E7%A8%8B%E5%BA%8F%E4%B8%ADcout%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA%E4%B9%B1%E7%A0%81.html" title="VS Code C++程序中cout输出中文显示乱码">https://blog.shipengx.com/VS-Code-C-程序中cout输出中文显示乱码.html</a>
+    <a href="https://blog.shipengx.com/archives/77718b2.html" title="Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例">https://blog.shipengx.com/archives/77718b2.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -364,8 +389,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/C-C/" rel="tag"><i class="fa fa-tag"></i> C/C++</a>
-              <a href="/tags/VS-Code/" rel="tag"><i class="fa fa-tag"></i> VS Code</a>
+              <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
           </div>
 
         
@@ -374,12 +398,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/%E5%9C%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BAGit%E6%9C%8D%E5%8A%A1%E5%99%A8.html" rel="prev" title="在腾讯云上搭建个人Git服务器">
-      <i class="fa fa-chevron-left"></i> 在腾讯云上搭建个人Git服务器
+    <a href="/archives/a2ff34db.html" rel="prev" title="（十五）再识图像之高级车道线检测">
+      <i class="fa fa-chevron-left"></i> （十五）再识图像之高级车道线检测
     </a></div>
       <div class="post-nav-item">
-    <a href="/gitignore%E4%B8%8Egitkeep%E7%9A%84%E4%BD%9C%E7%94%A8.html" rel="next" title="gitignore与gitkeep的作用">
-      gitignore与gitkeep的作用 <i class="fa fa-chevron-right"></i>
+    <a href="/archives/e3f2e7f0.html" rel="next" title="关于make、makefile、cmake、cmakelist、qmake等的区别">
+      关于make、makefile、cmake、cmakelist、qmake等的区别 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -441,7 +465,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-问题描述"><span class="nav-text">1 问题描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-问题解决"><span class="nav-text">2 问题解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-结论"><span class="nav-text">3 结论</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-背景"><span class="nav-text">1 背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-问题"><span class="nav-text">2 问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-解决"><span class="nav-text">3 解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-结论"><span class="nav-text">4 结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-参考"><span class="nav-text">5 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
