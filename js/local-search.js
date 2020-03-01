@@ -13,7 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
     isXml = false;
   }
   const path = CONFIG.root + searchPath;
-  const input = document.querySelector('.search-input');
+  const input = document.getElementById('search-input');
   const resultContent = document.getElementById('search-result');
 
   // Ref: https://github.com/ForbesLindesay/unescape-html
@@ -264,7 +264,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = 'hidden';
     document.querySelector('.search-pop-overlay').style.display = 'block';
     document.querySelector('.popup').style.display = 'block';
-    document.querySelector('.search-input').focus();
+    document.getElementById('search-input').focus();
   };
 
   // Search function
@@ -286,10 +286,12 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // Handle and trigger popup window
-  document.querySelectorAll('.popup-trigger').forEach(element => {
-    element.addEventListener('click', () => {
-      isfetched ? proceedSearch() : searchFunc();
-    });
+  document.querySelector('.popup-trigger').addEventListener('click', () => {
+    if (isfetched === false) {
+      searchFunc();
+    } else {
+      proceedSearch();
+    }
   });
 
   // Monitor main search box
@@ -303,7 +305,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.popup-btn-close').addEventListener('click', onPopupClose);
   window.addEventListener('pjax:success', onPopupClose);
   window.addEventListener('keyup', event => {
-    if (event.key === 'Escape') {
+    if (event.which === 27) {
       onPopupClose();
     }
   });
