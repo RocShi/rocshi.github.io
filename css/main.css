@@ -397,8 +397,8 @@ td {
 }
 .highlight,
 pre {
-  background: #002b36;
-  color: #93a1a1;
+  background: #2d2d2d;
+  color: #ccc;
   line-height: 1.6;
   margin: 0 auto 20px;
 }
@@ -415,7 +415,7 @@ code {
   word-wrap: break-word;
 }
 .highlight *::selection {
-  background: #073642;
+  background: #515151;
 }
 .highlight pre {
   border: 0;
@@ -433,7 +433,7 @@ code {
 }
 .highlight figcaption {
   background: #eee;
-  color: #93a1a1;
+  color: #ccc;
   font-size: 0.875em;
   line-height: 1.2;
   padding: 0.5em;
@@ -447,11 +447,11 @@ code {
   clear: both;
 }
 .highlight figcaption a {
-  color: #93a1a1;
+  color: #ccc;
   float: right;
 }
 .highlight figcaption a:hover {
-  border-bottom-color: #93a1a1;
+  border-bottom-color: #ccc;
 }
 .highlight .gutter {
   -moz-user-select: none;
@@ -460,14 +460,14 @@ code {
   user-select: none;
 }
 .highlight .gutter pre {
-  background: #002b36;
-  color: #586e75;
+  background: #1b1b1b;
+  color: #999;
   padding-left: 10px;
   padding-right: 10px;
   text-align: right;
 }
 .highlight .code pre {
-  background: #002b36;
+  background: #2d2d2d;
   padding-left: 10px;
   width: 100%;
 }
@@ -483,7 +483,7 @@ pre {
 }
 pre code {
   background: none;
-  color: #93a1a1;
+  color: #ccc;
   font-size: 0.875em;
   padding: 0;
   text-shadow: none;
@@ -495,14 +495,14 @@ pre .addition {
   background: #008000;
 }
 pre .meta {
-  color: #b58900;
+  color: #fc6;
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
   user-select: none;
 }
 pre .comment {
-  color: #586e75;
+  color: #999;
 }
 pre .variable,
 pre .attribute,
@@ -517,7 +517,7 @@ pre .html .doctype,
 pre .css .id,
 pre .css .class,
 pre .css .pseudo {
-  color: #dc322f;
+  color: #f2777a;
 }
 pre .number,
 pre .preprocessor,
@@ -527,7 +527,7 @@ pre .literal,
 pre .params,
 pre .constant,
 pre .command {
-  color: #cb4b16;
+  color: #f99157;
 }
 pre .ruby .class .title,
 pre .css .rules .attribute,
@@ -540,11 +540,11 @@ pre .ruby .symbol,
 pre .xml .cdata,
 pre .special,
 pre .formula {
-  color: #859900;
+  color: #9c9;
 }
 pre .title,
 pre .css .hexcolor {
-  color: #2aa198;
+  color: #6cc;
 }
 pre .function,
 pre .python .decorator,
@@ -554,11 +554,11 @@ pre .ruby .title .keyword,
 pre .perl .sub,
 pre .javascript .title,
 pre .coffeescript .title {
-  color: #268bd2;
+  color: #69c;
 }
 pre .keyword,
 pre .javascript .function {
-  color: #6c71c4;
+  color: #c9c;
 }
 .blockquote-center {
   border-left: none;
@@ -1255,7 +1255,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #dd1bc2;
+  background: #ff059a;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
