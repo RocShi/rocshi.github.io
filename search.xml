@@ -3,11 +3,11 @@
   <entry>
     <title>C++ Primer - 第1章 开始</title>
     <url>/archives/3fc34abb.html</url>
-    <content><![CDATA[<h1 id="第1章-开始" class="heading-control"><a href="#第1章-开始" class="headerlink" title="第1章 开始"></a>第1章 开始<a class="heading-anchor" href="#第1章-开始" aria-hidden="true"></a></h1><ul>
+    <content><![CDATA[<ul>
 <li>每个C++程序都包含一个或多个函数（function），其中一个必须命名为<code>main</code>。</li>
 <li><code>main</code>函数的返回类型必须为<code>int</code>，即整数类型。</li>
 <li>在大多数系统中，<code>main</code>的返回值被用来指示状态。返回值0表明成功，非0的返回值的含义由系统定义，通常用来指示错误类型。</li>
-<li>对于源文件（source file）的命名，不同编译器使用不同的后缀命名约定，最常见的包括 <code>.cc</code> <code>.cxx</code> <code>.cpp</code> <code>.cp</code> <code>.c</code></li>
+<li>对于源文件（source file）的命名，不同编译器使用不同的后缀命名约定，最常见的包括 <code>.cc</code> <code>.cxx</code> <code>.cpp</code> <code>.cp</code> <code>.c</code> 等。</li>
 </ul>
 ]]></content>
       <categories>
@@ -512,6 +512,7 @@
         <category>技术</category>
         <category>程序语言</category>
         <category>C/C++</category>
+        <category>随笔</category>
       </categories>
       <tags>
         <tag>C/C++</tag>
