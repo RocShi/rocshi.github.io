@@ -469,22 +469,20 @@
   <entry>
     <title>Shell中美元符$与数字及其它各种符号组合的含义</title>
     <url>/archives/55ffbd22.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><ol>
-<li><pre><code class="bash"><span class="variable">$0</span>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">   脚本本身的文件名；</span><br><span class="line"></span><br><span class="line">2. &#96;&#96;&#96;bash</span><br><span class="line">   $n</span><br></pre></td></tr></table></figure>
-传递给脚本或函数的参数。n 是一个数字，表示第几个参数，取值范围为1~9。例如，第一个参数是`<span class="variable">$1</span>`，第二个参数是`<span class="variable">$2</span>`；</code></pre>
-</li>
-<li><pre><code class="bash">$*
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">   以一个单字符串显示传给脚本或函数的所有参数，&#96;$1 $2 $3 … $n&#96;；</span><br><span class="line"></span><br><span class="line">4. &#96;&#96;&#96;bash</span><br><span class="line">   $@</span><br></pre></td></tr></table></figure>
-传给脚本的所有参数列表，`<span class="variable">$1</span>` `<span class="variable">$2</span>` `<span class="variable">$3</span>` … `<span class="variable">$n</span>`；</code></pre>
-</li>
-<li><pre><code class="bash"><span class="variable">$#</span>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">   传给脚本或函数的参数个数；</span><br><span class="line"></span><br><span class="line">6. &#96;&#96;&#96;bash</span><br><span class="line">   $$</span><br></pre></td></tr></table></figure>
-当前Shell进程ID。对于Shell脚本，就是这些脚本所在的进程ID；</code></pre>
-</li>
-<li><pre><code>$?</code></pre><p>上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。</p>
-</li>
-</ol>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$0</span></span><br></pre></td></tr></table></figure>
+<p>脚本本身的文件名；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$n</span></span><br></pre></td></tr></table></figure>
+<p>传递给脚本或函数的参数。n 是一个数字，表示第几个参数，取值范围为1~9。例如，第一个参数是<code>$1</code>，第二个参数是<code>$2</code>；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$*</span><br></pre></td></tr></table></figure>
+<p>以一个单字符串显示传给脚本或函数的所有参数，<code>$1 $2 $3 … $n</code>；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$@</span></span><br></pre></td></tr></table></figure>
+<p>传给脚本的所有参数列表，<code>$1</code> <code>$2</code> <code>$3</code> … <code>$n</code>；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$#</span></span><br></pre></td></tr></table></figure>
+<p>传给脚本或函数的参数个数；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>当前Shell进程ID。对于Shell脚本，就是这些脚本所在的进程ID；</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$?</span><br></pre></td></tr></table></figure>
+<p>上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aGlkYW8uYmFpZHUuY29tL3F1ZXN0aW9uLzc1ODEyMjgxNjUwMjA1MjY4NC5odG1s" title="https://zhidao.baidu.com/question/758122816502052684.html">linux shell 中的“$1”代表什么？<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vc3BsZW5kaWQvcC8xMTIxMTQzMC5odG1s" title="https://www.cnblogs.com/splendid/p/11211430.html">shell中的$0 $n $# $* $@ $? $$<i class="fa fa-external-link"></i></span></li>
