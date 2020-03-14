@@ -3,12 +3,43 @@
   <entry>
     <title>C++ Primer - 第1章 开始</title>
     <url>/archives/3fc34abb.html</url>
-    <content><![CDATA[<ul>
+    <content><![CDATA[<ol>
 <li>每个C++程序都包含一个或多个函数（function），其中一个必须命名为<code>main</code>。</li>
 <li><code>main</code>函数的返回类型必须为<code>int</code>，即整数类型。</li>
 <li>在大多数系统中，<code>main</code>的返回值被用来指示状态。返回值0表明成功，非0的返回值的含义由系统定义，通常用来指示错误类型。</li>
 <li>对于源文件（source file）的命名，不同编译器使用不同的后缀命名约定，最常见的包括 <code>.cc</code> <code>.cxx</code> <code>.cpp</code> <code>.cp</code> <code>.c</code> 等。</li>
-</ul>
+<li>在UNIX和Windows系统中，执行完一个程序后，都可以通过<code>echo</code>命令获得其返回值。在UNIX系统中，通过如下命令获得状态：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> $?</span><br></pre></td></tr></table></figure>
+在Windows系统中查看状态可键入：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> %ERRORLEVEL%</span><br></pre></td></tr></table></figure></li>
+<li>编译器通常都包含一些选项，能对有问题的程序结构发出警告。我们习惯在GNU编译器中使用<code>-Wall</code>选项，在微软编译器中使用<code>/W4</code>。</li>
+<li><code>iostream</code>库包含两个基础类型<code>istream</code>和<code>ostream</code>，分别表示输入流和输出流。一个流就是一个字符序列，是从IO设备读出或写入IO设备的。术语“流”（stream）想要表达的是，随着时间的推移，字符是顺序生成或消耗的。</li>
+<li>标准输入输出对象：<code>cin</code> <code>cout</code> <code>cerr</code> <code>clog</code>。</li>
+<li>输出运算符<code>&lt;&lt;</code>接受两个运算对象：左侧的运算对象必须是一个<code>ostream</code>对象，右侧的运算对象是要打印的值。此运算符将给定的值写到给定的<code>ostream</code>对象中。输出运算符的计算结果就是其左侧运算对象。即，计算结果就是我们写入给定值的那个ostream对象。</li>
+<li><code>endl</code>被称为操纵符（manipulator）。写入<code>endl</code>的效果是结束当前行，并将与设备关联的缓冲区（buffer）中的内容刷到设备中。缓冲刷新操作可以保证到目前为止程序所产生的所有输出都真正写入输出流中，而不是仅停留在内存中等待写入流。</li>
+<li>标准库定义的所有名字都在命名空间<code>std</code>中。</li>
+<li>输入运算符<code>&gt;&gt;</code>与输出运算符类似，它接受一个<code>istream</code>作为其左侧运算对象，接受一个对象作为其右侧运算对象。它从给定的<code>istream</code>读入数据，并存入给定对象中。与输出运算符类似，输入运算符返回其左侧运算对象作为其计算结果。</li>
+<li>界定符对形式的注释是以<code>/*</code>开始，以<code>*/</code>结束的。因此，一个注释不能嵌套在另一个注释之内。</li>
+<li>下列哪些语句是合法的？<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"/*"</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*/"</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="comment">/* "*/</span> <span class="string">" */;</span></span><br><span class="line"><span class="string">std::cout &lt;&lt; /* "</span>*/ <span class="string">" /* "</span> <span class="comment">/*" */</span>;</span><br></pre></td></tr></table></figure>
+语句1、2、4是合法的，分别输出<code>/*</code> <code>*/</code> <code>/*</code>。</li>
+<li>语句块（block），就是用花括号包围的零条或多条语句的序列。语句块也是语句的一种，在任何要求使用语句的地方都可以使用语句块。</li>
+<li>每个<code>for</code>语句都包含两部分：循环头和循环体。循环头控制循环体的执行次数，它由三部分组成：初始化语句（init-statement）、循环条件（condition）和表达式（expression）。初始化语句定义的变量仅在<code>for</code>循环内部存在，在循环结束之后不能使用。初始化语句只在<code>for</code>循环入口处执行一次，循环体每次执行前都会先检查循环条件，表达式在<code>for</code>循环体之后执行。</li>
+<li>观察下述代码片段：<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>, val = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val)</span><br><span class="line">    sum += val;</span><br></pre></td></tr></table></figure>
+该代码片段的数据读取操作是在<code>while</code>的循环条件中完成的，<code>while</code>循环条件的求值就是执行表达式：<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val</span><br></pre></td></tr></table></figure>
+此表达式从标准输入读取下一个数，保在在value中。输入运算符返回其左侧运算对象，在本例中是<code>std::cin</code>。因此，此循环条件实际上检测的是<code>std::cin</code>。当使用一个<code>istream</code>对象作为条件时，其效果是检测流的状态。如果流是有效的，即流未遇到错误，那么检测成功。当遇到文件结束符（end-of-file），或遇到一个无效输入时（例如读入的值不是一个整数），<code>istream</code>对象的状态会变为无效。处于无效状态的<code>istream</code>对象会使条件变为假。因此，上述代码片段中，<code>while</code>循环会一直执行直至遇到文件结束符（或输入错误）（最简单的方法是完成数字的输入后随便输入一个符号然后回车———博主注）。</li>
+<li>将如下代码片段编译为可执行程序：<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>, val = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val)</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"haha"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"The number you input is "</span> &lt;&lt; val &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    sum += val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"The sum of numbers you input is "</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+执行编译后的可执行程序，并输入序列<code>1 2 5 6 8 12 2? 3 5</code>后回车，得到如下输出，思考程序执行流程：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">haha</span><br><span class="line">The number you input is 2</span><br><span class="line">haha</span><br><span class="line">The number you input is 6</span><br><span class="line">haha</span><br><span class="line">The number you input is 12</span><br><span class="line">The number you input is 0</span><br><span class="line">The sum of numbers you input is 20</span><br></pre></td></tr></table></figure></li>
+<li>标准库头文件通常不带后缀，编译器一般不关心头文件的格式。</li>
+<li>每个类实际上都定义了一个新的类型，其类型名就是类名。</li>
+<li>包含来自标准库的头文件时，应该用尖括号<code>&lt; &gt;</code>包围头文件，对于不属于标准库的头文件，则用双引号<code>&quot; &quot;</code>包围。</li>
+<li>大多数操作系统支持文件重定向，这种机制允许我们将标准输入和标准输出与命名文件关联起来：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">addItems&lt;infile &gt;outfile</span><br></pre></td></tr></table></figure>
+假定程序已经编译为名为addItems.exe的可执行文件（在UNIX中是addItems），则上述命令会从一个名为infile的文件读取数据，并将输出结果写入到一个名为outfile的文件中，两个文件都位于当前目录中。</li>
+<li>成员函数（member function）是定义为类的一部分的函数，有时也被称为方法（method）。</li>
+<li>点运算符（.）只能用于类类型的对象。其左侧运算对象必须是一个类类型的对象，右侧运算对象必须是该类型的一个成员名，运算结果为右侧运算对象指定的成员。当用点运算符访问一个成员函数时，通常是想调用该函数。使用调用运算符（()）来调用一个函数，调用运算符是一对圆括号，里面放置实参（argument）列表（可能为空）。</li>
+<li><strong>缓冲区（buffer）</strong> 一个存储区域，用于保存数据。IO设施通常将输入（或输出）数据保存在一个缓冲区中，读写缓冲区的动作与程序中的动作是无关的。可以显式地刷新输出缓冲，以便强制将缓冲区中的数据写入输出设备。默认情况下，读cin会刷新cout；程序非正常终止时也会刷新cout。</li>
+<li><strong>cerr</strong> 一个<code>ostream</code>对象，关联到标准错误，通常写入到与标准输出相同的设备。默认情况下，写到<code>cerr</code>的数据是不缓冲的。<code>cerr</code>通常用于输出错误信息或其它不属于程序正常逻辑的输出内容。</li>
+<li><code>clog</code> 一个<code>ostream</code>对象，关联到标准错误。默认情况下，写到<code>clog</code>的数据是被缓冲的。<code>clog</code>通常用于报告程序的执行信息，存入一个日志文件中。</li>
+<li><strong>未初始化的变量（uninitialized variable）</strong> 未赋予初值的变量。类类型的变量如果未指定初值，则按类定义指定的方式进行初始化。定义在函数内部的内置类型变量默认是不初始化的，除非有显式的初始化语句。试图使用一个未初始化变量的值是错误的。未初始化变量是bug的常见成因。</li>
+<li><strong>&gt;&gt;运算符（&gt;&gt;operator）输入运算符</strong> 从左侧运算对象所指定的输入流读取数据，存入右侧运算对象中：<code>cin &gt;&gt; i</code>表示从标准输入读取下一个值，存入i中。输入运算符可以连接：<code>cin &gt;&gt; i &gt;&gt; j</code>表示先读取一个值存入i，再读取一个值存入j。</li>
+</ol>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -436,6 +467,40 @@
       </tags>
   </entry>
   <entry>
+    <title>Shell中美元符$与数字及其它各种符号组合的含义</title>
+    <url>/archives/55ffbd22.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><ol>
+<li><pre><code class="bash"><span class="variable">$0</span>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">   脚本本身的文件名；</span><br><span class="line"></span><br><span class="line">2. &#96;&#96;&#96;bash</span><br><span class="line">   $n</span><br></pre></td></tr></table></figure>
+传递给脚本或函数的参数。n 是一个数字，表示第几个参数，取值范围为1~9。例如，第一个参数是`<span class="variable">$1</span>`，第二个参数是`<span class="variable">$2</span>`；</code></pre>
+</li>
+<li><pre><code class="bash">$*
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">   以一个单字符串显示传给脚本或函数的所有参数，&#96;$1 $2 $3 … $n&#96;；</span><br><span class="line"></span><br><span class="line">4. &#96;&#96;&#96;bash</span><br><span class="line">   $@</span><br></pre></td></tr></table></figure>
+传给脚本的所有参数列表，`<span class="variable">$1</span>` `<span class="variable">$2</span>` `<span class="variable">$3</span>` … `<span class="variable">$n</span>`；</code></pre>
+</li>
+<li><pre><code class="bash"><span class="variable">$#</span>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">   传给脚本或函数的参数个数；</span><br><span class="line"></span><br><span class="line">6. &#96;&#96;&#96;bash</span><br><span class="line">   $$</span><br></pre></td></tr></table></figure>
+当前Shell进程ID。对于Shell脚本，就是这些脚本所在的进程ID；</code></pre>
+</li>
+<li><pre><code>$?</code></pre><p>上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。</p>
+</li>
+</ol>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aGlkYW8uYmFpZHUuY29tL3F1ZXN0aW9uLzc1ODEyMjgxNjUwMjA1MjY4NC5odG1s" title="https://zhidao.baidu.com/question/758122816502052684.html">linux shell 中的“$1”代表什么？<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vc3BsZW5kaWQvcC8xMTIxMTQzMC5odG1s" title="https://www.cnblogs.com/splendid/p/11211430.html">shell中的$0 $n $# $* $@ $? $$<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC91LzM5OTcxODIvYmxvZy8zMDcxNDYw" title="https://my.oschina.net/u/3997182/blog/3071460">linux中$#,$0,$1,$2,$@,$*,$$,$?的含义<i class="fa fa-external-link"></i></span></li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Shell</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何检出git仓库中最新的tag号</title>
     <url>/archives/732ab93b.html</url>
     <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
@@ -721,16 +786,15 @@
       </tags>
   </entry>
   <entry>
-    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
-    <url>/archives/43b2dca3.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
-<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
-<p>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure>
-<p>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
+    <title>Python字典数据结构d的item()函数</title>
+    <url>/archives/b11e5b5a.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure>
+<p>会得到下面的输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure>
+
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
 </ol>
 ]]></content>
       <categories>
@@ -743,15 +807,16 @@
       </tags>
   </entry>
   <entry>
-    <title>Python字典数据结构d的item()函数</title>
-    <url>/archives/b11e5b5a.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure>
-<p>会得到下面的输出：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure>
-
+    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
+    <url>/archives/43b2dca3.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
+<p>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure>
+<p>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
 </ol>
 ]]></content>
       <categories>

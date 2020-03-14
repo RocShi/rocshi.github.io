@@ -397,8 +397,8 @@ td {
 }
 .highlight,
 pre {
-  background: #fdf6e3;
-  color: #586e75;
+  background: #002b36;
+  color: #93a1a1;
   line-height: 1.6;
   margin: 0 auto 20px;
 }
@@ -415,7 +415,7 @@ code {
   word-wrap: break-word;
 }
 .highlight *::selection {
-  background: #eee8d5;
+  background: #073642;
 }
 .highlight pre {
   border: 0;
@@ -433,7 +433,7 @@ code {
 }
 .highlight figcaption {
   background: #eee;
-  color: #586e75;
+  color: #93a1a1;
   font-size: 0.875em;
   line-height: 1.2;
   padding: 0.5em;
@@ -447,11 +447,11 @@ code {
   clear: both;
 }
 .highlight figcaption a {
-  color: #586e75;
+  color: #93a1a1;
   float: right;
 }
 .highlight figcaption a:hover {
-  border-bottom-color: #586e75;
+  border-bottom-color: #93a1a1;
 }
 .highlight .gutter {
   -moz-user-select: none;
@@ -460,14 +460,14 @@ code {
   user-select: none;
 }
 .highlight .gutter pre {
-  background: #fdf6e3;
-  color: #93a1a1;
+  background: #002b36;
+  color: #586e75;
   padding-left: 10px;
   padding-right: 10px;
   text-align: right;
 }
 .highlight .code pre {
-  background: #fdf6e3;
+  background: #002b36;
   padding-left: 10px;
   width: 100%;
 }
@@ -483,7 +483,7 @@ pre {
 }
 pre code {
   background: none;
-  color: #586e75;
+  color: #93a1a1;
   font-size: 0.875em;
   padding: 0;
   text-shadow: none;
@@ -502,7 +502,7 @@ pre .meta {
   user-select: none;
 }
 pre .comment {
-  color: #93a1a1;
+  color: #586e75;
 }
 pre .variable,
 pre .attribute,
@@ -1255,7 +1255,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #eb3886;
+  background: #1f2acf;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
