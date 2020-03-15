@@ -128,6 +128,7 @@
 <li><strong>未初始化的变量（uninitialized variable）</strong> 未赋予初值的变量。类类型的变量如果未指定初值，则按类定义指定的方式进行初始化。定义在函数内部的内置类型变量默认是不初始化的，除非有显式的初始化语句。试图使用一个未初始化变量的值是错误的。未初始化变量是bug的常见成因。</li>
 <li><strong>&gt;&gt;运算符（&gt;&gt;operator）输入运算符</strong> 从左侧运算对象所指定的输入流读取数据，存入右侧运算对象中：<code>cin &gt;&gt; i</code>表示从标准输入读取下一个值，存入i中。输入运算符可以连接：<code>cin &gt;&gt; i &gt;&gt; j</code>表示先读取一个值存入i，再读取一个值存入j。</li>
 </ol>
+<hr>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -570,8 +571,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$$</span><br></pre></td></tr></table></figure>
 <p>当前Shell进程ID。对于Shell脚本，就是这些脚本所在的进程ID；</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$?</span><br></pre></td></tr></table></figure>
-<p>上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<h2 id="上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。" class="heading-control"><a href="#上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。" class="headerlink" title="上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。"></a>上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。<a class="heading-anchor" href="#上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。" aria-hidden="true"></a></h2><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aGlkYW8uYmFpZHUuY29tL3F1ZXN0aW9uLzc1ODEyMjgxNjUwMjA1MjY4NC5odG1s" title="https://zhidao.baidu.com/question/758122816502052684.html">linux shell 中的“$1”代表什么？<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vc3BsZW5kaWQvcC8xMTIxMTQzMC5odG1s" title="https://www.cnblogs.com/splendid/p/11211430.html">shell中的$0 $n $# $* $@ $? $$<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC91LzM5OTcxODIvYmxvZy8zMDcxNDYw" title="https://my.oschina.net/u/3997182/blog/3071460">linux中$#,$0,$1,$2,$@,$*,$$,$?的含义<i class="fa fa-external-link"></i></span></li>
@@ -879,8 +879,7 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
 <p>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：</p>
 <figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure>
-<p>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<h2 id="可以发现，os-getcwd-获取的是当前工作目录（即工程目录），而os-path-dirname-file-获得的才是当前Python脚本所在目录（不包含文件名）。" class="heading-control"><a href="#可以发现，os-getcwd-获取的是当前工作目录（即工程目录），而os-path-dirname-file-获得的才是当前Python脚本所在目录（不包含文件名）。" class="headerlink" title="可以发现，os.getcwd()获取的是当前工作目录（即工程目录），而os.path.dirname(__file__)获得的才是当前Python脚本所在目录（不包含文件名）。"></a>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。<a class="heading-anchor" href="#可以发现，os-getcwd-获取的是当前工作目录（即工程目录），而os-path-dirname-file-获得的才是当前Python脚本所在目录（不包含文件名）。" aria-hidden="true"></a></h2><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
 </ol>
 ]]></content>
@@ -900,7 +899,7 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure>
 <p>会得到下面的输出：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure>
-
+<hr>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
 </ol>
