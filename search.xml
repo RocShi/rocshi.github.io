@@ -76,6 +76,7 @@
 </tbody></table>
 </li>
 </ol>
+<hr>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -412,6 +413,7 @@
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cudjJleC5jb20vYW1wL3QvMzQ3MTc2LzM=" title="https://www.v2ex.com/amp/t/347176/3">用 Hexo 做个人 Wiki 知识管理系统<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3lhbnppMTIyNTYyNy9hcnRpY2xlL2RldGFpbHMvNzc3NjE0ODg=" title="https://blog.csdn.net/yanzi1225627/article/details/77761488">hexo链接持久化终极解决之道<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9hMWY0ZmJiMTEwZmQ=" title="https://www.jianshu.com/p/a1f4fbb110fd">Next主题配置文件详解<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9sYW5sYW4yMDE3LmdpdGh1Yi5pby9ibG9nLzI0MmY1ZDU1Lw==" title="https://lanlan2017.github.io/blog/242f5d55/">Hexo NexT 7谷歌收录 必应收录 百度收录<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -571,11 +573,13 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$$</span><br></pre></td></tr></table></figure>
 <p>当前Shell进程ID。对于Shell脚本，就是这些脚本所在的进程ID；</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$?</span><br></pre></td></tr></table></figure>
-<h2 id="上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。" class="heading-control"><a href="#上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。" class="headerlink" title="上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。"></a>上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。<a class="heading-anchor" href="#上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。" aria-hidden="true"></a></h2><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<p>上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aGlkYW8uYmFpZHUuY29tL3F1ZXN0aW9uLzc1ODEyMjgxNjUwMjA1MjY4NC5odG1s" title="https://zhidao.baidu.com/question/758122816502052684.html">linux shell 中的“$1”代表什么？<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vc3BsZW5kaWQvcC8xMTIxMTQzMC5odG1s" title="https://www.cnblogs.com/splendid/p/11211430.html">shell中的$0 $n $# $* $@ $? $$<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC91LzM5OTcxODIvYmxvZy8zMDcxNDYw" title="https://my.oschina.net/u/3997182/blog/3071460">linux中$#,$0,$1,$2,$@,$*,$$,$?的含义<i class="fa fa-external-link"></i></span></li>
 </ol>
+<hr>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -879,9 +883,11 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
 <p>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：</p>
 <figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure>
-<h2 id="可以发现，os-getcwd-获取的是当前工作目录（即工程目录），而os-path-dirname-file-获得的才是当前Python脚本所在目录（不包含文件名）。" class="heading-control"><a href="#可以发现，os-getcwd-获取的是当前工作目录（即工程目录），而os-path-dirname-file-获得的才是当前Python脚本所在目录（不包含文件名）。" class="headerlink" title="可以发现，os.getcwd()获取的是当前工作目录（即工程目录），而os.path.dirname(__file__)获得的才是当前Python脚本所在目录（不包含文件名）。"></a>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。<a class="heading-anchor" href="#可以发现，os-getcwd-获取的是当前工作目录（即工程目录），而os-path-dirname-file-获得的才是当前Python脚本所在目录（不包含文件名）。" aria-hidden="true"></a></h2><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<p>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
 </ol>
+<hr>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -893,16 +899,17 @@
       </tags>
   </entry>
   <entry>
-    <title>Python字典数据结构d的item()函数</title>
+    <title>Python字典数据结构的item()函数</title>
     <url>/archives/b11e5b5a.html</url>
     <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure>
 <p>会得到下面的输出：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure>
-<hr>
+
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
 </ol>
+<hr>
 ]]></content>
       <categories>
         <category>技术</category>
