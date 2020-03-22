@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #40c1ff;
+  background: #1b6cff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2833,7 +2833,7 @@ pre .deletion {
 .pagination .page-number:hover,
 .pagination .page-number.current {
   color: #fff;
-  background: #ccc;
+  background: #4e94cd;
 }
 .pagination .prev,
 .pagination .next,
