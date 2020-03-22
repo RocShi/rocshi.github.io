@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #f9ffff;
+  background: #d18b63;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2959,9 +2959,6 @@ pre .deletion {
   .site-subtitle {
     letter-spacing: 0px !important;
     padding-bottom: 0px !important;
-  }
-  .site-meta {
-    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
   }
   .menu .menu-item {
     margin: 0px 10px !important;
