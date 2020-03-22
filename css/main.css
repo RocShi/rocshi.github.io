@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #7158ff;
+  background: #b344a6;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2854,41 +2854,6 @@ pre .deletion {
 }
 .pagination .space {
   color: #222;
-}
-.posts-collapse {
-  margin-left: 0;
-  background-color: #fff;
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
-  border-radius: 0.5rem;
-  padding: 48px 64px 32px 64px;
-}
-.posts-collapse .post-meta {
-  font-size: 1.2em;
-}
-.collection-year {
-  font-size: 1.2em;
-}
-.collection-year .collection-header {
-  margin: 0;
-  text-align: left !important;
-}
-.posts-collapse .post-header:hover::before {
-  background-color: #4f94cd;
-}
-.posts-collapse .post-title a {
-  color: #000;
-  font-size: 1.2em;
-  position: relative;
-}
-.posts-collapse .post-title a:hover {
-  color: #4f94cd;
-}
-.posts-collapse .post-header:hover {
-  border-bottom-color: #4f94cd;
-}
-.posts-collapse .collection-year {
-  margin-bottom: 0px;
-  margin-top: 32px;
 }
 .posts-collapse .collection-header {
   margin: 0;
