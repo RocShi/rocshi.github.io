@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #c2b30a;
+  background: #ff8853;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3110,86 +3110,6 @@ pre .deletion {
   .post-copyright {
     font-size: 14px;
   }
-}
-blockquote.question {
-  color: #555;
-  border-left: 4px solid #1098ad;
-  background-color: #e3f2fd;
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-  margin-bottom: 20px;
-}
-span#inline-toc {
-  display: inline-block;
-  border-radius: 80% 100% 90% 20%;
-  background-color: #e3f2fd;
-  color: #555;
-  padding: 0.05em 0.4em;
-  margin: 2px 5px 2px 0px;
-  line-height: 1.5;
-}
-.alert {
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-}
-.alert-success {
-  color: #468847;
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
-}
-.alert-info {
-  color: #3a87ad;
-  background-color: #e2eaee;
-  border-color: #c5d5dd;
-}
-.alert-warning {
-  color: #c09853;
-  background-color: #fcf8e3;
-  border-color: #faebcc;
-}
-.alert-danger {
-  color: #b94a48;
-  background-color: #f2dede;
-  border-color: #ebccd1;
-}
-span#inline-blue,
-span#inline-green,
-span#inline-purple,
-span#inline-yellow {
-  display: inline;
-  padding: 0.2em 0.6em 0.3em;
-  font-size: 90%;
-  font-weight: 700;
-  line-height: 1;
-  color: #fff;
-  text-align: center;
-  vertical-align: baseline;
-  border-radius: 0;
-  white-space: nowrap;
-}
-span#inline-blue {
-  background-color: #2780e3;
-}
-span#inline-purple {
-  background-color: #9954bb;
-}
-span#inline-yellow {
-  background-color: #f0ad4e;
-}
-span#inline-green {
-  background-color: #5cb85c;
-}
-.about-title {
-  text-align: center;
-  font-size: 26px;
-  font-weight: bold;
-  font-family: 'Cinzel Decorative', 'EB Garamond', 'Noto Serif SC', 'sans-serif';
-  background-image: linear-gradient(to right, #ef4e7b, #aa96da, #facad3);
-  background-size: cover;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 .chinese-zodiac {
   float: right;
