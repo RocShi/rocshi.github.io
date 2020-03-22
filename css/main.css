@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #58ffff;
+  background: #ffd788;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2977,16 +2977,6 @@ pre .deletion {
   .content {
     padding-top: 35px;
   }
-  .about-title {
-    font-size: 24px !important;
-  }
-  .highlight figcaption {
-    font-size: 12.25px;
-    text-align: left;
-  }
-  .fa-pencil:before {
-    font-size: 24px;
-  }
   .main-inner {
     padding-bottom: 35px;
   }
@@ -2995,14 +2985,6 @@ pre .deletion {
   }
   .posts-expand .post-title {
     font-size: 24px;
-  }
-  .post-body h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin-left: -15px;
-    padding-left: 12px;
   }
   .post-body {
     font-size: 14px !important;
