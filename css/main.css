@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #2e16ff;
+  background: #d27af1;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3033,7 +3033,8 @@ code {
 .post-body iframe,
 .post-body img,
 .post-body video {
-  margin: 20px 20px 20px 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .site-nav-toggle {
   top: 35px;
