@@ -4,8 +4,10 @@
     <title>C++ Primer - 第2章 变量和基本类型</title>
     <url>/archives/e005f4cb.html</url>
     <content><![CDATA[<ol>
-<li>一些语言，如Smalltalk和Python等，在程序运行时检查数据类型；与之相反，C++是一种<strong>静态数据类型语言</strong>，它的类型检查发生在编译时。因此，编译器必须知道程序中每一个变量对应的数据类型。</li>
-<li>C++标准规定的各种算数类型数据尺寸的最小值：<table>
+<li><p>一些语言，如Smalltalk和Python等，在程序运行时检查数据类型；与之相反，C++是一种<strong>静态数据类型语言</strong>，它的类型检查发生在编译时。因此，编译器必须知道程序中每一个变量对应的数据类型。</p>
+</li>
+<li><p>C++标准规定的各种算数类型数据尺寸的最小值：</p>
+<table>
 <thead>
 <tr>
 <th>类型</th>
@@ -75,9 +77,15 @@
 </tr>
 </tbody></table>
 </li>
-<li>一个<code>char</code>的大小和一个机器字节一样。</li>
-<li>C++语言规定一个<code>int</code>至少和一个<code>short</code>一样大，一个<code>long</code>至少和一个<code>int</code>一样大，一个<code>long long</code>至少和一个<code>long</code>一样大。其中，数据类型<code>long long</code>是在C++11中新定义的。</li>
+<li><p>一个<code>char</code>的大小和一个机器字节一样。</p>
+</li>
+<li><p>C++语言规定一个<code>int</code>至少和一个<code>short</code>一样大，一个<code>long</code>至少和一个<code>int</code>一样大，一个<code>long long</code>至少和一个<code>long</code>一样大。其中，数据类型<code>long long</code>是在C++11中新定义的。</p>
+</li>
+</ol>
+<ol start="5">
 <li>计算机以比特序列存储数据，每个比特非0即1。大多数计算机以2的整数次幂个比特作为块来处理内存，可寻址的最小内存块称为“字节（byte）”，存储的基本单元称为“字（word）”，它通常由几个字节组成。在C++语言中，一个字节要至少能容纳机器基本字符集中的字符。大多数机器的字节由8比特构成，字则由32或64比特构成，也就是4或8字节。大多数计算机将内存中的每个字节与一个数字（被称为“地址（address）”）关联起来。</li>
+</ol>
+<ol start="6">
 <li>浮点型可表示单精度、双精度和扩展精度值。C++标准指定了一个浮点数有效位数的最小值，然而大多数编译器都实现了更高的精度。通常，<code>float</code>以1个字（32比特）来表示，<code>doub1e</code>以2个字（64比特）来表示，<code>long double</code>以3或4个字（96或128比特）来表示。一般来说，类型<code>float</code>和<code>double</code>分别有7和16个有效位；类型<code>long doub1e</code>则常常被用于有特殊浮点需求的硬件，它的具体实现不同，精度也各不相同。</li>
 </ol>
 <hr>
