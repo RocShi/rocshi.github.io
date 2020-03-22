@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #8cff6a;
+  background: #dbf9ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2797,7 +2797,7 @@ h6 {
   border-radius: 3px;
   font-size: 15px;
   box-shadow: inset 0px 0px 10px 0px rgba(0,0,0,0.35);
-  background-image: linear-gradient(to right, #aa96da, #facad3);
+  background-image: none;
 }
 .post-nav-item a {
   color: #5073b8;
