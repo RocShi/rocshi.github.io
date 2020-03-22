@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #61e09e;
+  background: #a3304f;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2866,6 +2866,9 @@ pre .deletion {
   display: none;
 }
 .posts-collapse .collection-title::before {
+  display: none;
+}
+.posts-collapse::before {
   display: none;
 }
 .posts-collapse .post-meta {
