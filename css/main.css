@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #1d1394;
+  background: #1b33ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2795,11 +2795,11 @@ h6 {
   background-image: none;
 }
 .post-nav-item a {
-  color: #5073b8;
+  color: #000;
   font-weight: bold;
 }
 .post-nav-item a:hover {
-  color: #a166ab;
+  color: #4f94cd;
   font-weight: bold;
 }
 .heading-anchor {
