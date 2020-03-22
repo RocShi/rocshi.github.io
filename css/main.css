@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffb518;
+  background: #ffc4b5;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3042,7 +3042,7 @@ pre .deletion {
 }
 .search-popup .search-icon,
 .search-popup .popup-btn-close {
-  color: #a166ab;
+  color: #4f94ff;
 }
 @media (min-width: 1200px) {
   .post-body {
