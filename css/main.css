@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #6ba4b8;
+  background: #7158ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2876,7 +2876,7 @@ pre .deletion {
   background-color: #4f94cd;
 }
 .posts-collapse .post-title a {
-  color: #5073b8;
+  color: #000;
   font-size: 1.2em;
   position: relative;
 }
