@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #6e2eff;
+  background: #2f0614;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3484,16 +3484,16 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Cinzel Decorative', 'EB Garamond', "Noto Serif SC", sans-serif;
+  font-family: 'Cinzel Decorative', 'EB Garamond', 'Noto Serif SC', sans-serif;
 }
 body {
-  font-family: 'EB Garamond', "Noto Serif SC", sans-serif;
+  font-family: 'EB Garamond', 'Noto Serif SC', sans-serif;
 }
 .post-body {
-  font-family: 'EB Garamond', "Noto Serif SC", sans-serif;
+  font-family: 'EB Garamond', 'Noto Serif SC', sans-serif;
 }
 .posts-expand .post-meta {
-  font-family: 'EB Garamond', "Noto Serif SC", sans-serif;
+  font-family: 'EB Garamond', 'Noto Serif SC', sans-serif;
 }
 pre,
 code {
