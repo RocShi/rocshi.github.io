@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #018bee;
+  background: #884612;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2753,11 +2753,6 @@ body {
   transition-delay: 0s;
   text-align: center;
 }
-.posts-expand .post-tags a:hover {
-  color: #fff;
-  background: #4f94cd;
-  text-align: center;
-}
 .post-nav {
   margin: 0;
   padding: 0 0 10px 0;
@@ -3109,10 +3104,6 @@ body {
 pre,
 code {
   font-family: 'consolas';
-}
-.fa-paste:before,
-.fa-clipboard:before {
-  content: "复制";
 }
 .post-body p a {
   color: #0593d3;
