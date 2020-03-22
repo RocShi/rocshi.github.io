@@ -1255,7 +1255,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #c2b6ff;
+  background: #3c5247;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2826,20 +2826,6 @@ blockquote {
 .page-post-detail .sidebar-toggle-line {
   background: #0ff;
 }
-.back-to-top {
-  line-height: 1.5;
-  right: 10px;
-  padding-right: 5px;
-  padding-left: 5px;
-  padding-top: 2.5px;
-  padding-bottom: 2.5px;
-  background-color: rgba(79,148,205,0.75);
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.35);
-}
-.back-to-top.back-to-top-on {
-  bottom: 10px;
-}
 ::-webkit-scrollbar {
   width: 10px;
   height: 5px;
@@ -2869,6 +2855,7 @@ body {
   background: #fff;
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
   border-radius: 0.5rem;
+  padding: 0;
 }
 .content {
   padding-top: 60px;
