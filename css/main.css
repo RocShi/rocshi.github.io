@@ -1255,7 +1255,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff6263;
+  background: #54bb9e;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3009,6 +3009,8 @@ pre .deletion {
   border-radius: 100%;
   transition-property: background;
   text-align: center;
+  background: none !important;
+  box-shadow: none !important;
 }
 .pagination .space {
   color: #222;
