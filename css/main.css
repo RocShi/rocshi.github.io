@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff8edf;
+  background: #a8ffd7;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2889,11 +2889,20 @@ pre .deletion {
 .posts-collapse .post-title a:hover {
   color: #4f94cd;
 }
+.posts-collapse .post-header:hover {
+  border-bottom-color: #4f94cd;
+}
 .posts-collapse .collection-year {
   margin-bottom: 0px;
   margin-top: 32px;
 }
 .posts-collapse .collection-header {
+  margin: 0;
+  text-align: center;
+}
+.posts-collapse .collection-header:hover {
+  color: #4f94cd;
+  border-bottom-color: #4f94cd;
   margin: 0;
   text-align: center;
 }
