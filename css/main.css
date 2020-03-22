@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #d43262;
+  background: #55ffd5;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2645,6 +2645,11 @@ a.heading-anchor {
   line-height: 0;
   border-bottom: none;
 }
+a:hover,
+span.exturl:hover {
+  border-bottom-color: #4e94cd !important;
+  color: #4e94cd !important;
+}
 .post-body {
   color: #333;
 }
@@ -2746,6 +2751,11 @@ body {
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
   transition-delay: 0s;
+  text-align: center;
+}
+.posts-expand .post-tags a:hover {
+  color: #fff;
+  background: #4e94cd;
   text-align: center;
 }
 .post-nav {
@@ -2858,11 +2868,6 @@ pre .deletion {
 }
 .pagination .space {
   color: #222;
-}
-a:hover,
-span.exturl:hover {
-  border-bottom-color: #4e94cd !important;
-  color: #4e94cd !important;
 }
 .tag-cloud a:hover {
   color: #4e94cd !important;
