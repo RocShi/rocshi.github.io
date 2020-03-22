@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #70097e;
+  background: #ffc8ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2874,7 +2874,7 @@ pre .deletion {
 .posts-collapse .post-meta {
   font-size: 1em;
 }
-.posts-collapse .post-meta:hover {
+.posts-collapse .post-meta:hover::before {
   font-size: 1em;
   color: #4f94cd;
 }
