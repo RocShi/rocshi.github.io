@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #8e4e1a;
+  background: #8a3e01;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2729,6 +2729,9 @@ body {
 }
 .post-copyright {
   margin: -24px 0px 0px 0px;
+}
+.popular-posts-header {
+  margin: 60px 20px 20px 10px;
 }
 .posts-expand .post-tags {
   margin: 0;
