@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff8853;
+  background: #e7cb03;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3010,11 +3010,11 @@ pre .deletion {
   }
 }
 ::selection {
-  background-color: rgba(42,109,244,0.25);
+  background-color: rgba(79,148,205,0.25);
   color: unset;
 }
 .highlight *::selection {
-  background-color: rgba(42,109,244,0.25);
+  background-color: rgba(79,148,205,0.25);
   color: unset;
 }
 .site-nav-toggle {
