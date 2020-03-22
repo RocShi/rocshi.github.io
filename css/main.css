@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #1b6cff;
+  background: #2a420f;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2827,6 +2827,7 @@ pre .deletion {
 .pagination {
   border: none;
   margin-top: 75px;
+  text-align: center;
 }
 .pagination .prev:hover,
 .pagination .next:hover,
@@ -2834,6 +2835,7 @@ pre .deletion {
 .pagination .page-number.current {
   color: #fff;
   background: #4e94cd;
+  text-align: center;
 }
 .pagination .prev,
 .pagination .next,
@@ -2848,6 +2850,7 @@ pre .deletion {
   background: #fff;
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
   transition-property: background;
+  text-align: center;
 }
 .pagination .space {
   color: #222;
