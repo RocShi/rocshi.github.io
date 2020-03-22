@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #dbf9ff;
+  background: #ffff73;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2794,6 +2794,7 @@ h6 {
 }
 .post-button .btn:hover {
   color: #fff !important;
+  background-color: #4f94cd;
   border-radius: 3px;
   font-size: 15px;
   box-shadow: inset 0px 0px 10px 0px rgba(0,0,0,0.35);
