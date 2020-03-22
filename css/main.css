@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #8337ac;
+  background: #614054;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2864,7 +2864,7 @@ pre .deletion {
 .pagination .space {
   color: #222;
 }
-.tag-cloud a:hover {
+span.exturl:hover {
   border-bottom-color: #4e94cd !important;
 #4e94cd
 }
