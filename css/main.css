@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #fff;
+  background: #018bee;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3109,6 +3109,10 @@ body {
 pre,
 code {
   font-family: 'consolas';
+}
+.fa-paste:before,
+.fa-clipboard:before {
+  content: "复制";
 }
 .post-body p a {
   color: #0593d3;
