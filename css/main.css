@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ee2d55;
+  background: #dfff44;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2750,7 +2750,6 @@ body {
   text-align: center;
 }
 .posts-expand .post-tags a:hover {
-  background: #eee;
   color: #fff;
   background: #4e94cd;
   text-align: center;
