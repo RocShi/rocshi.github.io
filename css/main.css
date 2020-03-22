@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ab82ff;
+  background: #e7c4d7;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3032,8 +3032,8 @@ code {
 }
 .post-body .fancybox img {
   display: block !important;
-  margin-top: 20px;
-  margin-bottom: 25px;
+  margin-top: 15px;
+  margin-bottom: 10px;
   cursor: pointer;
   cursor: zoom-in;
   cursor: -webkit-zoom-in;
@@ -3041,7 +3041,7 @@ code {
 }
 .post-body .image-caption,
 .post-body .figure .caption {
-  margin: 5px auto 15px;
+  margin-bottom: 15px;
   text-align: center;
   font-size: 14px;
   color: #999;
