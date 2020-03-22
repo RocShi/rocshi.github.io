@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #b17fe4;
+  background: #94110d;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2665,6 +2665,13 @@ blockquote {
 }
 .page-post-detail .sidebar-toggle-line {
   background: #0ff;
+}
+.medium-zoom-image--opened {
+  background: transparent;
+  position: absolute;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
 }
 .back-to-top {
   line-height: 1.5;
