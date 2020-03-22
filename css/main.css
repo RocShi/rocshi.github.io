@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffffd0;
+  background: #6ba4b8;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2862,15 +2862,6 @@ pre .deletion {
   border-radius: 0.5rem;
   padding: 48px 64px 32px 64px;
 }
-.posts-collapse::before {
-  display: none;
-}
-.posts-collapse .collection-year::before {
-  display: none;
-}
-.posts-collapse .collection-title::before {
-  display: none;
-}
 .posts-collapse .post-meta {
   font-size: 1.2em;
 }
@@ -2882,7 +2873,7 @@ pre .deletion {
   text-align: left !important;
 }
 .posts-collapse .post-header:hover::before {
-  background-color: #a166ab;
+  background-color: #4f94cd;
 }
 .posts-collapse .post-title a {
   color: #5073b8;
@@ -2890,10 +2881,10 @@ pre .deletion {
   position: relative;
 }
 .posts-collapse .post-title a:hover {
-  color: #a166ab;
+  color: #4f94cd;
 }
 .posts-collapse .post-header:hover {
-  border-bottom-color: #a166ab;
+  border-bottom-color: #4f94cd;
 }
 .posts-collapse .collection-year {
   margin-bottom: 0px;
