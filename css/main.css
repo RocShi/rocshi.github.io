@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #a67811;
+  background: #2e16ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3029,6 +3029,11 @@ code {
 .menu .menu-item span.exturl:hover {
   background: #ddd;
   color: #4f94cd;
+}
+.post-body iframe,
+.post-body img,
+.post-body video {
+  margin: 20px 20px 20px 20px;
 }
 .site-nav-toggle {
   top: 35px;
