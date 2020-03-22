@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #8b78ff;
+  background: #e4ffff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3104,6 +3104,12 @@ body {
 pre,
 code {
   font-family: 'consolas';
+}
+.menu-item-active a,
+.menu .menu-item a:hover,
+.menu .menu-item span.exturl:hover {
+  background: #ddd;
+  color: #4f94cd;
 }
 .post-body p a {
   color: #0593d3;
