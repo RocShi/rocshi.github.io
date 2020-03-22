@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #03ff0b;
+  background: #ff339e;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2829,7 +2829,7 @@ code {
   font-size: 80%;
 }
 pre .addition {
-  background: #dfd;
+  background: #dfd !important;
 }
 pre .deletion {
   background: #fdd;
