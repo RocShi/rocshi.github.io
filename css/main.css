@@ -404,7 +404,7 @@ pre {
 }
 pre,
 code {
-  font-family: 'Source Code Pro', consolas, Menlo, monospace, "Noto Serif SC";
+  font-family: 'consolas', consolas, Menlo, monospace, "Noto Serif SC";
 }
 code {
   background: #eee;
@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #47d2d1;
+  background: #6e2eff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3497,7 +3497,7 @@ body {
 }
 pre,
 code {
-  font-family: 'Source Code Pro', consolas, Menlo, "Noto Serif SC", monospace;
+  font-family: 'consolas';
 }
 .post-body p a {
   color: #0593d3;
