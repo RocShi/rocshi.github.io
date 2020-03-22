@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #4d0aff;
+  background: #9e2da3;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2938,80 +2938,6 @@ pre .deletion {
   background-color: #4f94cd;
   color: #fff;
 }
-.site-nav-toggle {
-  top: 35px;
-  left: 10px;
-}
-.btn-bar {
-  background-color: #fff;
-}
-@media (max-width: 767px) {
-  .menu {
-    text-align: center;
-    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
-    padding: 10px 10px 10px 10px;
-  }
-  .site-nav {
-    top: initial;
-    background-color: rgba(255,255,255,0.75);
-    border-top: none;
-    border-bottom: none;
-    position: relative;
-    z-index: 1024;
-  }
-  .github-corner svg {
-    display: none;
-  }
-}
-@media (max-width: 767px) {
-  .site-subtitle {
-    letter-spacing: 0px !important;
-    padding-bottom: 0px !important;
-  }
-  .menu .menu-item {
-    margin: 0px 10px !important;
-  }
-}
-@media (max-width: 767px) {
-  .posts-collapse {
-    padding: 16px 15px 8px 15px;
-    margin: 0;
-  }
-  .posts-collapse .post-title a {
-    font-size: 1em;
-  }
-  .posts-collapse .post-meta {
-    font-size: 1em;
-  }
-  .posts-expand {
-    margin: 0px;
-  }
-  .post-body {
-    padding: 20px 15px;
-  }
-  .posts-expand .post-title {
-    padding: 45px 15px 12px;
-  }
-  .content {
-    padding-top: 35px;
-  }
-  .main-inner {
-    padding-bottom: 35px;
-  }
-  .pagination {
-    margin-top: 48px;
-  }
-  .posts-expand .post-title {
-    font-size: 24px;
-    text-align: center;
-  }
-  .post-body {
-    font-size: 16px !important;
-  }
-  .post-copyright {
-    font-size: 14px;
-  }
-}
 .chinese-zodiac {
   float: right;
 }
@@ -3105,6 +3031,80 @@ code {
 .menu .menu-item span.exturl:hover {
   background: #ddd;
   color: #4f94cd;
+}
+.site-nav-toggle {
+  top: 35px;
+  left: 10px;
+}
+.btn-bar {
+  background-color: #fff;
+}
+@media (max-width: 767px) {
+  .menu {
+    text-align: center;
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    padding: 10px 10px 10px 10px;
+  }
+  .site-nav {
+    top: initial;
+    background-color: rgba(255,255,255,0.75);
+    border-top: none;
+    border-bottom: none;
+    position: relative;
+    z-index: 1024;
+  }
+  .github-corner svg {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .site-subtitle {
+    letter-spacing: 0px !important;
+    padding-bottom: 0px !important;
+  }
+  .menu .menu-item {
+    margin: 0px 10px !important;
+  }
+}
+@media (max-width: 767px) {
+  .posts-collapse {
+    padding: 16px 15px 8px 15px;
+    margin: 0;
+  }
+  .posts-collapse .post-title a {
+    font-size: 1em;
+  }
+  .posts-collapse .post-meta {
+    font-size: 1em;
+  }
+  .posts-expand {
+    margin: 0px;
+  }
+  .post-body {
+    padding: 20px 15px;
+  }
+  .posts-expand .post-title {
+    padding: 45px 15px 12px;
+  }
+  .content {
+    padding-top: 35px;
+  }
+  .main-inner {
+    padding-bottom: 35px;
+  }
+  .pagination {
+    margin-top: 48px;
+  }
+  .posts-expand .post-title {
+    font-size: 24px;
+    text-align: center;
+  }
+  .post-body {
+    font-size: 16px !important;
+  }
+  .post-copyright {
+    font-size: 14px;
+  }
 }
 .post-body p a {
   color: #0593d3;
