@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffff9d;
+  background: #ffb518;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2968,7 +2968,7 @@ pre .deletion {
   color: #07b39b;
 }
 .sidebar-nav li:hover {
-  color: #a166ab;
+  color: #4f94cd;
 }
 .sidebar-nav .sidebar-nav-active {
   color: #07b39b;
