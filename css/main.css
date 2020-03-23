@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #df265e;
+  background: #ffff67;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3029,7 +3029,7 @@ code {
 }
 .site-title:hover .logo-line-before i,
 .site-title:hover .logo-line-after i {
-  background: #4f94cd;
+  background: #4f94cd !important;
 }
 .menu .menu-item a {
   font-weight: bold;
