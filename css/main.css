@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #20730f;
+  background: #1feede;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3029,7 +3029,7 @@ body {
 }
 pre,
 code {
-  font-family: 'Source Code Pro', consolas, Menlo, "Noto Serif SC", monospace;
+  font-family: 'Source Code Pro', consolas, Menlo, monospace;
 }
 .header {
   position: fixed;
