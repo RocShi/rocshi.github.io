@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #86121f;
+  background: #fff12b;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3030,6 +3030,13 @@ body {
 pre,
 code {
   font-family: 'consolas';
+}
+.header {
+  position: fixed;
+  z-index: 9000;
+  left: 0px;
+  top: 0px;
+  width: 100%;
 }
 .reading-progress-bar {
   position: fixed;
