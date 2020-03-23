@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #aaff28;
+  background: #ffadd2;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3027,7 +3027,7 @@ pre,
 code {
   font-family: 'consolas';
 }
-.header-wrapper {
+.header {
   padding: 1em 0;
   -webkit-backdrop-filter: saturate(180%) blur(1em);
   backdrop-filter: saturate(180%) blur(1em);
