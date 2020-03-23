@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #a23e9a;
+  background: #772d9d;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3032,6 +3032,7 @@ code {
   font-family: 'Source Code Pro', consolas, Menlo, monospace;
 }
 .header {
+  backdrop-filter: saturate(180%) blur(1em);
   position: fixed;
   z-index: 9000;
   left: 0px;
