@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #377040;
+  background: #ff0eff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3113,7 +3113,7 @@ code {
     margin: 0px 10px !important;
   }
   .header {
-    background: linear-gradient(90deg, rgba(247,149,51,0) 0, rgba(243,112,85,0) 15%, rgba(239,78,123,0) 30%, rgba(161,102,171,0) 44%, rgba(80,115,184,0) 58%, rgba(16,152,173,0) 72%, rgba(7,179,155,0) 86%, rgba(109,186,130,0) 100%);
+    background: linear-gradient(90deg, #f79533 0, #f37055 15%, #ef4e7b 30%, #a166ab 44%, #5073b8 58%, #1098ad 72%, #07b39b 86%, #6dba82 100%);
   }
 }
 @media (max-width: 767px) {
