@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #7fff78;
+  background: #9f0e2a;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3036,6 +3036,10 @@ code {
   left: 0px;
   top: 0px;
   width: 100%;
+}
+.reading-progress-bar {
+  position: fixed;
+  z-index: 9999;
 }
 .brand:hover .logo-line-before i,
 .brand:hover .logo-line-after i {
