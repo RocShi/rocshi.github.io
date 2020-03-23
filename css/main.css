@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #98b400;
+  background: #3e0887;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3029,10 +3029,13 @@ code {
 }
 .menu-item-active a,
 .menu .menu-item a:hover,
-.menu .menu-item span.exturl:hover,
-.menu .menu-item .badge:hover {
+.menu .menu-item span.exturl:hover {
   background: #ddd;
+  font-weight: bold;
   color: #4f94cd;
+}
+.menu .menu-item .badge {
+  display: none !important;
 }
 .post-body iframe,
 .post-body img,
