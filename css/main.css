@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #772d9d;
+  background: #ff8aff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3033,6 +3033,7 @@ code {
 }
 .header {
   backdrop-filter: saturate(180%) blur(1em);
+  background: linear-gradient(90deg, rgba(247,149,51,0.102) 0, rgba(243,112,85,0.102) 15%, rgba(239,78,123,0.102) 30%, rgba(161,102,171,0.102) 44%, rgba(80,115,184,0.102) 58%, rgba(16,152,173,0.102) 72%, rgba(7,179,155,0.102) 86%, rgba(109,186,130,0.102) 100%);
   position: fixed;
   z-index: 9000;
   left: 0px;
