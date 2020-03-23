@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffb314;
+  background: #8effcc;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3113,7 +3113,8 @@ code {
     margin: 0px 10px !important;
   }
   .header {
-    background: none;
+    -webkit-backdrop-filter: saturate(180%) blur(5em);
+    backdrop-filter: saturate(180%) blur(5em);
   }
 }
 @media (max-width: 767px) {
