@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #b4b3d4;
+  background: #c26fff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3026,6 +3026,10 @@ body {
 pre,
 code {
   font-family: 'consolas';
+}
+.logo-line-before i:hover,
+.logo-line-after i:hover {
+  background: #4f94cd;
 }
 .menu .menu-item a {
   font-weight: bold;
