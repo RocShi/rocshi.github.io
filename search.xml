@@ -1,0 +1,1150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>C++ Primer - 第2章 变量和基本类型</title>
+    <url>/archives/e005f4cb.html</url>
+    <content><![CDATA[<ol>
+<li><p>一些语言，如Smalltalk和Python等，在程序运行时检查数据类型；与之相反，C++是一种<strong>静态数据类型语言</strong>，它的类型检查发生在编译时。因此，编译器必须知道程序中每一个变量对应的数据类型。</p>
+</li>
+<li><p>C++标准规定的各种算数类型数据尺寸的最小值：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>含义</th>
+<th>最小尺寸</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bool</td>
+<td>布尔类型</td>
+<td>未定义</td>
+</tr>
+<tr>
+<td>char</td>
+<td>字符</td>
+<td>8位</td>
+</tr>
+<tr>
+<td>wchar_t</td>
+<td>宽字符</td>
+<td>16位</td>
+</tr>
+<tr>
+<td>char16_t</td>
+<td>Unicode字符</td>
+<td>16位</td>
+</tr>
+<tr>
+<td>char32_t</td>
+<td>Unicode字符</td>
+<td>32位</td>
+</tr>
+<tr>
+<td>short</td>
+<td>短整型</td>
+<td>16位</td>
+</tr>
+<tr>
+<td>int</td>
+<td>整型</td>
+<td>16位</td>
+</tr>
+<tr>
+<td>long</td>
+<td>长整型</td>
+<td>32位</td>
+</tr>
+<tr>
+<td>long long</td>
+<td>长整型</td>
+<td>64位</td>
+</tr>
+<tr>
+<td>float</td>
+<td>单精度浮点数</td>
+<td>6位有效数字</td>
+</tr>
+<tr>
+<td>double</td>
+<td>双精度浮点数</td>
+<td>10位有效数字</td>
+</tr>
+<tr>
+<td>long double</td>
+<td>扩展精度浮点数</td>
+<td>10位有效数字</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>一个<code>char</code>的大小和一个机器字节一样。</p>
+</li>
+<li><p>C++语言规定一个<code>int</code>至少和一个<code>short</code>一样大，一个<code>long</code>至少和一个<code>int</code>一样大，一个<code>long long</code>至少和一个<code>long</code>一样大。其中，数据类型<code>long long</code>是在C++11中新定义的。</p>
+</li>
+</ol>
+<ol start="5">
+<li>计算机以比特序列存储数据，每个比特非0即1。大多数计算机以2的整数次幂个比特作为块来处理内存，可寻址的最小内存块称为“字节（byte）”，存储的基本单元称为“字（word）”，它通常由几个字节组成。在C++语言中，一个字节要至少能容纳机器基本字符集中的字符。大多数机器的字节由8比特构成，字则由32或64比特构成，也就是4或8字节。大多数计算机将内存中的每个字节与一个数字（被称为“地址（address）”）关联起来。</li>
+</ol>
+<ol start="6">
+<li>浮点型可表示单精度、双精度和扩展精度值。C++标准指定了一个浮点数有效位数的最小值，然而大多数编译器都实现了更高的精度。通常，<code>float</code>以1个字（32比特）来表示，<code>doub1e</code>以2个字（64比特）来表示，<code>long double</code>以3或4个字（96或128比特）来表示。一般来说，类型<code>float</code>和<code>double</code>分别有7和16个有效位；类型<code>long doub1e</code>则常常被用于有特殊浮点需求的硬件，它的具体实现不同，精度也各不相同。</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>程序语言</category>
+        <category>C/C++</category>
+        <category>《C++ Primer》</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>C++ Primer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++ Primer - 第1章 开始</title>
+    <url>/archives/3fc34abb.html</url>
+    <content><![CDATA[<ol>
+<li><p>每个C++程序都包含一个或多个函数（function），其中一个必须命名为<code>main</code>。</p>
+</li>
+<li><p><code>main</code>函数的返回类型必须为<code>int</code>，即整数类型。</p>
+</li>
+<li><p>在大多数系统中，<code>main</code>的返回值被用来指示状态。返回值0表明成功，非0的返回值的含义由系统定义，通常用来指示错误类型。</p>
+</li>
+<li><p>对于源文件（source file）的命名，不同编译器使用不同的后缀命名约定，最常见的包括 <code>.cc</code> <code>.cxx</code> <code>.cpp</code> <code>.cp</code> <code>.c</code> 等。</p>
+</li>
+<li><p>在UNIX和Windows系统中，执行完一个程序后，都可以通过<code>echo</code>命令获得其返回值。在UNIX系统中，通过如下命令获得状态：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> $?</span><br></pre></td></tr></table></figure>
+<p>在Windows系统中查看状态可键入：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> %ERRORLEVEL%</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译器通常都包含一些选项，能对有问题的程序结构发出警告。我们习惯在GNU编译器中使用<code>-Wall</code>选项，在微软编译器中使用<code>/W4</code>。</p>
+</li>
+<li><p><code>iostream</code>库包含两个基础类型<code>istream</code>和<code>ostream</code>，分别表示输入流和输出流。一个流就是一个字符序列，是从IO设备读出或写入IO设备的。术语“流”（stream）想要表达的是，随着时间的推移，字符是顺序生成或消耗的。</p>
+</li>
+<li><p>标准输入输出对象：<code>cin</code> <code>cout</code> <code>cerr</code> <code>clog</code>。</p>
+</li>
+<li><p>输出运算符<code>&lt;&lt;</code>接受两个运算对象：左侧的运算对象必须是一个<code>ostream</code>对象，右侧的运算对象是要打印的值。此运算符将给定的值写到给定的<code>ostream</code>对象中。输出运算符的计算结果就是其左侧运算对象。即，计算结果就是我们写入给定值的那个ostream对象。</p>
+</li>
+<li><p><code>endl</code>被称为操纵符（manipulator）。写入<code>endl</code>的效果是结束当前行，并将与设备关联的缓冲区（buffer）中的内容刷到设备中。缓冲刷新操作可以保证到目前为止程序所产生的所有输出都真正写入输出流中，而不是仅停留在内存中等待写入流。</p>
+</li>
+<li><p>标准库定义的所有名字都在命名空间<code>std</code>中。</p>
+</li>
+<li><p>输入运算符<code>&gt;&gt;</code>与输出运算符类似，它接受一个<code>istream</code>作为其左侧运算对象，接受一个对象作为其右侧运算对象。它从给定的<code>istream</code>读入数据，并存入给定对象中。与输出运算符类似，输入运算符返回其左侧运算对象作为其计算结果。</p>
+</li>
+<li><p>界定符对形式的注释是以<code>/*</code>开始，以<code>*/</code>结束的。因此，一个注释不能嵌套在另一个注释之内。</p>
+</li>
+<li><p>下列哪些语句是合法的？</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"/*"</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*/"</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="comment">/* "*/</span> <span class="string">" */;</span></span><br><span class="line"><span class="string">std::cout &lt;&lt; /* "</span>*/ <span class="string">" /* "</span> <span class="comment">/*" */</span>;</span><br></pre></td></tr></table></figure>
+<p>语句1、2、4是合法的，分别输出<code>/*</code> <code>*/</code> <code>/*</code>。</p>
+</li>
+<li><p>语句块（block），就是用花括号包围的零条或多条语句的序列。语句块也是语句的一种，在任何要求使用语句的地方都可以使用语句块。</p>
+</li>
+<li><p>每个<code>for</code>语句都包含两部分：循环头和循环体。循环头控制循环体的执行次数，它由三部分组成：初始化语句（init-statement）、循环条件（condition）和表达式（expression）。初始化语句定义的变量仅在<code>for</code>循环内部存在，在循环结束之后不能使用。初始化语句只在<code>for</code>循环入口处执行一次，循环体每次执行前都会先检查循环条件，表达式在<code>for</code>循环体之后执行。</p>
+</li>
+<li><p>观察下述代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>, val = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val)</span><br><span class="line">    sum += val;</span><br></pre></td></tr></table></figure>
+<p>该代码片段的数据读取操作是在<code>while</code>的循环条件中完成的，<code>while</code>循环条件的求值就是执行表达式：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val</span><br></pre></td></tr></table></figure>
+<p>此表达式从标准输入读取下一个数，保在在value中。输入运算符返回其左侧运算对象，在本例中是<code>std::cin</code>。因此，此循环条件实际上检测的是<code>std::cin</code>。当使用一个<code>istream</code>对象作为条件时，其效果是检测流的状态。如果流是有效的，即流未遇到错误，那么检测成功。当遇到文件结束符（end-of-file），或遇到一个无效输入时（例如读入的值不是一个整数），<code>istream</code>对象的状态会变为无效。处于无效状态的<code>istream</code>对象会使条件变为假。因此，上述代码片段中，<code>while</code>循环会一直执行直至遇到文件结束符（或输入错误）（最简单的方法是完成数字的输入后随便输入一个符号然后回车———博主注）。</p>
+</li>
+<li><p>将如下代码片段编译为可执行程序：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>, val = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val)</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"haha"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"The number you input is "</span> &lt;&lt; val &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    sum += val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"The sum of numbers you input is "</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>执行编译后的可执行程序，并输入序列<code>1 2 5 6 8 12 2? 3 5</code>后回车，得到如下输出，思考程序执行流程：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">haha</span><br><span class="line">The number you input is 2</span><br><span class="line">haha</span><br><span class="line">The number you input is 6</span><br><span class="line">haha</span><br><span class="line">The number you input is 12</span><br><span class="line">The number you input is 0</span><br><span class="line">The sum of numbers you input is 20</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>标准库头文件通常不带后缀，编译器一般不关心头文件的格式。</p>
+</li>
+</ol>
+<ol start="20">
+<li><p>每个类实际上都定义了一个新的类型，其类型名就是类名。</p>
+</li>
+<li><p>包含来自标准库的头文件时，应该用尖括号<code>&lt; &gt;</code>包围头文件，对于不属于标准库的头文件，则用双引号<code>&quot; &quot;</code>包围。</p>
+</li>
+<li><p>大多数操作系统支持文件重定向，这种机制允许我们将标准输入和标准输出与命名文件关联起来：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">addItems&lt;infile &gt;outfile</span><br></pre></td></tr></table></figure>
+<p>假定程序已经编译为名为addItems.exe的可执行文件（在UNIX中是addItems），则上述命令会从一个名为infile的文件读取数据，并将输出结果写入到一个名为outfile的文件中，两个文件都位于当前目录中。</p>
+</li>
+<li><p>成员函数（member function）是定义为类的一部分的函数，有时也被称为方法（method）。</p>
+</li>
+<li><p>点运算符（.）只能用于类类型的对象。其左侧运算对象必须是一个类类型的对象，右侧运算对象必须是该类型的一个成员名，运算结果为右侧运算对象指定的成员。当用点运算符访问一个成员函数时，通常是想调用该函数。使用调用运算符（()）来调用一个函数，调用运算符是一对圆括号，里面放置实参（argument）列表（可能为空）。</p>
+</li>
+<li><p><strong>缓冲区（buffer）</strong> 一个存储区域，用于保存数据。IO设施通常将输入（或输出）数据保存在一个缓冲区中，读写缓冲区的动作与程序中的动作是无关的。可以显式地刷新输出缓冲，以便强制将缓冲区中的数据写入输出设备。默认情况下，读cin会刷新cout；程序非正常终止时也会刷新cout。</p>
+</li>
+<li><p><strong>cerr</strong> 一个<code>ostream</code>对象，关联到标准错误，通常写入到与标准输出相同的设备。默认情况下，写到<code>cerr</code>的数据是不缓冲的。<code>cerr</code>通常用于输出错误信息或其它不属于程序正常逻辑的输出内容。</p>
+</li>
+<li><p><strong>clog</strong> 一个<code>ostream</code>对象，关联到标准错误。默认情况下，写到<code>clog</code>的数据是被缓冲的。<code>clog</code>通常用于报告程序的执行信息，存入一个日志文件中。</p>
+</li>
+<li><p><strong>未初始化的变量（uninitialized variable）</strong> 未赋予初值的变量。类类型的变量如果未指定初值，则按类定义指定的方式进行初始化。定义在函数内部的内置类型变量默认是不初始化的，除非有显式的初始化语句。试图使用一个未初始化变量的值是错误的。未初始化变量是bug的常见成因。</p>
+</li>
+<li><p><strong>&gt;&gt;运算符（&gt;&gt;operator）输入运算符</strong> 从左侧运算对象所指定的输入流读取数据，存入右侧运算对象中：<code>cin &gt;&gt; i</code>表示从标准输入读取下一个值，存入i中。输入运算符可以连接：<code>cin &gt;&gt; i &gt;&gt; j</code>表示先读取一个值存入i，再读取一个值存入j。</p>
+</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>程序语言</category>
+        <category>C/C++</category>
+        <category>《C++ Primer》</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>C++ Primer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>将Hexo搭建的博客站点从GitHub Pages迁移到腾讯云VPS</title>
+    <url>/archives/3955f5ec.html</url>
+    <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
+<p>在上一篇文章<a href="https://blog.shipengx.com/archives/208e6058.html">《使用Hexo + GitHub Pages搭建个人博客站点》</a>中我们介绍了如何使用Hexo搭建自己的个人博客站点并部署到GitHub Pages。将个人站点部署到GitHub Pages的显著优点是便捷、免费，但由于GitHub服务器位于国外，所以多数情况下，你访问你的GitHub Pages的速度将非常缓慢。为提升访问速度，将个人站点部署到腾讯云、阿里云或其它国内云服务提供商的云服务器上是一个很好的选择。当然，你也可以通过树莓派 + 内网穿透搭建自己的私有云服务器。</p>
+</blockquote>
+<h1 id="2-原理" class="heading-control"><a href="#2-原理" class="headerlink" title="2 原理"></a>2 原理<a class="heading-anchor" href="#2-原理" aria-hidden="true"></a></h1><p>使用VPS部署博客的原理如下图所示（图片来自<span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxNjEwNjU4NA==" title="https://segmentfault.com/a/1190000016106584">这里<i class="fa fa-external-link"></i></span>）：<br><img src="https://i.loli.net/2020/02/08/dcft5nz7RoX2Ixg.png" alt="VPS搭建Hexo博客原理示意图"></p>
+<p>使用VPS部署博客的主要思路分为四步：</p>
+<ul>
+<li><code>hexo -g</code>将source/_posts目录下的markdown文件渲染为静态资源，并将静态资源放置到public目录下；</li>
+<li><code>hexo deploy</code>通过git将public目录下的博客静态资源推送到VPS的远程仓库中；</li>
+<li>推送更新触发Git Hooks将仓库内的静态资源克隆到网站根目录下；</li>
+<li>使用nginx作为Web服务器提供对博客的HTTP或HTTPS访问。</li>
+</ul>
+<p>本文基于腾讯云Ubuntu 18.04实现Hexo静态博客的VPS自动部署。</p>
+<h1 id="3-配置" class="heading-control"><a href="#3-配置" class="headerlink" title="3 配置"></a>3 配置<a class="heading-anchor" href="#3-配置" aria-hidden="true"></a></h1><h2 id="3-1-VPS端配置——Git" class="heading-control"><a href="#3-1-VPS端配置——Git" class="headerlink" title="3.1 VPS端配置——Git"></a>3.1 VPS端配置——Git<a class="heading-anchor" href="#3-1-VPS端配置——Git" aria-hidden="true"></a></h2><h3 id="3-1-1-安装" class="heading-control"><a href="#3-1-1-安装" class="headerlink" title="3.1.1 安装"></a>3.1.1 安装<a class="heading-anchor" href="#3-1-1-安装" aria-hidden="true"></a></h3><p>通常情况下，购买了VPS后Git是默认已经安装的，若未安装，可通过终端命令进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-2-配置本地端SSH登录VPS" class="heading-control"><a href="#3-1-2-配置本地端SSH登录VPS" class="headerlink" title="3.1.2 配置本地端SSH登录VPS"></a>3.1.2 配置本地端SSH登录VPS<a class="heading-anchor" href="#3-1-2-配置本地端SSH登录VPS" aria-hidden="true"></a></h3><p>关于SSH登录配置，主要包含两步：SSH key的本地生成和远端添加，可参考<a href="https://blog.shipengx.com/archives/296a9967.html">《在腾讯云上搭建个人Git服务器》</a>的<strong>2.2 创建证书登录</strong>，此处不再赘述。</p>
+<h3 id="3-1-3-创建Git仓库" class="heading-control"><a href="#3-1-3-创建Git仓库" class="headerlink" title="3.1.3 创建Git仓库"></a>3.1.3 创建Git仓库<a class="heading-anchor" href="#3-1-3-创建Git仓库" aria-hidden="true"></a></h3><p>创建适当的目录并将其初始化为Git裸库，用于存放Hexo博客静态资源：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p ~/blog/shipengx.git</span><br><span class="line"><span class="built_in">cd</span> ~/blog/shipengx.git</span><br><span class="line">git init --bare</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-4-配置Git-Hooks" class="heading-control"><a href="#3-1-4-配置Git-Hooks" class="headerlink" title="3.1.4 配置Git Hooks"></a>3.1.4 配置Git Hooks<a class="heading-anchor" href="#3-1-4-配置Git-Hooks" aria-hidden="true"></a></h3><p>此时VPS上的远程仓库只是一个裸仓库，无法用于搭建站点服务器，需要在推送更新的同时触发Git Hooks，以将远程仓库中的博客资源放到Nginx Web服务器根目录下。</p>
+<ul>
+<li><p>创建Nginx Web根目录，并修改属主与属组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /var/wwww/blog.shipengx</span><br><span class="line">sudo chown ubuntu:ubuntu -R /var/wwww/blog.shipengx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建钩子文件，并添加可执行权限<br>进入远程仓库的hook目录下，新建钩子文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/blog/shipengx.git/hooks</span><br><span class="line">vim post-receice</span><br></pre></td></tr></table></figure>
+
+<p>添加如下代码并保存，注意，<code>GIT_REPO</code> <code>TMP_GIT_CLONE</code> <code>PUBLIC_WWW</code> 的值视个人情况而定：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"post-receive hook is running..."</span></span><br><span class="line"></span><br><span class="line">GIT_REPO=/home/ubuntu/blog/shipengx.git</span><br><span class="line">TMP_GIT_CLONE=/tmp/blog.shipengx</span><br><span class="line">PUBLIC_WWW=/var/www/blog</span><br><span class="line"></span><br><span class="line">rm -rf <span class="variable">$TMP_GIT_CLONE</span></span><br><span class="line">git <span class="built_in">clone</span> <span class="variable">$GIT_REPO</span> <span class="variable">$TMP_GIT_CLONE</span></span><br><span class="line">rm -rf <span class="variable">$&#123;PUBLIC_WWW&#125;</span>/*</span><br><span class="line">cp -rf <span class="variable">$&#123;TMP_GIT_CLONE&#125;</span>/* <span class="variable">$&#123;PUBLIC_WWW&#125;</span>/</span><br></pre></td></tr></table></figure>
+
+<p>为钩子文件添加可执行权限：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod +x post-receive</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="3-2-VPS端配置——Nginx" class="heading-control"><a href="#3-2-VPS端配置——Nginx" class="headerlink" title="3.2 VPS端配置——Nginx"></a>3.2 VPS端配置——Nginx<a class="heading-anchor" href="#3-2-VPS端配置——Nginx" aria-hidden="true"></a></h2><h3 id="3-2-1-安装Nginx" class="heading-control"><a href="#3-2-1-安装Nginx" class="headerlink" title="3.2.1 安装Nginx"></a>3.2.1 安装Nginx<a class="heading-anchor" href="#3-2-1-安装Nginx" aria-hidden="true"></a></h3><p>直接通过终端命令进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，在浏览器中输入VPS公网IP，出现如下页面即表示安装成功：</p>
+<p><img src="https://i.loli.net/2020/02/08/TAuk6BIPhciEHqS.png" alt="Welcome to nginx!"></p>
+<p>安装成功后，可通过<code>nginx -v</code>命令查看版本信息，本文中所使用版本为1.14.0；可通过 <code>service nginx status</code>或<code>systemctl status nginx</code>命令来查看Nginx运行状态；可通过<code>nginx -V</code>命令查看安装的Nginx所包含组件。</p>
+<h3 id="3-1-2-配置Nginx" class="heading-control"><a href="#3-1-2-配置Nginx" class="headerlink" title="3.1.2 配置Nginx"></a>3.1.2 配置Nginx<a class="heading-anchor" href="#3-1-2-配置Nginx" aria-hidden="true"></a></h3><p>Nginx安装成功后，所有配置文件将位于/etc/nginx目录下，/etc/nginx/nginx.conf是主配置文件。本文中对Nginx的配置主要做了以下五件事：</p>
+<ul>
+<li>监听80端口，以提供正常的http访问；</li>
+<li>配置SSL，以开启网站对https访问的支持（需进行SSL证书申请与工信部ICP备案）；</li>
+<li>IP访问重定向到域名访问；</li>
+<li>http访问重定向到https访问；</li>
+<li>自定义404页面。</li>
+</ul>
+<blockquote>
+<p>购买了VPS后一般可申请免费的SSL证书，若你的VPS是在腾讯云购买的，可以到<span class="exturl" data-url="aHR0cHM6Ly9jb25zb2xlLmNsb3VkLnRlbmNlbnQuY29tL3NzbC9hcHBseQ==" title="https://console.cloud.tencent.com/ssl/apply">这里<i class="fa fa-external-link"></i></span>申请有效期一年的免费SSL证书，快到期时需要提前重新申请，证书下发速度很快；对于配置SSL，工信部ICP备案也是必要的，若一级域名未进行备案，则极有可能出现配置做好了域名http访问也正常但https访问总是被重置的情况，所以最好在购得域名后马上进行ICP备案以作备用（对于个人博客站点，网安备案不是必须的），若你的VPS是在腾讯云购买的，可以到<span class="exturl" data-url="aHR0cHM6Ly9jb25zb2xlLmNsb3VkLnRlbmNlbnQuY29tL2JlaWFu" title="https://console.cloud.tencent.com/beian">这里<i class="fa fa-external-link"></i></span>进行ICP备案申请，备案地与身份证相同的话一般速度比较快，完成备案后记得将备案号填写至站点配置文件的相应位置，以在网页底部展示备案状态（强制要求）。</p>
+</blockquote>
+<p>下面进行具体的配置操作（假设你已经完成SSL证书的申请与下载）。</p>
+<p><strong>首先</strong>，在/etc/nginx目录下创建ssl目录用于存放SSL证书与配置文件，并将对应Nginx的SSL证书通过<span class="exturl" data-url="aHR0cHM6Ly93aW5zY3AubmV0L2VuZy9kb2NzL2xhbmc6Y2hz" title="https://winscp.net/eng/docs/lang:chs">WinSCP<i class="fa fa-external-link"></i></span>工具传输至/etc/nginx/ssl目录下；</p>
+<p><strong>然后</strong>，在本地博客目录hexo/source下新建404.html文件，粘贴以下腾讯公益404页面代码后保存（homepageurl修改为你的站点域名。更多的404模板可以到<span class="exturl" data-url="aHR0cHM6Ly80MDQubGlmZQ==" title="https://404.life">这里<i class="fa fa-external-link"></i></span>查看）：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>404 - Page Not Found<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"description"</span> <span class="attr">content</span>=<span class="string">"404错误，页面不存在！"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"content-type"</span> <span class="attr">content</span>=<span class="string">"text/html;charset=utf-8;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"IE=edge,chrome=1"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"robots"</span> <span class="attr">content</span>=<span class="string">"all"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"robots"</span> <span class="attr">content</span>=<span class="string">"index,follow"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"//qzonestyle.gtimg.cn/qzone/hybrid/app/404/search_children.js"</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">homepageurl</span>=<span class="string">"https://blog.shipengx.com"</span> <span class="attr">homepagename</span>=<span class="string">"返回到博客首页"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">!<span class="function"><span class="keyword">function</span> (<span class="params">o</span>) </span>&#123; <span class="keyword">var</span> i = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">document</span>.querySelectorAll(<span class="string">"img[data-original]"</span>)); <span class="function"><span class="keyword">function</span> <span class="title">c</span>(<span class="params">t, e</span>) </span>&#123; <span class="keyword">var</span> n = <span class="keyword">new</span> Image, o = t.getAttribute(<span class="string">"data-original"</span>); n.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; t.src = o, e &amp;&amp; e() &#125;, n.src = o &#125; <span class="function"><span class="keyword">function</span> <span class="title">n</span>(<span class="params"></span>) </span>&#123; <span class="keyword">for</span> (<span class="keyword">var</span> t = <span class="number">0</span>; t &lt; i.length; t++)e = i[t], <span class="keyword">void</span> <span class="number">0</span>, <span class="number">0</span> &lt;= (n = e.getBoundingClientRect()).top &amp;&amp; <span class="number">0</span> &lt;= n.left &amp;&amp; n.top &lt;= (o.innerHeight || <span class="built_in">document</span>.documentElement.clientHeight) &amp;&amp; c(i[t], <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; i.splice(t, t) &#125;); <span class="keyword">var</span> e, n; <span class="built_in">console</span>.log(<span class="string">"trigger"</span>) &#125; n(), o.addEventListener(<span class="string">"scroll"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">var</span> t, e; t = n, e = o, clearTimeout(t.tId), t.tId = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; t.call(e) &#125;, <span class="number">500</span>) &#125;) &#125;(<span class="keyword">this</span>);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>其次</strong>，在/etc/nginx/ssl目录下通过<code>sudo vim ssl.conf</code>命令新建SSL配置文件，添加如下内容（对于不同版本的Nginx，SSL配置内容稍有区别）后保存并退出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">     #SSL 访问端口号为 443</span><br><span class="line">     listen 443;</span><br><span class="line">     #填写绑定证书的域名</span><br><span class="line">     server_name blog.shipengx.com;</span><br><span class="line">     #开启ssl</span><br><span class="line">     ssl on;</span><br><span class="line">     #证书文件名称</span><br><span class="line">     ssl_certificate ssl&#x2F;1_blog.shipengx.com_bundle.crt;</span><br><span class="line">     #私钥文件名称</span><br><span class="line">     ssl_certificate_key ssl&#x2F;2_blog.shipengx.com.key;</span><br><span class="line">     ssl_session_timeout 5m;</span><br><span class="line">     #请按照以下协议配置</span><br><span class="line">     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">     #请按照以下套件配置，配置加密套件，写法遵循 openssl 标准。</span><br><span class="line">     ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;</span><br><span class="line">     ssl_prefer_server_ciphers on;</span><br><span class="line">     #自定义404页面</span><br><span class="line">     error_page 404 &#x2F;404.html;</span><br><span class="line">     location &#x2F; &#123;</span><br><span class="line">         #网站主页路径。此路径仅供参考，具体请您按照实际目录操作。</span><br><span class="line">         root &#x2F;var&#x2F;www&#x2F;blog;</span><br><span class="line">         index  index.html index.htm;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编辑主配置文件/etc/nginx/nginx.conf为以下内容后保存并退出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user www-data;</span><br><span class="line">worker_processes auto;</span><br><span class="line">pid &#x2F;run&#x2F;nginx.pid;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">  worker_connections  768;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">  include  mime.types;</span><br><span class="line">  default_type  application&#x2F;octet-stream;</span><br><span class="line"></span><br><span class="line">  sendfile on;</span><br><span class="line">  server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name blog.shipengx.com;</span><br><span class="line">    #自定义404页面</span><br><span class="line">    error_page 404 &#x2F;404.html;</span><br><span class="line">    root &#x2F;var&#x2F;www&#x2F;blog;</span><br><span class="line">    #IP访问强制定向到域名访问</span><br><span class="line">    rewrite ^(.*)$ https:&#x2F;&#x2F;blog.shipengx.com;</span><br><span class="line">    #http访问强制定向到https访问</span><br><span class="line">    return 301 https:&#x2F;&#x2F;blog.shipengx.com$request_uri;</span><br><span class="line">  &#125;</span><br><span class="line">  #加载ssl配置文件</span><br><span class="line">  include &#x2F;etc&#x2F;nginx&#x2F;ssl&#x2F;*.conf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>最后</strong>，通过重新加载配置文件，并设置Nginx开机启动：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo nginx -s reload</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> nginx</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-3-本地端Hexo站点配置" class="heading-control"><a href="#3-3-本地端Hexo站点配置" class="headerlink" title="3.3 本地端Hexo站点配置"></a>3.3 本地端Hexo站点配置<a class="heading-anchor" href="#3-3-本地端Hexo站点配置" aria-hidden="true"></a></h2><p>将站点配置文件中的<code>deploy</code>项修改为如下内容，实现本地端向GitHub和VPS的双远端推送：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/deployment.html</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">'git'</span></span><br><span class="line">  <span class="attr">repository:</span> </span><br><span class="line">    <span class="attr">github:</span> <span class="string">git@github.com:RocShi/rocshi.github.io.git</span></span><br><span class="line">    <span class="attr">vps:</span> <span class="string">ubuntu@118.25.111.221:/home/ubuntu/blog/shipengx.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+
+<p>github对应着你的GitHub Pages项目地址，vps对应着你的VPS远程仓库的地址，记得修改！</p>
+<p><strong>假如你已经完成了域名ICP备案，并完成了本文第3章节的所有配置，在本地端的博客目录下执行常规的部署操作后在浏览器中输入域名应该就可以成功访问了，而且是支持https的！</strong></p>
+<h1 id="4-参考" class="heading-control"><a href="#4-参考" class="headerlink" title="4 参考"></a>4 参考<a class="heading-anchor" href="#4-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9mbHVuZ2dnLmNuL2FyY2hpdmVzL2Y0MTg1M2M0Lmh0bWw=" title="https://flunggg.cn/archives/f41853c4.html">快速搭建博客：优化博客<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MTgwMDg4NC9hcnRpY2xlL2RldGFpbHMvMTAzNTQ1MTMw" title="https://blog.csdn.net/weixin_41800884/article/details/103545130">服务器部署网站后，公网ip可以访问，域名不能访问问题<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3llYXJpdG8uY24vcG9zdHMvaGV4by1kZXBsb3ktdG8tVlBTLmh0bWw=" title="http://yearito.cn/posts/hexo-deploy-to-VPS.html">Hexo 搭建个人博客系列：部署上线篇<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9jbG91ZC50ZW5jZW50LmNvbS9kb2N1bWVudC9wcm9kdWN0LzQwMC8zNTI0NA==" title="https://cloud.tencent.com/document/product/400/35244">Nginx 服务器证书安装<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>建站</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Blog</tag>
+        <tag>VPS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用Hexo + GitHub Pages搭建个人博客站点</title>
+    <url>/archives/208e6058.html</url>
+    <content><![CDATA[<h1 id="1-环境安装" class="heading-control"><a href="#1-环境安装" class="headerlink" title="1 环境安装"></a>1 环境安装<a class="heading-anchor" href="#1-环境安装" aria-hidden="true"></a></h1><h2 id="1-1-Node-js" class="heading-control"><a href="#1-1-Node-js" class="headerlink" title="1.1 Node.js"></a>1.1 Node.js<a class="heading-anchor" href="#1-1-Node-js" aria-hidden="true"></a></h2><p>Windows平台直接到到<span class="exturl" data-url="aHR0cHM6Ly9ub2RlanMub3JnL2VuLw==" title="https://nodejs.org/en/">Node.js官网<i class="fa fa-external-link"></i></span>下载最新安装包进行安装（本文中所使用版本为v12.14.1）；Linux平台（以Ubuntu为例）直接通过终端命令进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install nodejs</span><br><span class="line">sudo apt-get install npm</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-Git" class="heading-control"><a href="#1-2-Git" class="headerlink" title="1.2 Git"></a>1.2 Git<a class="heading-anchor" href="#1-2-Git" aria-hidden="true"></a></h2><p>Windows平台直接到到<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb3dubG9hZHM=" title="https://git-scm.com/downloads">Git官网<i class="fa fa-external-link"></i></span>下载最新安装包进行安装（本文中所使用版本为v2.20.1），安装完成后需配置Git相关环境变量，不再赘述；Linux平台（以Ubuntu为例）直接通过终端命令进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-Hexo" class="heading-control"><a href="#1-3-Hexo" class="headerlink" title="1.3 Hexo"></a>1.3 Hexo<a class="heading-anchor" href="#1-3-Hexo" aria-hidden="true"></a></h2><p>直接通过终端命令进行安装（本文中所使用版本为v4.2）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-初始化" class="heading-control"><a href="#2-初始化" class="headerlink" title="2 初始化"></a>2 初始化<a class="heading-anchor" href="#2-初始化" aria-hidden="true"></a></h1><p>新建博客目录，进入该目录后通过终端命令进行初始化：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-主题安装" class="heading-control"><a href="#3-主题安装" class="headerlink" title="3 主题安装"></a>3 主题安装<a class="heading-anchor" href="#3-主题安装" aria-hidden="true"></a></h1><p>安装<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0" title="https://github.com/theme-next/hexo-theme-next">NexT主题<i class="fa fa-external-link"></i></span>（本文中所使用版本为v7.7.1。此外，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3p0aHh4eC9oZXhvLXRoZW1lLVdpa2l0dGVu" title="https://github.com/zthxxx/hexo-theme-Wikitten">Wikitten主题<i class="fa fa-external-link"></i></span>也很不错），两种方式：</p>
+<ul>
+<li>方法1 - 直接下载主题zip压缩包，解压到hexo/themes目录下</li>
+<li>方法2 - 进入hexo/themes目录，直接克隆GitHub上的NexT主题（速度可能稍慢）：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>将解压或克隆后的主题目录修改为next（其它名称也可，与hexo/_config.yml中的配置保持一致即可）</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="4-配置" class="heading-control"><a href="#4-配置" class="headerlink" title="4 配置"></a>4 配置<a class="heading-anchor" href="#4-配置" aria-hidden="true"></a></h1><h2 id="4-1-站点配置" class="heading-control"><a href="#4-1-站点配置" class="headerlink" title="4.1 站点配置"></a>4.1 站点配置<a class="heading-anchor" href="#4-1-站点配置" aria-hidden="true"></a></h2><p>先配置站点配置文件hexo/_config.yml中的<code>Site</code> <code>URL</code> <code>Writing</code> <code>Extensions</code>相关项，后面涉及到主题配置时还需要配置其它内容：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Site</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">朝花夕拾</span>  <span class="comment"># 站点标题</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">输出倒逼思考</span>  <span class="comment"># 站点子标题</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">Stay</span> <span class="string">hungry,</span> <span class="string">stay</span> <span class="string">foolish.</span>  <span class="comment"># 站点描述</span></span><br><span class="line"><span class="attr">keywords:</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">ShiPeng</span>  <span class="comment"># 站点作者</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span>  <span class="comment"># 站点语言</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://blog.shipengx.com</span>  <span class="comment"># 配置为你的GitHub Pages仓库地址或绑定的个人域名地址</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Writing</span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span>  <span class="comment"># 新建文章时会生成同名文件夹，可以用于存放文章图片等素材</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">hexo-theme-next</span>  <span class="comment"># 主题名称</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-2-主题配置" class="heading-control"><a href="#4-2-主题配置" class="headerlink" title="4.2 主题配置"></a>4.2 主题配置<a class="heading-anchor" href="#4-2-主题配置" aria-hidden="true"></a></h2><p>NexT主题的可配置项非常丰富，配置文件为hexo/themes/next/_config.yml，<span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy9kb2NzLw==" title="https://theme-next.org/docs/">官方文档<i class="fa fa-external-link"></i></span>是非常好的参考资料。</p>
+<h3 id="4-2-1-使能主题更新提醒" class="heading-control"><a href="#4-2-1-使能主题更新提醒" class="headerlink" title="4.2.1 使能主题更新提醒"></a>4.2.1 使能主题更新提醒<a class="heading-anchor" href="#4-2-1-使能主题更新提醒" aria-hidden="true"></a></h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Console reminder if new version released.</span></span><br><span class="line"><span class="attr">reminder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-2-配置网站图标" class="heading-control"><a href="#4-2-2-配置网站图标" class="headerlink" title="4.2.2 配置网站图标"></a>4.2.2 配置网站图标<a class="heading-anchor" href="#4-2-2-配置网站图标" aria-hidden="true"></a></h3><p>将自己的网站图标（大小为16x16和32x32）放到hexo/themes/next/source/images目录下，并修改主题配置文件<code>favicon</code>项的<code>small</code>和<code>medium</code>：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">favicon:</span></span><br><span class="line">  <span class="attr">small:</span> <span class="string">/images/myfavicon-16x16.png</span></span><br><span class="line">  <span class="attr">medium:</span> <span class="string">/images/myfavicon-32x32.png</span></span><br><span class="line">  <span class="attr">apple_touch_icon:</span> <span class="string">/images/apple-touch-icon-next.png</span></span><br><span class="line">  <span class="attr">safari_pinned_tab:</span> <span class="string">/images/logo.svg</span></span><br><span class="line">  <span class="comment">#android_manifest: /images/manifest.json</span></span><br><span class="line">  <span class="comment">#ms_browserconfig: /images/browserconfig.xml</span></span><br></pre></td></tr></table></figure>
+<p>我的图标文件来自<span class="exturl" data-url="aHR0cHM6Ly93d3cuZWFzeWljb24ubmV0Lw==" title="https://www.easyicon.net/">这里<i class="fa fa-external-link"></i></span>。</p>
+<h3 id="4-2-3-配置网站页脚" class="heading-control"><a href="#4-2-3-配置网站页脚" class="headerlink" title="4.2.3 配置网站页脚"></a>4.2.3 配置网站页脚<a class="heading-anchor" href="#4-2-3-配置网站页脚" aria-hidden="true"></a></h3><ul>
+<li>设置显示内容<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="comment"># Specify the date when the site was setup. If not defined, current year will be used.</span></span><br><span class="line">  <span class="attr">since:</span> <span class="number">2020</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Icon between year and copyright info.</span></span><br><span class="line">  <span class="attr">icon:</span></span><br><span class="line">    <span class="comment"># Icon name in Font Awesome. See: https://fontawesome.com/v4.7.0/icons/</span></span><br><span class="line">    <span class="comment"># `heart` is recommended with animation in red (#ff0000).</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">heart</span></span><br><span class="line">    <span class="comment"># If you want to animate the icon, set it to true.</span></span><br><span class="line">    <span class="attr">animated:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># Change the color of icon, using Hex Code.</span></span><br><span class="line">    <span class="attr">color:</span> <span class="string">"#ff0000"</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># If not defined, `author` from Hexo `_config.yml` will be used.</span></span><br><span class="line">  <span class="attr">copyright:</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">powered:</span></span><br><span class="line">    <span class="comment"># Hexo link (Powered by Hexo).</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># Version info of Hexo after Hexo link (vX.X.X).</span></span><br><span class="line">    <span class="attr">version:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">theme:</span></span><br><span class="line">    <span class="comment"># Theme &amp; scheme info link (Theme - NexT.scheme).</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># Version info of NexT after scheme info (vX.X.X).</span></span><br><span class="line">    <span class="attr">version:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Beian ICP and gongan information for Chinese users. See: http://www.beian.miit.gov.cn, http://www.beian.gov.cn</span></span><br><span class="line">  <span class="attr">beian:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">icp:</span></span><br><span class="line">    <span class="comment"># The digit in the num of gongan beian.</span></span><br><span class="line">    <span class="attr">gongan_id:</span></span><br><span class="line">    <span class="comment"># The full num of gongan beian.</span></span><br><span class="line">    <span class="attr">gongan_num:</span></span><br><span class="line">    <span class="comment"># The icon for gongan beian. See: http://www.beian.gov.cn/portal/download</span></span><br><span class="line">    <span class="attr">gongan_icon_url:</span></span><br></pre></td></tr></table></figure></li>
+<li>设置footer居中（仅针对Mist Scheme）<br>找到hexo/themes/next/source/css/_schemes/Mist/_layout.styl，搜索<code>.footer-inner</code>，将其里面<code>text-align</code>的值设置为<code>center</code>：<figure class="highlight styl"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.footer-inner</span> &#123;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line"></span><br><span class="line">  +mobile() &#123;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">    <span class="attribute">width</span>: auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="4-2-4-添加CC-License" class="heading-control"><a href="#4-2-4-添加CC-License" class="headerlink" title="4.2.4 添加CC License"></a>4.2.4 添加CC License<a class="heading-anchor" href="#4-2-4-添加CC-License" aria-hidden="true"></a></h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">creative_commons:</span></span><br><span class="line">  <span class="attr">license:</span> <span class="string">by-nc-sa</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">post:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">language:</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-5-选择主题风格" class="heading-control"><a href="#4-2-5-选择主题风格" class="headerlink" title="4.2.5 选择主题风格"></a>4.2.5 选择主题风格<a class="heading-anchor" href="#4-2-5-选择主题风格" aria-hidden="true"></a></h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Schemes</span></span><br><span class="line"><span class="comment"># scheme: Muse</span></span><br><span class="line"><span class="attr">scheme:</span> <span class="string">Mist</span></span><br><span class="line"><span class="comment"># scheme: Pisces</span></span><br><span class="line"><span class="comment"># scheme: Gemini</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-6-为menu添加分类按钮" class="heading-control"><a href="#4-2-6-为menu添加分类按钮" class="headerlink" title="4.2.6 为menu添加分类按钮"></a>4.2.6 为menu添加<code>分类</code>按钮<a class="heading-anchor" href="#4-2-6-为menu添加分类按钮" aria-hidden="true"></a></h3><ul>
+<li>新建categories对应的page，在博客目录下执行终端命令：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo n page categories</span><br></pre></td></tr></table></figure></li>
+<li>设置categories页面类型，编辑hexo/source/categories/index.md为以下内容：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 分类</span><br><span class="line">date: 2020-01-30 15:03:34  </span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">comments: false</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>comments: false</code>是为关闭本页面的评论系统（若配置了的话）</p>
+</blockquote>
+</li>
+<li>修改主题配置文件的<code>menu</code>项，打开<code>categories</code>：<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">home</span></span><br><span class="line">  <span class="comment">#about: /about/ || user</span></span><br><span class="line">  <span class="comment">#tags: /tags/ || tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">archive</span></span><br><span class="line">  <span class="comment">#schedule: /schedule/ || calendar</span></span><br><span class="line">  <span class="comment">#sitemap: /sitemap.xml || sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404/ || heartbeat</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可以调换menu顺序，会直接反应到站点侧边栏的显示上</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="4-2-7-使能menu-icons和item-badges" class="heading-control"><a href="#4-2-7-使能menu-icons和item-badges" class="headerlink" title="4.2.7 使能menu icons和item badges"></a>4.2.7 使能menu icons和item badges<a class="heading-anchor" href="#4-2-7-使能menu-icons和item-badges" aria-hidden="true"></a></h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Enable / Disable menu icons / item badges.</span></span><br><span class="line"><span class="attr">menu_settings:</span></span><br><span class="line">  <span class="attr">icons:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">badges:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-8-侧边栏、头像、社交相关" class="heading-control"><a href="#4-2-8-侧边栏、头像、社交相关" class="headerlink" title="4.2.8 侧边栏、头像、社交相关"></a>4.2.8 侧边栏、头像、社交相关<a class="heading-anchor" href="#4-2-8-侧边栏、头像、社交相关" aria-hidden="true"></a></h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">sidebar:</span></span><br><span class="line">  <span class="comment"># Sidebar Position.</span></span><br><span class="line">  <span class="attr">position:</span> <span class="string">left</span></span><br><span class="line">  <span class="comment">#position: right</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Manual define the sidebar width. If commented, will be default for:</span></span><br><span class="line">  <span class="comment"># Muse | Mist: 320</span></span><br><span class="line">  <span class="comment"># Pisces | Gemini: 240</span></span><br><span class="line">  <span class="comment">#width: 300</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Sidebar Display (only for Muse | Mist), available values:</span></span><br><span class="line">  <span class="comment">#  - post    expand on posts automatically. Default.</span></span><br><span class="line">  <span class="comment">#  - always  expand for all pages automatically.</span></span><br><span class="line">  <span class="comment">#  - hide    expand only when click on the sidebar toggle icon.</span></span><br><span class="line">  <span class="comment">#  - remove  totally remove sidebar including sidebar toggle.</span></span><br><span class="line">  <span class="attr">display:</span> <span class="string">post</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Sidebar padding in pixels.</span></span><br><span class="line">  <span class="attr">padding:</span> <span class="number">18</span></span><br><span class="line">  <span class="comment"># Sidebar offset from top menubar in pixels (only for Pisces | Gemini).</span></span><br><span class="line">  <span class="attr">offset:</span> <span class="number">12</span></span><br><span class="line">  <span class="comment"># Enable sidebar on narrow view (only for Muse | Mist).</span></span><br><span class="line">  <span class="attr">onmobile:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Sidebar Avatar</span></span><br><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="comment"># Replace the default image and set the url here.</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">/images/avatar.jpg</span></span><br><span class="line">  <span class="comment"># If true, the avatar will be dispalyed in circle.</span></span><br><span class="line">  <span class="attr">rounded:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># If true, the avatar will be rotated with the cursor.</span></span><br><span class="line">  <span class="attr">rotated:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Posts / Categories / Tags in sidebar.</span></span><br><span class="line"><span class="attr">site_state:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Social Links</span></span><br><span class="line"><span class="comment"># Usage: `Key: permalink || icon`</span></span><br><span class="line"><span class="comment"># Key is the link label showing to end users.</span></span><br><span class="line"><span class="comment"># Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.</span></span><br><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="attr">GitHub:</span> <span class="string">https://github.com/RocShi</span> <span class="string">||</span> <span class="string">github</span></span><br><span class="line">  <span class="attr">E-Mail:</span> <span class="string">mailto:RocShi@outlook.com</span> <span class="string">||</span> <span class="string">envelope</span></span><br><span class="line">  <span class="comment">#Weibo: https://weibo.com/yourname || weibo</span></span><br><span class="line">  <span class="comment">#Google: https://plus.google.com/yourname || google</span></span><br><span class="line">  <span class="comment">#Twitter: https://twitter.com/yourname || twitter</span></span><br><span class="line">  <span class="comment">#FB Page: https://www.facebook.com/yourname || facebook</span></span><br><span class="line">  <span class="comment">#StackOverflow: https://stackoverflow.com/yourname || stack-overflow</span></span><br><span class="line">  <span class="comment">#YouTube: https://youtube.com/yourname || youtube</span></span><br><span class="line">  <span class="comment">#Instagram: https://instagram.com/yourname || instagram</span></span><br><span class="line">  <span class="comment">#Skype: skype:yourname?call|chat || skype</span></span><br><span class="line">  <span class="comment">#RSS: /atom.xml || rss</span></span><br><span class="line"></span><br><span class="line"><span class="attr">social_icons:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">icons_only:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">transition:</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-9-配置侧边栏目录" class="heading-control"><a href="#4-2-9-配置侧边栏目录" class="headerlink" title="4.2.9 配置侧边栏目录"></a>4.2.9 配置侧边栏目录<a class="heading-anchor" href="#4-2-9-配置侧边栏目录" aria-hidden="true"></a></h3><p>修改主题配置文件的<code>toc</code>项：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">toc:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Automatically add list number to toc.</span></span><br><span class="line">  <span class="attr">number:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># If true, all words will placed on next lines if header width longer then sidebar width.</span></span><br><span class="line">  <span class="attr">wrap:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># If true, all level of TOC in a post will be displayed, rather than the activated part of it.</span></span><br><span class="line">  <span class="attr">expand_all:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Maximum heading depth of generated toc.</span></span><br><span class="line">  <span class="attr">max_depth:</span> <span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-10-打赏" class="heading-control"><a href="#4-2-10-打赏" class="headerlink" title="4.2.10 打赏"></a>4.2.10 打赏<a class="heading-anchor" href="#4-2-10-打赏" aria-hidden="true"></a></h3><p>将hexo/themes/hexo-theme-next/source/images下的wechatpay.png和alipay.png分别替换为自己的微信收钱码与支付宝收钱码，并修改主题配置文件的<code>reward</code>项：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">reward:</span></span><br><span class="line">  <span class="attr">wechatpay:</span> <span class="string">/images/wechatpay.png</span></span><br><span class="line">  <span class="attr">alipay:</span> <span class="string">/images/alipay.jpg</span></span><br><span class="line"><span class="comment">#bitcoin: /images/bitcoin.png</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-11-相关文章推荐" class="heading-control"><a href="#4-2-11-相关文章推荐" class="headerlink" title="4.2.11 相关文章推荐"></a>4.2.11 相关文章推荐<a class="heading-anchor" href="#4-2-11-相关文章推荐" aria-hidden="true"></a></h3><ul>
+<li>安装<code>hexo-related-popular-posts</code>插件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-related-popular-posts --save</span><br></pre></td></tr></table></figure></li>
+<li>配置主题配置文件hexo/themes/next/_config.xml中的related_posts<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">related_posts:</span></span><br><span class="line"><span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">猜你喜欢</span> <span class="comment"># Custom header, leave empty to use the default one</span></span><br><span class="line"><span class="attr">display_in_home:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">params:</span></span><br><span class="line">  <span class="attr">maxCount:</span> <span class="number">5</span></span><br><span class="line">  <span class="comment">#PPMixingRate: 0.0</span></span><br><span class="line">  <span class="comment">#isDate: false</span></span><br><span class="line">  <span class="comment">#isImage: false</span></span><br><span class="line">  <span class="comment">#isExcerpt: false</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="4-2-12-代码块" class="heading-control"><a href="#4-2-12-代码块" class="headerlink" title="4.2.12 代码块"></a>4.2.12 代码块<a class="heading-anchor" href="#4-2-12-代码块" aria-hidden="true"></a></h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">codeblock:</span></span><br><span class="line"><span class="comment"># Code Highlight theme</span></span><br><span class="line"><span class="comment"># Available values: normal | night | night eighties | night blue | night bright | solarized | solarized dark | galactic</span></span><br><span class="line"><span class="comment"># See: https://github.com/chriskempson/tomorrow-theme</span></span><br><span class="line"><span class="attr">highlight_theme:</span> <span class="string">solarized</span> <span class="string">dark</span></span><br><span class="line"><span class="comment"># Add copy button on codeblock</span></span><br><span class="line"><span class="attr">copy_button:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># Show text copy result.</span></span><br><span class="line">    <span class="attr">show_result:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># Available values: default | flat | mac</span></span><br><span class="line">    <span class="attr">style:</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-13-返回顶部" class="heading-control"><a href="#4-2-13-返回顶部" class="headerlink" title="4.2.13 返回顶部"></a>4.2.13 返回顶部<a class="heading-anchor" href="#4-2-13-返回顶部" aria-hidden="true"></a></h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">back2top:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Back to top in sidebar.</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Scroll percent label in b2t button.</span></span><br><span class="line">  <span class="attr">scrollpercent:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-14-阅读进度" class="heading-control"><a href="#4-2-14-阅读进度" class="headerlink" title="4.2.14 阅读进度"></a>4.2.14 阅读进度<a class="heading-anchor" href="#4-2-14-阅读进度" aria-hidden="true"></a></h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">reading_progress:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Available values: top | bottom</span></span><br><span class="line">  <span class="attr">position:</span> <span class="string">top</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">"#37c6c0"</span></span><br><span class="line">  <span class="attr">height:</span> <span class="string">3px</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-15-添加GitHub角标" class="heading-control"><a href="#4-2-15-添加GitHub角标" class="headerlink" title="4.2.15 添加GitHub角标"></a>4.2.15 添加GitHub角标<a class="heading-anchor" href="#4-2-15-添加GitHub角标" aria-hidden="true"></a></h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">github_banner:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">permalink:</span> <span class="string">https://github.com/rocshi</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">Follow</span> <span class="string">me</span> <span class="string">on</span> <span class="string">GitHub</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-16-字体优化" class="heading-control"><a href="#4-2-16-字体优化" class="headerlink" title="4.2.16 字体优化"></a>4.2.16 字体优化<a class="heading-anchor" href="#4-2-16-字体优化" aria-hidden="true"></a></h3><ul>
+<li>配置主题配置文件hexo/themes/next/_config.xml中的font<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">font:</span></span><br><span class="line"><span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uri of fonts host, e.g. //fonts.googleapis.com (Default).</span></span><br><span class="line"><span class="attr">host:</span> <span class="string">fonts.loli.net</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Font options:</span></span><br><span class="line"><span class="comment"># `external: true` will load this font family from `host` above.</span></span><br><span class="line"><span class="comment"># `family: Times New Roman`. Without any quotes.</span></span><br><span class="line"><span class="comment"># `size: x.x`. Use `em` as unit. Default: 1 (16px)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Global font settings used for all elements inside &lt;body&gt;.</span></span><br><span class="line"><span class="attr">global:</span></span><br><span class="line">  <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">family:</span> <span class="string">EB</span> <span class="string">Garamond</span></span><br><span class="line">  <span class="attr">size:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Font settings for site title (.site-title).</span></span><br><span class="line"><span class="attr">title:</span></span><br><span class="line">  <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">family:</span> <span class="string">Cinzel</span> <span class="string">Decorative</span></span><br><span class="line">  <span class="attr">size:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Font settings for headlines (&lt;h1&gt; to &lt;h6&gt;).</span></span><br><span class="line"><span class="attr">headings:</span></span><br><span class="line">  <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">family:</span> <span class="string">Noto</span> <span class="string">Serif</span> <span class="string">SC</span></span><br><span class="line">  <span class="attr">size:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Font settings for posts (.post-body).</span></span><br><span class="line"><span class="attr">posts:</span></span><br><span class="line">  <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">family:</span> <span class="string">Noto</span> <span class="string">Serif</span> <span class="string">SC</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Font settings for &lt;code&gt; and code blocks.</span></span><br><span class="line"><span class="attr">codes:</span></span><br><span class="line">  <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">family:</span> <span class="string">Source</span> <span class="string">Code</span> <span class="string">Pro</span></span><br></pre></td></tr></table></figure></li>
+<li>修改hexo/themes/next/source/css/_variables/base.styl中的中文字体<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Font families.</span><br><span class="line">-$font-family-chinese      &#x3D; &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;;</span><br><span class="line">+$font-family-chinese      &#x3D; &quot;Noto Serif SC&quot;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="4-2-16-使能顶部加载条" class="heading-control"><a href="#4-2-16-使能顶部加载条" class="headerlink" title="4.2.16 使能顶部加载条"></a>4.2.16 使能顶部加载条<a class="heading-anchor" href="#4-2-16-使能顶部加载条" aria-hidden="true"></a></h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">pace:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Themes list:</span></span><br><span class="line">  <span class="comment"># big-counter | bounce | barber-shop | center-atom | center-circle | center-radar | center-simple</span></span><br><span class="line">  <span class="comment"># corner-indicator | fill-left | flat-top | flash | loading-bar | mac-osx | material | minimal</span></span><br><span class="line">  <span class="attr">theme:</span> <span class="string">minimal</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-17-添加sitemap" class="heading-control"><a href="#4-2-17-添加sitemap" class="headerlink" title="4.2.17 添加sitemap"></a>4.2.17 添加sitemap<a class="heading-anchor" href="#4-2-17-添加sitemap" aria-hidden="true"></a></h3><ul>
+<li>安装<code>hexo-generator-sitemap</code>插件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure></li>
+<li>在站点配置文件hexo/_config.xml中添加<code>plugins</code>配置项<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="attr">plugins:</span> <span class="string">hexo-generator-sitemap</span></span><br></pre></td></tr></table></figure></li>
+<li>配置主题配置文件hexo/themes/next/_config.xml中的sitemap menu<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">sitemap:</span> <span class="string">/sitemap.xml</span> <span class="string">||</span> <span class="string">sitemap</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="4-2-18-开启站内搜索" class="heading-control"><a href="#4-2-18-开启站内搜索" class="headerlink" title="4.2.18 开启站内搜索"></a>4.2.18 开启站内搜索<a class="heading-anchor" href="#4-2-18-开启站内搜索" aria-hidden="true"></a></h3><ul>
+<li>安装<code>hexo-generator-searchdb</code>插件，在博客目录下执行终端命令：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure></li>
+<li>在站点配置文件hexo/_config.xml中添加如下代码：<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">10000</span></span><br></pre></td></tr></table></figure></li>
+<li>配置主题配置文件hexo/themes/next/_config.xml中的<code>local_search</code>项<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Local Search</span></span><br><span class="line"><span class="comment"># Dependencies: https://github.com/theme-next/hexo-generator-searchdb</span></span><br><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># If auto, trigger search by changing input.</span></span><br><span class="line">  <span class="comment"># If manual, trigger search by pressing enter key or search button.</span></span><br><span class="line">  <span class="attr">trigger:</span> <span class="string">auto</span></span><br><span class="line">  <span class="comment"># Show top n results per article, show all results by setting to -1</span></span><br><span class="line">  <span class="attr">top_n_per_article:</span> <span class="number">1</span></span><br><span class="line">  <span class="comment"># Unescape html strings to the readable one.</span></span><br><span class="line">  <span class="attr">unescape:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># Preload the search data when the page loads.</span></span><br><span class="line">  <span class="attr">preload:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="4-2-19-SEO优化" class="heading-control"><a href="#4-2-19-SEO优化" class="headerlink" title="4.2.19 SEO优化"></a>4.2.19 SEO优化<a class="heading-anchor" href="#4-2-19-SEO优化" aria-hidden="true"></a></h3><ul>
+<li>SEO优化较为复杂，可参考<span class="exturl" data-url="aHR0cHM6Ly9ob3hpcy5naXRodWIuaW8vSGV4bytOZXh0JTIwU0VPJUU0JUJDJTk4JUU1JThDJTk2Lmh0bWw=" title="https://hoxis.github.io/Hexo+Next%20SEO%E4%BC%98%E5%8C%96.html">这篇文章<i class="fa fa-external-link"></i></span>，HTML元标记中的content直接添加至主题配置文件对应位置即可完成站点验证，无需添加至head.swig；也可以参考<span class="exturl" data-url="aHR0cHM6Ly9mbHVuZ2dnLmNuL2FyY2hpdmVzLzZiMTA0YjRlLmh0bWw=" title="https://flunggg.cn/archives/6b104b4e.html">这篇文章<i class="fa fa-external-link"></i></span>：<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ---------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># SEO Settings</span></span><br><span class="line"><span class="comment"># ---------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Disable Baidu transformation on mobile devices.</span></span><br><span class="line"><span class="attr">disable_baidu_transformation:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set a canonical link tag for your Hexo site.</span></span><br><span class="line"><span class="comment"># See: https://support.google.com/webmasters/answer/139066</span></span><br><span class="line"><span class="comment"># Remember to set up your URL in Hexo `_config.yml` (e.g. url: http://yoursite.com)</span></span><br><span class="line"><span class="attr">canonical:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Change headers hierarchy on site-subtitle (will be main site description) and on all post / page titles for better SEO-optimization.</span></span><br><span class="line"><span class="attr">seo:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># If true, site-subtitle will be added to index page.</span></span><br><span class="line"><span class="comment"># Remember to set up your site-subtitle in Hexo `_config.yml` (e.g. subtitle: Subtitle)</span></span><br><span class="line"><span class="attr">index_with_subtitle:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Automatically add external URL with Base64 encrypt &amp; decrypt.</span></span><br><span class="line"><span class="attr">exturl:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Google Webmaster tools verification.</span></span><br><span class="line"><span class="comment"># See: https://www.google.com/webmasters</span></span><br><span class="line"><span class="attr">google_site_verification:</span>  <span class="comment"># 向Google提交网站时将HTML元标记content填到此处</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Bing Webmaster tools verification.</span></span><br><span class="line"><span class="comment"># See: https://www.bing.com/webmaster</span></span><br><span class="line"><span class="attr">bing_site_verification:</span>  <span class="comment"># 向百度提交网站时将HTML元标记content填到此处</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Yandex Webmaster tools verification.</span></span><br><span class="line"><span class="comment"># See: https://webmaster.yandex.ru</span></span><br><span class="line"><span class="attr">yandex_site_verification:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Baidu Webmaster tools verification.</span></span><br><span class="line"><span class="comment"># See: https://ziyuan.baidu.com/site</span></span><br><span class="line"><span class="attr">baidu_site_verification:</span>  <span class="comment"># 向必应提交网站时将HTML元标记content填到此处</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Enable baidu push so that the blog will push the url to baidu automatically which is very helpful for SEO.</span></span><br><span class="line"><span class="attr">baidu_push:</span> <span class="literal">true</span>  <span class="comment"># 开启自动向百度提交URL</span></span><br></pre></td></tr></table></figure></li>
+<li>文章URL优化<br>首先，安装<code>hexo-abbrlink</code>插件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-abbrlink --save</span><br></pre></td></tr></table></figure>
+然后，站点配置文件的<code>permalink</code>项，并添加<code>abbrlink</code>项<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">permalink:</span> <span class="string">archives/:abbrlink.html</span></span><br><span class="line"><span class="attr">abbrlink:</span></span><br><span class="line">  <span class="attr">alg:</span> <span class="string">crc32</span>  <span class="comment"># 算法：crc16(default) and crc32</span></span><br><span class="line">  <span class="attr">rep:</span> <span class="string">hex</span>    <span class="comment"># 进制：dec(default) and hex</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="4-2-20-开启图片灯箱" class="heading-control"><a href="#4-2-20-开启图片灯箱" class="headerlink" title="4.2.20 开启图片灯箱"></a>4.2.20 开启图片灯箱<a class="heading-anchor" href="#4-2-20-开启图片灯箱" aria-hidden="true"></a></h3><ul>
+<li>在主题配置文件中使能该功能<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># FancyBox is a tool that offers a nice and elegant way to add zooming functionality for images.</span></span><br><span class="line"><span class="comment"># For more information: https://fancyapps.com/fancybox</span></span><br><span class="line"><span class="attr">fancybox:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></li>
+<li>配置CDN<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># FancyBox</span></span><br><span class="line"><span class="comment"># jquery: //cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js</span></span><br><span class="line"><span class="comment"># fancybox: //cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js</span></span><br><span class="line"><span class="comment"># fancybox_css: //cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css</span></span><br><span class="line"><span class="attr">jquery:</span> <span class="string">//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js</span></span><br><span class="line"><span class="attr">fancybox:</span> <span class="string">//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js</span></span><br><span class="line"><span class="attr">fancybox_css:</span> <span class="string">//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css</span></span><br></pre></td></tr></table></figure></li>
+<li>设置图片居中（仅针对Mist Scheme）<br>参考了<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLnNpbmdlZS5tZS8yMDE3LzEyLzA3L21pc3QtaW1nLWNlbnRlci8=" title="https://blog.singee.me/2017/12/07/mist-img-center/">这篇文章<i class="fa fa-external-link"></i></span>，找到hexo/themes/next/source/css/_schemes/Mist/_posts-expend.styl，搜索<code>.post-body img</code>，将其里面<code>margin-left</code>的值设置为<code>0 auto</code>：<figure class="highlight styl"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.post-body</span> <span class="selector-tag">img</span> &#123;</span><br><span class="line">  <span class="attribute">margin-left</span>: <span class="number">0</span> auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="4-2-21-修改文章内链接的样式" class="heading-control"><a href="#4-2-21-修改文章内链接的样式" class="headerlink" title="4.2.21 修改文章内链接的样式"></a>4.2.21 修改文章内链接的样式<a class="heading-anchor" href="#4-2-21-修改文章内链接的样式" aria-hidden="true"></a></h3><p>参考<span class="exturl" data-url="aHR0cDovL2plZmZ5YW5nLnRvcC9IZXhvL0hleG8lRTQlQjglQkIlRTklQTIlOThOZXh0JUU3JUJFJThFJUU1JThDJTk2Lw==" title="http://jeffyang.top/Hexo/Hexo%E4%B8%BB%E9%A2%98Next%E7%BE%8E%E5%8C%96/">这篇文章<i class="fa fa-external-link"></i></span>，v7.7.1版本的NexT主题中的添加位置为hexo/themes/next/source/css/main.styl</p>
+<h3 id="4-2-22-添加valine评论系统" class="heading-control"><a href="#4-2-22-添加valine评论系统" class="headerlink" title="4.2.22 添加valine评论系统"></a>4.2.22 添加valine评论系统<a class="heading-anchor" href="#4-2-22-添加valine评论系统" aria-hidden="true"></a></h3><ul>
+<li>参考<span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9mNDY1OGRmNjZhMTU=" title="https://www.jianshu.com/p/f4658df66a15">这篇文章<i class="fa fa-external-link"></i></span>添加valine评论系统</li>
+<li>为valine开启CDN<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Valine</span></span><br><span class="line"><span class="comment"># valine: //cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js</span></span><br><span class="line"><span class="comment"># valine: //cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js</span></span><br><span class="line"><span class="attr">valine:</span> <span class="string">//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js</span></span><br></pre></td></tr></table></figure></li>
+<li>通过<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3poYW9qdW4xOTk4L1ZhbGluZS1BZG1pbg==" title="https://github.com/zhaojun1998/Valine-Admin">Valine扩展应用<i class="fa fa-external-link"></i></span>增强Valine的邮件通知功能，实践中将邮件发送方指定为了个人QQ邮箱，将邮件接收方指定为了个人outlook邮箱，功能测试正常</li>
+</ul>
+<h3 id="4-2-23-配置canvas-nest背景效果" class="heading-control"><a href="#4-2-23-配置canvas-nest背景效果" class="headerlink" title="4.2.23 配置canvas_nest背景效果"></a>4.2.23 配置canvas_nest背景效果<a class="heading-anchor" href="#4-2-23-配置canvas-nest背景效果" aria-hidden="true"></a></h3><ul>
+<li>在主题配置文件中使能该选项<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">canvas_nest:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">onmobile:</span> <span class="literal">true</span> <span class="comment"># Display on mobile or not</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">"0,0,255"</span> <span class="comment"># RGB values, use `,` to separate</span></span><br><span class="line">  <span class="attr">opacity:</span> <span class="number">0.5</span> <span class="comment"># The opacity of line: 0~1</span></span><br><span class="line">  <span class="attr">zIndex:</span> <span class="number">-1</span> <span class="comment"># z-index property of the background</span></span><br><span class="line">  <span class="attr">count:</span> <span class="number">99</span> <span class="comment"># The number of lines</span></span><br></pre></td></tr></table></figure></li>
+<li>配置CDN<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Internal version: 1.0.0</span></span><br><span class="line"><span class="comment"># canvas_nest: //cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js</span></span><br><span class="line"><span class="comment"># canvas_nest_nomobile: //cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest-nomobile.min.js</span></span><br><span class="line"><span class="attr">canvas_nest:</span> <span class="string">//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js</span></span><br><span class="line"><span class="attr">canvas_nest_nomobile:</span> <span class="string">//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest-nomobile.min.js</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="4-2-24-配置标题锚点" class="heading-control"><a href="#4-2-24-配置标题锚点" class="headerlink" title="4.2.24 配置标题锚点"></a>4.2.24 配置标题锚点<a class="heading-anchor" href="#4-2-24-配置标题锚点" aria-hidden="true"></a></h3><ul>
+<li>在博客目录下安装<code>hexo-theme-next-anchor</code>插件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-theme-next-anchor</span><br></pre></td></tr></table></figure></li>
+<li>在主题配置文件中添加如下内容：<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">anchor:</span></span><br><span class="line"><span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">color:</span> <span class="string">'#0e83cd'</span></span><br><span class="line"><span class="attr">position:</span> <span class="string">right</span> <span class="comment"># If left, anchors will always be visible.</span></span><br><span class="line"><span class="attr">margin:</span> <span class="string">7px</span> </span><br><span class="line"><span class="attr">text:</span> <span class="string">'#'</span></span><br><span class="line"><span class="attr">icon:</span></span><br><span class="line">  <span class="comment"># If true, the `text` option will be ignored.</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span> </span><br><span class="line">  <span class="comment"># By default, NexT has built-in FontAwesome support.</span></span><br><span class="line">  <span class="comment"># This option means `font-family: FontAwesome`, so DO Not change it.</span></span><br><span class="line">  <span class="comment"># Also you can choose ForkAwesome, but that's another story.</span></span><br><span class="line">  <span class="attr">font:</span> <span class="string">FontAwesome</span></span><br><span class="line">  <span class="attr">content:</span> <span class="string">\f0c1</span> <span class="comment"># CSS content for FontAwesome &amp; ForkAwesome.</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="5-新建文章" class="heading-control"><a href="#5-新建文章" class="headerlink" title="5 新建文章"></a>5 新建文章<a class="heading-anchor" href="#5-新建文章" aria-hidden="true"></a></h1><p>先将post模板hexo/scaffolds/post.md中的内容修改为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: &#123;&#123; title &#125;&#125;</span><br><span class="line">date: &#123;&#123; date &#125;&#125;</span><br><span class="line">categories:</span><br><span class="line">tags:</span><br><span class="line">keywords:</span><br><span class="line">description:</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>再进入到博客目录下通过终端命令新建文章：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo n post postName</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-生成静态页面" class="heading-control"><a href="#6-生成静态页面" class="headerlink" title="6 生成静态页面"></a>6 生成静态页面<a class="heading-anchor" href="#6-生成静态页面" aria-hidden="true"></a></h1><ul>
+<li>如果仅修改或增删了文章，请在博客目录下执行：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure></li>
+<li>如果主题配置或样式等也做了修改，请在博客目录下执行：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="7-本地启动" class="heading-control"><a href="#7-本地启动" class="headerlink" title="7 本地启动"></a>7 本地启动<a class="heading-anchor" href="#7-本地启动" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<h1 id="8-部署到GitHub-Pages" class="heading-control"><a href="#8-部署到GitHub-Pages" class="headerlink" title="8 部署到GitHub Pages"></a>8 部署到GitHub Pages<a class="heading-anchor" href="#8-部署到GitHub-Pages" aria-hidden="true"></a></h1><ul>
+<li>申请GitHub账号并进行配置SSH Key等，不再赘述</li>
+<li>创建GitHub Pages项目</li>
+<li>部署<br>首先修改站点配置文件的<code>deploy</code>项，将<code>repository</code>修改为个人的GitHub Pages仓库地址（仅第一次部署时需要）：<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">'git'</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:RocShi/rocshi.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+然后在博客目录下安装<code>hexo-deployer-git</code>插件（第一次部署时）：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+最后在博客目录下进行部署：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="9-GitHub-Pages绑定到个人域名" class="heading-control"><a href="#9-GitHub-Pages绑定到个人域名" class="headerlink" title="9 GitHub Pages绑定到个人域名"></a>9 GitHub Pages绑定到个人域名<a class="heading-anchor" href="#9-GitHub-Pages绑定到个人域名" aria-hidden="true"></a></h1><ul>
+<li><p>购买域名（以<span class="exturl" data-url="aHR0cHM6Ly9kbnNwb2QuY2xvdWQudGVuY2VudC5jb20v" title="https://dnspod.cloud.tencent.com/">腾讯云<i class="fa fa-external-link"></i></span>为例）</p>
+</li>
+<li><p>添加CNAME解析记录<br>主机记录设置为<code>blog</code>（以二级域名为例，其它也可），记录值设置为GitHub Pages仓库名<code>rocshi.github.io</code></p>
+</li>
+<li><p>设置GitHub Pages项目<br><code>Custom domain</code>添加待绑定域名，我的是二级域名 blog.shipengx.com，开启<code>Enforce HTTPS</code>。可能会遇到以下问题：</p>
+<ul>
+<li><strong>问题1 - 绑定到二级域名浏览器提示不安全，绑定到一级域名安全</strong><br>起初绑定的为一级域名 shipengx.com，后改为了二级域名 blog.shipengx.com，出现此问题的原因为浏览器缓存了绑定一级域名时的SSL证书，关闭浏览器并清理浏览器缓存即可解决</li>
+<li><strong>问题2 - 绑定域名后valine评论系统不可用</strong><br>绑定域名后评论框下方提示：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Code 403: 访问被api域名白名单拒绝,请检查你的安全域名设置.</span><br></pre></td></tr></table></figure>
+原因为未将所绑定域名添加至LeanCloud的Web安全域名白名单，添加即可解决</li>
+</ul>
+</li>
+<li><p>在hexo/source目录下创建无扩展名的CNAME文件，内容为待绑定域名，我的是二级域名 blog.shipengx.com</p>
+</li>
+</ul>
+<h1 id="10-参考" class="heading-control"><a href="#10-参考" class="headerlink" title="10  参考"></a>10  参考<a class="heading-anchor" href="#10-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cDovL2licnVjZS5pbmZvLzIwMTMvMTEvMjIvaGV4by15b3VyLWJsb2c=" title="http://ibruce.info/2013/11/22/hexo-your-blog">hexo你的博客<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mv" title="https://hexo.io/docs/">Hexo Docs<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy9kb2NzLw==" title="https://theme-next.org/docs/">Theme next docs<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL2plZmZ5YW5nLnRvcC9IZXhvL0hleG8lRTQlQjglQkIlRTklQTIlOThOZXh0JUU3JUJFJThFJUU1JThDJTk2Lw==" title="http://jeffyang.top/Hexo/Hexo%E4%B8%BB%E9%A2%98Next%E7%BE%8E%E5%8C%96/">Hexo博客设置以及Next主题美化<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cucXRtdW5pYW8uY29tLzIwMTkvMTAvMTYvaGV4by10aGVtZS1sYW5kc2NhcGluZy8=" title="https://www.qtmuniao.com/2019/10/16/hexo-theme-landscaping/">Hexo Next 主题进阶设置<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ndWFucXIuY29tL3N0dWR5L2Jsb2cvaGV4by10aGVtZS1uZXh0LWN1c3RvbWl6YXRpb24v" title="https://guanqr.com/study/blog/hexo-theme-next-customization/">Hexo-NexT 主题个性优化<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly92YWxpbmUuanMub3JnLw==" title="https://valine.js.org/">Valine Docs<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9mNDY1OGRmNjZhMTU=" title="https://www.jianshu.com/p/f4658df66a15">Hexo博客使用valine评论系统无效果及终极解决方案<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3llYXJpdG8uY24vY2F0ZWdvcmllcy8lRTYlOEElODAlRTYlOUMlQUYvJUU1JThEJTlBJUU1JUFFJUEyLw==" title="http://yearito.cn/categories/%E6%8A%80%E6%9C%AF/%E5%8D%9A%E5%AE%A2/">yearito的系列文章<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9mbHVuZ2dnLmNuL2NhdGVnb3JpZXMvaGV4by8=" title="https://flunggg.cn/categories/hexo/">flunggg的系列文章<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cudjJleC5jb20vYW1wL3QvMzQ3MTc2LzM=" title="https://www.v2ex.com/amp/t/347176/3">用 Hexo 做个人 Wiki 知识管理系统<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3lhbnppMTIyNTYyNy9hcnRpY2xlL2RldGFpbHMvNzc3NjE0ODg=" title="https://blog.csdn.net/yanzi1225627/article/details/77761488">hexo链接持久化终极解决之道<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9hMWY0ZmJiMTEwZmQ=" title="https://www.jianshu.com/p/a1f4fbb110fd">Next主题配置文件详解<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9sYW5sYW4yMDE3LmdpdGh1Yi5pby9ibG9nLzI0MmY1ZDU1Lw==" title="https://lanlan2017.github.io/blog/242f5d55/">Hexo NexT 7谷歌收录 必应收录 百度收录<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>建站</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Blog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Shell中各种括号的作用</title>
+    <url>/archives/17a8c28.html</url>
+    <content><![CDATA[<h1 id="1-小括号，圆括号" class="heading-control"><a href="#1-小括号，圆括号" class="headerlink" title="1 小括号，圆括号()"></a>1 小括号，圆括号()<a class="heading-anchor" href="#1-小括号，圆括号" aria-hidden="true"></a></h1><h2 id="1-1-单小括号" class="heading-control"><a href="#1-1-单小括号" class="headerlink" title="1.1 单小括号()"></a>1.1 单小括号()<a class="heading-anchor" href="#1-1-单小括号" aria-hidden="true"></a></h2><ul>
+<li><strong>命令组</strong>。<code>(cmd1;cmd2;cmd3)</code>将会新开一个子shell顺序执行命令cmd1、cmd2、cmd3，所以括号中的变量不能够被脚本余下的部分使用。括号中多个命令之间用分号隔开，最后一个命令可以没有分号，各命令和括号之间不必有空格。</li>
+<li><strong>命令替换</strong>。等同于`cmd`，shell扫描一遍命令行，发现了$(cmd)结构，便将$(cmd)中的cmd执行一次，得到其标准输出，再将此输出放到原来命令。有些shell不支持，如tcsh。</li>
+<li><strong>初始化数组</strong>。如：array=(a b c d)</li>
+</ul>
+<h2 id="1-2-双小括号" class="heading-control"><a href="#1-2-双小括号" class="headerlink" title="1.2 双小括号(())"></a>1.2 双小括号(())<a class="heading-anchor" href="#1-2-双小括号" aria-hidden="true"></a></h2><ul>
+<li><strong>整数扩展</strong>。这种扩展计算是整数型的计算，不支持浮点型。((exp))结构扩展并计算一个算术表达式的值，如果表达式的结果为0，那么返回的退出状态码为1，或者 是”假”，而一个非零值的表达式所返回的退出状态码将为0，或者是”true”。若是逻辑判断，表达式exp为真则为1,假则为0。</li>
+<li><strong>只要括号中的运算符、表达式符合C语言运算规则，都可用在$((exp))中，甚至是三目运算符</strong>。作不同进位（如二进制、八进制、十六进制）运算时，输出结果全都自动转化成了十进制。如：echo $((16#5f))结果为95（16进位转十进制）。</li>
+<li><strong>可重定义变量值</strong>。比如 a=5; ((a++)) 可将 $a 重定义为6。</li>
+<li><strong>算术运算比较，双括号中的变量可以不使用$符号前缀</strong>。括号内支持多个表达式用逗号分开。只要括号中的表达式符合C语言运算规则，比如对于for循环，下面3种写法是等效的：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>((i=0;i&lt;5;i++))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 0 4`</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;0..4&#125;</span><br></pre></td></tr></table></figure>
+对if逻辑判断，下面两种写法是等效的：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((<span class="variable">$i</span>&lt;5))</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$i</span> -lt 5 ]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="2-中括号，方括号" class="heading-control"><a href="#2-中括号，方括号" class="headerlink" title="2 中括号，方括号[]"></a>2 中括号，方括号[]<a class="heading-anchor" href="#2-中括号，方括号" aria-hidden="true"></a></h1><h2 id="2-1-单中括号" class="heading-control"><a href="#2-1-单中括号" class="headerlink" title="2.1 单中括号[]"></a>2.1 单中括号[]<a class="heading-anchor" href="#2-1-单中括号" aria-hidden="true"></a></h2><ul>
+<li><strong>bash的内部命令，[和test是等同的</strong>。如果不用绝对路径指明，通常用的都是bash自带的命令。if/test结构中的左中括号是调用test的命令标识，右中括号是关闭条件判断的。这个命令把它的参数作为比较表达式或者作为文件测试，并且根据比较的结果来返回一个退出状态码。if/test结构中并不是必须右中括号，但是新版的bash中要求必须这样。</li>
+<li><strong>test和[]中可用的比较运算符只有==和!=，两者都是用于字符串比较的，不可用于整数比较，整数比较只能使用-eq，-gt这种形式</strong>。无论是字符串比较还是整数比较都不支持大于号小于号。如果实在想用，对于字符串比较可以使用转义形式，如果比较”ab”和”bc”：[ ab &lt; bc ]，结果为真，也就是返回状态为0。[ ]中的逻辑与和逻辑或使用-a 和-o 表示。</li>
+<li><strong>字符范围</strong>。用作正则表达式的一部分，描述一个匹配的字符范围。作为test用途的中括号内不能使用正则。</li>
+<li><strong>在一个array结构的上下文中，中括号用来引用数组中每个元素的编号</strong>。</li>
+</ul>
+<h2 id="2-2-双中括号" class="heading-control"><a href="#2-2-双中括号" class="headerlink" title="2.2 双中括号[[]]"></a>2.2 双中括号[[]]<a class="heading-anchor" href="#2-2-双中括号" aria-hidden="true"></a></h2><ul>
+<li><strong>[[是bash程序语言的关键字，并不是一个命令</strong>。[[ ]] 结构比[ ]结构更加通用，在[[和]]之间所有的字符都不会发生文件名扩展或者单词分割，但是会发生参数扩展和命令替换。</li>
+<li><strong>支持字符串的模式匹配，使用=~操作符时甚至支持shell的正则表达式</strong>。字符串比较时可以把右边的作为一个模式，而不仅仅是一个字符串，比如[[ hello == hell? ]]，结果为真。[[ ]] 中匹配字符串或通配符，不需要引号。</li>
+<li><strong>使用[[ … ]]条件判断结构，而不是[ … ]，能够防止脚本中的许多逻辑错误</strong>。比如，&amp;&amp;、||、&lt;和&gt; 操作符能够正常存在于[[ ]]条件判断结构中，但是如果出现在[ ]结构中的话，会报错。比如瞎买的几种写法是等效的：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> [[ <span class="variable">$a</span> != 1 &amp;&amp; <span class="variable">$a</span> != 2 ]]</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> -ne 1] &amp;&amp; [ <span class="variable">$a</span> != 2 ]</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> -ne 1 -a <span class="variable">$a</span> != 2 ]</span><br></pre></td></tr></table></figure></li>
+<li><strong>bash把双中括号中的表达式看作一个单独的元素，并返回一个退出状态码</strong>。</li>
+</ul>
+<p>一些示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable">$i</span>&lt;5) </span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$i</span> -lt 5 ] </span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> -ne 1 -a <span class="variable">$a</span> != 2 ] </span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> -ne 1] &amp;&amp; [ <span class="variable">$a</span> != 2 ] </span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$a</span> != 1 &amp;&amp; <span class="variable">$a</span> != 2 ]] </span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(seq 0 4);<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>;<span class="keyword">done</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 0 4`;<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>;<span class="keyword">done</span></span><br><span class="line"><span class="keyword">for</span> ((i=0;i&lt;5;i++));<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>;<span class="keyword">done</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;0..4&#125;;<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>;<span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-大括号，花括号" class="heading-control"><a href="#3-大括号，花括号" class="headerlink" title="3 大括号，花括号{}"></a>3 大括号，花括号{}<a class="heading-anchor" href="#3-大括号，花括号" aria-hidden="true"></a></h1><h2 id="3-1-常规用法" class="heading-control"><a href="#3-1-常规用法" class="headerlink" title="3.1 常规用法"></a>3.1 常规用法<a class="heading-anchor" href="#3-1-常规用法" aria-hidden="true"></a></h2><ul>
+<li><strong>大括号拓展</strong>。(通配(globbing))将对大括号中的文件名做扩展。在大括号中，不允许有空白，除非这个空白被引用或转义。第一种：对大括号中的以逗号分割的文件列表进行拓展。如 touch {a,b}.txt 结果为a.txt b.txt。第二种：对大括号中以点点（..）分割的顺序文件列表起拓展作用，如：touch {a..d}.txt 结果为a.txt b.txt c.txt d.txt。<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ls &#123;ex1,ex2&#125;.sh </span></span><br><span class="line">ex1.sh ex2.sh </span><br><span class="line"><span class="comment"># ls &#123;ex&#123;1..3&#125;,ex4&#125;.sh </span></span><br><span class="line">ex1.sh ex2.sh ex3.sh ex4.sh </span><br><span class="line"><span class="comment"># ls &#123;ex[1-3],ex4&#125;.sh </span></span><br><span class="line">ex1.sh ex2.sh ex3.sh ex4.sh</span><br></pre></td></tr></table></figure></li>
+<li><strong>代码块，又被称为内部组，这个结构事实上创建了一个匿名函数</strong>。与小括号中的命令不同，大括号内的命令不会新开一个子shell运行，即脚本余下部分仍可使用括号内变量。<code>{ cmd1;cmd2;cmd3;}</code>在当前shell顺序执行命令cmd1、cmd2、cmd3，括号内的命令间用分号隔开，最后一个也必须有分号。{}的第一个命令和左括号之间必须要有一个空格。</li>
+</ul>
+<h2 id="3-2-几种特殊的替换结构" class="heading-control"><a href="#3-2-几种特殊的替换结构" class="headerlink" title="3.2 几种特殊的替换结构"></a>3.2 几种特殊的替换结构<a class="heading-anchor" href="#3-2-几种特殊的替换结构" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$&#123;var:-string&#125;</span>,<span class="variable">$&#123;var:+string&#125;</span>,<span class="variable">$&#123;var:=string&#125;</span>,<span class="variable">$&#123;var:?string&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>${var:-string}</code>和<code>${var:=string}</code>：若变量var为空，则用在命令行中用string来替换<code>${var:-string}</code>，否则变量var不为空时，则用变量var的值来替换<code>${var:-string}</code>；对于<code>${var:=string}</code>的替换规则和<code>${var:-string}</code>是一样的，不同之处是<code>${var:=string}</code>若var为空时，用string替换<code>${var:=string}</code>的同时，把string赋给变量var。<code>${var:=string}</code>很常用的一种用法是，判断某个变量是否赋值，没有的话则给它赋上一个默认值。</li>
+<li><code>${var:+string}</code>的替换规则和上面的相反，即只有当var不是空的时候才替换成string，若var为空时则不替换或者说是替换成变量var的值，即空值。(因为变量var此时为空，所以这两种说法是等价的)。</li>
+<li><code>${var:?string}</code>替换规则为：若变量var不为空，则用变量var的值来替换<code>${var:?string}</code>；若变量var为空，则把string输出到标准错误中，并从脚本中退出。可利用此特性来检查是否设置了变量的值。</li>
+</ul>
+<blockquote>
+<p>补充扩展：在上面五种替换结构中string不一定是常值的，可用另外一个变量的值或是一种命令的输出。</p>
+</blockquote>
+<h2 id="3-3-四种模式匹配替换结构" class="heading-control"><a href="#3-3-四种模式匹配替换结构" class="headerlink" title="3.3 四种模式匹配替换结构"></a>3.3 四种模式匹配替换结构<a class="heading-anchor" href="#3-3-四种模式匹配替换结构" aria-hidden="true"></a></h2><p>模式匹配记忆方法：</p>
+<blockquote>
+<p>#是去掉左边（在键盘上#在$之左边），%是去掉右边（在键盘上%在$之右边）。#和%中的单一符号是最小匹配，两个相同符号是最大匹配。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$&#123;var%pattern&#125;</span>,<span class="variable">$&#123;var%%pattern&#125;</span>,<span class="variable">$&#123;var#pattern&#125;</span>,<span class="variable">$&#123;var##pattern&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一种模式：<code>${variable%pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern结尾，如果是，就从命令行把variable中的内容<strong>去掉右边最短</strong>的匹配模式。</li>
+<li>第二种模式：<code>${variable%%pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern结尾，如果是，就从命令行把variable中的内容<strong>去掉右边最长</strong>的匹配模式。</li>
+<li>第三种模式：<code>${variable#pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern开始，如果是，就从命令行把variable中的内容<strong>去掉左边最短</strong>的匹配模式。</li>
+<li>第四种模式：<code>${variable##pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern开始，如果是，就从命令行把variable中的内容<strong>去掉左边最长</strong>的匹配模式。<blockquote>
+<p>这四种模式中都不会改变variable的值，其中，只有在pattern中使用了*匹配符号时，%和%%，#和##才有区别。结构中的pattern支持通配符，*表示零个或多个任意字符，?表示仅与一个任意字符匹配，[…]表示匹配中括号里面的字符，[!…]表示不匹配中括号里面的字符。</p>
+</blockquote>
+</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">var=testcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span> </span><br><span class="line">testcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var%s*e&#125;</span> </span><br><span class="line">testca </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span> </span><br><span class="line">testcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var%%s*e&#125;</span> </span><br><span class="line">te </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var#?e&#125;</span> </span><br><span class="line">stcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##?e&#125;</span> </span><br><span class="line">stcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##*e&#125;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##*s&#125;</span> </span><br><span class="line">e </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##test&#125;</span> </span><br><span class="line"><span class="keyword">case</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-字符串提取和替换" class="heading-control"><a href="#3-4-字符串提取和替换" class="headerlink" title="3.4 字符串提取和替换"></a>3.4 字符串提取和替换<a class="heading-anchor" href="#3-4-字符串提取和替换" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$&#123;var:num&#125;</span>,<span class="variable">$&#123;var:num1:num2&#125;</span>,<span class="variable">$&#123;var/pattern/pattern&#125;</span>,<span class="variable">$&#123;var//pattern/pattern&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一种模式：<code>${var:num}</code>，这种模式时，shell在var中提取第num个字符到末尾的所有字符。若num为正数，从左边0处开始；若num为负数，从右边开始提取字串，但必须使用在冒号后面加空格或一个数字或整个num加上括号，如<code>${var: -2}</code>、<code>${var:1-3}</code>或<code>${var:(-2)}</code>。</li>
+<li>第二种模式：<code>${var:num1:num2}</code>，num1是位置，num2是长度。表示从$var字符串的第$num1个位置开始提取长度为$num2的子串。不能为负数。</li>
+<li>第三种模式：<code>${var/pattern1/pattern2}</code>，表示将var字符串的第一个匹配的pattern1替换为pattern2。</li>
+<li>第四种模式：<code>${var//pattern1/pattern2}</code>，表示将var字符串中的所有能匹配的pattern1替换为pattern2。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">var=/home/centos </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span> </span><br><span class="line">/home/centos</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:5&#125;</span> </span><br><span class="line">/centos</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var: -6&#125;</span> </span><br><span class="line">centos </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:(-6)&#125;</span> </span><br><span class="line">centos </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:1:4&#125;</span> </span><br><span class="line">home </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var/o/h&#125;</span> </span><br><span class="line">/hhme/centos</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var//o/h&#125;</span> </span><br><span class="line">/hhme/cenths</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-符号-后的括号" class="heading-control"><a href="#4-符号-后的括号" class="headerlink" title="4 符号$后的括号"></a>4 符号$后的括号<a class="heading-anchor" href="#4-符号-后的括号" aria-hidden="true"></a></h1><ul>
+<li><code>${a}</code>表示变量a的值，在不引起歧义的情况下可以省略大括号。</li>
+<li><code>$(cmd)</code>表示命令替换，和`cmd`效果相同，结果为shell命令cmd的输出，然而某些Shell版本不支持$()形式的命令替换, 如tcsh。</li>
+<li><code>$((expression))</code>和`exprexpression`效果相同，计算数学表达式exp的数值，其中exp只要符合C语言的运算规则即可, 甚至三目运算符和逻辑表达式都可以计算。</li>
+</ul>
+<h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
+<li>[shell中各种括号的作用详解()、(())、[ ]、[[]]、{}](<span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xMjMwODEuaHRt" title="https://www.jb51.net/article/123081.htm">https://www.jb51.net/article/123081.htm<i class="fa fa-external-link"></i></span>)</li>
+<li>[Linux shell 中 $() ` `，${}，$[ ] $(())，[ ] (( )) [[]] 作用与区别](<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vaG9uZzIwMTYvcC85NDY1NzExLmh0bWw=" title="https://www.cnblogs.com/hong2016/p/9465711.html">https://www.cnblogs.com/hong2016/p/9465711.html<i class="fa fa-external-link"></i></span>)</li>
+<li>[bash中[ ]与[[]]的区别](<span class="exturl" data-url="aHR0cDovL3d3dy56c3l0aGluay5uZXQvYXJjaGl2ZXMvMjI1Mi8=" title="http://www.zsythink.net/archives/2252/">http://www.zsythink.net/archives/2252/<i class="fa fa-external-link"></i></span>)</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Shell中设置文字输出的颜色及字体格式</title>
+    <url>/archives/a1691b48.html</url>
+    <content><![CDATA[<h1 id="1-描述" class="heading-control"><a href="#1-描述" class="headerlink" title="1 描述"></a>1 描述<a class="heading-anchor" href="#1-描述" aria-hidden="true"></a></h1><p>在shell脚本中，有时会定制特殊格式的字符串用以强调一些信息，例如以下字符串：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gbError=<span class="string">"\033[1;31m[ERROR]\033[0m"</span></span><br><span class="line">gbWarning=<span class="string">"\033[1;33m[WARNING]\033[0m"</span></span><br><span class="line">gbInfo=<span class="string">"\033[1;32m[INFO]\033[0m"</span></span><br><span class="line">gbGood=<span class="string">"\033[1;32m[GOOD]\033[0m"</span></span><br><span class="line">gbCancel=<span class="string">"\033[1;4;35mCTRL + C\033[0m"</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="2-结论" class="heading-control"><a href="#2-结论" class="headerlink" title="2 结论"></a>2 结论<a class="heading-anchor" href="#2-结论" aria-hidden="true"></a></h1><p>以<code>gbCancel=&quot;\033[1;4;35mCTRL + C\033[0m&quot;</code>为例：<br><code>\033[</code>表示转义序列开始，接下来的<code>1</code>表示加粗字体，<code>4</code>表示添加下划线，<code>35</code>表示文本颜色为紫红色，<code>m</code>表示终止转义序列，<code>CTRL + C</code>为待格式化的目标文本，<code>\033[0m</code>表示格式化效果仅对目标文本生效（若无此字段将导致后面的文本输出都被格式化）。</p>
+<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLjUxY3RvLmNvbS9sb25nbGVpLzIzNTc4OTg/c291cmNlPWRyYQ==" title="https://blog.51cto.com/longlei/2357898?source=dra">shell中设置文字输出的颜色及字体格式<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git的cherry-pick命令</title>
+    <url>/archives/f390ae43.html</url>
+    <content><![CDATA[<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDUyNjIzL2FydGljbGUvZGV0YWlscy83OTQ0OTUzNA==" title="https://blog.csdn.net/qq_32452623/article/details/79449534">Git - 用 cherry-pick 挑好看的小樱桃<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxMjg5NzU0Mg==" title="https://segmentfault.com/a/1190000012897542">Git 之 cherry-pick<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Shell中美元符$与数字及其它各种符号组合的含义</title>
+    <url>/archives/55ffbd22.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$0</span></span><br></pre></td></tr></table></figure>
+<p>脚本本身的文件名；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$n</span></span><br></pre></td></tr></table></figure>
+<p>传递给脚本或函数的参数。n 是一个数字，表示第几个参数，取值范围为1~9。例如，第一个参数是<code>$1</code>，第二个参数是<code>$2</code>；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$*</span><br></pre></td></tr></table></figure>
+<p>以一个单字符串显示传给脚本或函数的所有参数，<code>$1 $2 $3 … $n</code>；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$@</span></span><br></pre></td></tr></table></figure>
+<p>传给脚本的所有参数列表，<code>$1</code> <code>$2</code> <code>$3</code> … <code>$n</code>；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$#</span></span><br></pre></td></tr></table></figure>
+<p>传给脚本或函数的参数个数；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>当前Shell进程ID。对于Shell脚本，就是这些脚本所在的进程ID；</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$?</span><br></pre></td></tr></table></figure>
+<p>上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aGlkYW8uYmFpZHUuY29tL3F1ZXN0aW9uLzc1ODEyMjgxNjUwMjA1MjY4NC5odG1s" title="https://zhidao.baidu.com/question/758122816502052684.html">linux shell 中的“$1”代表什么？<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vc3BsZW5kaWQvcC8xMTIxMTQzMC5odG1s" title="https://www.cnblogs.com/splendid/p/11211430.html">shell中的$0 $n $# $* $@ $? $$<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC91LzM5OTcxODIvYmxvZy8zMDcxNDYw" title="https://my.oschina.net/u/3997182/blog/3071460">linux中$#,$0,$1,$2,$@,$*,$$,$?的含义<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何检出git仓库中最新的tag号</title>
+    <url>/archives/732ab93b.html</url>
+    <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
+<p>在搭建某项目CI环境过程中遇到这样一个需求：需要根据最新的tag号提取其中的版本信息。如何获取代码仓库中的最新tag号？</p>
+</blockquote>
+<h1 id="2-结论" class="heading-control"><a href="#2-结论" class="headerlink" title="2 结论"></a>2 结论<a class="heading-anchor" href="#2-结论" aria-hidden="true"></a></h1><p>通过如下命令行获取git仓库中的最新tag号：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">LatestTag=$(git describe --tags `git rev-list --tags --max-count=1`)</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC85NmE0NGE2MmU4MDY=" title="https://www.jianshu.com/p/96a44a62e806">不知道 tag 名的情况，如何检出 git 仓库中最新的 tag 号及切换代码<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux中的ld-so与ld-linux-so</title>
+    <url>/archives/c5106d85.html</url>
+    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>动态链接器/加载器，<code>ld.so</code>和 <code>ld-linux.so*</code>查找并加载程序运行时所需要的共享对象（共享库），然后准备好程序并运行它，Linux二进制文件需要在运行时进行动态链接，除非在程序编译期间为ld（GNU链接器）指定了<code>-static</code>选项。<code>ld.so</code>程序处理a.out二进制格式（一种年代久远的二进制格式），<code>ld-linux.so*</code>（于libc5而言是/lib/ld-linux.so.1，于glibc2而言是/lib/ld-linux.so.2）处理更加现代的ELF二进制格式。两个程序具有相同的行为，使用相同的支持文件和程序（ldd、ldconfig和/etc/ld.so.conf）。<strong>ld.so与ld-linux.so是相似的，于程序运行期间起作用</strong>。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cDovL21hbjcub3JnL2xpbnV4L21hbi1wYWdlcy9tYW44L2xkLWxpbnV4LnNvLjguaHRtbA==" title="http://man7.org/linux/man-pages/man8/ld-linux.so.8.html">ld.so, ld-linux.so - dynamic linker/loader<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gitignore与gitkeep的作用</title>
+    <url>/archives/ba569070.html</url>
+    <content><![CDATA[<h1 id="1-gitignore" class="heading-control"><a href="#1-gitignore" class="headerlink" title="1 .gitignore"></a>1 .gitignore<a class="heading-anchor" href="#1-gitignore" aria-hidden="true"></a></h1><p>.gitignore用于指定版本库中的某些文件或目录将被git系统忽略，例如，个人在腾讯云的git服务器上维护某工程时，.gitignore中的内容如下所示，用以忽略工程根目录下的build目录以及所有包目录内的一些并不参与编译的目录：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;build</span><br><span class="line">**&#x2F;0000_Common</span><br><span class="line">**&#x2F;0600_Toolkit</span><br><span class="line">**&#x2F;0900_System&#x2F;01_core</span><br><span class="line">**&#x2F;0900_System&#x2F;03_flashing</span><br><span class="line">**&#x2F;0900_System&#x2F;04_model</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中的“**”可以匹配工程目录内的多级目录，参考<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDI=" title="https://blog.csdn.net/ljb_wh/article/details/51083402">这里<i class="fa fa-external-link"></i></span>。</p>
+</blockquote>
+<h1 id="2-gitkeep" class="heading-control"><a href="#2-gitkeep" class="headerlink" title="2 .gitkeep"></a>2 .gitkeep<a class="heading-anchor" href="#2-gitkeep" aria-hidden="true"></a></h1><p>git系统并不会追踪版本库中的空目录，通过在空目录中创建一个.gitkeep文件即可让git系统对这个空目录进行追踪，.gitkeep实则是一个占位符，并没有其它特性，通俗点讲，.fu*k可以实现和.gitkeep相同的功能。</p>
+<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDI=" title="https://blog.csdn.net/ljb_wh/article/details/51083402">TIPS：.gitignore 忽略多层文件夹用 **<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxODE5MTAzMD91dG1fc291cmNlPXRhZy1uZXdlc3Q=" title="https://segmentfault.com/a/1190000018191030?utm_source=tag-newest">.gitkeep 是什么? .gitignore 和. gitkeep 之间的区别<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VS Code C++程序中cout输出中文显示乱码</title>
+    <url>/archives/65fedf51.html</url>
+    <content><![CDATA[<h1 id="1-问题描述" class="heading-control"><a href="#1-问题描述" class="headerlink" title="1 问题描述"></a>1 问题描述<a class="heading-anchor" href="#1-问题描述" aria-hidden="true"></a></h1><p>有如下代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Please input your string: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">'\n'</span> &lt;&lt; <span class="string">"The string is: "</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>起初使用Code Runner插件的OUTPUT窗口进行调试，发现OUTPUT窗口只读，无法进行输入交互；后勾选了Code Runner插件的“Run In Terminal”选项（勾选方法不再赘述），从而在VS Code Terminal中进行调试，发现cin读取中文后，cout输出为乱码。</p>
+<h1 id="2-问题解决" class="heading-control"><a href="#2-问题解决" class="headerlink" title="2 问题解决"></a>2 问题解决<a class="heading-anchor" href="#2-问题解决" aria-hidden="true"></a></h1><p>将Windows自带的CMD终端的属性设置为旧版，<strong>但这会导致点击TERMINAL时弹出系统终端，而非vscode内置终端</strong>：</p>
+<p><img src="https://i.loli.net/2020/02/03/1SUhtc3kCjzlmQ6.png" alt="附图"></p>
+<h1 id="3-结论" class="heading-control"><a href="#3-结论" class="headerlink" title="3 结论"></a>3 结论<a class="heading-anchor" href="#3-结论" aria-hidden="true"></a></h1><p>Windows自带CMD终端属性的修改影响所有IDE及代码编辑器。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>程序语言</category>
+        <category>C/C++</category>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>VS Code</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在腾讯云上搭建个人Git服务器</title>
+    <url>/archives/296a9967.html</url>
+    <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
+<p>在腾讯云搭建Git服务器，托管个人工程代码，实现多地协同开发。</p>
+</blockquote>
+<h1 id="2-最佳实践" class="heading-control"><a href="#2-最佳实践" class="headerlink" title="2 最佳实践"></a>2 最佳实践<a class="heading-anchor" href="#2-最佳实践" aria-hidden="true"></a></h1><h2 id="2-1-安装Git" class="heading-control"><a href="#2-1-安装Git" class="headerlink" title="2.1 安装Git"></a>2.1 安装Git<a class="heading-anchor" href="#2-1-安装Git" aria-hidden="true"></a></h2><p>以Linux Ubuntu为例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-创建证书登录" class="heading-control"><a href="#2-2-创建证书登录" class="headerlink" title="2.2 创建证书登录"></a>2.2 创建证书登录<a class="heading-anchor" href="#2-2-创建证书登录" aria-hidden="true"></a></h2><p>收集所有需要登录的用户的公钥，即个人主机<code>~/.ssh</code>目录中id_rsa.pub公钥文件中的内容，把所有公钥导入到服务器<code>~/.ssh/authorized_keys</code>文件里，一行一个，id_rsa.pub公钥文件不存在的话使用<code>ssh-keygen</code>命令生成：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -C “your email address”</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-初始化Git仓库" class="heading-control"><a href="#2-3-初始化Git仓库" class="headerlink" title="2.3 初始化Git仓库"></a>2.3 初始化Git仓库<a class="heading-anchor" href="#2-3-初始化Git仓库" aria-hidden="true"></a></h2><p>选定一个目录作为Git仓库目录，例如~/Code/example，<code>cd</code>到该目录，输入命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git init --bare example.git</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-在client端克隆仓库，并向远程仓库贡献代码" class="heading-control"><a href="#2-4-在client端克隆仓库，并向远程仓库贡献代码" class="headerlink" title="2.4 在client端克隆仓库，并向远程仓库贡献代码"></a>2.4 在client端克隆仓库，并向远程仓库贡献代码<a class="heading-anchor" href="#2-4-在client端克隆仓库，并向远程仓库贡献代码" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> server_username@server_addr:~/Code/example/example.git</span><br></pre></td></tr></table></figure>
+<p>server_username是你登录腾讯云服务器的用户名，server_addr是服务器IP地址或域名。</p>
+<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubGlhb3h1ZWZlbmcuY29tL3dpa2kvODk2MDQzNDg4MDI5NjAwLzg5OTk5ODg3MDkyNTY2NA==" title="https://www.liaoxuefeng.com/wiki/896043488029600/899998870925664">搭建Git服务器<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git版本库管理最佳实践——以创建新分支加入某个项目为例</title>
+    <url>/archives/586b7559.html</url>
+    <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
+<p>公司项目存放于GitLab服务器，想要加入该项目贡献代码</p>
+</blockquote>
+<h1 id="2-最佳实践" class="heading-control"><a href="#2-最佳实践" class="headerlink" title="2 最佳实践"></a>2 最佳实践<a class="heading-anchor" href="#2-最佳实践" aria-hidden="true"></a></h1><h2 id="2-1-添加SSH公钥至GitLab服务器" class="heading-control"><a href="#2-1-添加SSH公钥至GitLab服务器" class="headerlink" title="2.1 添加SSH公钥至GitLab服务器"></a>2.1 添加SSH公钥至GitLab服务器<a class="heading-anchor" href="#2-1-添加SSH公钥至GitLab服务器" aria-hidden="true"></a></h2><ul>
+<li>生成SSH公钥<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -C “your email address”</span><br></pre></td></tr></table></figure></li>
+<li>添加公钥至GitLab服务器（不再赘述）</li>
+</ul>
+<h2 id="2-2-配置git全局（或工程）用户名和邮箱" class="heading-control"><a href="#2-2-配置git全局（或工程）用户名和邮箱" class="headerlink" title="2.2 配置git全局（或工程）用户名和邮箱"></a>2.2 配置git全局（或工程）用户名和邮箱<a class="heading-anchor" href="#2-2-配置git全局（或工程）用户名和邮箱" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name “your user name”</span><br><span class="line">git config --global user.email “your email address”</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-克隆仓库、创建个人分支、提交代码" class="heading-control"><a href="#2-3-克隆仓库、创建个人分支、提交代码" class="headerlink" title="2.3 克隆仓库、创建个人分支、提交代码"></a>2.3 克隆仓库、创建个人分支、提交代码<a class="heading-anchor" href="#2-3-克隆仓库、创建个人分支、提交代码" aria-hidden="true"></a></h2><p>克隆仓库，切换到将要merge进去的目标分支，在该分支下创建个人分支，在新建的个人分支下进行文件修改，将个人分支push到远程仓库并建立追踪关系（push后加–set-upstream参数）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch_to_merge</span><br><span class="line">git checkout -b branch_name</span><br><span class="line"><span class="comment"># 进行文件修改</span></span><br><span class="line">git add --all</span><br><span class="line">git commit -m “Your commit content.”</span><br><span class="line">git push --<span class="built_in">set</span>-upstream origin branch_name  <span class="comment"># 成功push过一次后可以简化为git push</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-将个人分支merge到目标分支、打好tag" class="heading-control"><a href="#2-4-将个人分支merge到目标分支、打好tag" class="headerlink" title="2.4 将个人分支merge到目标分支、打好tag"></a>2.4 将个人分支merge到目标分支、打好tag<a class="heading-anchor" href="#2-4-将个人分支merge到目标分支、打好tag" aria-hidden="true"></a></h2><p>Web界面操作即可。</p>
+<h1 id="3-一些说明" class="heading-control"><a href="#3-一些说明" class="headerlink" title="3 一些说明"></a>3 一些说明<a class="heading-anchor" href="#3-一些说明" aria-hidden="true"></a></h1><p>执行完<code>git clone</code>后，将拉取远程仓库的所有分支、各分支上的修改、tag等全部内容，并将在本地的克隆仓库中创建master分支（自动与远程仓库的master分支相关联，远程仓库别名缺省为origin），在创建个人分支前，务必先<code>git checkout</code>到将要merged到的分支（示例中为develop），然后再进行分支创建操作，否则在GitLab服务器上进行merge操作时，可能会发生冲突与逆向merge（develop分支merge到了个人分支）。原因：</p>
+<blockquote>
+<p>初次完成仓库克隆时，所在分支为master分支，此时若立即创建个人分支将是基于master分支创建的，而master分支与将要merge的分支很有可能是不同的，后续将做过修改的个人分支向develop分支进行merge时大概率会出现问题。当然，即使这样做了，也可能在进行merge操作时发生冲突与逆向merge（从develop分支创建个人分支后，修改文件期间有人向develop分支push了新的提交）。</p>
+</blockquote>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Win10/Ubuntu 18.04.2双系统安装与卸载</title>
+    <url>/archives/87091124.html</url>
+    <content><![CDATA[<h1 id="1-Win10安装" class="heading-control"><a href="#1-Win10安装" class="headerlink" title="1 Win10安装"></a>1 Win10安装<a class="heading-anchor" href="#1-Win10安装" aria-hidden="true"></a></h1><h2 id="1-1-系统盘制作" class="heading-control"><a href="#1-1-系统盘制作" class="headerlink" title="1.1 系统盘制作"></a>1.1 系统盘制作<a class="heading-anchor" href="#1-1-系统盘制作" aria-hidden="true"></a></h2><p>老毛桃Win10系统盘制作工具，注意根据主机BIOS选择传统版或支持UEFI的最新版。</p>
+<h2 id="1-2-安装" class="heading-control"><a href="#1-2-安装" class="headerlink" title="1.2 安装"></a>1.2 安装<a class="heading-anchor" href="#1-2-安装" aria-hidden="true"></a></h2><p>U盘启动进入WinPE后，首先使用WinPE中集成的DiskGenius工具对硬盘进行格式化并分区。对于传统BIOS，分区格式必须为设置为MBR格式；对于UEFI BIOS，分区格式可设置为MBR或GUID（GPT）格式（推荐GUID），安装细节不再赘述。</p>
+<h1 id="2-Ubuntu-18-04-2安装与卸载" class="heading-control"><a href="#2-Ubuntu-18-04-2安装与卸载" class="headerlink" title="2 Ubuntu 18.04.2安装与卸载"></a>2 Ubuntu 18.04.2安装与卸载<a class="heading-anchor" href="#2-Ubuntu-18-04-2安装与卸载" aria-hidden="true"></a></h1><h2 id="2-1-系统盘制作" class="heading-control"><a href="#2-1-系统盘制作" class="headerlink" title="2.1 系统盘制作"></a>2.1 系统盘制作<a class="heading-anchor" href="#2-1-系统盘制作" aria-hidden="true"></a></h2><p>假设已安装好Win10系统，在安装Ubuntu前首先应在Win10系统中关闭快速启动，并在BIOS中关闭Security Boot选项。使用<span class="exturl" data-url="aHR0cHM6Ly9ydWZ1cy5pZS8=" title="https://rufus.ie/">rufus<i class="fa fa-external-link"></i></span>系统盘制作工具进行Ubuntu系统盘制作，制作过程中应根据主机的BIOS类型进行系统盘类型选择（MBR or GPT）。</p>
+<h2 id="2-2-安装" class="heading-control"><a href="#2-2-安装" class="headerlink" title="2.2 安装"></a>2.2 安装<a class="heading-anchor" href="#2-2-安装" aria-hidden="true"></a></h2><p>安装前，首先应在Windows盘中压缩出一定空间用于Ubuntu安装，本文中同时实践了老式笔记本（Lenovo G475，传统BIOS）与新式笔记本（HP暗影精灵4，UEFI BIOS）下的Win10/Ubuntu 18.04.2双系统安装，两台笔记本的配置均为SSD/HDD双硬盘，本文中将HDD压缩出150G用于挂载/home目录（CARLA安装使用），SSD压缩100G用于其它目录挂载使用。在BIOS中设置U盘启动（启用USB启动，并将EFI模式下的启动项顺序），设置细节不再赘述。Ubuntu系统安装过程中最重要的部分为分区挂载。</p>
+<h3 id="2-2-1-传统BIOS" class="heading-control"><a href="#2-2-1-传统BIOS" class="headerlink" title="2.2.1 传统BIOS"></a>2.2.1 传统BIOS<a class="heading-anchor" href="#2-2-1-传统BIOS" aria-hidden="true"></a></h3><p>最佳分区挂载实践为：</p>
+<ul>
+<li>新建SWAP交换分区，SSD中分配两倍内存空间</li>
+<li>新建分区，SSD中分配空间1G，主分区格式，挂载点/boot</li>
+<li>新建分区，SSD中剩余空间全部分配，主分区格式，挂载点/</li>
+<li>新建分区，HDD中空间全部分配，主分区格式，挂载点/home</li>
+</ul>
+<p><strong>分区挂载完成后，启动引导器安装在/boot目录所挂载分区。</strong> 完成Ubuntu系统安装后重启，默认会直接进入Win10，可通过<span class="exturl" data-url="aHR0cHM6Ly9uZW9zbWFydC5uZXQvRWFzeUJDRC8=" title="https://neosmart.net/EasyBCD/">easyBCD<i class="fa fa-external-link"></i></span>工具添加Ubuntu启动引导项，具体细节不再赘述。</p>
+<h3 id="2-2-2-UEFI-BIOS" class="heading-control"><a href="#2-2-2-UEFI-BIOS" class="headerlink" title="2.2.2 UEFI BIOS"></a>2.2.2 UEFI BIOS<a class="heading-anchor" href="#2-2-2-UEFI-BIOS" aria-hidden="true"></a></h3><p>最佳分区挂载实践为：</p>
+<ul>
+<li>新建SWAP交换分区，SSD中分配两倍内存空间</li>
+<li>新建EFI系统分区，SSD中分配空间1G，主分区格式</li>
+<li>新建分区，SSD中剩余空间全部分配，主分区格式，挂载点/</li>
+<li>新建分区，HDD中空间全部分配，主分区格式，挂载点/home</li>
+</ul>
+<p><strong>分区挂载完成后，启动引导器安装在EFI系统分区。</strong> 完成Ubuntu系统安装后重启，默认会直接进入GRUB引导界面，此时可选择进入Ubuntu系统或Win10系统，可以不通过GRUB引导直接进入Win10吗？UEFI BIOS模式下无法通过类似easyBCD的工具直接添加Ubuntu启动引导项，可在BIOS中进行系统引导选择，对于本文中的HP暗影精灵4，具体实现方式为：开机或重启后长按ESC进入配置界面，然后按F9进行系统引导选择，此外还可在BIOS中设置Windows和ubuntu的启动引导项顺序。</p>
+<blockquote>
+<p>通过观察上述步骤可以发现，无论是传统BIOS还是UEFI BIOS，在安装Ubuntu时，启动引导器均未覆盖Windows的启动引导项所在分区，而是分别安装在了/boot目录所挂载分区（对于传统BIOS而言）或EFI系统分区（对于UEFI BIOS而言）。为什么要这样做？直接将启动引导器安装在Windows的启动引导项所在分区当然是可行的，但是这样将导致Windows系统引导分区被改写，此后只能通过GRUB引导才能进入Windows，这样便埋下了隐患：一旦Ubuntu引导项被破坏，Windows也将无法进入。而本文中的安装方式则实现了Windows/Ubuntu的引导解耦，任一操作系统引导项的损坏都不会对另一系统造成影响，即使这样，仍然建议通过傲梅的“轻松备份”工具定期对系统引导区进行备份。本文中实践过程中，受一篇博文启发较大，链接找不到了，找到了再补上。</p>
+</blockquote>
+<h2 id="2-3-卸载" class="heading-control"><a href="#2-3-卸载" class="headerlink" title="2.3 卸载"></a>2.3 卸载<a class="heading-anchor" href="#2-3-卸载" aria-hidden="true"></a></h2><p>先在Win10下使用傲梅分区助手删除各分区，再使用easyEFI或easy BCD删除Ubuntu的GRUB启动引导项。</p>
+<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9hMzk0ZGQ1MzA0MTI=" title="https://www.jianshu.com/p/a394dd530412">Win10 与 ubuntu 双系统，卸载 ubuntu 系统的方法<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>系统安装</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于make、makefile、cmake、cmakelist、qmake等的区别</title>
+    <url>/archives/e3f2e7f0.html</url>
+    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>首先，开发人员根据项目目录结构编写cmakelist文件；然后，cmake根据编写的cmakelist文件生成makefile文件；最后，make根据生成的makefile文件对代码进行预处理、编译、汇编、链接等操作，生成可执行文件或共享库。流程如下图所示：</p>
+<p><img src="https://i.loli.net/2020/02/03/EasPfXOzWQdV4A9.png" alt="cmake工作流"></p>
+<p>qmake——与cmake同等地位的工具。<br>综上，<strong>重点是cmakelist文件的编写</strong>。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC94dW54dW4vYmxvZy84Njc4MQ==" title="https://my.oschina.net/xunxun/blog/86781">CMake与Make<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FpeWFuZ2hvbmcvYXJ0aWNsZS9kZXRhaWxzLzg2NTAxNzIw" title="https://blog.csdn.net/Aiyanghong/article/details/86501720">make、makefile、cmake之间的区别与联系<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYW5nX3hpbnhpbmcvYXJ0aWNsZS9kZXRhaWxzLzcyODI3NjY0" title="https://blog.csdn.net/jiang_xinxing/article/details/72827664">编译过程，make,makefile,cmake,qmake,cmakelist总结<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vY2oyMDE0L3AvNjExMTYzNC5odG1s" title="https://www.cnblogs.com/cj2014/p/6111634.html">make makefile cmake qmake都是什么，有什么区别<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>make</category>
+      </categories>
+      <tags>
+        <tag>make</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</title>
+    <url>/archives/77718b2.html</url>
+    <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
+<p>在本地同步追踪某个远程仓库的某一分支（以develop分支为例）。</p>
+</blockquote>
+<h1 id="2-问题" class="heading-control"><a href="#2-问题" class="headerlink" title="2 问题"></a>2 问题<a class="heading-anchor" href="#2-问题" aria-hidden="true"></a></h1><p>起初先进行了如下操作：</p>
+<ul>
+<li>创建一个文件夹，初始化为git仓库：<code>git init</code></li>
+<li>进行用户基本信息配置：<code>git config</code></li>
+<li>创建本地仓库的develop分支：<code>git checkout -b</code></li>
+<li>关联远程仓库git地址：<code>git remote add</code></li>
+</ul>
+<p>接下来，尝试通过<code>git branch --set-upstream-to</code>将本地仓库develop分支与远程仓库develop分支进行关联时报错：develop分支不存在。使用<code>git branch -r</code>发现远程仓库分支为空，其实使用<code>git branch -a</code>可以发现根本看不到任何分支。</p>
+<h1 id="3-解决" class="heading-control"><a href="#3-解决" class="headerlink" title="3 解决"></a>3 解决<a class="heading-anchor" href="#3-解决" aria-hidden="true"></a></h1><p>因为仅仅是关联了远程仓库，本地仓库并未获取远程仓库的修改（包括分支信息），所以本地看不到远程仓库的分支，也就无法进行分支关联操作。以<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">参考1<i class="fa fa-external-link"></i></span>中的建议，在将本地仓库分支与远程仓库分支进行关联前，可先通过<code>git fetch origin</code>命令拉取远程仓库的修改，这样便可获取远程仓库分支信息，但还无法看到本地分支。最佳实践是使用<code>git pull origin develop</code>命令（前提是你必须知道想要将远程仓库的哪个分支并入本地分支），便可看到远程仓库的develop分支和本地仓库的develop分支（当前分支），进而可进行分支关联操作。</p>
+<h1 id="4-结论" class="heading-control"><a href="#4-结论" class="headerlink" title="4 结论"></a>4 结论<a class="heading-anchor" href="#4-结论" aria-hidden="true"></a></h1><p>总结一下最佳实践：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git checkout -b local_branch</span><br><span class="line">git remote add origin repo_addr</span><br><span class="line">git pull origin repo_branch</span><br><span class="line">git branch --<span class="built_in">set</span>-upstream-to=origin/repo_branch local_branch</span><br><span class="line">git fetch --all</span><br></pre></td></tr></table></figure>
+
+<p>当然，直接使用<code>git clone</code>也是可以的（<strong>这才应该算是最佳实践！</strong>）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch</span><br></pre></td></tr></table></figure>
+
+<p><code>git checkout target_repo_branch</code>将自动在本地创建一个名为target_repo_branch的分支，并将其与远程仓库中的target_repo_branch分支进行关联。执行完<code>git clone</code>后，默认在本地仓库创建的是master分支，并将其与远程仓库的master分支进行关联，但通常情况下，maser分支仅用于版本释放，我们并不会直接向mater分支推送修改，而是在其它分支（如develop分支）完成开发与调试后，再通过<code>git merge</code>将分支上的工作并入master分支。</p>
+<h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">Git branch -r 无法获取远程分支，ui可以看见分支但是git 命令无法查看解决方案<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（十五）再识图像之高级车道线检测</title>
+    <url>/archives/a2ff34db.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（十四）初识图像之初级车道线检测</title>
+    <url>/archives/418d7d6f.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（十三）手把手教你写卡尔曼滤波器</title>
+    <url>/archives/d3b96bd5.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python字典数据结构的item()函数</title>
+    <url>/archives/b11e5b5a.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure>
+<p>会得到下面的输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>程序语言</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
+    <url>/archives/43b2dca3.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
+<p>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure>
+<p>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>程序语言</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安装第三方python库过程中的egg-info与dist-info文件夹</title>
+    <url>/archives/42095346.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在安装第三方python库过程中，在site-packages目录中与安装结果同时生成的后缀名为egg-info或dist-info的文件夹：<br>用应用程序安装生成egg-info文件夹，用whl或tar安装生成dist-info文件夹。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>程序语言</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（十二）无人驾驶中的坐标转换</title>
+    <url>/archives/b10733db.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（十一）无人驾驶中的CAN消息解析</title>
+    <url>/archives/78513fbc.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（十）看不见的“传感器”高精度地图</title>
+    <url>/archives/4da6b2e.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（九）与生俱来的VCU信号</title>
+    <url>/archives/fde458ab.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（八）被严重低估的传感器超声波雷达</title>
+    <url>/archives/1e9849c6.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（七）量产必备的毫米波雷达</title>
+    <url>/archives/24a03bff.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（六）工程师又爱又恨的激光雷达</title>
+    <url>/archives/be221b74.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（五）没有视觉传感器，还谈什么无人驾驶</title>
+    <url>/archives/c93d22e0.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（四）百度无人车传感器IMU深入剖析</title>
+    <url>/archives/e82e9544.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（三）百度无人车传感器GPS深入剖析</title>
+    <url>/archives/c870f676.html</url>
+    <content><![CDATA[<blockquote>
+<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">这里<i class="fa fa-external-link"></i></span>。</p>
+</blockquote>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>百度Apollo 1.0技术框架如下图所示：</p>
+<p><img src="https://i.loli.net/2020/03/01/XgGkhdfU2eSiKNc.jpg" alt="百度Apollo 1.0技术框架"></p>
+<p>GPS全球定位系统（Global Position System）定位原理为<strong>三角定位法（Triangulation）</strong>，如下图所示，通过测量无人车分别距三颗卫星的距离来对无人车进行唯一定位：</p>
+<p><img src="https://i.loli.net/2020/03/01/niauPdXFYyBHIg3.jpg" alt="三角定位法原理图"></p>
+<p>为降低天气、云层对定位的影响，引入了差分GPS的技术，原理如下图所示：</p>
+<p><img src="https://i.loli.net/2020/03/01/BCnQa5P9RheEbA4.jpg" alt="差分GPS技术原理图"></p>
+<p>在地面上建立基站（Base Station），基站在建立时可得到其精确的位置信息（经纬度），同时基站具有接收卫星信号的功能。当基站的GPS接收机与车载GPS接收机相距较近时（&lt;30km），可以认为两者的GPS信号通过的是同一片大气区域，即两者的信号误差基本一致。<strong>根据基站的精确位置和信号传播时间，可反推此时天气原因导致的信号传播误差，之后利用该误差便可修正车载GPS信号，从而降低云层、天气情况等对信号传输的影响。</strong>利用差分GPS技术，可使无人车定位精度由十米级别提升至米级。<strong>差分GPS技术可以解决定位的精度问题，但是无法解决遮挡和反射问题</strong>，当无人车在高楼林立的环境中行驶时，会发生信号丢失和多路径信号（Multi-Path Signal）的问题：</p>
+<p><img src="https://i.loli.net/2020/03/01/Rlh5aZ26CzQmuxj.jpg" alt="多路径信号问题示意图"></p>
+<p>同时，GPS定位频率不高，相当于定位实时性较差。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">无人驾驶技术入门（三）| 百度无人车传感器 GPS 深入剖析<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+</search>
