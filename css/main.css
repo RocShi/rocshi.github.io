@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #93ab83;
+  background: #ac2aab;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3026,6 +3026,10 @@ body {
 pre,
 code {
   font-family: 'consolas';
+}
+.brand {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-weight: bold;
 }
 .brand:hover .logo-line-before i,
 .brand:hover .logo-line-after i {
