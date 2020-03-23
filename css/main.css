@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #fff;
+  background: #967818;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3067,7 +3067,7 @@ code {
   display: none !important;
 }
 .github-corner svg {
-  position: fixd !important;
+  position: fixed !important;
   z-index: 9000 !important;
 }
 .post-body iframe,
