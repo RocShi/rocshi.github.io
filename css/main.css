@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #5dd1ff;
+  background: #20ac13;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3082,7 +3082,7 @@ code {
   cursor: pointer;
   cursor: zoom-out;
   will-change: transform;
-  z-index: 8000;
+  z-index: 100;
 }
 .site-nav-toggle {
   top: 35px;
