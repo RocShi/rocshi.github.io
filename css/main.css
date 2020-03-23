@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #d5ff6f;
+  background: #ff5ef1;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3033,13 +3033,9 @@ code {
 }
 .header {
   position: fixed;
-  z-index: 9000;
   left: 0px;
   top: 0px;
   width: 100%;
-}
-.content {
-  padding: 60px;
 }
 .reading-progress-bar {
   position: fixed;
