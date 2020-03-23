@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #88c4ff;
+  background: #ff880f;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3039,7 +3039,7 @@ code {
   width: 100%;
 }
 .content {
-  padding: 120px 25px 0 25px;
+  padding: 120px 24px 0 24px;
 }
 .reading-progress-bar {
   position: fixed;
@@ -3129,7 +3129,7 @@ code {
     padding: 45px 15px 12px;
   }
   .content {
-    padding: 70px, 0, 0, 0;
+    padding-top: 70px;
   }
   .main-inner {
     padding-bottom: 35px;
