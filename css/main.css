@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffdaff;
+  background: #9cf7ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3082,7 +3082,7 @@ code {
   font-size: 0.875em;
   font-weight: bold;
   line-height: 1;
-  margin: -10px auto 15px;
+  margin: -10px auto 10px;
   text-align: center;
 }
 .fancybox-slide {
