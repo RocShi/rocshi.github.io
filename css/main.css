@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #242a0b;
+  background: #53ff9f;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1311,6 +1311,27 @@ pre .javascript .function {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+#sidebar-dimmer {
+  display: none;
+}
+@media (max-width: 767px) {
+  #sidebar-dimmer {
+    background: #000;
+    display: block;
+    height: 100%;
+    left: 100%;
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1100;
+  }
+  .sidebar-active + #sidebar-dimmer {
+    opacity: 0.7;
+    transform: translateX(-100%);
+    transition: opacity 0.5s;
+  }
 }
 .sidebar-nav {
   margin: 0;
@@ -2649,17 +2670,6 @@ blockquote {
   position: fixed;
   z-index: 9001;
 }
-.sidebar.sidebar-active {
-  display: block;
-  width: 320px;
-  position: fixed;
-  z-index: 1 !important;
-  box-shadow: none;
-  left: 0px;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
 .back-to-top {
   line-height: 1.5;
   right: 10px;
@@ -3066,12 +3076,14 @@ code {
   margin-bottom: 20px;
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.35);
 }
-.medium-zoom-image--opened {
-  position: fixed;
-  cursor: pointer;
-  cursor: zoom-out;
-  will-change: transform;
-  z-index: 9000 !important;
+.post-body .image-caption,
+.post-body .figure .caption {
+  color: #999;
+  font-size: 0.875em;
+  font-weight: bold;
+  line-height: 1;
+  margin: 0px auto 15px;
+  text-align: center;
 }
 .site-nav-toggle {
   top: 35px;
