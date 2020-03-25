@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff90ac;
+  background: #8fffff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2674,8 +2674,8 @@ blockquote {
   font-family: 'EB Garamond', 'STKaiti', 'KaiTi', 'SimKai', 'Noto Serif SC', 'sans-serif';
 }
 .sidebar-toggle {
-  right: 10px;
-  bottom: 43px;
+  right: 28px;
+  bottom: 80px;
   background-color: rgba(79,148,205,0.75);
   border-radius: 5px;
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.35);
@@ -2686,6 +2686,28 @@ blockquote {
   background: #0ff;
   position: fixed;
   z-index: 9001;
+}
+.back-to-top {
+  background: none;
+  bottom: -100px;
+  box-sizing: border-box;
+  color: #4f94cd;
+  cursor: pointer;
+  font-size: 16px;
+  right: 30px;
+  opacity: 1;
+  padding: 0 6px;
+  position: fixed;
+  text-align: center;
+  transition-property: bottom;
+  z-index: 1300;
+  transition-delay: 0s;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+  width: 24px;
+}
+.back-to-top.back-to-top-on {
+  bottom: 43px;
 }
 ::-webkit-scrollbar {
   width: 10px;
