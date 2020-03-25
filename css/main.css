@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #deffff;
+  background: #d03c46;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3141,6 +3141,7 @@ code {
   }
   .posts-expand .post-title {
     padding: 45px 15px 12px;
+    text-align: center;
   }
   .content {
     padding-top: 100px;
@@ -3155,7 +3156,7 @@ code {
   }
   .posts-expand .post-title {
     font-size: 24px;
-    text-align: center;
+    text-align: center !important;
   }
   .post-body {
     font-size: 16px !important;
