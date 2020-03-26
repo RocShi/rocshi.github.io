@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff040f;
+  background: #ff1dff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2689,10 +2689,10 @@ blockquote {
   z-index: 9001;
 }
 .back-to-top {
-  background: none;
+  background: rgba(79,148,205,0.75);
   bottom: -100px;
   box-sizing: border-box;
-  color: #4f94cd;
+  color: #fff;
   cursor: pointer;
   font-size: 16px;
   right: 30px !important;
@@ -2707,6 +2707,8 @@ blockquote {
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
   width: 24px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.35);
 }
 .back-to-top.back-to-top-on {
   bottom: 30px;
