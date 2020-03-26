@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #3df40d;
+  background: #0dff37;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2674,7 +2674,7 @@ blockquote {
   font-family: 'EB Garamond', 'STKaiti', 'KaiTi', 'SimKai', 'Noto Serif SC', 'sans-serif';
 }
 .sidebar-toggle {
-  right: 29px !important;
+  right: 30px !important;
   left: auto !important;
   bottom: 80px;
   background-color: rgba(79,148,205,0.75);
@@ -2698,7 +2698,7 @@ blockquote {
   right: 30px !important;
   left: auto !important;
   opacity: 1;
-  padding: 0 6px;
+  padding: 0px;
   position: fixed;
   text-align: center;
   transition-property: bottom;
