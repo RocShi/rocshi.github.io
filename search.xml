@@ -99,11 +99,11 @@
 <ul>
 <li>当把一个浮点数赋给整数类型时，进行了近似处理。结果值将仅保留浮点数中小数点之前的部分；</li>
 <li>当把一个整数值赋给浮点类型时，小数部分记为0。如果该整数所占的空间超过了浮点类型的容量，精度可能有损失；</li>
-<li>当赋给无符号类型一个超出它表示范围的值时，结果是初始值对无符号类型表示数值总数取模后的余数。例如，8比特大小的<code>unsigned char</code>可以表示0至255区间内的值，如果我们赋了一个区间以外的值，则实际的结果是该值对256取模后所得的余数。因此，把-1赋给8比特大小的<code>unsigned char</code>所得的结果是255；</li>
+<li><strong>当赋给无符号类型一个超出它表示范围的值时，结果是初始值对无符号类型表示数值总数取模后的余数。</strong>例如，8比特大小的<code>unsigned char</code>可以表示0至255区间内的值，如果我们赋了一个区间以外的值，则实际的结果是该值对256取模后所得的余数。因此，把-1赋给8比特大小的<code>unsigned char</code>所得的结果是255；</li>
 <li>当赋给带符号类型一个超出它表示范围的值时，结果是未定义的（undefined）。此时，程序可能继续工作、可能崩溃，也可能生成垃圾数据。</li>
 </ul>
 </li>
-<li><p><strong>当一个算术表达式中既有无符号数又有<code>int</code>值时，那个<code>int</code>值就会转换成无符号数。</strong>把<code>int</code>转换成无符号数的过程和把<code>int</code>直接赋给无符号变量等效。观察侠士代码片段：</p>
+<li><p><strong>当一个算术表达式中既有无符号数又有<code>int</code>值时，那个<code>int</code>值就会转换成无符号数。</strong>把<code>int</code>转换成无符号数的过程和把<code>int</code>直接赋给无符号变量等效。观察下述代码片段：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> u = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> i = <span class="number">-42</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i + i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;  <span class="comment">// 输出84</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; u + i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;  <span class="comment">// 如果int占32位，输出4294967264</span></span><br></pre></td></tr></table></figure>
 <p>在第一个输出表达式里，两个（负）整数相加并得到了期望的结果。在第二个输出表达式里，相加前首先把整数-42转换成无符号数。<strong>把负数转换成无符号数类似于直接给无符号数赋一个负值，结果等于这个负数加上无符号数的模。</strong><br>当从无符号数中减去一个值时，不管这个值是不是无符号数，我们都必须确保结果不能是一个负值：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> u1 = <span class="number">42</span>, u2 = <span class="number">10</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; u1 - u2 &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;  <span class="comment">// 输出32</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; u2 - u1 &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;  <span class="comment">// 结果是取模后的值</span></span><br></pre></td></tr></table></figure>
