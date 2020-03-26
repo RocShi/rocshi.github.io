@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #750961;
+  background: #d60af2;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2698,7 +2698,7 @@ blockquote {
   right: 30px !important;
   left: auto !important;
   opacity: 1;
-  padding: 0 6px;
+  padding: 0px;
   position: fixed;
   text-align: center;
   transition-property: bottom;
