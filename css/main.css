@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffac39;
+  background: #880d60;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3060,6 +3060,7 @@ code {
 .header {
   position: fixed;
   z-index: 1;
+  width: 100%;
 }
 .content {
   padding: 120px 24px 0 24px;
