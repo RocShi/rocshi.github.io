@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #66ff4d;
+  background: #476616;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2689,16 +2689,15 @@ blockquote {
   z-index: 9001;
 }
 .back-to-top {
-  background: rgba(79,148,205,0.75);
   bottom: -100px;
   box-sizing: border-box;
-  color: #fff;
+  color: rgba(79,148,205,0.75);
   cursor: pointer;
   font-size: 16px;
   right: 30px !important;
   left: auto !important;
   opacity: 1;
-  padding: 0px;
+  padding: 0;
   position: fixed;
   text-align: center;
   transition-property: bottom;
@@ -2707,15 +2706,9 @@ blockquote {
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
   width: 24px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.35);
-  height: 24px;
 }
 .back-to-top.back-to-top-on {
   bottom: 30px;
-}
-.fa-arrow-up:before {
-  content: "\f015";
 }
 ::-webkit-scrollbar {
   width: 10px;
