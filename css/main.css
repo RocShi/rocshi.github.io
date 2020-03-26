@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #03b8ec;
+  background: #abfff6;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1562,23 +1562,37 @@ pre .javascript .function {
 }
 .back-to-top {
   background: #222;
+  bottom: -100px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
   font-size: 12px;
-  margin: 8px -10px -20px;
-  opacity: 0;
+  left: 30px;
+  opacity: 1;
+  padding: 0 6px;
+  position: fixed;
   text-align: center;
+  transition-property: bottom;
+  z-index: 1300;
   transition-delay: 0s;
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
+  width: 24px;
 }
 .back-to-top span {
   display: none;
 }
-.back-to-top.back-to-top-on {
-  cursor: pointer;
-  opacity: 1;
+.back-to-top:hover {
+  color: #87daff;
 }
-.back-to-top.back-to-top-on:hover {
-  opacity: 0.8;
+.back-to-top.back-to-top-on {
+  bottom: 19px;
+}
+@media (max-width: 991px) {
+  .back-to-top {
+    left: 20px;
+    opacity: 0.8;
+  }
 }
 .reading-progress-bar {
   background: #37c6c0;
@@ -2660,7 +2674,7 @@ blockquote {
   font-family: 'EB Garamond', 'STKaiti', 'KaiTi', 'SimKai', 'Noto Serif SC', 'sans-serif';
 }
 .sidebar-toggle {
-  right: 30px !important;
+  right: 29px !important;
   left: auto !important;
   bottom: 80px;
   background-color: rgba(79,148,205,0.75);
@@ -2684,7 +2698,7 @@ blockquote {
   right: 30px !important;
   left: auto !important;
   opacity: 1;
-  padding: 0px;
+  padding: 0 6px;
   position: fixed;
   text-align: center;
   transition-property: bottom;
