@@ -834,6 +834,26 @@
       </tags>
   </entry>
   <entry>
+    <title>Python类的静态方法（static method）和类方法（class method）</title>
+    <url>/archives/875015e3.html</url>
+    <content><![CDATA[<h1 id="静态方法" class="heading-control"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法<a class="heading-anchor" href="#静态方法" aria-hidden="true"></a></h1><p>静态方法是类中的函数，不需要实例（类似于C++中的静态成员函数）。静态方法主要是用来存放逻辑性的代码，主要是一些逻辑属于类，但是和类本身没有交互，即在静态方法中，不会涉及到类中的方法和属性的操作。</p>
+<h1 id="类方法" class="heading-control"><a href="#类方法" class="headerlink" title="类方法"></a>类方法<a class="heading-anchor" href="#类方法" aria-hidden="true"></a></h1><p>类方法是将类本身作为对象进行操作的方法，和静态方法的区别在于：<strong>不管这个方法是从实例调用还是从类调用，它都用第一个参数把类传递过来</strong>。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vcGlua2luZy9wLzc5NDQzNzYuaHRtbA==" title="https://www.cnblogs.com/pinking/p/7944376.html">python中的静态方法和类方法<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>程序语言</category>
+        <category>Python</category>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于make、makefile、cmake、cmakelist、qmake等的区别</title>
     <url>/archives/e3f2e7f0.html</url>
     <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>首先，开发人员根据项目目录结构编写cmakelist文件；然后，cmake根据编写的cmakelist文件生成makefile文件；最后，make根据生成的makefile文件对代码进行预处理、编译、汇编、链接等操作，生成可执行文件或共享库。流程如下图所示：</p>
@@ -933,6 +953,29 @@
       </tags>
   </entry>
   <entry>
+    <title>Python字典数据结构的item()函数</title>
+    <url>/archives/b11e5b5a.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure>
+<p>会得到下面的输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>程序语言</category>
+        <category>Python</category>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python中的当前工作路径与当前脚本文件所在路径</title>
     <url>/archives/43b2dca3.html</url>
     <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
@@ -950,28 +993,7 @@
         <category>技术</category>
         <category>程序语言</category>
         <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python字典数据结构的item()函数</title>
-    <url>/archives/b11e5b5a.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure>
-<p>会得到下面的输出：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure>
-
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>程序语言</category>
-        <category>Python</category>
+        <category>随笔</category>
       </categories>
       <tags>
         <tag>Python</tag>
@@ -987,6 +1009,7 @@
         <category>技术</category>
         <category>程序语言</category>
         <category>Python</category>
+        <category>随笔</category>
       </categories>
       <tags>
         <tag>Python</tag>
