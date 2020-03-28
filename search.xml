@@ -133,10 +133,10 @@
 .tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
 .tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}
 .tg .tg-fymr{font-weight:bold;border-color:inherit;text-align:left;vertical-align:top}
-.tg .tg-0lax{text-align:left;vertical-align:top}
 .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-</style>
-<table class="tg">
+.tg .tg-0lax{text-align:left;vertical-align:top}
+@media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;}}</style>
+<div class="tg-wrap"><table class="tg">
 <tr>
     <th class="tg-c3ow" colspan="4">指定字面值的类型</th>
 </tr>
@@ -146,8 +146,7 @@
 <tr>
     <td class="tg-fymr">前缀</td>
     <td class="tg-fymr">含义</td>
-    <td class="tg-fymr">类型</td>
-    <td class="tg-0lax"></td>
+    <td class="tg-fymr" colspan="2">类型</td>
 </tr>
 <tr>
     <td class="tg-0pky">u</td>
@@ -196,7 +195,7 @@
     <td class="tg-0lax">long long</td>
     <td class="tg-0lax" colspan="2"></td>
 </tr>
-</table>
+</table></div>
 
 </li>
 </ol>
