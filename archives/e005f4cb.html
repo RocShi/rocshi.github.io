@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-14T09:16:38.949Z">
-<meta property="article:modified_time" content="2020-03-28T07:07:51.531Z">
+<meta property="article:modified_time" content="2020-03-28T10:19:08.907Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -257,7 +257,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-28 15:07:51" itemprop="dateModified" datetime="2020-03-28T15:07:51+08:00">2020-03-28</time>
+                <time title="修改时间：2020-03-28 18:19:08" itemprop="dateModified" datetime="2020-03-28T18:19:08+08:00">2020-03-28</time>
               </span>
 
           <br>
@@ -506,8 +506,79 @@
     <td class="tg-0lax" colspan="2"></td>
 </tr>
 </table>
+示例如下：
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">L'a'</span>      <span class="comment">// 宽字符型字面值，类型是wchar_t u8"hi！"//utf-8字符串字面值（utf-8用8位编码一个Unicode字符）</span></span><br><span class="line"><span class="number">42U</span>LL     <span class="comment">// 无符号整型字面值，类型是unsigned 1ong 1ong</span></span><br><span class="line"><span class="number">1E-3</span>F     <span class="comment">// 单精度浮点型字面值，类型是float</span></span><br><span class="line"><span class="number">3.14159L</span>  <span class="comment">// 扩展精度浮点型字面值，类型是1ong double</span></span><br></pre></td></tr></table></figure>
 </li>
-<li></li>
+<li><p>在C++语言中，初始化和赋值是两个完全不同的操作。初始化不是赋值，初始化的含义是创建变量时赋予其一个初始值，而赋值的含义是把对象的当前值擦除，而以一个新值来替代。</p>
+</li>
+<li><p>要想定义一个名为units sold的<code>int</code>变量并初始化为0，以下的4条语句都可以做到这一点：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> units sold = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> units sold = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> units sold&#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">units_sold</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>作为C++11新标准的一部分，用花括号来初始化变量得到了全面应用，这种初始化的形式被称为<strong>列表初始化</strong>。现在，无论是初始化对象还是某些时候为对象赋新值，都可以使用这样一组由花括号括起来的初始值了。<strong>当用于内置类型的变量时，这种初始化形式有一个重要特点：如果我们使用列表初始化且初始值存在丢失信息的风险，则编译器将报错</strong>：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> double1d = <span class="number">3.1415926536</span>;</span><br><span class="line"><span class="keyword">int</span> a&#123;<span class="number">1</span>d&#125;, b = &#123;<span class="number">1</span>d&#125;;  <span class="comment">// 错误：转换未执行，因为存在丢失信息的危险</span></span><br><span class="line">int c(1d), d = 1d;    // 正确：转换执行，且确实丢失了部分值</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果是内置类型的变量未被显式初始化，它的值由定义的位置决定。<strong>定义于任何函数体之外的变量（全局变量）被初始化为0。</strong>定义在函数体内部的内置类型变量（局部变量）将不被初始化（uninitialized）。一个未被初始化的内置类型变量的值是未定义的，如果试图拷贝或以其他形式访问此类值将引发错误。定义于函数体内的内置类型的对象如果没有初始化，则其值未定义。类的对象如果没有显式地初始化，则其值由类确定。</p>
+</li>
+<li><p>绝大多数类都支持无须显式初始化而定义对象，这样的类提供了一个合适的默认值。<strong><code>string</code>类规定如果没有指定初值则生成一个空串。</strong>一些类要求每个对象都显式初始化，此时如果创建了一个该类的对象而未对其做明确的初始化操作，将引发错误。</p>
+</li>
+<li><p>下列变量的初值分别是什么？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> global_str;     <span class="comment">// 空串</span></span><br><span class="line"><span class="keyword">int</span> global_int;             <span class="comment">// 0</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> local_int;          <span class="comment">// 未知</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> local_str;  <span class="comment">// 空串</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>为了允许把程序拆分成多个逻辑部分来编写，C++语言支持<strong>分离式编译</strong>（separate compilation）机制，该机制允许将程序分割为若干个文件，每个文件可被独立编译。为了支持分离式编译，C++语言将声明和定义区分开来。<strong>声明（declaration）使得名字为程序所知，一个文件如果想使用别处定义的名字则必须包含对那个名字的声明。而定义（definition）负责创建与名字关联的实体。</strong>变量声明规定了变量的类型和名字，在这一点上定义与之相同。但是除此之外，定义还申请存储空间，也可能会为变量赋一个初始值。如果想声明一个变量而非定义它，就在变量名前添加关键字<code>extern</code>，而且不要显式地初始化变量：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> i;  <span class="comment">// 变量声明</span></span><br><span class="line"><span class="keyword">int</span> j;         <span class="comment">// 变量定义</span></span><br></pre></td></tr></table></figure>
+<p><strong>任何包含了显式初始化的声明即成为定义。</strong>我们能给由<code>extern</code>关键字标记的变量赋一个初始值，但是这么做也就抵消了<code>extern</code>的作用。<code>extern</code>语句如果包含初始值就不再是声明，而变成定义了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">double</span> pi = <span class="number">3.1416</span>;  <span class="comment">// 变量定义</span></span><br></pre></td></tr></table></figure>
+<p><strong>在函数体内部，如果试图初始化一个由<code>extern</code>关键字标记的变量，将引发错误。</strong></p>
+</li>
+<li><p><strong>变量能且只能被定义一次，但是可以被多次声明。</strong>变量的定义必须出现在且只能出现在一个文件中，而其他用到该变量的文件必须对其进行声明，却绝对不能重复定义。指出下面的语句是声明还是定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> ix = <span class="number">1024</span>;  <span class="comment">// 定义</span></span><br><span class="line"><span class="keyword">int</span> iy;                <span class="comment">// 定义</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> iz;         <span class="comment">// 声明</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>C++是一种<strong>静态类型</strong>（statically typed）语言，其含义是在编译阶段检查类型。其中，检查类型的过程称为<strong>类型检查</strong>（type checking）。</p>
+</li>
+<li><p>用户自定义的标识中不能连续出现两个下画线，也不能以下画线紧连大写字母开头。此外，定义在函数体外的标识符不能以下画线开头。</p>
+</li>
+<li><p><strong>作用域</strong>（scope）是程序的一部分，在其中名字有其特定的含义。C++语言中大多数作用域都以花括号分隔。<strong>同一个名字在不同的作用域中可能指向不同的实体。名字的有效区域始于名字的声明语句，以声明语句所在的作用域末端为结束。</strong><code>main</code>拥有全局作用域（global scope）。一旦声明之后，全局作用域内的名字在整个程序的范围内都可使用。作用域能彼此包含，被包含（或者说被嵌套）的作用域称为<strong>内层作用域</strong>（inner scope），包含着别的作用域的作用域称为外层作用域（outer scope）。作用域中一旦声明了某个名字，它所嵌套着的所有作用域中都能访问该名字。同时，<strong>允许在内层作用域中重新定义外层作用域已有的名字。</strong>观察下述代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> reused = <span class="number">42</span>;  <span class="comment">// 全局变量reused</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; reused &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;    <span class="comment">// 使用全局变量reused，输出42</span></span><br><span class="line">    <span class="keyword">int</span> reused = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; reused &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;    <span class="comment">// 使用局部变量reused，输出0</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; ::reused &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;  <span class="comment">// 显示访问全局变量reused，输出42</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>全局作用域本身并没有名字，所以当作用域操作符的左侧为空时，向全局作用域发出请求获取作用域操作符右侧名字对应的变量。<strong>如果函数有可能用到某全局变量，则不宜再定义一个同名的局部变量。</strong></p>
+</li>
+<li><p><strong>引用</strong>（reference）为对象起了另外一个名字，引用类型引用（refers to）另外一种类型。通过将声明符写成<code>&amp;d</code>的形式来定义引用类型，其中d是声明的变量名。一般在初始化变量时，初始值会被拷贝到新建的对象中。然而定义引用时，程序把引用和它的初始值<strong>绑定</strong>（bind）在一起，而不是将初始值拷贝给引用。<strong>一旦初始化完成，引用将和它的初始值对象一直绑定在一起。因为无法令引用重新绑定到另外一个对象，因此引用必须初始化。</strong></p>
+</li>
+<li><p>引用并非对象，相反的，它只是为一个已经存在的对象所起的另外一个名字。定义了一个引用之后，对其进行的所有操作都是在与之绑定的对象上进行的。为引用赋值，实际上是把值赋给了与引用绑定的对象。获取引用的值，实际上是获取了与引用绑定的对象的值。同理，以引用作为初始值，实际上是以与引用绑定的对象作为初始值。因为引用本身不是一个对象，所以不能定义引用的引用。</p>
+</li>
+<li><p>除去两种例外情况（后面将会介绍），引用的类型都要和与之绑定的对象严格匹配。而且，引用只能绑定在对象上，而不能与字面值或某个表达式的计算结果绑定在一起。</p>
+</li>
+<li><p>下面的语句哪些合法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>, &amp;r1 = i;</span><br><span class="line"><span class="keyword">double</span> d = <span class="number">0</span>, &amp;r2 = d;</span><br><span class="line"></span><br><span class="line">r2 = <span class="number">3.14159</span>;  <span class="comment">// a</span></span><br><span class="line">r2 = r1;       <span class="comment">// b</span></span><br><span class="line">i = r2;        <span class="comment">// c</span></span><br><span class="line">r1 = d;        <span class="comment">// d</span></span><br></pre></td></tr></table></figure>
+<p>四条语句均合法，但编译器会提示语句c和语句d存在数据丢失风险。</p>
+</li>
+<li><p>指针与引用相比有很多不同点：</p>
+<ul>
+<li>指针本身就是一个对象，允许对指针赋值和拷贝，而且在指针的生命周期内它可以先后指向几个不同的对象；</li>
+<li>指针无须在定义时赋初值。和其他内置类型一样，在块作用域内定义的指针如果没有被初始化，也将拥有一个不确定的值。</li>
+</ul>
+</li>
+<li><p><strong>引用不是对象，没有实际地址，所以不能定义指向引用的指针。</strong>除去两种例外情况（后面将会介绍），所有指针的类型都要和它所指向的对象严格匹配。在声明语句中指针的类型实际上被用于指定它所指向对象的类型，所以二者必须匹配。如果指针指向了一个其他类型的对象，对该对象的操作将发生错误。</p>
+</li>
+<li><p>对指针解引用会得出所指的对象，因此如果给解引用的结果赋值，实际上也就是给指针所指的对象赋值。解引用操作仅适用于那些确实指向了某个对象的有效指针。</p>
+</li>
+<li><p><strong>空指针</strong>（null pointer）不指向任何对象，在试图使用一个指针之前代码可以首先检查它是否为空。以下列出几个生成空指针的方法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p1 = <span class="literal">nullptr</span>;</span><br><span class="line"><span class="keyword">int</span> *p2 = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *p3 = <span class="literal">NULL</span>;  <span class="comment">// 需要首先#include cstdlib</span></span><br></pre></td></tr></table></figure>
+<p>得到空指针最直接的办法就是用字面值<code>nullptr</code>来初始化指针，这也是C++11新标准新引入的一种方法。<code>nullptr</code>是一种特殊类型的字面值，它可以被转换成任意其他的指针类型。过去的程序还会用到一个名为<code>NULL</code>的<strong>预处理变量</strong>（preprocessor variable）来给指针赋值，这个变量在头文件cstdlib中定义，它的值就是0。预处理变量不属于命名空间<code>std</code>，它由预处理器负责管理，因此我们可以直接使用预处理变量而无须在前面加上<code>std::</code>。当用到一个预处理变量时，预处理器会自动地将它替换为实际值，因此用<code>NULL</code>初始化指针和用0初始化指针是一样的。在新标准下，现在的C++程序最好使用<code>nullptr</code>，同时尽量避免使用<code>NULL</code>。</p>
+</li>
+<li><p>建议初始化所有的指针，并且在可能的情况下，尽量等定义了对象之后再定义指向它的指针。如果实在不清楚指针应该指向何处，就把它初始化为<code>nullptr</code>或者0。</p>
+</li>
+<li><p>一旦定义了引用，就无法令其再绑定到另外的对象，之后每次使用这个引用都是访问它最初绑定的那个对象。</p>
+</li>
+<li><p><strong>void*</strong>是一种特殊的指针类型，可用于存放任意对象的地址。</p>
+</li>
+<li><p>引用本身不是一个对象，因此不能定义指向引用的指针。但指针是对象，所以存在对指针的引用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">42</span>; </span><br><span class="line"><span class="keyword">int</span> *p;       <span class="comment">// p是一个int型指针</span></span><br><span class="line"><span class="keyword">int</span> *&amp;r = p;  <span class="comment">// r是一个对指针p的引用</span></span><br><span class="line">r = &amp;i;       <span class="comment">// r引用了一个指针，因此给r赋值&amp;i就是令p指向i</span></span><br><span class="line">*r = <span class="number">0</span>;       <span class="comment">// 解引用r得到i，也就是p指向的对象，将i的值改为0</span></span><br></pre></td></tr></table></figure>
+<p>要理解r的类型到底是什么，最简单的办法是<strong>从右向左阅读</strong>r的定义。离变量名最近的符号（此例中是<code>&amp;r</code>的符号&amp;）对变量的类型有最直接的影响，因此r是一个引用。声明符的其余部分用以确定r引用的类型是什么，此例中的符号*说明r引用的是一个指针。最后，声明的基本数据类型部分指出r引用的是一个<code>int</code>指针。</p>
+</li>
+<li><p><strong><code>const</code>对象一旦创建后其值就不能再改变，所以<code>const</code>对象必须初始化。</strong>一如既往，初始值可以是任意复杂的表达式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> i = get_size();  <span class="comment">// 正确：运行时初始化</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> j = <span class="number">42</span>;          <span class="comment">// 正确：编译时初始化</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> k;               <span class="comment">// 错误：k是一个未经初始化的常量</span></span><br></pre></td></tr></table></figure>
+
+</li>
 </ol>
 <hr>
 
