@@ -114,6 +114,91 @@
 </li>
 <li><p><strong>切勿混用带符号类型和无符号类型</strong>。如果表达式里既有带符号类型又有无符号类型，当带符号类型取值为负时会出现异常结果，这是因为带符号数会自动地转换成无符号数。例如，在一个形如a*b的式子中，如果a=-1，b=1，而且a和b都是<code>int</code>，则表达式的值显然为-1。然而，如果a是<code>int</code>，而b是<code>unsigned</code>，则结果须视在当前机器上<code>int</code>所占位数而定。当<code>int</code>占32位时，结果是4294967295。</p>
 </li>
+<li><p>可以将整数型字面值写作十进制数、八进制数或十六进制数的形式。以0开头的整数代表八进制数，以0x或0X开头的代表十六进制数。例如，能用下面的任意一种形式来表示数值20：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">20 &#x2F;*十进制*&#x2F;    024 &#x2F;*八进制*&#x2F;    0x14 &#x2F;*十六进制*&#x2F;</span><br></pre></td></tr></table></figure>
+<p>默认情况下，十进制字面值是带符号数，八进制和十六进制字面值既可能是带符号的也可能是无符号的。十进制字面值的类型是<code>int</code>、<code>long</code>和<code>long long</code>中尺寸最小的那个（例如，三者当中最小是<code>int</code>），当然前提是这种类型要能容纳下当前的值。八进制和十六进制字面值的类型是能容纳其数值的<code>int</code>、<code>unsigned int</code>、<code>long</code>、<code>unsigned long</code>、<code>long long</code>和<code>unsigned long long</code>中的尺寸最小者。如果一个字面值连与之关联的最大的数据类型都放不下，将产生错误。类型<code>short</code>没有对应的字面值。</p>
+</li>
+<li><p>默认的，浮点型字面值是<code>double</code>类型。</p>
+</li>
+<li><p>字符串字面值的类型实际上是由常量字符构成的数组（array），编译器在每个字符串的结尾处添加一个空字符（’\0’），因此，字符串字面值的实际长度要比它的内容多1。例如，字面值’A’表示的就是单独的字符A，而字符串”A”则代表了一个字符的数组，该数组包含两个字符：一个是字母A、另一个是空字符。</p>
+</li>
+<li><p>泛化的转义序列，其形式是\x后紧跟1个或多个十六进制数字，或者\后紧跟1个、2个或3个八进制数字，其中数字部分表示的是字符对应的数值。<strong>如果反斜线\后面跟着的八进制数字超过3个，只有前3个数字与\构成转义序列。</strong>例如，”\1234”表示2个字符，即八进制数123对应的字符以及字符4。相反，\x要用到后面跟着的所有数字，例如，”\x1234”表示一个16位的字符，该字符由这4个十六进制数所对应的比特唯一确定。因为大多数机器的<code>char</code>型数据占8位，所以上面这个例子可能会报错。</p>
+</li>
+<li><p>通过添加如下表所列的前缀或后缀，可以改变整型、浮点型和字符型字面值的默认类型：</p>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#93a1a1;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#93a1a1;color:#002b36;background-color:#fdf6e3;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#93a1a1;color:#fdf6e3;background-color:#657b83;}
+.tg .tg-1wig{font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}
+.tg .tg-fymr{font-weight:bold;border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<tr>
+    <th class="tg-c3ow" colspan="4">指定字面值的类型</th>
+</tr>
+<tr>
+    <td class="tg-amwm" colspan="4">字符和字符串字面值</td>
+</tr>
+<tr>
+    <td class="tg-fymr">前缀</td>
+    <td class="tg-fymr">含义</td>
+    <td class="tg-fymr">类型</td>
+    <td class="tg-0lax"></td>
+</tr>
+<tr>
+    <td class="tg-0pky">u</td>
+    <td class="tg-0pky">Unicode 16字符</td>
+    <td class="tg-0pky" colspan="2">char16_t</td>
+</tr>
+<tr>
+    <td class="tg-0pky">U</td>
+    <td class="tg-0pky">Unicode 32字符</td>
+    <td class="tg-0pky" colspan="2">char32_t</td>
+</tr>
+<tr>
+    <td class="tg-0lax">L</td>
+    <td class="tg-0lax">宽字符</td>
+    <td class="tg-0lax" colspan="2">wchar_t</td>
+</tr>
+<tr>
+    <td class="tg-0lax">u8</td>
+    <td class="tg-0lax">UTF-8（仅用于字符串字面常量）</td>
+    <td class="tg-0lax" colspan="2">char</td>
+</tr>
+<tr>
+    <td class="tg-amwm" colspan="2">整型字面值</td>
+    <td class="tg-amwm" colspan="2">浮点型字面值</td>
+</tr>
+<tr>
+    <td class="tg-1wig">后缀</td>
+    <td class="tg-1wig">最小匹配类型</td>
+    <td class="tg-1wig">后缀</td>
+    <td class="tg-1wig">类型</td>
+</tr>
+<tr>
+    <td class="tg-0lax">u 或 U</td>
+    <td class="tg-0lax">unsigned</td>
+    <td class="tg-0lax">f 或F</td>
+    <td class="tg-0lax">float</td>
+</tr>
+<tr>
+    <td class="tg-0lax">l 或 L</td>
+    <td class="tg-0lax">long</td>
+    <td class="tg-0lax">l或L</td>
+    <td class="tg-0lax">long double</td>
+</tr>
+<tr>
+    <td class="tg-0lax">ll或LL</td>
+    <td class="tg-0lax">long long</td>
+    <td class="tg-0lax" colspan="2"></td>
+</tr>
+</table>
+
+</li>
 </ol>
 <hr>
 ]]></content>
