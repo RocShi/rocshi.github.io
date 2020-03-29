@@ -11,7 +11,49 @@
 </li>
 <li><p><strong>位于头文件的代码一般来说不应该使用<code>using</code>声明</strong>。因为头文件的内容会拷贝到所有引用它的文件中去，如果头文件里有某个<code>using</code>声明，那么每个使用了该头文件的文件就都会有这个声明。对于某些程序来说，由于不经意间包含了一些名字，反而可能产生始料未及的名字冲突。</p>
 </li>
-<li><p>标准库类型<code>string</code>表示可变长的字符序列，<strong>使用<code>string</code>类型必须首先包含<code>string</code>头文件。</strong>作为标准库的一部分，<code>string</code>定义在命名空间<code>std</code>中。</p>
+<li><p>标准库类型<code>string</code>表示可变长的字符序列，<strong>使用<code>string</code>类型必须首先包含<code>string</code>头文件。</strong>作为标准库的一部分，<code>string</code>定义在命名空间<code>std</code>中：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">string</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>一个类可以定义很多种初始化对象的方式，只不过这些方式之间必须有所区别：或者是初始值的数量不同，或者是初始值的类型不同。下表列出了初始化<code>string</code>对象最常用的一些方式：</p>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>string s1</td>
+<td>默认初始化，s1是一个空串</td>
+</tr>
+<tr>
+<td>string s2(s1)</td>
+<td>s2是s1的副本</td>
+</tr>
+<tr>
+<td>string s2 = s1</td>
+<td>等价于s2(s1)，s2是s1的副本</td>
+</tr>
+<tr>
+<td>string s3(“value”)</td>
+<td>s3是字面值“value”的副本，除了字面值最后的那个空字符外</td>
+</tr>
+<tr>
+<td>string s3 = “value”</td>
+<td>等价于s3(“value”)，s3是字面值“value”的副本</td>
+</tr>
+<tr>
+<td>string s4(n, ‘c’)</td>
+<td>把s4初始化为由连续n个字符c组成的串</td>
+</tr>
+<tr>
+<td>下面是几个例子：</td>
+<td></td>
+</tr>
+<tr>
+<td><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s1;           <span class="comment">// 默认初始化，s1是一个空字符串</span></span><br><span class="line"><span class="built_in">string</span> s2 = s1;      <span class="comment">// s2是s1的副本</span></span><br><span class="line"><span class="built_in">string</span> s3 = <span class="string">"hiya"</span>;  <span class="comment">// s3是该字符串字面值的副本</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s4</span><span class="params">(<span class="number">10</span>, <span class="string">'c'</span>)</span></span>;  <span class="comment">// s4的内容是cccccccccc</span></span><br></pre></td></tr></table></figure></td>
+<td></td>
+</tr>
+</tbody></table>
 </li>
 </ol>
 <hr>
