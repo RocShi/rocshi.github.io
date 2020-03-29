@@ -45,15 +45,10 @@
 <td>string s4(n, ‘c’)</td>
 <td>把s4初始化为由连续n个字符c组成的串</td>
 </tr>
-<tr>
-<td>下面是几个例子：</td>
-<td></td>
-</tr>
-<tr>
-<td><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s1;           <span class="comment">// 默认初始化，s1是一个空字符串</span></span><br><span class="line"><span class="built_in">string</span> s2 = s1;      <span class="comment">// s2是s1的副本</span></span><br><span class="line"><span class="built_in">string</span> s3 = <span class="string">"hiya"</span>;  <span class="comment">// s3是该字符串字面值的副本</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s4</span><span class="params">(<span class="number">10</span>, <span class="string">'c'</span>)</span></span>;  <span class="comment">// s4的内容是cccccccccc</span></span><br></pre></td></tr></table></figure></td>
-<td></td>
-</tr>
 </tbody></table>
+<p>下面是几个例子：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s1;           <span class="comment">// 默认初始化，s1是一个空字符串</span></span><br><span class="line"><span class="built_in">string</span> s2 = s1;      <span class="comment">// s2是s1的副本</span></span><br><span class="line"><span class="built_in">string</span> s3 = <span class="string">"hiya"</span>;  <span class="comment">// s3是该字符串字面值的副本</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s4</span><span class="params">(<span class="number">10</span>, <span class="string">'c'</span>)</span></span>;  <span class="comment">// s4的内容是cccccccccc</span></span><br></pre></td></tr></table></figure>
+
 </li>
 </ol>
 <hr>
