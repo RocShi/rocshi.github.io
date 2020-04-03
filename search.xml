@@ -993,8 +993,9 @@
 <ul>
 <li>在Windows系统下，<code>\r</code> <code>\n</code>这两个字符就是表现的本义，即用<code>EOL</code>作为行结尾符；</li>
 <li>在类Unix系统下，<code>\n</code>表现为光标下一行并回到行首，即用<code>LF</code>作为行结尾符；</li>
-<li>在Mac系统下，<code>\r</code>表现为回到本行开头并往下一行，即用<code>CR</code>作为行结尾符。<br>至于ENTER键的定义是与操作系统有关的，通常用的Enter是两个加起来。</li>
+<li>在Mac系统下，<code>\r</code>表现为回到本行开头并往下一行，即用<code>CR</code>作为行结尾符。</li>
 </ul>
+<p>至于ENTER键的定义是与操作系统有关的，通常用的Enter是两个加起来。</p>
 <p>现实中的具体表现是：</p>
 <ul>
 <li>Unix/Mac系统下的文件在Windows下打开的话，所有文字会变成一行；</li>
