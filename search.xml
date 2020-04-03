@@ -988,7 +988,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/bin/bash^M: bad interpreter: No such file or directory</span><br></pre></td></tr></table></figure>
 
 <h1 id="知识" class="heading-control"><a href="#知识" class="headerlink" title="知识"></a>知识<a class="heading-anchor" href="#知识" aria-hidden="true"></a></h1><p>错误信息指出，脚本在试图查找位于<code>/bin/bash^M</code>处的解释器时出错：文件或目录不存在。事实也确实如此，目标解释器应该是<code>/bin/bash</code>。<code>^M</code>表示回车符（Carriage Return，CR）。</p>
-<p>回车符<code>\r</code>本义是光标重新回到本行开头，r的英文return，控制字符可以写成<code>CR</code>，即Carriage Return，十六进制表示为<code>0x0D</code>；换行符<code>\n</code>本义是光标往下一行（不一定到下一行行首），n的英文newline，控制字符可以写成<code>LF</code>，即Line Feed。<code>EOL</code>（End of Line）是<code>CR</code>和<code>LF</code>的组合，表示到下一行并把焦点移到第一列。</p>
+<p>回车符<code>\r</code>本义是光标重新回到本行开头，r的英文return，控制字符可以写成<code>CR</code>，即Carriage Return，十六进制表示为<code>0x0D</code>；换行符<code>\n</code>本义是光标往下一行（不一定到下一行行首），n的英文newline，控制字符可以写成<code>LF</code>，即Line Feed，十六进制表示为<code>0x0A</code>。<code>EOL</code>（End of Line）是<code>CR</code>和<code>LF</code>的组合，表示到下一行并把焦点移到第一列。</p>
 <p>在不同的操作系统这几个字符表现不同：</p>
 <ul>
 <li>在Windows系统下，<code>\r</code> <code>\n</code>这两个字符就是表现的本义，即用<code>EOL</code>作为行结尾符；</li>
