@@ -1003,7 +1003,7 @@
 </ul>
 <h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><p>删除Windows环境下编辑的脚本中的多余<code>\r</code>回车符：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed -i -e <span class="string">'s/\r$//'</span> script.sh</span><br></pre></td></tr></table></figure>
-
+<p>关于Linux中<code>sed</code>命令的使用，可参考此前的一篇文章：<a href="https://blog.shipengx.com/archives/31e5f0fe.html">《Linux中使用sed命令进行字符串查找和替换》</a>。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly9hc2t1YnVudHUuY29tL3F1ZXN0aW9ucy8zMDQ5OTkvbm90LWFibGUtdG8tZXhlY3V0ZS1hLXNoLWZpbGUtYmluLWJhc2htLWJhZC1pbnRlcnByZXRlcg==" title="https://askubuntu.com/questions/304999/not-able-to-execute-a-sh-file-bin-bashm-bad-interpreter">Not able to execute a .sh file: /bin/bash^M: bad interpreter<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3F1aW5jeWZhbmcvYXJ0aWNsZS9kZXRhaWxzLzUzMTU2NDc2" title="https://blog.csdn.net/quincyfang/article/details/53156476">The differences between Carriage Return(CR) and Line Feed(LF)<i class="fa fa-external-link"></i></span></li>
