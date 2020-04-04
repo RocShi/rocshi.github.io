@@ -1307,6 +1307,31 @@
       </tags>
   </entry>
   <entry>
+    <title>配置Ubuntu下的shell默认显示所在git仓库的当前分支</title>
+    <url>/archives/74b2417b.html</url>
+    <content><![CDATA[<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
+<li>在终端中打开bash shell的配置文件：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure></li>
+<li>在文件末尾添加如下shell代码：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># These shell commands block are for the purpose of displaying the </span></span><br><span class="line"><span class="comment"># current branch name of the current repository.</span></span><br><span class="line">find_git_branch () </span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">local</span> dir=. head</span><br><span class="line">  until [ <span class="string">"<span class="variable">$dir</span>"</span> -ef / ]; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [ -f <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span> ]; <span class="keyword">then</span></span><br><span class="line">      head=$(&lt; <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span>)</span><br><span class="line">      <span class="keyword">if</span> [[ <span class="variable">$head</span> = ref:\ refs/heads/* ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*<span class="variable">$&#123;head#*/*/&#125;</span>)"</span></span><br><span class="line">      <span class="keyword">elif</span> [[ <span class="variable">$head</span> != <span class="string">''</span> ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*(detached))"</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        git_branch=<span class="string">"(*(unknow))"</span></span><br><span class="line">      <span class="keyword">fi</span>  </span><br><span class="line">      <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span>  </span><br><span class="line">    dir=<span class="string">"../<span class="variable">$dir</span>"</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">  git_branch=<span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line">PROMPT_COMMAND=<span class="string">"find_git_branch; <span class="variable">$PROMPT_COMMAND</span>"</span></span><br><span class="line"><span class="built_in">export</span> PS1=<span class="string">"\[\e]0;\u@\h: \w\a\]<span class="variable">$&#123;debian_chroot:+($debian_chroot)&#125;</span>\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]\$git_branch\[\033[0m\] \$ "</span></span><br></pre></td></tr></table></figure></li>
+<li>使更改立即生效：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI1Mjk1NDA3L2FydGljbGUvZGV0YWlscy83OTUwOTA1Ng==" title="https://blog.csdn.net/qq_25295407/article/details/79509056">linux命令行终端显示git当前所在分支<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+        <tag>Linux</tag>
+        <tag>Shell</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>在腾讯云上搭建个人Git服务器</title>
     <url>/archives/296a9967.html</url>
     <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
