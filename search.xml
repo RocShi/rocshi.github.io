@@ -15,7 +15,7 @@
 <li><code>/</code> 分界符；</li>
 <li><code>Input_File</code> 要执行操作的文件名。</li>
 </ul>
-<h1 id="2-用法大全" class="heading-control"><a href="#2-用法大全" class="headerlink" title="2 用法大全"></a>2 用法大全<a class="heading-anchor" href="#2-用法大全" aria-hidden="true"></a></h1><h2 id="2-1-查找和替换每一行中”第一次”模式匹配" class="heading-control"><a href="#2-1-查找和替换每一行中”第一次”模式匹配" class="headerlink" title="2.1 查找和替换每一行中”第一次”模式匹配"></a>2.1 查找和替换每一行中”第一次”模式匹配<a class="heading-anchor" href="#2-1-查找和替换每一行中”第一次”模式匹配" aria-hidden="true"></a></h2><p>下面的<code>sed</code>命令用<code>linux</code>替换文件中的<code>unix</code>。这仅仅改变了每一行模式的第一个实例：</p>
+<h1 id="2-用法大全" class="heading-control"><a href="#2-用法大全" class="headerlink" title="2 用法大全"></a>2 用法大全<a class="heading-anchor" href="#2-用法大全" aria-hidden="true"></a></h1><h2 id="2-1-查找和替换每一行中“第一次”模式匹配" class="heading-control"><a href="#2-1-查找和替换每一行中“第一次”模式匹配" class="headerlink" title="2.1 查找和替换每一行中“第一次”模式匹配"></a>2.1 查找和替换每一行中“第一次”模式匹配<a class="heading-anchor" href="#2-1-查找和替换每一行中“第一次”模式匹配" aria-hidden="true"></a></h2><p>下面的<code>sed</code>命令用<code>linux</code>替换文件中的<code>unix</code>。这仅仅改变了每一行模式的第一个实例：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed <span class="string">'s/unix/linux/'</span> sed-test.txt</span><br></pre></td></tr></table></figure>
 
 <h2 id="2-2-查找和替换每一行中“第N次”出现的模式" class="heading-control"><a href="#2-2-查找和替换每一行中“第N次”出现的模式" class="headerlink" title="2.2 查找和替换每一行中“第N次”出现的模式"></a>2.2 查找和替换每一行中“第N次”出现的模式<a class="heading-anchor" href="#2-2-查找和替换每一行中“第N次”出现的模式" aria-hidden="true"></a></h2><p>在行中使用<code>/1</code>、<code>/2</code> …… <code>/n</code>等标志来代替相应的匹配。下面的<code>sed</code>命令在每一行中用<code>linux</code>来替换<code>unix</code>模式的第二个实例：</p>
