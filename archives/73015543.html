@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-29T13:17:03.000Z">
-<meta property="article:modified_time" content="2020-04-04T15:53:33.300Z">
+<meta property="article:modified_time" content="2020-04-04T16:34:53.409Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -257,7 +257,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-04 23:53:33" itemprop="dateModified" datetime="2020-04-04T23:53:33+08:00">2020-04-04</time>
+                <time title="修改时间：2020-04-05 00:34:53" itemprop="dateModified" datetime="2020-04-05T00:34:53+08:00">2020-04-05</time>
               </span>
 
           <br>
@@ -367,7 +367,68 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s5 = <span class="string">"hiya"</span>;  <span class="comment">// 拷贝初始化</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s6</span><span class="params">(<span class="string">"hiya"</span>)</span></span>;   <span class="comment">// 直接初始化</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s7</span><span class="params">(<span class="number">10</span>, <span class="string">'c'</span>)</span></span>;  <span class="comment">// 直接初始化，s7的内容是cccccccccc</span></span><br></pre></td></tr></table></figure>
 <p>对于用多个值进行初始化的情况，也可以使用拷贝初始化的方式，不过需要显式地创建一个（临时）对象用于拷贝：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s8 = <span class="built_in">string</span>(<span class="number">10</span>, <span class="string">'c'</span>);  <span class="comment">// 拷贝初始化，s8的内容是cccccccccc</span></span><br></pre></td></tr></table></figure>
-
+</li>
+<li><p><code>string</code>对象可进行的大多数操作如下表所示：</p>
+ <style type="text/css">
+ .tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
+ .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
+ .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
+ .tg .tg-cly1{text-align:left;vertical-align:middle}
+ .tg .tg-40h1{font-weight:bold;background-color:#ebf5ff;color:#000000;text-align:center;vertical-align:top}
+ .tg .tg-0lax{text-align:left;vertical-align:top}
+ </style>
+ <table class="tg">
+ <tr>
+     <td class="tg-40h1" colspan="2">string的操作</td>
+ </tr>
+ <tr>
+     <td class="tg-0lax">os &lt;&lt; s</td>
+     <td class="tg-0lax">将s写到输出流os当中，返回os</td>
+ </tr>
+ <tr>
+     <td class="tg-0lax">is &gt;&gt; s</td>
+     <td class="tg-0lax">从is中读取字符串赋给s，字符串以空白分隔，返回is</td>
+ </tr>
+ <tr>
+     <td class="tg-0lax">getline(is, s)</td>
+     <td class="tg-0lax">从is中读取一行赋给s，返回is</td>
+ </tr>
+ <tr>
+     <td class="tg-0lax">s.empty()</td>
+     <td class="tg-0lax">s为空返回true，否则返回false</td>
+ </tr>
+ <tr>
+     <td class="tg-0lax">s.size()</td>
+     <td class="tg-0lax">返回s中字符的个数</td>
+ </tr>
+ <tr>
+     <td class="tg-cly1">s[n]</td>
+     <td class="tg-cly1">返回s中第n个字符的引用，位置n从0计起</td>
+ </tr>
+ <tr>
+     <td class="tg-cly1">s1 + s2</td>
+     <td class="tg-cly1">返回s1和s2连接后的结果</td>
+ </tr>
+ <tr>
+     <td class="tg-0lax">s1 = s2</td>
+     <td class="tg-0lax">用s2的副本代替s1中原来的字符</td>
+ </tr>
+ <tr>
+     <td class="tg-0lax">s1 == s2</td>
+     <td class="tg-0lax" rowspan="2">如果s1和s2中所含的字符完全一样，则它们相等；string对象的相等性判断对字母的大小写敏感</td>
+ </tr>
+ <tr>
+     <td class="tg-cly1">s1 != s2</td>
+ </tr>
+ <tr>
+     <td class="tg-0lax">&lt;, &lt;=, &gt;, &gt;=</td>
+     <td class="tg-0lax">利用字符在字典中的顺序进行比较，且对字母的大小写敏感</td>
+ </tr>
+ </table>
+</li>
+<li><p>观察下述代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">string</span> s1, s2;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s1 &gt;&gt; s2;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s1 &lt;&lt; s2 &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在执行读取操作时，string对象会自动忽略开头的空白（即空格符、换行符、制表符等）并从第一个真正的字符开始读起，直到遇见下一处空白为止。</p>
 </li>
 </ol>
 <hr>
