@@ -113,8 +113,10 @@
  </table>
 </li>
 <li><p>观察下述代码片段：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">string</span> s1, s2;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s1 &gt;&gt; s2;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s1 &lt;&lt; s2 &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在执行读取操作时，string对象会自动忽略开头的空白（即空格符、换行符、制表符等）并从第一个真正的字符开始读起，直到遇见下一处空白为止。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> s;           <span class="comment">// 空字符串</span></span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s;           <span class="comment">// 将string对象读入s，遇到空白为止</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">// 输出s</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">string</span> s1, s2;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s1 &gt;&gt; s2;    <span class="comment">// 把第一个读入到s1中，第二个读入到s2中</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s1 &lt;&lt; s2 &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在执行读取操作时，<code>string</code>对象会自动忽略开头的空白（即空格符、换行符、制表符等）并从第一个真正的字符开始读起，直到遇见下一处空白为止。将上述代码编译为可执行程序，在终端中运行可执行程序，输入<code>Hello World!</code>后回车，将打印此时s的值<code>Hello</code>，可知输入的空白被忽略了；再输入<code>ha ya</code>后回车，将打印<code>World!ha</code>，这是因为第一次的输入中的<code>World!</code>还在键盘缓冲区，在执行</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cin</span> &gt;&gt; s1 &gt;&gt; s2;</span><br></pre></td></tr></table></figure>
+<p>时，键盘缓冲区中的内容被读到了s1，然后第二次输入中的<code>ha</code>被读到了s2，<code>ya</code>又被暂存在了键盘缓冲区。</p>
 </li>
 </ol>
 <hr>
@@ -1290,15 +1292,11 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux gcc/g++中的-I、-l、-L</title>
-    <url>/archives/8b42591c.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><ul>
-<li><code>-I</code> 指定第一个用于寻找头文件的目录；</li>
-<li><code>-L</code> 指定第一个用于寻找库文件的目录；</li>
-<li><code>-l</code> 用于指定程序具体要链接的库的名字。</li>
-</ul>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NzQ3JhenliaW5nL2FydGljbGUvZGV0YWlscy84MDMzNzc3Nw==" title="https://blog.csdn.net/csCrazybing/article/details/80337777">gcc “-I”（大写 i），“-L”（大写 l），“-l”（小写 l）的区别<i class="fa fa-external-link"></i></span></li>
+    <title>Linux中的ld-so与ld-linux-so</title>
+    <url>/archives/c5106d85.html</url>
+    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>动态链接器/加载器，<code>ld.so</code>和 <code>ld-linux.so*</code>查找并加载程序运行时所需要的共享对象（共享库），然后准备好程序并运行它，Linux二进制文件需要在运行时进行动态链接，除非在程序编译期间为ld（GNU链接器）指定了<code>-static</code>选项。<code>ld.so</code>程序处理a.out二进制格式（一种年代久远的二进制格式），<code>ld-linux.so*</code>（于libc5而言是/lib/ld-linux.so.1，于glibc2而言是/lib/ld-linux.so.2）处理更加现代的ELF二进制格式。两个程序具有相同的行为，使用相同的支持文件和程序（ldd、ldconfig和/etc/ld.so.conf）。<strong>ld.so与ld-linux.so是相似的，于程序运行期间起作用</strong>。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cDovL21hbjcub3JnL2xpbnV4L21hbi1wYWdlcy9tYW44L2xkLWxpbnV4LnNvLjguaHRtbA==" title="http://man7.org/linux/man-pages/man8/ld-linux.so.8.html">ld.so, ld-linux.so - dynamic linker/loader<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -1311,11 +1309,15 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux中的ld-so与ld-linux-so</title>
-    <url>/archives/c5106d85.html</url>
-    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>动态链接器/加载器，<code>ld.so</code>和 <code>ld-linux.so*</code>查找并加载程序运行时所需要的共享对象（共享库），然后准备好程序并运行它，Linux二进制文件需要在运行时进行动态链接，除非在程序编译期间为ld（GNU链接器）指定了<code>-static</code>选项。<code>ld.so</code>程序处理a.out二进制格式（一种年代久远的二进制格式），<code>ld-linux.so*</code>（于libc5而言是/lib/ld-linux.so.1，于glibc2而言是/lib/ld-linux.so.2）处理更加现代的ELF二进制格式。两个程序具有相同的行为，使用相同的支持文件和程序（ldd、ldconfig和/etc/ld.so.conf）。<strong>ld.so与ld-linux.so是相似的，于程序运行期间起作用</strong>。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL21hbjcub3JnL2xpbnV4L21hbi1wYWdlcy9tYW44L2xkLWxpbnV4LnNvLjguaHRtbA==" title="http://man7.org/linux/man-pages/man8/ld-linux.so.8.html">ld.so, ld-linux.so - dynamic linker/loader<i class="fa fa-external-link"></i></span></li>
+    <title>Linux gcc/g++中的-I、-l、-L</title>
+    <url>/archives/8b42591c.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><ul>
+<li><code>-I</code> 指定第一个用于寻找头文件的目录；</li>
+<li><code>-L</code> 指定第一个用于寻找库文件的目录；</li>
+<li><code>-l</code> 用于指定程序具体要链接的库的名字。</li>
+</ul>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NzQ3JhenliaW5nL2FydGljbGUvZGV0YWlscy84MDMzNzc3Nw==" title="https://blog.csdn.net/csCrazybing/article/details/80337777">gcc “-I”（大写 i），“-L”（大写 l），“-l”（小写 l）的区别<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
