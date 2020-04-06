@@ -137,10 +137,11 @@
 <li>规则一 - 如果两个<code>string</code>对象的长度不同，而且较短<code>string</code>对象的每个字符都与较长<code>string</code>对象对应位置上的字符相同，就说较短<code>string</code>对象小于较长<code>string</code>对象；</li>
 <li>规则二 - 如果两个<code>string</code>对象在某些对应的位置上不一致，则<code>string</code>对象比较的结果其实是<code>string</code>对象中第一对相异字符比较的结果。</li>
 </ul>
-<p>下面是<code>string</code>对象比较的一个示例：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> str = <span class="string">"Hello"</span>;</span><br><span class="line"><span class="built_in">string</span> phrase = <span class="string">"Hello World"</span>;</span><br><span class="line"><span class="built_in">string</span> slang = <span class="string">"Hiya"</span>;</span><br></pre></td></tr></table></figure>
-<p>根据规则一可判断，对象str小于对象phrase；根据规则二可判断，对象slang既大于str也大于phrase。</p>
 </li>
+</ol>
+<pre><code>下面是`string`对象比较的一个示例：
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> str = <span class="string">"Hello"</span>;</span><br><span class="line"><span class="built_in">string</span> phrase = <span class="string">"Hello World"</span>;</span><br><span class="line"><span class="built_in">string</span> slang = <span class="string">"Hiya"</span>;</span><br></pre></td></tr></table></figure>
+根据规则一可判断，对象str小于对象phrase；根据规则二可判断，对象slang既大于str也大于phrase。</code></pre><ol start="13">
 <li><p>对于<code>string</code>类而言，允许把一个对象的值赋给另外一个对象：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">string st1(10,'c'), st2;</span><br><span class="line">st1 = st2;</span><br></pre></td></tr></table></figure>
 </li>
