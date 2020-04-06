@@ -163,6 +163,75 @@
 </li>
 <li><p><strong>C++语言中的字符串字面值并不是标准库类型<code>string</code>的对象。切记，字符串字面值与<code>string</code>是不同的类型。</strong></p>
 </li>
+<li><p>在<code>cctype</code>头文件中定义了一组标准库函数用于单独处理<code>string</code>对象中的字符，其中主要的函数名及其含义如下表所示：</p>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
+.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}
+.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<tr>
+    <th class="tg-xeqs" colspan="2">cctype头文件中的函数</th>
+</tr>
+<tr>
+    <td class="tg-0pky">isalnum(c)</td>
+    <td class="tg-0pky">当c是字母或数字时为真</td>
+</tr>
+<tr>
+    <td class="tg-0pky">isalpha(c)</td>
+    <td class="tg-0pky">当c是字母时为真</td>
+</tr>
+<tr>
+    <td class="tg-0pky">iscntrl(c)</td>
+    <td class="tg-0pky">当c是控制字符时为真</td>
+</tr>
+<tr>
+    <td class="tg-0pky">isdigit(c)</td>
+    <td class="tg-0pky">当c是数字时为真</td>
+</tr>
+<tr>
+    <td class="tg-0pky">isgraph(c)</td>
+    <td class="tg-0pky">当c不是空格但可打印时为真</td>
+</tr>
+<tr>
+    <td class="tg-lboi">islower(c)</td>
+    <td class="tg-lboi">当c是小写字母时为真</td>
+</tr>
+<tr>
+    <td class="tg-lboi">isprint(c)</td>
+    <td class="tg-lboi">当c是可打印字符时为真（即c是空格或c具有可视形式）</td>
+</tr>
+<tr>
+    <td class="tg-0pky">ispunct(c)</td>
+    <td class="tg-0pky">当c是标点符号时为真（即c不是控制字符、数字、字母、可打印空白中的一种）</td>
+</tr>
+<tr>
+    <td class="tg-0pky">isspace(c)</td>
+    <td class="tg-0pky">当c是空白时为真（即c是空格、横向制表符、纵向制表符、回车符、换行符、进纸符中的一种）</td>
+</tr>
+<tr>
+    <td class="tg-lboi">isupper(c)</td>
+    <td class="tg-lboi">当c是大写字母时为真</td>
+</tr>
+<tr>
+    <td class="tg-0pky">isxdigit(c)</td>
+    <td class="tg-0pky">当c是十六进制数字时为真</td>
+</tr>
+<tr>
+    <td class="tg-0lax">tolower(c)</td>
+    <td class="tg-0lax">如果c是大写字母，输出对应的小写字母；否则原样输出c</td>
+</tr>
+<tr>
+    <td class="tg-0lax">toupper(c)</td>
+    <td class="tg-0lax">如果c是小写字母，输出对应的大写字母；否则原样输出c</td>
+</tr>
+</table>
+
+</li>
 </ol>
 <hr>
 ]]></content>
