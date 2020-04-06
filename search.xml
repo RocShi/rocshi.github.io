@@ -118,6 +118,51 @@
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cin</span> &gt;&gt; s1 &gt;&gt; s2;</span><br></pre></td></tr></table></figure>
 <p>时，键盘缓冲区中的内容被读到了s1，然后第二次输入中的<code>ha</code>被读到了s2，<code>ya</code>又被暂存在了键盘缓冲区。</p>
 </li>
+<li><p>观察下述代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> word;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; word)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; word &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>while</code>的循环条件负责在读取时检测流的情况，如果流有效，也就是说没遇到文件结束标记或非法输入，那么执行<code>while</code>语句内部的操作。此时，循环体将输出刚刚从标准输入读取的内容。重复若干次之后，一旦遇到文件结束标记或非法输入循环也就结束了。<code>cin</code>读取的内容会被暂存在键盘缓冲区。</p>
+</li>
+<li><p><code>getline</code>函数的参数是一个输入流和一个<code>string</code>对象，函数从给定的输入流中读入内容，直到遇到换行符为止（注意换行符也被读进来了），然后把所读的内容存入到那个<code>string</code>对象中去（注意不存换行符）。<code>getline</code>只要一遇到换行符就结束读取操作并返回结果，哪怕输入的一开始就是换行符也是如此。如果输入真的一开始就是换行符，那么所得的结果是个空<code>string</code>。和输入运算符一样，<strong><code>getline</code>也会返回它的流参数</strong>。因此既然输入运算符能作为判断的条件，也能用<code>getline</code>的结果作为条件。观察下述代码片段：</p>
+ <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> line;</span><br><span class="line">    <span class="keyword">while</span> (getline(<span class="built_in">cin</span>, line))</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; line &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 触发<code>getline</code>函数返回的那个换行符实际上被丢弃掉了，得到的<code>string</code>对象中并不包含该换行符。输入完一行的内容后回车，<code>getline</code>本次读取结束，执行<code>while</code>主体中的语句，再开始执行下一次的<code>getline</code>读取操作，直至输入<code>Ctrl + z</code>（Windows系统下）或<code>Ctrl + d</code>（类Unix系统下）并回车才退出循环。</p>
+</li>
+<li><p><code>string</code>类中的<code>empty</code>函数根据<code>string</code>对象是否为空返回一个对应的布尔值。</p>
+</li>
+<li><p><code>string</code>类中的<code>size</code>函数返回<code>string</code>对象的长度（即<code>string</code>对象中字符的个数）。<code>size</code>函数返回的是一个<code>string::size_type</code>类型的值。所有用于存放<code>string</code>类的<code>size</code>函数返回值的变量，都应该是<code>string::size_type</code>类型的。在C++11新标准中，允许编译器通过<code>auto</code>或者<code>decltype</code>来推断变量的类型：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> len = line.size();  <span class="comment">// 1en的类型是string::size_type</span></span><br></pre></td></tr></table></figure>
+<p>由于<code>size</code>函数返回的是一个无符号整型数，因此切记，<strong>如果在表达式中混用了带符号数和无符号数将可能产生意想不到的结果</strong>。例如，假设n是一个具有负值的<code>int</code>，则表达式<code>s.size() &lt; n</code>的判断结果几乎肯定是<code>true</code>。这是因为负值n会自动地转换成一个比较大的无符号值。<strong>如果一条表达式中已经有了<code>size()</code>函数就不要再使用<code>int</code>了，这样可以避免混用<code>int</code>和<code>unsigned</code>可能带来的问题。</strong></p>
+</li>
+<li><p><code>string</code>类定义了几种用于比较字符串的运算符。这些比较运算符逐一比较<code>string</code>对象中的字符，并且对大小写敏感，也就是说，<strong>在比较时同一个字母的大写形式和小写形式是不同的。</strong>相等性运算符（<code>==</code>和<code>!=</code>）分别检验两个<code>string</code>对象相等或不相等，<strong><code>string</code>对象相等意味着它们的长度相同而且所包含的字符也全都相同</strong>。关系运算符<code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code>分别检验一个<code>string</code>对象是否小于、小于等于、大于、大于等于另外一个<code>string</code>对象。上述这些运算符都依照（大小写敏感的）字典顺序：</p>
+<ul>
+<li>规则一 - 如果两个<code>string</code>对象的长度不同，而且较短<code>string</code>对象的每个字符都与较长<code>string</code>对象对应位置上的字符相同，就说较短<code>string</code>对象小于较长<code>string</code>对象；</li>
+<li>规则二 - 如果两个<code>string</code>对象在某些对应的位置上不一致，则<code>string</code>对象比较的结果其实是<code>string</code>对象中第一对相异字符比较的结果。</li>
+</ul>
+</li>
+</ol>
+<p>下面是<code>string</code>对象比较的一个示例：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> str = <span class="string">"Hello"</span>;</span><br><span class="line"><span class="built_in">string</span> phrase = <span class="string">"Hello World"</span>;</span><br><span class="line"><span class="built_in">string</span> slang = <span class="string">"Hiya"</span>;</span><br></pre></td></tr></table></figure>
+<p>根据规则一可判断，对象str小于对象phrase；根据规则二可判断，对象slang既大于str也大于phrase。</p>
+<ol start="13">
+<li><p>对于<code>string</code>类而言，允许把一个对象的值赋给另外一个对象：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">string st1(10,'c'), st2;</span><br><span class="line">st1 = st2;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>两个<code>string</code>对象相加得到一个新的<code>string</code>对象，其内容是把左侧的运算对象与右侧的运算对象串接而成。<strong>复合赋值运算符（<code>+=</code>）负责把右侧<code>string</code>对象的内容追加到左侧<code>string</code>对象的后面</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">"hello, "</span>, s2 = <span class="string">"world\n"</span>;</span><br><span class="line"><span class="built_in">string</span> s3 = s1 + s2;  <span class="comment">// s3的内容是hello，world\n</span></span><br><span class="line">s1 += s2;             <span class="comment">// 等价于s1 = s1 + s2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>标准库允许把字符字面值和字符串字面值转换成<code>string</code>对象，所以在需要<code>string</code>对象的地方就可以使用这两种字面值来替代：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">"hello"</span>, s2 = <span class="string">"world"</span>;  <span class="comment">// 在s1和s2中都没有标点符号</span></span><br><span class="line"><span class="built_in">string</span> s3 = s1 + <span class="string">", "</span> + s2 + <span class="string">'\n'</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>当把<code>string</code>对象和字符字面值及字符串字面值混在一条语句中使用时，必须确保每个加法运算符（+）的两侧的运算对象至少有一个是<code>string</code></strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s4 = s1 + <span class="string">", "</span>;       <span class="comment">// 正确：把一个string对象和一个字面值相加</span></span><br><span class="line"><span class="built_in">string</span> s5 = <span class="string">"hello"</span> + <span class="string">", "</span>;  <span class="comment">// 错误：两个运算对象都不是string</span></span><br><span class="line"><span class="comment">//正确：每个加法运算符都有一个运算对象是string</span></span><br><span class="line"><span class="built_in">string</span> s6 = s1 + <span class="string">", "</span> + <span class="string">"world"</span>;</span><br><span class="line"><span class="built_in">string</span> s7 = <span class="string">"hello"</span> + <span class="string">", "</span> + s2;  <span class="comment">//错误：不能把字面值直接相加</span></span><br></pre></td></tr></table></figure>
+<p>s6的初始化形式的工作机理和连续输入连续输出是一样的，可以用如下的形式分组：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s6 = (s1 + <span class="string">", "</span>) + <span class="string">"world"</span>;</span><br></pre></td></tr></table></figure>
+<p>其中子表达式<code>s1 + &quot;, ”</code>的结果是一个<code>string</code>对象，它同时作为第二个加法运算符的左侧运算对象，因此上述语句和下面的两个语句是等价的：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> tmp = s1 + <span class="string">", "</span>;  <span class="comment">// 正确：加法运算符有一个运算对象是string</span></span><br><span class="line">s6 = tmp + <span class="string">"world"</span>;      <span class="comment">// 正确：加法运算符有一个运算对象是string</span></span><br></pre></td></tr></table></figure>
+<p>另一方面，s7的初始化是非法的，根据其语义加上括号后就成了下面的形式：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s7 = (<span class="string">"hello"</span> + <span class="string">", "</span>) + s2;  <span class="comment">// 错误：不能把字面值直接相加</span></span><br></pre></td></tr></table></figure>
+<p>很容易看到，括号内的子表达式试图把两个字符串字面值加在一起，而编译器根本没法做到这一点，所以这条语句是错误的。</p>
+</li>
+<li><p><strong>C++语言中的字符串字面值并不是标准库类型<code>string</code>的对象。切记，字符串字面值与<code>string</code>是不同的类型。</strong></p>
+</li>
 </ol>
 <hr>
 ]]></content>
@@ -1292,11 +1337,15 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux中的ld-so与ld-linux-so</title>
-    <url>/archives/c5106d85.html</url>
-    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>动态链接器/加载器，<code>ld.so</code>和 <code>ld-linux.so*</code>查找并加载程序运行时所需要的共享对象（共享库），然后准备好程序并运行它，Linux二进制文件需要在运行时进行动态链接，除非在程序编译期间为ld（GNU链接器）指定了<code>-static</code>选项。<code>ld.so</code>程序处理a.out二进制格式（一种年代久远的二进制格式），<code>ld-linux.so*</code>（于libc5而言是/lib/ld-linux.so.1，于glibc2而言是/lib/ld-linux.so.2）处理更加现代的ELF二进制格式。两个程序具有相同的行为，使用相同的支持文件和程序（ldd、ldconfig和/etc/ld.so.conf）。<strong>ld.so与ld-linux.so是相似的，于程序运行期间起作用</strong>。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL21hbjcub3JnL2xpbnV4L21hbi1wYWdlcy9tYW44L2xkLWxpbnV4LnNvLjguaHRtbA==" title="http://man7.org/linux/man-pages/man8/ld-linux.so.8.html">ld.so, ld-linux.so - dynamic linker/loader<i class="fa fa-external-link"></i></span></li>
+    <title>Linux gcc/g++中的-I、-l、-L</title>
+    <url>/archives/8b42591c.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><ul>
+<li><code>-I</code> 指定第一个用于寻找头文件的目录；</li>
+<li><code>-L</code> 指定第一个用于寻找库文件的目录；</li>
+<li><code>-l</code> 用于指定程序具体要链接的库的名字。</li>
+</ul>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NzQ3JhenliaW5nL2FydGljbGUvZGV0YWlscy84MDMzNzc3Nw==" title="https://blog.csdn.net/csCrazybing/article/details/80337777">gcc “-I”（大写 i），“-L”（大写 l），“-l”（小写 l）的区别<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -1309,15 +1358,11 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux gcc/g++中的-I、-l、-L</title>
-    <url>/archives/8b42591c.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><ul>
-<li><code>-I</code> 指定第一个用于寻找头文件的目录；</li>
-<li><code>-L</code> 指定第一个用于寻找库文件的目录；</li>
-<li><code>-l</code> 用于指定程序具体要链接的库的名字。</li>
-</ul>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NzQ3JhenliaW5nL2FydGljbGUvZGV0YWlscy84MDMzNzc3Nw==" title="https://blog.csdn.net/csCrazybing/article/details/80337777">gcc “-I”（大写 i），“-L”（大写 l），“-l”（小写 l）的区别<i class="fa fa-external-link"></i></span></li>
+    <title>Linux中的ld-so与ld-linux-so</title>
+    <url>/archives/c5106d85.html</url>
+    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>动态链接器/加载器，<code>ld.so</code>和 <code>ld-linux.so*</code>查找并加载程序运行时所需要的共享对象（共享库），然后准备好程序并运行它，Linux二进制文件需要在运行时进行动态链接，除非在程序编译期间为ld（GNU链接器）指定了<code>-static</code>选项。<code>ld.so</code>程序处理a.out二进制格式（一种年代久远的二进制格式），<code>ld-linux.so*</code>（于libc5而言是/lib/ld-linux.so.1，于glibc2而言是/lib/ld-linux.so.2）处理更加现代的ELF二进制格式。两个程序具有相同的行为，使用相同的支持文件和程序（ldd、ldconfig和/etc/ld.so.conf）。<strong>ld.so与ld-linux.so是相似的，于程序运行期间起作用</strong>。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cDovL21hbjcub3JnL2xpbnV4L21hbi1wYWdlcy9tYW44L2xkLWxpbnV4LnNvLjguaHRtbA==" title="http://man7.org/linux/man-pages/man8/ld-linux.so.8.html">ld.so, ld-linux.so - dynamic linker/loader<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
