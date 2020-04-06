@@ -268,7 +268,66 @@
 <li><p>在早期版本的C++标准中，如果<code>vector</code>的元素还是<code>vector</code>（或者其他模板类型），则其定义的形式与现在的C++11新标准略有不同。过去，必须在外层<code>vector</code>对象的右尖括号和其元素类型之间添加一个空格，如应该写成<code>vector&lt;vector&lt;int&gt; &gt;</code>而非<code>vector&lt;vector&lt;int&gt;&gt;</code>。</p>
 </li>
 <li><p>定义<code>vector</code>对象的常用方法如下表所示：</p>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
+.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}
+.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<tr>
+    <th class="tg-xeqs" colspan="2">初始化vector对象的方法</th>
+</tr>
+<tr>
+    <td class="tg-0pky">vector&lt;T&gt; v1</td>
+    <td class="tg-0pky">v1是一个空vector，它潜在的元素是T类型的，执行默认初始化</td>
+</tr>
+<tr>
+    <td class="tg-0pky">vector&lt;T&gt; v2(v1)</td>
+    <td class="tg-0pky">v2中包含有v1所有元素的副本</td>
+</tr>
+<tr>
+    <td class="tg-0pky">vector&lt;T&gt; v2 = v1</td>
+    <td class="tg-0pky">等价于v2(v1)，v2中包含有v1所有元素的副本</td>
+</tr>
+<tr>
+    <td class="tg-0pky">vector&lt;T&gt; v3(n, val)</td>
+    <td class="tg-0pky">v3包含了n个重复的元素，每个元素的值都是val</td>
+</tr>
+<tr>
+    <td class="tg-0pky">vector&lt;T&gt; v4(n)</td>
+    <td class="tg-0pky">v4包含了n个重复地执行了值初始化的对象</td>
+</tr>
+<tr>
+    <td class="tg-lboi">vector&lt;T&gt; v5{a, b, c ...}</td>
+    <td class="tg-lboi">v5包含了初始值个数的元素，每个元素被赋予相应的初始值</td>
+</tr>
+<tr>
+    <td class="tg-lboi">vector&lt;T&gt; v5 = {a, b, c ...}</td>
+    <td class="tg-lboi">等价于v5{a, b, c...}</td>
+</tr>
+</table>
 </li>
+<li><p>可以默认初始化<code>vector对象</code>，从而创建一个指定类型的空<code>vector</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; svec;  <span class="comment">// 默认初始化，svec不含任何元素</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>允许把一个<code>vector</code>对象的元素拷贝给另外一个<code>vector</code>对象。此时，新<code>vector</code>对象的元素就是原<code>vector</code>对象对应元素的副本。注意两个<code>vector</code>对象的类型必须相同：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;  <span class="comment">// 初始状态为空</span></span><br><span class="line"><span class="comment">// 在此处给ivec添加一些值</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">ivec2</span><span class="params">(ivec)</span></span>;     <span class="comment">// 把ivec的元素拷贝给ivec2</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec3 = ivec;    <span class="comment">// 把ivec的元素拷贝给ivec3</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">svec</span><span class="params">(ivec2)</span></span>;  <span class="comment">// 错误：svec的元素是string对象，不是int</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>C++11新标准还提供了另外一种为<code>vector</code>对象的元素赋初值的方法，即列表初始化。此时，用花括号括起来的0个或多个初始元素值被赋给<code>vector</code>对象：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; articles = &#123;<span class="string">"a"</span>, <span class="string">"an"</span>, <span class="string">"the"</span>&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用C++中几种不同的初始化方式时的三点要求：</p>
+<ul>
+<li>其一，使用拷贝初始化时（即使用=时），只能提供一个初始值；</li>
+<li>其二，如果提供的是一个类内初始值，则只能使用拷贝初始化或使用花括号的形式初始化；</li>
+<li>其三，如果提供的是初始元素值的列表，则只能把初始值都放在花括号里进行列表初始化，而不能放在圆括号里。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; v1&#123;<span class="string">"a"</span>, <span class="string">"an"</span>, <span class="string">"the"</span>&#125;;  <span class="comment">// 列表初始化</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">v2</span><span class="params">(<span class="string">"a"</span>, <span class="string">"an"</span>, <span class="string">"the"</span>)</span></span>;  <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
+</li>
+<li></li>
 </ol>
 <hr>
 ]]></content>
@@ -1773,15 +1832,16 @@
       </tags>
   </entry>
   <entry>
-    <title>Python字典数据结构的item()函数</title>
-    <url>/archives/b11e5b5a.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure>
-<p>会得到下面的输出：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure>
-
+    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
+    <url>/archives/43b2dca3.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
+<p>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure>
+<p>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -1796,16 +1856,15 @@
       </tags>
   </entry>
   <entry>
-    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
-    <url>/archives/43b2dca3.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
-<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
-<p>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure>
-<p>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
+    <title>Python字典数据结构的item()函数</title>
+    <url>/archives/b11e5b5a.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure>
+<p>会得到下面的输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure>
+
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
