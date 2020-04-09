@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-29T13:17:03.000Z">
-<meta property="article:modified_time" content="2020-04-08T15:57:04.931Z">
+<meta property="article:modified_time" content="2020-04-09T16:13:39.237Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -257,7 +257,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-08 23:57:04" itemprop="dateModified" datetime="2020-04-08T23:57:04+08:00">2020-04-08</time>
+                <time title="修改时间：2020-04-10 00:13:39" itemprop="dateModified" datetime="2020-04-10T00:13:39+08:00">2020-04-10</time>
               </span>
 
           <br>
@@ -661,7 +661,83 @@
 </li>
 <li><p>下列的<code>vector</code>对象各包含多少个元素？这些元素的值分别是多少？</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1;               <span class="comment">// （a）：0个元素</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v2</span><span class="params">(<span class="number">10</span>)</span></span>;           <span class="comment">// （b）：10个0</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v3</span><span class="params">(<span class="number">10</span>, <span class="number">42</span>)</span></span>;       <span class="comment">// （c）：10个42</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v4&#123;<span class="number">10</span>&#125;;           <span class="comment">// （d）：1个10</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v5&#123;<span class="number">10</span>, <span class="number">42</span>&#125;;       <span class="comment">// （e）：2个，10和42</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; v6&#123;<span class="number">10</span>&#125;;        <span class="comment">// （f）：10个空字符串 </span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; v7&#123;<span class="number">10</span>, <span class="string">"hi"</span>&#125;;  <span class="comment">// （g）：10个"hi"</span></span><br></pre></td></tr></table></figure>
-
+</li>
+<li><p><code>vector</code>的成员函数<code>push_back</code>向其中添加元素。<code>push_back</code>负责把一个值当成<code>vector</code>对象的尾元素“压到（push）”<code>vector</code>对象的“尾端（back）”。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v2;  <span class="comment">// 空vector对象</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != <span class="number">100</span>; ++i)</span><br><span class="line">    v2.push_back(i);  <span class="comment">// 依次把整数值放到v2尾端</span></span><br><span class="line"><span class="comment">// 循环结束后v2有100个元素，值从0到99</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>vector</code>对象能高效地增长，那么<strong>在定义<code>vector</code>对象的时候设定其大小也就没什么必要了，事实上如果这么做性能可能更差</strong>。只有一种例外情况，就是所有（all）元素的值都一样。一旦元素的值有所不同，更有效的办法是先定义一个空的<code>vector</code>对象，再在运行时向其中添加具体值。</p>
+</li>
+<li><p><strong>如果循环体内部包含有向<code>vector</code>对象添加元素的语句，则不能使用范围<code>for</code>循环，范围<code>for</code>语句体内不应改变其所遍历序列的大小。</strong></p>
+</li>
+<li><p>比较重要的一些<code>vector</code>支持的操作如下表所示：</p>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
+.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}
+.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<tr>
+    <th class="tg-xeqs" colspan="2">vector支持的操作</th>
+</tr>
+<tr>
+    <td class="tg-0pky">v.empty()</td>
+    <td class="tg-0pky">如果v不含有任何元素，返回真；否则返回假</td>
+</tr>
+<tr>
+    <td class="tg-0pky">v.size()</td>
+    <td class="tg-0pky">返回v中元素的个数</td>
+</tr>
+<tr>
+    <td class="tg-0pky">v.push_back(t)</td>
+    <td class="tg-0pky">向v的尾端添加一个值为t的元素</td>
+</tr>
+<tr>
+    <td class="tg-0pky">v[n]</td>
+    <td class="tg-0pky">返回v中第n个位置上元素的引用</td>
+</tr>
+<tr>
+    <td class="tg-0pky">v1 = v2</td>
+    <td class="tg-0pky">用v2中元素的拷贝替换v1中的元素</td>
+</tr>
+<tr>
+    <td class="tg-lboi">v1 = {a, b, c ..}</td>
+    <td class="tg-lboi">用列表中元素的拷贝替换v1中的元素</td>
+</tr>
+<tr>
+    <td class="tg-lboi">v1 == v2</td>
+    <td class="tg-lboi" rowspan="2">v1和v2相等当且仅当它们的元素数量相同且对应位置的元素值都相同</td>
+</tr>
+<tr>
+    <td class="tg-0lax">v1 != v2</td>
+</tr>
+<tr>
+    <td class="tg-0lax">&lt;, &lt;=, &gt;, &gt;=</td>
+    <td class="tg-0lax">以字典顺序进行比较</td>
+</tr>
+</table>
+</li>
+<li><p>可以使用范围<code>for</code>语句处理<code>vector</code>对象中的所有元素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)      <span class="comment">// 对于v中的每个元素（注意：i是一个引用）</span></span><br><span class="line">    i *= i;            <span class="comment">// 求元素值的平方</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> i : v)       <span class="comment">// 对于v中的每个元素</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">" "</span>;  <span class="comment">// 输出该元素</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>vector</code>的<code>size</code>函数返回<code>vector</code>对象中元素的个数，返回值的类型是由<code>vector</code>定义的<code>size_type</code>类型。要使用<code>size_type</code>，需首先指定它是由哪种类型定义的。<code>vector</code>对象的类型总是包含着元素的类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::size_type  <span class="comment">// 正确</span></span><br><span class="line"><span class="built_in">vector</span>::size_type       <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>两个<code>vector</code>对象相等当且仅当它们所含的元素个数相同，而且对应位置的元素值也相同。关系运算符依照字典顺序进行比较：如果两个<code>vector</code>对象的容量不同，但是在相同位置上的元素值都一样，则元素较少的<code>vector</code>对象小于元素较多的<code>vector</code>对象；若元素的值有区别，则<code>vector</code>对象的大小关系由第一对相异的元素值的大小关系决定。</p>
+</li>
+<li><p>只要<code>vector</code>对象不是一个常量，就能向下标运算符返回的元素赋值。</p>
+</li>
+<li><p><strong>两个整数相除，结果还是整数，余数部分被自动忽略掉了。</strong>下面的程序以10分为一个分数段统计成绩的数量：0<del>9，10</del>19…，90~99，100：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span>&gt; <span class="title">scores</span><span class="params">(<span class="number">11</span>, <span class="number">0</span>)</span></span>;  <span class="comment">// 11个分数段，全都初始化为0</span></span><br><span class="line"><span class="keyword">unsigned</span> grade;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; grade)         <span class="comment">// 读取成绩</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (grade &lt;= <span class="number">100</span>)        <span class="comment">// 只处理有效的成绩</span></span><br><span class="line">        ++scores[grade/<span class="number">10</span>];  <span class="comment">// 将对应分数段的计数值加1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下面的代码试图为<code>vector</code>对象ivec添加10个元素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;  <span class="comment">// 空vector对象</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">decltype</span>(ivec.size()) ix = <span class="number">0</span>; ix != <span class="number">10</span>; ++ix)</span><br><span class="line">    ivec[ix] = ix;  <span class="comment">// 严重错误：ivec不包含任何元素</span></span><br></pre></td></tr></table></figure>
+<p>然而，这段代码是错误的：ivec是一个空<code>vector</code>，根本不包含任何元素，当然也就不能通过下标去访问任何元素！如前所述，正确的方法是使用<code>push_back</code>。<code>vector</code>对象（以及<code>string</code>对象）的下标运算符可用于访问已存在的元素，而不能用于添加元素。</p>
+</li>
+<li><p><strong>试图用下标的形式去访问一个不存在的元素将引发错误，不过这种错误不会被编译器发现，而是在运行时产生一个不可预知的值。</strong>不幸的是，这种通过下标访问不存在的元素的行为非常常见，而且会产生很严重的后果。所谓的缓冲区溢出（buffer overflow）指的就是这类错误，这也是导致PC及其他设备上应用程序出现安全问题的一个重要原因。<strong>确保下标合法的一种有效手段就是尽可能使用范围<code>for</code>语句。</strong></p>
 </li>
 </ol>
 <hr>
@@ -675,10 +751,10 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\65fedf51.html" rel="bookmark">VS Code C++程序中cout输出中文显示乱码</a></div>
