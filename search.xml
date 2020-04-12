@@ -429,7 +429,7 @@
 </li>
 <li><p>迭代器也提供了对对象的间接访问。就迭代器而言，其对象是容器中的元素或者string对象中的字符。使用迭代器可以访问某个元素，迭代器也能从一个元素移动到另外一个元素。迭代器有有效和无效之分，这一点和指针差不多。有效的迭代器或者指向某个元素，或者指向容器中尾元素的下一位置；其他所有情况都属于无效。</p>
 </li>
-<li><p>获取迭代器不是使用取地址符，有迭代器的类型同时拥有返回迭代器的成员。比如，这些类型都拥有名为<strong><code>begin</code></strong>和<strong><code>end</code></strong>的成员，其中<code>begin</code>成员负责返回指向第一个元素（或第一个字符）的迭代器。<code>end</code>成员则负责返回指向容器（或string对象）“尾元素的下一位置（one past the end）”的迭代器，也就是说，该迭代器指示的是容器的一个本不存在的“<strong>尾后</strong>（off the end）”元素。<code>end</code>成员返回的迭代器常被称作<strong>尾后迭代器</strong>（off-the-end iterator）或者简称为尾迭代器（end iterator）。特殊情况下如果容器为空，则<code>begin</code>和<code>end</code>返回的是同一个迭代器。</p>
+<li><p>获取迭代器不是使用取地址符，有迭代器的类型同时拥有返回迭代器的成员。比如，这些类型都拥有名为<strong><code>begin</code></strong>和<strong><code>end</code></strong>的成员，其中<code>begin</code>成员负责返回指向第一个元素（或第一个字符）的迭代器。<code>end</code>成员则负责返回指向容器（或string对象）“尾元素的下一位置（one past the end）”的迭代器，也就是说，该迭代器指示的是容器的一个本不存在的“<strong>尾后</strong>（off the end）”元素。<code>end</code>成员返回的迭代器常被称作<strong>尾后迭代器</strong>（off-the-end iterator）或者简称为尾迭代器（end iterator）。特殊情况下如果容器为空，则<code>begin</code>和<code>end</code>返回的是同一个迭代器——尾迭代器。</p>
 </li>
 </ol>
 <hr>
