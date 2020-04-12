@@ -547,7 +547,10 @@
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下面的程序使用迭代器完成了二分搜索</span></span><br><span class="line"><span class="comment">// beg和end表示我们要搜索的范围</span></span><br><span class="line"><span class="keyword">auto</span> beg = text.begin(), end = text.end();</span><br><span class="line"><span class="keyword">auto</span> mid = beg + (end - beg) / <span class="number">2</span>;</span><br><span class="line"><span class="keyword">while</span> (mid != end &amp;&amp; *mid != sought)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (*mid &lt; sought)</span><br><span class="line">        end = mid;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        beg = mid + <span class="number">1</span>;</span><br><span class="line">    mid = beg + (end - beg) / <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>循环过程终止时，mid或者等于end或者指向要找的元素。如果mid等于end，说明text中没有我们要找的元素。</p>
 </li>
-<li></li>
+<li><p>数组与<code>vector</code>相似的地方是，数组也是存放类型相同的对象的容器，这些对象本身没有名字，需要通过其所在位置访问。与<code>vector</code>不同的地方是，数组的大小确定不变，不能随意向数组中增加元素。因为数组的太小固定，因此对某些特殊的应用来说程序的运行时性能较好，但是相应地也损失了一些灵活性。<strong>如果不清楚元素的确切个数，请使用<code>vector</code>。</strong></p>
+</li>
+<li><p>数组中元素的个数也属于数组类型的一部分，编译的时候维度应该是已知的。也就是说，<strong>维度必须是一个常量表达式</strong>：</p>
+</li>
 </ol>
 <hr>
 ]]></content>
