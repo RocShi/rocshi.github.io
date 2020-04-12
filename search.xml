@@ -431,6 +431,69 @@
 </li>
 <li><p>获取迭代器不是使用取地址符，有迭代器的类型同时拥有返回迭代器的成员。比如，这些类型都拥有名为<strong><code>begin</code></strong>和<strong><code>end</code></strong>的成员，其中<code>begin</code>成员负责返回指向第一个元素（或第一个字符）的迭代器。<code>end</code>成员则负责返回指向容器（或string对象）“尾元素的下一位置（one past the end）”的迭代器，也就是说，该迭代器指示的是容器的一个本不存在的“<strong>尾后</strong>（off the end）”元素。<code>end</code>成员返回的迭代器常被称作<strong>尾后迭代器</strong>（off-the-end iterator）或者简称为尾迭代器（end iterator）。特殊情况下如果容器为空，则<code>begin</code>和<code>end</code>返回的是同一个迭代器——尾迭代器。</p>
 </li>
+<li><p>下表列举了迭代器支持的一些运算。使用<code>==</code>和<code>!=</code>来比较两个合法的迭代器是否相等，如果两个迭代器指向的元素相同或者都是同一个容器的尾后迭代器，则它们相等：否则就说这两个迭代器不相等。</p>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
+.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}
+.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<tr>
+    <th class="tg-xeqs" colspan="2">标准容器迭代器的运算符</th>
+</tr>
+<tr>
+    <td class="tg-0pky">*iter</td>
+    <td class="tg-0pky">返回迭代器iter所指元素的引用</td>
+</tr>
+<tr>
+    <td class="tg-0pky">iter-&gt;mem</td>
+    <td class="tg-0pky">解引用iter并获取该元素的名为mem的成员，等价于(*iter).mem</td>
+</tr>
+<tr>
+    <td class="tg-0pky">++iter</td>
+    <td class="tg-0pky">令iter指示容器中的下一个元素</td>
+</tr>
+<tr>
+    <td class="tg-0pky">--iter</td>
+    <td class="tg-0pky">令iter指示容器中的上一个元素</td>
+</tr>
+<tr>
+    <td class="tg-lboi">iter1 == iter2</td>
+    <td class="tg-lboi" rowspan="2">判断两个迭代器是否相等（不相等），如果两个迭代器指示的是同一个元素或者它们是同一个容器的尾后迭代器，则相等；反之，不相等</td>
+</tr>
+<tr>
+    <td class="tg-0pky">iter1 != iter2</td>
+</tr>
+</table>
+
+<p>和指针类似，也能通过解引用迭代器来获取它所指示的元素，执行解引用的迭代器必须合法并确实指示着某个元素。试图解引用一个非法迭代器或者尾后迭代器都是未被定义的行为。</p>
+</li>
+<li><p>下面的程序将<code>string</code>对象的第一个字母改为了大写形式：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"some string"</span>)</span></span>;</span><br><span class="line"><span class="keyword">if</span> (s.begin() != s.end())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">auto</span> it = s.begin();</span><br><span class="line">    *it = <span class="built_in">toupper</span>(*it);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>迭代器使用递增（<code>++</code>）运算符来从一个元素移动到下一个元素。因为<code>end</code>返回的迭代器并不实际指示某个元素，所以不能对其进行递增或解引用的操作。</p>
+</li>
+<li><p>下面的程序将<code>string</code>对象的第一个单词改为了大写形式：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"some string"</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> it = s.begin(); it != s.end() &amp;&amp; !<span class="built_in">isspace</span>(*it); ++it)</span><br><span class="line">    *it = <span class="built_in">toupper</span>(*it);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只有<code>string</code>和<code>vector</code>等一些标准库类型有下标运算符，而并非全都如此。与之类似，所有标准库容器的迭代器都定义了<code>==</code>和<code>!=</code>，但是它们中的太多数都没有定义<code>&lt;</code>运算符。因此，只要养成使用迭代器和<code>!=</code>的习惯，就不用太在意用的到底是哪种容器类型。</p>
+</li>
+<li><p>拥有迭代器的标准库类型使用<code>iterator</code>和<code>const_iterator</code>来表示迭代器的类型：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator it;         <span class="comment">// it能读写vector&lt;int&gt;的元素</span></span><br><span class="line"><span class="built_in">string</span>::iterator it2;             <span class="comment">// it2能读写string对象中的元素</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::const_iterator it3;  <span class="comment">// it3只能读元素，不能写元素</span></span><br><span class="line"><span class="built_in">string</span>::const_iterator it4;       <span class="comment">// it4只能读字符，不能写字符</span></span><br></pre></td></tr></table></figure>
+<p><code>const_iterator</code>和指向常量的指针差不多，能读取但不能修改它所指的元素值。相反，<code>iterator</code>的对象可读可写。如果<code>vector</code>对象或<code>string</code>对象是一个常量，只能使用<code>const_iterator</code>；如果<code>vector</code>对象或<code>string</code>对象不是常量，那么既能使用<code>iterator</code>也能使用<code>const_iterator</code>。</p>
+</li>
+<li><p>每个容器类定义了一个名为<code>iterator</code>的类型，该类型支持迭代器概念所规定的一套操作。</p>
+</li>
+<li><p><code>begin</code>和<code>end</code>返回的具体类型由对象是否是常量决定，如果对象是常量，<code>begin</code>和<code>end</code>返回<code>const_iterator</code>；如果对象不是常量，返回<code>iterator</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cv;</span><br><span class="line"><span class="keyword">auto</span> it1 = v.begin();   <span class="comment">// it1的类型是vector&lt;int&gt;::iterator</span></span><br><span class="line"><span class="keyword">auto</span> it2 = cv.begin();  <span class="comment">// it2的类型是vector&lt;int&gt;::const_iterator</span></span><br></pre></td></tr></table></figure>
+<p>如果对象只需读操作而无须写操作的话最好使用常量类型（比如<code>const_iterator</code>）。为了便于专门得到<code>const_iterator</code>类型的返回值，C++11新标准引入了两个新函数，分别是<code>cbegin</code>和<code>cend</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> it3 = v.cbegin();  <span class="comment">// it3的类型是vector&lt;int&gt;::const_iterator</span></span><br></pre></td></tr></table></figure>
+<p>类似于<code>begin</code>和<code>end</code>，上述两个新函数也分别返回指示容器第一个元素或最后元素下一位置的迭代器。有所不同的是，不论<code>vector</code>对象（或<code>string</code>对象）本身是否是常量，返回值都是<code>const_iterator</code>。</p>
+</li>
+<li></li>
 </ol>
 <hr>
 ]]></content>
@@ -1495,32 +1558,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux中使用core dump进行程序调试</title>
-    <url>/archives/f52fa610.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><ul>
-<li>在ubuntu 14.04系统中临时编译了LaneViewer（项目中基于QGLViewer编写的一个GUI界面），但在ubuntu 14.04系统中无法正常运行，启动后闪退，想到了使用<code>core dump</code>文件进行调试，定位问题所在；</li>
-<li>项目中所负责的某模块在iECU中运行时会出现<code>defunct</code>（挂掉）问题，想到了使用<code>core dump</code>文件进行调试，定位问题所在。</li>
-</ul>
-<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
-<li>临时开启<code>core dump</code>，取消core文件大小限制（仅对当前终端有效）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br></pre></td></tr></table></figure></li>
-<li>运行目标程序，若非正常退出，会在程序所在目录下生成对应core文件</li>
-<li>使用<code>gdb</code>调试core文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gdb .&#x2F;LaneViewer core</span><br></pre></td></tr></table></figure></li>
-<li>进入<code>gdb</code>调试界面后，输入<code>r</code>并回车，可使程序运行至断点位置，输入<code>bt</code>并回车，可显示程序运行时的调用堆栈，<code>bt</code>代表<code>backtrace</code>。</li>
-</ol>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuaXRleWUuY29tL2Jsb2cvdmFxZXRlYXJ0LTEwMTMzOTc=" title="https://www.iteye.com/blog/vaqeteart-1013397">利用Core Dump调试程序<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux中使用sed命令进行字符串查找和替换</title>
     <url>/archives/31e5f0fe.html</url>
     <content><![CDATA[<h1 id="1-常见用法及用法说明" class="heading-control"><a href="#1-常见用法及用法说明" class="headerlink" title="1 常见用法及用法说明"></a>1 常见用法及用法说明<a class="heading-anchor" href="#1-常见用法及用法说明" aria-hidden="true"></a></h1><p>下面的代码行是<code>sed</code>命令最为常见的用法，用于将Input_File中所有的Search_String全部替换为Replacement_String：</p>
@@ -1602,6 +1639,32 @@
       <tags>
         <tag>Linux</tag>
         <tag>Shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux中使用core dump进行程序调试</title>
+    <url>/archives/f52fa610.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><ul>
+<li>在ubuntu 14.04系统中临时编译了LaneViewer（项目中基于QGLViewer编写的一个GUI界面），但在ubuntu 14.04系统中无法正常运行，启动后闪退，想到了使用<code>core dump</code>文件进行调试，定位问题所在；</li>
+<li>项目中所负责的某模块在iECU中运行时会出现<code>defunct</code>（挂掉）问题，想到了使用<code>core dump</code>文件进行调试，定位问题所在。</li>
+</ul>
+<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
+<li>临时开启<code>core dump</code>，取消core文件大小限制（仅对当前终端有效）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br></pre></td></tr></table></figure></li>
+<li>运行目标程序，若非正常退出，会在程序所在目录下生成对应core文件</li>
+<li>使用<code>gdb</code>调试core文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gdb .&#x2F;LaneViewer core</span><br></pre></td></tr></table></figure></li>
+<li>进入<code>gdb</code>调试界面后，输入<code>r</code>并回车，可使程序运行至断点位置，输入<code>bt</code>并回车，可显示程序运行时的调用堆栈，<code>bt</code>代表<code>backtrace</code>。</li>
+</ol>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuaXRleWUuY29tL2Jsb2cvdmFxZXRlYXJ0LTEwMTMzOTc=" title="https://www.iteye.com/blog/vaqeteart-1013397">利用Core Dump调试程序<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
