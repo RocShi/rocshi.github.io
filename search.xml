@@ -587,7 +587,26 @@
 <p>WARNING 大多数常见的安全问题都源于缓冲区溢出错误。当数组或其他类似数据结构的下标越界并试图访问非法内存区域时，就会产生此类错误。</p>
 </blockquote>
 </li>
-<li></li>
+<li><p>像其他对象一样，对数组的元素使用取地址符就能得到指向该元素的指针：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> nums[] = &#123;<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>&#125;;  <span class="comment">// 数组的元素是string对象</span></span><br><span class="line"><span class="built_in">string</span> *p = &amp;nums[<span class="number">0</span>];                     <span class="comment">// p指向nums的第一个元素</span></span><br></pre></td></tr></table></figure>
+<p>数组还有一个特性：<strong>在很多用到数组名字的地方，编译器都会自动地将其替换为一个指向数组首元素的指针</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> *p2 = nums;  <span class="comment">// 等价于p2 = &amp;nums[0];</span></span><br></pre></td></tr></table></figure>
+<p>但应注意：<strong><code>&amp;num</code>和<code>&amp;num[0]</code>拥有不同的含义。</strong></p>
+<blockquote>
+<p>在大多数表达式中，使用数组类型的对象其实是使用一个指向该数组首元素的指针。</p>
+</blockquote>
+</li>
+<li><p><strong>当使用数组作为一个<code>auto</code>变量的初始值时，推断得到的类型是指针而非数组</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;  <span class="comment">// ia是一个含有10个整数的数组</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">ia2</span><span class="params">(ia)</span></span>;                               <span class="comment">// ia2是一个整型指针，指向ia的第一个元素</span></span><br><span class="line">ia2 = <span class="number">42</span>;                                   <span class="comment">// 错误：ia2是一个指针，不能用int值给指针赋值</span></span><br></pre></td></tr></table></figure>
+<p>尽管ia是由10个整数构成的数组，但当使用ia作为初始值时，编译器实际执行的初始化过程类似于下面的形式：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">ia2</span><span class="params">(&amp;ia[<span class="number">0</span>])</span></span>;  <span class="comment">// 显然ia2的类型是int*</span></span><br></pre></td></tr></table></figure>
+<p><strong>当使用<code>decltype</code>关键字时上述转换不会发生</strong>，<code>decltype(ia)</code>返回的类型是由10个整数构成的数组：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ia3是一个含有10个整数的数组</span></span><br><span class="line"><span class="keyword">decltype</span>(ia) ia3 = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line">ia3 = p;     <span class="comment">// 错误：不能用整型指针给数组赋值</span></span><br><span class="line">ia3[<span class="number">4</span>] = i;  <span class="comment">// 正确：把i的值赋给ia3的一个元素</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以设法获取数组尾元素之后的那个并不存在的元素的地址：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</li>
 </ol>
 <hr>
 ]]></content>
