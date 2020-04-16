@@ -616,7 +616,24 @@
 <p>一个指针如果指向了某种内置类型数组的尾元素的“下一位置”，则其具备与<code>vector</code>的<code>end</code>函数返回的与迭代器类似的功能。特别要注意，尾后指针不能执行解引用和递增操作。</p>
 </blockquote>
 </li>
-<li></li>
+<li><p>给指针加上一个整数，得到的新指针仍需指向同一数组的其他元素，或者指向同一数组的尾元素的下一位置：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">size_t</span> sz = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">int</span> arr[sz] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="comment">// 正确：arr转换成指向它首元素的指针；p指向arr尾元素的下一位置</span></span><br><span class="line"><span class="keyword">int</span> *p = arr + sz;   <span class="comment">// 使用警告：不要解引用！</span></span><br><span class="line"><span class="keyword">int</span> *p2 = arr + <span class="number">10</span>;  <span class="comment">// 错误：arr只有5个元素，p2的值未定义</span></span><br></pre></td></tr></table></figure>
+<p><strong>如果计算所得的指针超出了数组范围就将产生错误，而且这种错误编译器一般发现不了。</strong></p>
+</li>
+<li><p><strong>和迭代器一样，两个指针相减的结果是它们之间的距离。参与运算的两个指针必须指向同一个数组当中的元素</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">auto</span> size = <span class="built_in">std</span>::end(<span class="built_in">array</span>) - <span class="built_in">std</span>::begin(<span class="built_in">array</span>);  <span class="comment">// 以此获取数组中元素的数量</span></span><br></pre></td></tr></table></figure>
+<p>两个指针相减的结果的类型是一种名为<strong><code>ptrdiff_t</code></strong>的标准库类型，和<code>size_t</code>一样，<code>ptrdiff_t</code>也是一种定义在<code>cstddef</code>头文件中的机器相关的类型。因为差值可能为负值，所以<code>ptrdiff_t</code>是一种带符号类型。</p>
+</li>
+<li><p>只要两个指针指向同一个数组的元素，或者指向该数组的尾元素的下一位置，就能利用关系运算符对其进行比较：</p>
+<pre><code class="cpp"><span class="keyword">int</span> *b = arr, *e = arr + sz;
+<span class="keyword">while</span> (b &lt; e)
+{
+    <span class="comment">// 使用*b</span>
+    ++b;
+}
+如果两个指针分别指向不相关的对象，则不能比较它们（没有意义）。
+</code></pre>
+</li>
 </ol>
 <hr>
 ]]></content>
@@ -1681,6 +1698,32 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux中使用core dump进行程序调试</title>
+    <url>/archives/f52fa610.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><ul>
+<li>在ubuntu 14.04系统中临时编译了LaneViewer（项目中基于QGLViewer编写的一个GUI界面），但在ubuntu 14.04系统中无法正常运行，启动后闪退，想到了使用<code>core dump</code>文件进行调试，定位问题所在；</li>
+<li>项目中所负责的某模块在iECU中运行时会出现<code>defunct</code>（挂掉）问题，想到了使用<code>core dump</code>文件进行调试，定位问题所在。</li>
+</ul>
+<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
+<li>临时开启<code>core dump</code>，取消core文件大小限制（仅对当前终端有效）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br></pre></td></tr></table></figure></li>
+<li>运行目标程序，若非正常退出，会在程序所在目录下生成对应core文件</li>
+<li>使用<code>gdb</code>调试core文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gdb .&#x2F;LaneViewer core</span><br></pre></td></tr></table></figure></li>
+<li>进入<code>gdb</code>调试界面后，输入<code>r</code>并回车，可使程序运行至断点位置，输入<code>bt</code>并回车，可显示程序运行时的调用堆栈，<code>bt</code>代表<code>backtrace</code>。</li>
+</ol>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuaXRleWUuY29tL2Jsb2cvdmFxZXRlYXJ0LTEwMTMzOTc=" title="https://www.iteye.com/blog/vaqeteart-1013397">利用Core Dump调试程序<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux中使用sed命令进行字符串查找和替换</title>
     <url>/archives/31e5f0fe.html</url>
     <content><![CDATA[<h1 id="1-常见用法及用法说明" class="heading-control"><a href="#1-常见用法及用法说明" class="headerlink" title="1 常见用法及用法说明"></a>1 常见用法及用法说明<a class="heading-anchor" href="#1-常见用法及用法说明" aria-hidden="true"></a></h1><p>下面的代码行是<code>sed</code>命令最为常见的用法，用于将Input_File中所有的Search_String全部替换为Replacement_String：</p>
@@ -1762,32 +1805,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>Shell</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux中使用core dump进行程序调试</title>
-    <url>/archives/f52fa610.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><ul>
-<li>在ubuntu 14.04系统中临时编译了LaneViewer（项目中基于QGLViewer编写的一个GUI界面），但在ubuntu 14.04系统中无法正常运行，启动后闪退，想到了使用<code>core dump</code>文件进行调试，定位问题所在；</li>
-<li>项目中所负责的某模块在iECU中运行时会出现<code>defunct</code>（挂掉）问题，想到了使用<code>core dump</code>文件进行调试，定位问题所在。</li>
-</ul>
-<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
-<li>临时开启<code>core dump</code>，取消core文件大小限制（仅对当前终端有效）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br></pre></td></tr></table></figure></li>
-<li>运行目标程序，若非正常退出，会在程序所在目录下生成对应core文件</li>
-<li>使用<code>gdb</code>调试core文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gdb .&#x2F;LaneViewer core</span><br></pre></td></tr></table></figure></li>
-<li>进入<code>gdb</code>调试界面后，输入<code>r</code>并回车，可使程序运行至断点位置，输入<code>bt</code>并回车，可显示程序运行时的调用堆栈，<code>bt</code>代表<code>backtrace</code>。</li>
-</ol>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuaXRleWUuY29tL2Jsb2cvdmFxZXRlYXJ0LTEwMTMzOTc=" title="https://www.iteye.com/blog/vaqeteart-1013397">利用Core Dump调试程序<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
