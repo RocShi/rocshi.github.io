@@ -61,7 +61,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2020/04/14/zm7XC45kUQTHhIp.png">
 <meta property="article:published_time" content="2020-03-29T13:17:03.000Z">
-<meta property="article:modified_time" content="2020-04-16T16:13:09.734Z">
+<meta property="article:modified_time" content="2020-04-18T04:00:11.250Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -259,7 +259,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-17 00:13:09" itemprop="dateModified" datetime="2020-04-17T00:13:09+08:00">2020-04-17</time>
+                <time title="修改时间：2020-04-18 12:00:11" itemprop="dateModified" datetime="2020-04-18T12:00:11+08:00">2020-04-18</time>
               </span>
 
           <br>
@@ -943,6 +943,19 @@
 <li><p>只要两个指针指向同一个数组的元素，或者指向该数组的尾元素的下一位置，就能利用关系运算符对其进行比较：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *b = arr, *e = arr + sz;</span><br><span class="line"><span class="keyword">while</span> (b &lt; e)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 使用*b</span></span><br><span class="line">    ++b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果两个指针分别指向不相关的对象，则不能比较它们（没有意义）。</p>
+</li>
+<li><p>只要指针指向的是数组中的元素（或者数组中尾元素的下一位置），都可以执行下标运算：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = &amp;ia[<span class="number">2</span>];  <span class="comment">// p指向索引为2的元素</span></span><br><span class="line"><span class="keyword">int</span> j = p[<span class="number">1</span>];     <span class="comment">// p[1]等价于*(p + 1)，即ia[3]表示的那个元素</span></span><br><span class="line"><span class="keyword">int</span> k = p[<span class="number">-2</span>];    <span class="comment">// p[-2]是ia[0]表示的那个元素</span></span><br></pre></td></tr></table></figure>
+<p><strong>标准库类型限定使用的下标必须是无符号类型，而内置的下标运算无此要求</strong>，当然，结果地址必须指向原来的指针所指同一数组中的元素（或是同一数组尾元素的下一位置）。</p>
+<blockquote>
+<p>内置的下标运算符所用的索引值不是无符号类型，这一点与<code>vector</code>和<code>string</code>不一样。</p>
+</blockquote>
+</li>
+<li><p>假定p1和p2指向同一个数组中的元素，则下面程序的功能是什么？什么情况下该程序是非法的？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p1 += p2 -p1;</span><br></pre></td></tr></table></figure>
+<p>使p1指向p2所指元素。当p1为常量指针时（即p1本身的值不可更改时），该程序非法。</p>
+</li>
+<li><p>C语言标准库提供了一组函数，如下表所示。这些函数可用于操作C风格字符串，它们定义在<code>cstring</code>头文件中。</p>
 </li>
 </ol>
 <hr>
