@@ -640,7 +640,75 @@
 <p>使p1指向p2所指元素。当p1为常量指针时（即p1本身的值不可更改时），该程序非法。</p>
 </li>
 <li><p>C语言标准库提供了一组函数，如下表所示。这些函数可用于操作C风格字符串，它们定义在<code>cstring</code>头文件中。</p>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
+.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<tr>
+    <th class="tg-xeqs" colspan="2">C风格字符串的函数</th>
+</tr>
+<tr>
+    <td class="tg-0pky">strlen(p)</td>
+    <td class="tg-0pky">返回p的长度，空字符不计算在内</td>
+</tr>
+<tr>
+    <td class="tg-0pky">strcmp(p1, p2)</td>
+    <td class="tg-0pky">比较p1和p2的相等性。如果p1 == p2，返回0；如果p1 &gt; p2，返回一个正值；如果p1 &lt; p2，返回一个负值</td>
+</tr>
+<tr>
+    <td class="tg-0pky">strcat(p1, p2)</td>
+    <td class="tg-0pky">将p2附加到p1之后，返回p1</td>
+</tr>
+<tr>
+    <td class="tg-0pky">strcpy(p1, p2)</td>
+    <td class="tg-0pky">将p2拷贝给p1，返回p1</td>
+</tr>
+</table>
+
+<p>传入此类函数的指针必须指向以空字符作为结束的数组：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> ca[] = &#123;<span class="string">'C'</span>, <span class="string">'+'</span>, <span class="string">'+'</span>&#125;;  <span class="comment">// 不以空字符结束</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="built_in">strlen</span>(ca) &lt;&lt; <span class="built_in">endl</span>;   <span class="comment">// 严重错误：ca没有以空字符结束</span></span><br></pre></td></tr></table></figure>
+<p>但实际调试结果是，上述代码可以正常输出结果3。</p>
 </li>
+<li><p>观察下述代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> ca1[] = <span class="string">"A string example"</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> ca2[] = <span class="string">"A different string"</span>;</span><br><span class="line"><span class="keyword">if</span> (ca1 &lt; ca2)  <span class="comment">// 未定义的：试图比较两个无关的地址</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>当使用数组的时候其实真正用的是指向数组首元素的指针</strong>，上面的<code>if</code>条件实际上比较的是两个<code>const char*</code>的值。</p>
+<blockquote>
+<p>对大多数应用来说，使用标准库<code>string</code>要比使用C风格字符串更安全，更高效。</p>
+</blockquote>
+</li>
+<li><p>下面程序的输出结果是什么？</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> ca1[] = &#123;<span class="string">'h'</span>, <span class="string">'e'</span>, <span class="string">'l'</span>, <span class="string">'l'</span>, <span class="string">'o'</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *cp = ca1;</span><br><span class="line"><span class="keyword">while</span> (*cp)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; *cp &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    ++cp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>逐行输出ca1中的内容，但*cp什么时候为假？ca1尾元素的下一位置是空字符‘/0’，这是编译器对字符数组的默认处理吗？</strong></p>
+</li>
+<li><p>此前已介绍过允许使用字符串字面值来初始化<code>string</code>对象：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"Hello World"</span>)</span></span>;  <span class="comment">// s的内容是Hello World</span></span><br></pre></td></tr></table></figure>
+<p>更一般的情况是，<strong>任何出现字符串字面值的地方都可以用以空字符结束的字符数组来替代</strong>：</p>
+<ul>
+<li>允许使用以空字符结束的字符数组来初始化<code>string</code>对象或为<code>string</code>对象赋值；</li>
+<li>在<code>string</code>对象的加法运算中允许使用以空字符结束的字符数组作为其中一个运算对象（<strong>不能两个运算对象都是</strong>）；在string对象的复合赋值运算中允许使用以空字符结束的字符数组作为右侧的运算对象。</li>
+</ul>
+</li>
+<li><p>如果程序的某处需要一个C风格字符串，无法直接用<code>string</code>对象来代替它。例如，不能用<code>string</code>对象直接初始化指向字符的指针。为了完成该功能，<code>string</code>专门提供了一个名为<code>c_str</code>的成员函数：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> *str = s;                <span class="comment">// 错误：不能用string对象初始化char*</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *str = s.c_str();  <span class="comment">// 正确</span></span><br></pre></td></tr></table></figure>
+<p><code>c_str</code>函数的返回值是一个C风格的字符串。也就是说，<strong><code>c_str</code>函数的返回结果是一个指针，该指针指向一个以空字符结束的字符数组，而这个数组所存的数据恰好与那个<code>string</code>对象的一样。结果指针的类型是<code>const char*</code>，从而确保我们不会改变字符数组的内容。</strong>无法保证<code>c_str</code>函数返回的数组一直有效，事实上，如果后续的操作改变了s的值就可能让之前返回的数组失去效用。</p>
+<blockquote>
+<p>如果执行完<code>c_str()</code>函数后程序想一直都能使用其返回的数组，最好将该数组重新拷贝一份。</p>
+</blockquote>
+</li>
+<li><p><strong>不允许使用一个数组为另一个内置类型的数组赋初值，也不允许使用<code>vector</code>对象初始化数组。相反的，允许使用数组来初始化<code>vector</code>对象。要实现这一目的，只需指明要拷贝区域的首元素地址和尾后地址就可以了</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> int_arr[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="comment">// ivec有6个元素，分别是int_arr中对应元素的副本</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">ivec</span><span class="params">(begin(int_arr), end(int_arr))</span></span>;</span><br></pre></td></tr></table></figure>
+<p>用于初始化<code>vector</code>对象的值也可能仅是数组的一部分：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 拷贝三个元素：int_arr[1]、int_arr[2]、int_arr[3]</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">subVec</span><span class="params">(int_arr + <span class="number">1</span>, int_arr + <span class="number">4</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>这条初始化语句用3个元素创建了对象subVec，3个元素的值分别来自<code>int_arr[1]</code>、<code>int_arr[2]</code>和<code>int_arr[3]</code>。</p>
+<blockquote>
+<p>现代的C++程序应当尽量使用<code>vector</code>和迭代器，避免使用内置数组和指针；应该尽量使用<code>string</code>，避免使用C风格的基于数组的字符串。<br><strong>不敢苟同，看需求，如果仅需要存储一些数据，那数组足够。</strong></p>
+</blockquote>
+</li>
+<li></li>
 </ol>
 <hr>
 ]]></content>
@@ -1918,9 +1986,9 @@
         <category>Linux</category>
       </categories>
       <tags>
+        <tag>Git</tag>
         <tag>Linux</tag>
         <tag>Shell</tag>
-        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
