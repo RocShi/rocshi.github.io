@@ -6,6 +6,8 @@
     <content><![CDATA[<ol>
 <li><p>字面值和变量是最简单的<strong>表达式</strong>（expression），其结果就是字面值和变量的值。</p>
 </li>
+<li><p>函数调用也是一种特殊的运算符，它对运算对象的数量没有限制。</p>
+</li>
 <li></li>
 </ol>
 <hr>
