@@ -61,7 +61,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2020/04/14/zm7XC45kUQTHhIp.png">
 <meta property="article:published_time" content="2020-03-29T13:17:03.000Z">
-<meta property="article:modified_time" content="2020-04-19T08:16:21.370Z">
+<meta property="article:modified_time" content="2020-04-19T13:15:31.931Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -259,7 +259,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-19 16:16:21" itemprop="dateModified" datetime="2020-04-19T16:16:21+08:00">2020-04-19</time>
+                <time title="修改时间：2020-04-19 21:15:31" itemprop="dateModified" datetime="2020-04-19T21:15:31+08:00">2020-04-19</time>
               </span>
 
           <br>
@@ -998,7 +998,7 @@
 </li>
 <li><p>下面程序的输出结果是什么？</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> ca1[] = &#123;<span class="string">'h'</span>, <span class="string">'e'</span>, <span class="string">'l'</span>, <span class="string">'l'</span>, <span class="string">'o'</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *cp = ca1;</span><br><span class="line"><span class="keyword">while</span> (*cp)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; *cp &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    ++cp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>逐行输出ca1中的内容，但*cp什么时候为假？ca1尾元素的下一位置是空字符‘/0’，这是编译器对字符数组的默认处理吗？</strong></p>
+<p><strong>逐行输出ca1中的内容，但*cp什么时候为假？ca1尾元素的下一位置是空字符‘\0’，这是编译器对字符数组的默认处理吗？</strong></p>
 </li>
 <li><p>此前已介绍过允许使用字符串字面值来初始化<code>string</code>对象：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"Hello World"</span>)</span></span>;  <span class="comment">// s的内容是Hello World</span></span><br></pre></td></tr></table></figure>
@@ -1025,7 +1025,44 @@
 </blockquote>
 <p><strong>不敢苟同，看需求，如果仅需要存储一些数据，那数组足够。</strong></p>
 </li>
-<li></li>
+<li><p>当一个数组的元素仍然是数组时，通常使用两个维度来定义它：一个维度表示数组本身大小，另外一个维度表示其元素（也是数组）大小。</p>
+</li>
+<li><p>允许使用花括号括起来的一组值初始化多维数组：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[<span class="number">3</span>][<span class="number">4</span>] = </span><br><span class="line">&#123;</span><br><span class="line">    &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;,   <span class="comment">// 第1行的初始值</span></span><br><span class="line">    &#123;<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;,   <span class="comment">// 第2行的初始值</span></span><br><span class="line">    &#123;<span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>&#125;  <span class="comment">// 第3行的初始值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中,内层嵌套着的花括号并非必须：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>类似于一维数组，在初始化多维数组时也并非所有元素的值都必须包含在初始化列表之内。如果仅仅想初始化每一行的第一个元素，通过如下的语句即可：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[<span class="number">3</span>][<span class="number">4</span>] = &#123;&#123;<span class="number">0</span>&#125;, &#123;<span class="number">4</span>&#125;, &#123;<span class="number">8</span>&#125;&#125;;</span><br></pre></td></tr></table></figure>
+<p>其他未列出的元素执行默认值初始化，这个过程和一维数组一样。在这种情况下如果再省略掉内层的花括号，结果就大不一样了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ix[<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>&#125;;  <span class="comment">// 显式地初始化第1行,其它元素执行值初始化</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果表达式含有的下标运算符数量比数组的维度小，则表达式的结果将是给定索引处的一个内层数组：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> (&amp;row)[<span class="number">4</span>] = ia[<span class="number">1</span>];  <span class="comment">// 把row定义成一个含有4个整数的数组的引用，然后绑定到ia的第二个4元素数组上</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用范围<code>for</code>语句处理二维数组中的每一个元素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">size_t</span> rowCnt = <span class="number">3</span>, colCnt = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">size_t</span> cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> ia[rowCnt][colCnt];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;row : ia)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;col : row)</span><br><span class="line">    &#123;</span><br><span class="line">        col = cnt;</span><br><span class="line">        ++cnt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，因为要改变数组元素的值，所以我们选用引用类型作为循环控制变量，但其实还有一个深层次的原因促使我们这么做。举一个例子，考虑如下的循环：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;row : ia)  <span class="comment">// 对于外层数组的每一个元素</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> col : row)    <span class="comment">// 对于内层数组的每一个元素</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; col &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>这个循环中并没有任何写操作，可是我们还是将外层循环的控制变量声明成了引用类型，这是<strong>为了避免数组被自动转成指针</strong>。假设不用引用类型，则循环如下述形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> row : ia)  <span class="comment">// 对于外层数组的每一个元素</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> col : row)    <span class="comment">// 对于内层数组的每一个元素</span></span><br></pre></td></tr></table></figure>
+<p>程序将无法通过编译。这是因为，像之前一样第一个循环遍历ia的所有元素，注意这些元素实际上是大小为4的数组。因为row不是引用类型，所以编译器初始化row时会自动将这些数组形式的元素（和其他类型的数组一样）转换成指向该数组内首元素的指针。这样得到的row的类型就是<code>int*</code>，显然内层的循环就不合法了，编译器将试图在一个<code>int*</code>内遍历，这显然和程序的初衷相去甚远。</p>
+<blockquote>
+<p>要使用范围<code>for</code>语句处理多维数组，除了最内层的循环外，其他所有循环的控制变量都应该是引用类型。</p>
+</blockquote>
+</li>
+<li><p>当程序使用多维数组的名字时，也会自动将其转换成指向数组首元素的指针。因为多维数组实际上是数组的数组，所以由多维数组名转换得来的指针实际上是指向第一个内层数组的指针：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[<span class="number">3</span>][<span class="number">4</span>];</span><br><span class="line"><span class="keyword">int</span> (*p)[<span class="number">4</span>] = ia;  <span class="comment">// p指向含有4个整数的数组</span></span><br><span class="line">p = &amp;ia[<span class="number">2</span>];        <span class="comment">// p指向ia的尾元素</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过使用<code>auto</code>和<code>decltype</code>关键字，可以尽可能地避免在数组前加上一个指针类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出ia中每个最小元素的值，每个内层数组各占一行</span></span><br><span class="line"><span class="comment">// p指向含有4个整数的数组</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> p = ia; p != ia + <span class="number">3</span>; p++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// q指向4个整数数组的首元素，意即，q指向一个整数</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> q = *p; q != *p +<span class="number">4</span>; ++q)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *q &lt;&lt; <span class="string">' '</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用标准库函数<code>begin</code>和<code>end</code>也能实现同样的功能，而且更加简洁：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// p指向ia的第一个数组</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> p = begin(ia); p != end(ia); ++p)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// q指向内层数组的首元素</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> q = begin(*p); q != end(*p); ++q)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *q &lt;&lt; <span class="string">' '</span>;  <span class="comment">// 输出q所指的整数值</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用数组别名简化工作：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> int_array = <span class="keyword">int</span>[<span class="number">4</span>];  <span class="comment">// 使用using声明的方式</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> int_array[<span class="number">4</span>];  <span class="comment">// 使用typedef声明的方式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出ia中每个最小元素的值，每个内层数组各占一行</span></span><br><span class="line"><span class="keyword">for</span> (int_array *p = ia; p != ia + <span class="number">3</span>; ++p)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> *q = *p; q != *p + <span class="number">4</span>; ++q)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *q &lt;&lt; <span class="string">' '</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只有当逻辑与运算符<code>&amp;&amp;</code>左侧运算对象为真时才会检查其右侧运算对象的真值，只有当逻辑或运算符<code>||</code>左侧运算对象为假时才会检查其右侧运算对象的真值。</p>
+</li>
 </ol>
 <hr>
 
