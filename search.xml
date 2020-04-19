@@ -1662,11 +1662,11 @@
 <li>第一种模式：<code>${variable%pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern结尾，如果是，就从命令行把variable中的内容<strong>去掉右边最短</strong>的匹配模式。</li>
 <li>第二种模式：<code>${variable%%pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern结尾，如果是，就从命令行把variable中的内容<strong>去掉右边最长</strong>的匹配模式。</li>
 <li>第三种模式：<code>${variable#pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern开始，如果是，就从命令行把variable中的内容<strong>去掉左边最短</strong>的匹配模式。</li>
-<li>第四种模式：<code>${variable##pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern开始，如果是，就从命令行把variable中的内容<strong>去掉左边最长</strong>的匹配模式。<blockquote>
+<li>第四种模式：<code>${variable##pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern开始，如果是，就从命令行把variable中的内容<strong>去掉左边最长</strong>的匹配模式。</li>
+</ul>
+<blockquote>
 <p>这四种模式中都不会改变variable的值，其中，只有在pattern中使用了*匹配符号时，%和%%，#和##才有区别。结构中的pattern支持通配符，*表示零个或多个任意字符，?表示仅与一个任意字符匹配，[…]表示匹配中括号里面的字符，[!…]表示不匹配中括号里面的字符。</p>
 </blockquote>
-</li>
-</ul>
 <p>示例：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">var=testcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span> </span><br><span class="line">testcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var%s*e&#125;</span> </span><br><span class="line">testca </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span> </span><br><span class="line">testcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var%%s*e&#125;</span> </span><br><span class="line">te </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var#?e&#125;</span> </span><br><span class="line">stcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##?e&#125;</span> </span><br><span class="line">stcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##*e&#125;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##*s&#125;</span> </span><br><span class="line">e </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##test&#125;</span> </span><br><span class="line"><span class="keyword">case</span></span><br></pre></td></tr></table></figure>
 
