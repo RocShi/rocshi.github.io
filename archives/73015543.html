@@ -61,7 +61,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2020/04/14/zm7XC45kUQTHhIp.png">
 <meta property="article:published_time" content="2020-03-29T13:17:03.000Z">
-<meta property="article:modified_time" content="2020-04-19T13:48:24.492Z">
+<meta property="article:modified_time" content="2020-04-23T04:31:31.310Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -259,7 +259,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-19 21:48:24" itemprop="dateModified" datetime="2020-04-19T21:48:24+08:00">2020-04-19</time>
+                <time title="修改时间：2020-04-23 12:31:31" itemprop="dateModified" datetime="2020-04-23T12:31:31+08:00">2020-04-23</time>
               </span>
 
           <br>
@@ -559,7 +559,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"Hello World!!!"</span>)</span></span>;</span><br><span class="line"><span class="keyword">decltype</span> punct_cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> c : s)</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">ispunct</span>(c))</span><br><span class="line">        ++punct_cnt;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; punct_cnt</span><br><span class="line">     &lt;&lt; <span class="string">" punctuation characters in "</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>使用<code>范围for</code>语句改变字符串中的字符。</strong>如果想要改变<code>string</code>对象中字符的值，必须把循环变量定义成引用类型。记住，所谓引用只是给定对象的一个别名，因此当使用引用作为循环控制变量时，这个变量实际上被依次绑定到了序列的每个元素上。使用这个引用，我们就能改变它绑定的字符。标准库函数<code>toupper</code>接收一个字符，然后输出其对应的大写形式。这样，为了把整个<code>string</code>对象转换成大写，只要对其中的每个字符调用<code>toupper</code>函数并将结果再赋给原字符就可以了：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"Hello World!!!"</span>)</span></span>;</span><br><span class="line"><span class="comment">// 转换成大写形式。</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;c : s)  <span class="comment">// 对于s中的每个字符（注意：c是引用</span></span><br><span class="line">c = <span class="built_in">toupper</span>(c);    <span class="comment">// c是一个引用，因此赋值语句将改变s中字符的值</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"Hello World!!!"</span>)</span></span>;</span><br><span class="line"><span class="comment">// 转换成大写形式。</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;c : s)  <span class="comment">// 对于s中的每个字符（注意：c是引用</span></span><br><span class="line">    c = <span class="built_in">toupper</span>(c);    <span class="comment">// c是一个引用，因此赋值语句将改变s中字符的值</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
 <p>每次迭代时，变量c引用<code>string</code>对象s的下一个字符，赋值给c也就是在改变s中对应字符的值。因此当执行下面的语句时，</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c = <span class="built_in">toupper</span>(c);   <span class="comment">// c是一个引用，因此赋值语句将改变s中字符的值</span></span><br></pre></td></tr></table></figure>
 <p>实际上改变了c绑定的字符的值。整个循环结束后，str中的所有字符都变成了大写形式。</p>
@@ -567,7 +567,7 @@
 <li><p>要想访问<code>string</code>对象中的单个字符有两种方式：一种是使用下标，另外一种是使用迭代器。下标运算符（<code>[ ]</code>）接收的输入参数是<code>string::size type</code>类型的值，这个参数表示要访问的字符的位置；返回值是该位置上字符的引用。<code>string</code>对象的下标从0计起，<code>s[s.size()-1]</code>是最后一个字符。<code>string</code>对象的下标必须大于等于0而小于<code>s.size()</code>。使用超出此范围的下标将引发不可预知的结果，以此推断，使用下标访问空<code>string</code>也会引发不可预知的结果。下标的值称作“下标”或“索引”，任何表达式只要它的值是一个整型值就能作为索引。不过，如果某个索引是带符号类型的值将自动转换成<code>string::size_type</code>表达的无符号类型。在访问指定字符之前，首先检查s是否为空。其实不管什么时候只要对<code>string</code>对象使用了下标，都要确认在那个位置上确实有值。如果s为空，则<code>s[0]</code>的结果将是未定义的。只要字符串不是常量，就能为下标运算符返回的字符赋新值。下面的程序将字符串的首字符改成了大写形式：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">strings(<span class="string">"some string"</span>);</span><br><span class="line"><span class="keyword">if</span> (!s.empty())            <span class="comment">// 确保s[0]的位置确实有字符</span></span><br><span class="line">    s[<span class="number">0</span>] = <span class="built_in">toupper</span>(s[<span class="number">0</span>]);  <span class="comment">// 为s的第一个字符赋一个新值</span></span><br></pre></td></tr></table></figure>
 <p>下面的程序把s的第一个词改成大写形式：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 依次处理s中的字符直至处理完全部字符或者遇到一个空白</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">decltype</span>(s.size()) index = <span class="number">0</span>;</span><br><span class="line">    index != s.size() &amp;&amp; !<span class="built_in">isspace</span>(s[index]); ++index)</span><br><span class="line">        s[index] = <span class="built_in">toupper</span>(s[index]); <span class="comment">// 将当前字符改成大写形式</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 依次处理s中的字符直至处理完全部字符或者遇到一个空白</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">decltype</span>(s.size()) index = <span class="number">0</span>;</span><br><span class="line">    index != s.size() &amp;&amp; !<span class="built_in">isspace</span>(s[index]);</span><br><span class="line">    ++index)</span><br><span class="line">    s[index] = <span class="built_in">toupper</span>(s[index]); <span class="comment">// 将当前字符改成大写形式</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>C++语言规定<strong>只有当左侧运算对象为真时才会检查右侧运算对象的情况</strong>（C语言中有着相同规定），这条规定确保了只有当下标取值在合理范围之内时才会真的用此下标去访问字符串。C++标准并不要求标准库检测下标是否合法，一旦使用了一个超出范围的下标，就会产生不可预知的结果。</p>
 </li>
@@ -1078,10 +1078,10 @@
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\65fedf51.html" rel="bookmark">VS Code C++程序中cout输出中文显示乱码</a></div>
