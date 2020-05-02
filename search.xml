@@ -8,7 +8,7 @@
 </blockquote>
 <p>对CSS样式的自定义依赖hexo/source/_data/styles.styl文件，开启hexo/themes/next/_config.xml中<code>custom_file_path</code>的相关选项，默认是注释掉的</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">custom_file_path:</span></span><br><span class="line">  <span class="attr">style:</span> <span class="string">source/_data/styles.styl</span></span><br></pre></td></tr></table></figure>
-<p>styles.styl中的CSS样式编辑用到了一些前端知识，点击<a href="/download/styles.styl">这里</a>下载我的styles.styl文件，要善用浏览器的<code>F12</code>快捷键进行调试才能达到理想效果，遇到不懂得样式通过网络搜索相关内容。</p>
+<p>styles.styl中的CSS样式编辑用到了一些前端知识，点击<a href="/download/styles.zip">这里</a>下载我的styles.styl文件，要善用浏览器的<code>F12</code>快捷键进行调试才能达到理想效果，遇到不懂得样式通过网络搜索相关内容。</p>
 ]]></content>
       <categories>
         <category>技术</category>
