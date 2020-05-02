@@ -1590,7 +1590,7 @@
 </li>
 </ul>
 <h3 id="4-2-26-为归档页面添加十二生肖图标" class="heading-control"><a href="#4-2-26-为归档页面添加十二生肖图标" class="headerlink" title="4.2.26 为归档页面添加十二生肖图标"></a>4.2.26 为归档页面添加十二生肖图标<a class="heading-anchor" href="#4-2-26-为归档页面添加十二生肖图标" aria-hidden="true"></a></h3><ul>
-<li>首先<a href="使用Hexo-GitHub-Pages搭建个人博客站点/chinese-zodiac.zip">下载</a>十二生肖字体。下载后将解压的三个字体文件全部放在根目录 ~/source/fonts/ 下（若无 fonts 文件夹请自建）。</li>
+<li>首先<a href="/download/chinese-zodiac.zip">下载</a>十二生肖字体。下载后将解压的三个字体文件全部放在根目录 ~/source/fonts/ 下（若无 fonts 文件夹请自建）。</li>
 </ul>
 <p>然后编辑主题中的 post-collapse.swig 文件，做如下修改：</p>
 <p>添加后的效果请查看<a href="https://blog.shipengx.com/archives/">这里</a>，还是很有意思的。</p>
