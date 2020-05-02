@@ -3,7 +3,9 @@
   <entry>
     <title>基于Hexo的个人博客站点高级自定义设置——使用NexT主题</title>
     <url>/archives/31218470.html</url>
-    <content><![CDATA[<p>在此前的两篇文章<a href="https://blog.shipengx.com/archives/208e6058.html">使用Hexo + GitHub Pages搭建个人博客站点</a>和<a href="https://blog.shipengx.com/archives/3955f5ec.html">将Hexo搭建的博客站点从GitHub Pages迁移到腾讯云VPS</a>中，我们分别讲述了如何通过Hexo + NexT主题搭建炫酷的个人博客站点，并通过将站点由GitHub Pages迁移至腾讯云VPS来提升访问速度</p>
+    <content><![CDATA[<blockquote>
+<p>在此前的两篇文章<a href="https://blog.shipengx.com/archives/208e6058.html">使用Hexo + GitHub Pages搭建个人博客站点</a>和<a href="https://blog.shipengx.com/archives/3955f5ec.html">将Hexo搭建的博客站点从GitHub Pages迁移到腾讯云VPS</a>中，我们分别讲述了如何通过Hexo + NexT主题搭建炫酷的个人博客站点，并通过将站点由GitHub Pages迁移至腾讯云VPS来提升访问速度</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>技术</category>
