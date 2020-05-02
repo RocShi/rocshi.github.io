@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff9e3e;
+  background: #7565ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2667,9 +2667,6 @@ span.exturl:hover {
   border-bottom-color: #4f94cd !important;
   color: #4f94cd !important;
 }
-.post-body {
-  color: #333;
-}
 .sidebar-toggle {
   right: 30px !important;
   left: auto !important;
@@ -3046,6 +3043,7 @@ body {
 }
 .post-body {
   font-family: 'EB Garamond', "Noto Serif SC", sans-serif;
+  color: #333;
 }
 .posts-expand .post-meta {
   font-family: 'EB Garamond', "Noto Serif SC", sans-serif;
