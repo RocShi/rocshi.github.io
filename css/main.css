@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffff6f;
+  background: #e82839;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3059,6 +3059,8 @@ code {
 }
 .site-title {
   font-family: 'ZCOOL XiaoWei', 'Cinzel Decorative', 'EB Garamond', "Noto Serif SC", sans-serif;
+  font-weight: bold;
+  line-height: 1;
 }
 .header {
   -webkit-backdrop-filter: saturate(180%) blur(1em);
