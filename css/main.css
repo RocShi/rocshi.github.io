@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffffe8;
+  background: #7d6000;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2670,9 +2670,6 @@ span.exturl:hover {
 .post-body {
   color: #333;
 }
-blockquote {
-  font-family: 'EB Garamond', 'STKaiti', 'KaiTi', 'SimKai', 'Noto Serif SC', 'sans-serif';
-}
 .sidebar-toggle {
   right: 30px !important;
   left: auto !important;
@@ -3060,6 +3057,9 @@ code {
 .site-title {
   font-family: 'Ma Shan Zheng', 'Cinzel Decorative', 'EB Garamond', "Noto Serif SC", sans-serif;
   font-weight: bold;
+}
+blockquote {
+  font-family: 'EB Garamond', 'STKaiti', 'KaiTi', 'SimKai', 'Noto Serif SC', 'sans-serif';
 }
 .header {
   -webkit-backdrop-filter: saturate(180%) blur(1em);
