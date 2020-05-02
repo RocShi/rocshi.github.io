@@ -1004,7 +1004,7 @@ pre .javascript .function {
 }
 .site-title {
   display: inline-block;
-  font-family: 'ZCOOL XiaoWei', 'EB Garamond', "Noto Serif SC", sans-serif;
+  font-family: 'Cinzel Decorative', 'EB Garamond', "Noto Serif SC", sans-serif;
   font-size: 1.375em;
   font-weight: normal;
   line-height: 1.5;
@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #e82839;
+  background: #20ffff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
