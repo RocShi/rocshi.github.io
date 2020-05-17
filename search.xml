@@ -123,8 +123,20 @@
 <li><p>C++语言的早期版本允许结果为负值的商向上或向下取整，<strong>C++11新标准则规定商一律向0取整（即直接切除小数部分）</strong>。</p>
 </li>
 <li><p>如果m%n不等于0，则它的符号和m相同。C++语言的早期版本允许m%n的符号匹配n的符号，而且商向负无穷一侧取整，这一方式在新标准中已经被禁止使用了。除了-m导致溢出的特殊情况，其他时候(-m)/n和m/(-n)都等于-(m/n)，<strong>m%(-n)等于m%n，(-m)%n等于-(m%n)</strong>。具体示例如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="number">21</span> % <span class="number">6</span>;      <span class="comment">/*结果是3*/</span></span><br><span class="line"><span class="number">21</span> % <span class="number">7</span>;      <span class="comment">/*结果是0*/</span></span><br><span class="line"><span class="number">-21</span> % <span class="number">-8</span>;    <span class="comment">/*结果是-5*/</span></span><br><span class="line"><span class="number">21</span> % <span class="number">-5</span>;     <span class="comment">/*结果是1*/</span></span><br><span class="line"><span class="number">21</span> / <span class="number">6</span>;      <span class="comment">/*结果是3*/</span></span><br><span class="line"><span class="number">21</span> / <span class="number">7</span>;      <span class="comment">/*结果是3*/</span></span><br><span class="line"><span class="number">-21</span> / <span class="number">-8</span>;    <span class="comment">/*结果是2*/</span></span><br><span class="line"><span class="number">21</span> /<span class="number">-5</span>;      <span class="comment">/*结果是-4*/</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下列表达式的结果是什么？</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="number">30</span> / <span class="number">3</span> * <span class="number">21</span> % <span class="number">5</span>;   <span class="comment">// 0</span></span><br><span class="line"><span class="number">-30</span> / <span class="number">3</span> * <span class="number">21</span> % <span class="number">4</span>;  <span class="comment">// -2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>逻辑运算符和关系运算符的返回值都是布尔类型，运算对象和求值结果都是右值。</p>
+</li>
+<li><p>逻辑与运算符和逻辑或运算符都是先求左侧运算对象的值再求右侧运算对象的值，当且仅当左侧运算对象无法确定表达式的结果时才会计算右侧运算对象的值。这种策略称为<strong>短路求值</strong>（short-circuit evaluation）。</p>
+<ul>
+<li>对于逻辑与运算符来说，当且仅当左侧运算对象为真时才对右侧运算对象求值；</li>
+<li>对于逻辑或运算符来说，当且仅当左侧运算对象为假时才对右侧运算对象求值。</li>
+</ul>
+</li>
+<li><p>声明成引用类型可以避免对元素的拷贝。</p>
 </li>
 </ol>
 <hr>
