@@ -222,7 +222,17 @@
 </li>
 <li><p>关于<code>sizeof *p</code>。首先，因为<code>sizeof</code>满足右结合律并且与 * 运算符的优先级一样，所以表达式按照从右向左的顺序组合。也就是说，它等价于<code>sizeof(*p)</code>。其次，因为<code>sizeof</code>不会实际求运算对象的值，所以即使p是一个无效（即未初始化）的指针也不会有什么影响。<strong>在<code>sizeof</code>的运算对象中解引用一个无效指针仍然是一种安全的行为，因为指针实际上并没有被真正使用。</strong><code>sizeof</code>不需要真的解引用指针也能知道它所指对象的类型。C++11新标准允许我们使用作用域运算符来获取类成员的大小。通常情况下只有通过类的对象才能访问到类的成员，但是<strong><code>sizeof</code>运算符无须我们提供一个县体的对象，因为要想知道类成员的大小无须真的获取该成员</strong>。</p>
 </li>
-<li></li>
+<li><p><code>sizeof</code>运算符的结果部分地依赖于其作用的类型：</p>
+<ul>
+<li>对<code>char</code>或者类型为<code>char</code>的表达式执行<code>sizeof</code>运算，结果得1。</li>
+<li>对引用类型执行<code>sizeof</code>运算得到被引用对象所占空间的大小。</li>
+<li>对指针执行<code>sizeof</code>运算得到指针本身所占空间的大小。</li>
+<li>对解引用指针执行<code>sizeof</code>运算得到指针指向的对象所占空间的大小，指针不需有效。</li>
+<li>对数组执行<code>sizeof</code>运算得到整个数组所占空间的大小，等价于对数组中所有的元素各执行一次<code>sizeof</code>运算并将所得结果求和。注意，<strong><code>sizeof</code>运算不会把数组转换成指针来处理</strong>。</li>
+<li>对<code>string</code>对象或<code>vector</code>对象执行<code>sizeof</code>运算只返回该类型固定部分的大小，不会计算对象中的元素占用了多少空间。<br>因为执行<code>sizeof</code>运算能得到整个数组的大小，所以可以用数组的大小除以单个元素的大小得到数组中元素的个数：<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">size_t</span> sz = <span class="keyword">sizeof</span>(ia) / <span class="keyword">sizeof</span>(*ia);</span><br><span class="line"><span class="keyword">int</span> arr2[sz];  <span class="comment">// 正确：sizeof返回一个常量表达式</span></span><br></pre></td></tr></table></figure>
+因为<code>sizeof</code>的返回值是一个常量表达式，所以我们可以用<code>sizeof</code>的结果声明数组的维度。</li>
+</ul>
+</li>
 </ol>
 <hr>
 ]]></content>
