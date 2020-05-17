@@ -229,9 +229,11 @@
 <li>对指针执行<code>sizeof</code>运算得到指针本身所占空间的大小。</li>
 <li>对解引用指针执行<code>sizeof</code>运算得到指针指向的对象所占空间的大小，指针不需有效。</li>
 <li>对数组执行<code>sizeof</code>运算得到整个数组所占空间的大小，等价于对数组中所有的元素各执行一次<code>sizeof</code>运算并将所得结果求和。注意，<strong><code>sizeof</code>运算不会把数组转换成指针来处理</strong>。</li>
-<li>对<code>string</code>对象或<code>vector</code>对象执行<code>sizeof</code>运算只返回该类型固定部分的大小，不会计算对象中的元素占用了多少空间。<br>因为执行<code>sizeof</code>运算能得到整个数组的大小，所以可以用数组的大小除以单个元素的大小得到数组中元素的个数：<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">size_t</span> sz = <span class="keyword">sizeof</span>(ia) / <span class="keyword">sizeof</span>(*ia);</span><br><span class="line"><span class="keyword">int</span> arr2[sz];  <span class="comment">// 正确：sizeof返回一个常量表达式</span></span><br></pre></td></tr></table></figure>
-因为<code>sizeof</code>的返回值是一个常量表达式，所以我们可以用<code>sizeof</code>的结果声明数组的维度。</li>
+<li>对<code>string</code>对象或<code>vector</code>对象执行<code>sizeof</code>运算只返回该类型固定部分的大小，不会计算对象中的元素占用了多少空间。</li>
 </ul>
+<p>因为执行<code>sizeof</code>运算能得到整个数组的大小，所以可以用数组的大小除以单个元素的大小得到数组中元素的个数：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">size_t</span> sz = <span class="keyword">sizeof</span>(ia) / <span class="keyword">sizeof</span>(*ia);</span><br><span class="line"><span class="keyword">int</span> arr2[sz];  <span class="comment">// 正确：sizeof返回一个常量表达式</span></span><br></pre></td></tr></table></figure>
+<p>因为<code>sizeof</code>的返回值是一个常量表达式，所以我们可以用<code>sizeof</code>的结果声明数组的维度。</p>
 </li>
 </ol>
 <hr>
