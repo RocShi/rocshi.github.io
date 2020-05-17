@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-19T13:51:44.000Z">
-<meta property="article:modified_time" content="2020-05-17T14:14:21.995Z">
+<meta property="article:modified_time" content="2020-05-17T15:50:14.117Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -261,7 +261,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-17 22:14:21" itemprop="dateModified" datetime="2020-05-17T22:14:21+08:00">2020-05-17</time>
+                <time title="修改时间：2020-05-17 23:50:14" itemprop="dateModified" datetime="2020-05-17T23:50:14+08:00">2020-05-17</time>
               </span>
 
           <br>
@@ -451,6 +451,22 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> p1 = s + (s[s.size() - <span class="number">1</span>] == <span class="string">'s'</span> ? <span class="string">""</span> : <span class="string">"s"</span>);</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>位运算符作用于整数类型的运算对象，并把运算对象看成是二进制位的集合。一种名为<code>bitset</code>的标准库类型也可以表示任意大小的二进制位集合，所以位运算符同样能用于<code>bitset</code>类型。</p>
+</li>
+<li><p>一般来说，如果运算对象是“小整型”，则它的值会被自动提升成较大的整数类型。运算对象可以是带符号的，也可以是无符号的。如果运算对象是带符号的且它的值为负，那么位运算符如何处理运算对象的“符号位”依赖于机器。而且，此时的左移操作可能会改变符号位的值，因此是一种未定义的行为。</p>
+</li>
+<li><p>移位运算符首先令左侧运算对象的内容按照右侧运算对象的要求移动指定位数，然后将经过移动的（可能还进行了提升）左侧运算对象的拷贝作为求值结果。其中，右侧的运算对象一定不能为负，而且值必须严格小于结果的位数，否则就会产生未定义的行为。二进制位或者向左移（&lt;&lt;）或者向右移（&gt;&gt;），移出边界之外的位就被舍弃掉了。</p>
+</li>
+<li><p>左移运算符（&lt;&lt;）在右侧插入值为0的二进制位。右移运算符（&gt;&gt;）的行为则依赖于其左侧运算对象的类型：如果该运算对象是无符号类型，在左侧插入值为0的二进制位；如果该运算对象是带符号类型，在左侧插入符号位的副本或值为0的二进制位，如何选择要视具体环境而定。</p>
+</li>
+<li><p>对于<strong>位与运算符</strong>（&amp;）来说，如果两个运算对象的对应位置都是1则运算结果中该位为1，否则为0。对于<strong>位或运算符</strong>（|）来说，如果两个运算对象的对应位置至少有一个为1则运算结果中该位为1，否则为0。对于<strong>位异或运算符</strong>（^）来说，如果两个运算对象的对应位置有且只有一个为1则运算结果中该位为1，否则为0。</p>
+</li>
+<li><p>移位运算符（又叫IO运算符）满足左结合律。移位运算符的优先级不高不低，介于中间：比算术运算符的优先级低，但比关系运算符、赋值运算符和条件运算符的优先级高。</p>
+</li>
+<li><p><code>sizeof</code>运算符返回一条表达式或一个类型名字所占的字节数。<code>sizeof</code>运算符满足右结合律，其所得的值是一个<code>size_t</code>类型的常量表达式。运算符的运算对象有两种形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sizeof</span>(type)</span><br><span class="line"><span class="keyword">sizeof</span> expr</span><br></pre></td></tr></table></figure>
+<p>在第二种形式中，<code>sizeof</code>并不实际计算其运算对象的值。</p>
+</li>
+<li><p>关于<code>sizeof *p</code>。首先，因为<code>sizeof</code>满足右结合律并且与 * 运算符的优先级一样，所以表达式按照从右向左的顺序组合。也就是说，它等价于<code>sizeof(*p)</code>。其次，因为<code>sizeof</code>不会实际求运算对象的值，所以即使p是一个无效（即未初始化）的指针也不会有什么影响。<strong>在<code>sizeof</code>的运算对象中解引用一个无效指针仍然是一种安全的行为，因为指针实际上并没有被真正使用。</strong><code>sizeof</code>不需要真的解引用指针也能知道它所指对象的类型。C++11新标准允许我们使用作用域运算符来获取类成员的大小。通常情况下只有通过类的对象才能访问到类的成员，但是<strong><code>sizeof</code>运算符无须我们提供一个县体的对象，因为要想知道类成员的大小无须真的获取该成员</strong>。</p>
 </li>
 <li></li>
 </ol>
