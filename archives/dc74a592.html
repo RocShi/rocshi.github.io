@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-19T13:51:44.000Z">
-<meta property="article:modified_time" content="2020-05-17T06:56:55.400Z">
+<meta property="article:modified_time" content="2020-05-17T10:46:19.058Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -261,7 +261,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-17 14:56:55" itemprop="dateModified" datetime="2020-05-17T14:56:55+08:00">2020-05-17</time>
+                <time title="修改时间：2020-05-17 18:46:19" itemprop="dateModified" datetime="2020-05-17T18:46:19+08:00">2020-05-17</time>
               </span>
 
           <br>
@@ -382,7 +382,49 @@
 <li>对于逻辑或运算符来说，当且仅当左侧运算对象为假时才对右侧运算对象求值。</li>
 </ul>
 </li>
+</ol>
+<ol start="19">
 <li><p>声明成引用类型可以避免对元素的拷贝。</p>
+</li>
+<li><p>关系运算符都满足左结合律：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (i &lt; j &lt; k)  <span class="comment">// 若k大于1则为真！</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解释在下面的if语句中条件部分的判断过程。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *cp = <span class="string">"Hello World"</span>;</span><br><span class="line"><span class="keyword">if</span> (cp &amp;&amp; *cp)</span><br></pre></td></tr></table></figure>
+<p>先判断cp是否是空指针，再判断cp指向的是否是空字串。</p>
+</li>
+<li><p>赋值运算符的左侧运算对象必须是一个可修改的左值。</p>
+</li>
+<li><p>赋值运算的结果是它的左侧运算对象，并且是一个左值。相应的，结果的类型就是左侧运算对象的类型。如果赋值运算符的左右两个运算对象类型不同，则右侧运算对象将转换成左侧运算对象的类型。</p>
+</li>
+<li><p>C++11新标准允许使用花括号括起来的初始值列表作为赋值语句的右侧运算对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">k = (<span class="number">3.14</span>);                           <span class="comment">// 错误：窄化转换</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vi;                       <span class="comment">// 初始为空</span></span><br><span class="line">vi = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;  <span class="comment">// vi现在含有10个元素了，值从0到9</span></span><br></pre></td></tr></table></figure>
+<p>如果左侧运算对象是内置类型，那么初始值列表最多只能包含一个值，而且该值即使转换的话其所占空间也不应该大于目标类型的空间。</p>
+</li>
+<li><p>无论左侧运算对象的类型是什么，初始值列表都可以为空。此时，编译器创建一个值初始化的临时量并将其赋给左侧运算对象。</p>
+</li>
+<li><p>赋值运算符满足右结合律，这一点与其他二元运算符不太一样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ival, jval;</span><br><span class="line">ival = jval = <span class="number">0</span>;  <span class="comment">// 正确：都被赋值为0</span></span><br></pre></td></tr></table></figure>
+<p>因为赋值运算符满足右结合律，所以靠右的赋值运算<code>jval = 0</code>作为靠左的赋值运算符的右侧运算对象。又因为赋值运算返回的是其左侧运算对象，所以靠右的赋值运算的结果（即jval）被赋给了ival。<br>对于多重赋值语句中的每一个对象，它的类型或者与右边对象的类型相同、或者可由右边对象的类型转换得到：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ival, *pval;  <span class="comment">// ival的类型是int；pval是指向int的指针</span></span><br><span class="line">ival = pval = <span class="number">0</span>;  <span class="comment">// 错误：不能把指针的值赋给int</span></span><br></pre></td></tr></table></figure>
+<p>vscode下提示错误：不能将 “int *” 类型的值分配到 “int” 类型的实体。但是可以强制转换：<code>ival = int(pval = 0)</code>;此时，vscode下提示警告：从“int *”到“int”的指针截断。</p>
+</li>
+<li><p>因为赋值运算符的优先级低于关系运算符的优先级，所以在条件语句中，赋值部分通常应该加上括号。任意一种复合运算符都完全等价于：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a = a op b;</span><br></pre></td></tr></table></figure>
+<p>唯一的区别是左侧运算对象的求值次数：<strong>使用复合运算符只求值一次，使用普通的运算符则求值两次。</strong>这两次包括：一次是作为右边子表达式的一部分求值，另一次是作为赋值运算的左侧运算对象求值。其实在很多地方，这种区别除了对程序性能有些许影响外几乎可以忽略不计。</p>
+</li>
+<li><p>递增运算符和递减运算符必须作用于左值运算对象。前置版本将对象本身作为左值返回，后置版本则将对象原始值的副本作为右值返回。后置版本需要将原始值存储下来以便于返回这个未修改的内容。如果我们不需要修改前的值，那么后置版本的操作就是一种浪费。对于整数和指针类型来说，编译器可能对这种额外的工作进行一定的优化；但是对于相对复杂的迭代器类型，这种额外的工作就消耗巨大了。</p>
+</li>
+<li><p>如果我们想在一条复合表达式中既将变量加1或减1又能使用它原来的值，这时就可以使用递增和递减运算符的后置版本。使用后置的递增运算符来控制循环输出一个<code>vector</code>对象内容直至遇到（但不包括）第一个负值为止：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> pbeg = v.begin();</span><br><span class="line"><span class="comment">// 输出元素直至遇到第一个负值为止</span></span><br><span class="line"><span class="keyword">while</span> (pbeg != v.end() &amp;&amp; *beg &gt;= <span class="number">0</span>)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; *pbeg++ &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">// 输出当前值并将pbeg向前移动一个元素</span></span><br></pre></td></tr></table></figure>
+<p><strong>后置递增运算符的优先级高于解引用运算符</strong>，因此<code>*pbeg++</code>等价于<code>*(pbeg++)</code>。pbeg++把pbeg的值加1，然后返回pbeg的初始值的副本作为其求值结果，此时解引用运算符的运算对象是pbeg未增加之前的值。</p>
+</li>
+<li><p>观察下面的代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 该循环的行为是未定义的！</span></span><br><span class="line"><span class="keyword">while</span> (beg != s.end() &amp;&amp; !<span class="built_in">isspace</span>(*beg))</span><br><span class="line">    *beg = <span class="built_in">toupper</span>(*beg++);  <span class="comment">// 错误：该赋值语句未定义</span></span><br></pre></td></tr></table></figure>
+<p>上述代码将产生未定义的行为。问题在于：赋值运算符左右两端的运算对象都用到了beg，并且右侧的运算对象还改变了beg的值，所以该赋值语句是未定义的。编译器可能按照下面的任意一种思路处理该表达式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*beg = <span class="built_in">toupper</span>(*beg);        <span class="comment">// 如果先求左侧的值</span></span><br><span class="line">*(beg + <span class="number">1</span>) = <span class="built_in">toupper</span>(*beg);  <span class="comment">// 如果先求右侧的值</span></span><br></pre></td></tr></table></figure>
+
+
 </li>
 </ol>
 <hr>
