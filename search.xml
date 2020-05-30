@@ -248,13 +248,24 @@
 <li>函数调用时也会发生类型转换。</li>
 </ul>
 </li>
+</ol>
+<ol start="48">
 <li><p><strong>算术转换</strong>的规则定义了一套类型转换的层次，其中运算符的运算对象将转换成最宽的类型。例如，如果一个运算对象的类型是<code>long double</code>，那么不论另外一个运算对象的类型是什么都会转换成<code>long double</code>。还有一种更普遍的情况，当表达式中既有浮点类型也有整数类型时，整数值将转换成相应的浮点类型。</p>
 </li>
 <li><p><strong>整型提升</strong>（integral promotion）负责把小整数类型转换成较大的整数类型。对于<code>bool</code>、<code>char</code>、<code>signed char</code>、<code>unsigned char</code>、<code>short</code>和<code>unsigned short</code>等类型来说，只要它们所有可能的值都能存在<code>int</code>里，它们就会提升成<code>int</code>类型；否则，提升成<code>unsigned int</code>类型。就如我们所熟知的，布尔值false提升成0、true提升成1。较大的<code>char</code>类型（<code>wchar_t</code>、<code>char16_t</code>、<code>char32_t</code>）提升成<code>int</code>、<code>unsigned int</code>、<code>long</code>、<code>unsigned long</code>、<code>long long</code>和<code>unsigned long long</code>中最小的一种类型，前提是转换后的类型要能容纳原类型所有可能的值。</p>
 </li>
 <li><p>如果某个运算符的运算对象类型不一致，这些运算对象将转换成同一种类型。但是如果某个运算对象的类型是无符号类型，那么转换的结果就要依赖于机器中各个整数类型的相对大小了。像往常一样，首先执行整型提升。如果结果的类型匹配，无须进行进一步的转换。如果两个（提升后的）运算对象的类型要么都是带符号的、要么都是无符号的，则小类型的运算对象转换成较大的类型。<strong>如果一个运算对象是无符号类型，另外一个运算对象是带符号类型，而且其中的无符号类型不小于带符号类型，那么带符号的运算对象转换成无符号的。</strong>例如，假设两个类型分别是<code>unsigned int</code>和<code>int</code>，则<code>int</code>类型的运算对象转换成<code>unsigned int</code>类型。需要注意的是，如果<code>int</code>型的值恰好为负值，可能得到意想不到的结果。剩下的一种情况是带符号类型大于无符号类型，此时转换的结果依赖于机器。如果无符号类型的所有值都能存在该带符号类型中，则无符号类型的运算对象转换成带符号类型。如果不能，那么带符号类型的运算对象转换成无符号类型。例如，如果两个运算对象的类型分别是<code>long</code>和<code>unsigned int</code>，并且<code>int</code>和<code>long</code>的大小相同，则<code>long</code>类型的运算对象转换成<code>unsigned int</code>类型；如果<code>long</code>类型占用的空间比<code>int</code>更多，则<code>unsigned int</code>类型的运算对象转换成<code>long</code>类型。</p>
 </li>
-<li></li>
+<li><p>其它隐式类型转换：</p>
+<ul>
+<li><strong>数组转换成指针</strong>。在大多数用到数组的表达式中，数组自动转换成指向数组首元素的指针。当数组被用作<code>decltype</code>关键字的参数，或者作为取地址符（&amp;）、<code>sizeof</code>及<code>typeid</code>等运算符的运算对象时，上述转换不会发生。同样的，如果用一个引用来初始化数组，上述转换也不会发生。当在表达式中使用函数类型时会发生类似的指针转换；</li>
+<li><strong>指针的转换</strong>。C++还规定了几种其他的指针转换方式，包括常量整数值0或者字面值<code>nullptr</code>能转换成任意指针类型；指向任意非常量的指针能转换成<code>void*</code>；指向任意对象的指针能转换成<code>const void*</code>；</li>
+<li><strong>转换成布尔类型</strong>。存在一种从算术类型或指针类型向布尔类型自动转换的机制。如果指针或算术类型的值为0，转换结果是false；否则转换结果是true；</li>
+<li><strong>转换成常量</strong>。允许将指向非常量类型的指针转换成指向相应的常量类型的指针，对于引用也是这样。也就是说，<strong>如果T是一种类型，我们就能将指向T的指针或引用分别转换成指向<code>const T</code>的指针或引用</strong>：<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;j = i;    <span class="comment">// 非常量转换成const int的引用</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p = &amp;i;   <span class="comment">// 非常量的地址转换成const的地址</span></span><br><span class="line"><span class="keyword">int</span> &amp;r = j, *q = p;  <span class="comment">// 错误：不允许const转换成非常量</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>类类型定义的转换</strong>。有下面的程序片段：<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; s)</span><br></pre></td></tr></table></figure>
+IO库定义了从<code>istream</code>向布尔值转换的规则，根据这一规则，<code>cin</code>自动地转换成布尔值。所得的布尔值到底是什么由输入流的状态决定，<strong>如果最后一次读入成功，转换得到的布尔值是true；相反，如果最后一次读入不成功，转换得到的布尔值是false</strong>。</li>
+</ul>
+</li>
 </ol>
 <hr>
 ]]></content>
