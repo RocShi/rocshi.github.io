@@ -63,11 +63,8 @@
 </li>
 <li><p><code>do while</code>语句应该在括号包围起来的条件后面用一个分号表示语句结束。</p>
 </li>
-<li><p><strong><code>break</code>语句</strong>（break statement）负责终止离它最近的<code>while</code>、<code>do while</code>、<code>for</code>或<code>switch</code>语句，并从这些语句之后的第一条语句开始继续执行。</p>
+<li><p><strong><code>break</code>语句</strong>（break statement）负责终止离它最近的<code>while</code>、<code>do while</code>、<code>for</code>或<code>switch</code>语句，并从这些语句之后的第一条语句开始继续执行。<strong><code>break</code>语句只能出现在迭代语句或者<code>switch</code>语句内部（包括嵌套在此类循环里的语句或块的内部）。</strong><code>break</code>语句的作用范围仅限于最近的循环或者<code>switch</code>。</p>
 </li>
-</ol>
-<p><strong><code>break</code>语句只能出现在迭代语句或者<code>switch</code>语句内部（包括嵌套在此类循环里的语句或块的内部）。</strong><code>break</code>语句的作用范围仅限于最近的循环或者<code>switch</code>。</p>
-<ol start="19">
 <li><p><strong><code>continue</code>语句</strong>（continue statement）终止最近的循环中的当前迭代并立即开始下一次迭代。<code>continue</code>语句只能出现在<code>for</code>、<code>while</code>和<code>do while</code>循环的内部，或者嵌套在此类循环里的语句或块的内部。<strong>和<code>break</code>语句类似的是，出现在嵌套循环中的<code>continue</code>语句也仅作用于离它最近的循环。和<code>break</code>语句不同的是，只有当<code>switch</code>语句嵌套在迭代语句内部时，才能在<code>switch</code>里使用<code>continue</code>。</strong><code>continue</code>语句中断当前的迭代，但是仍然继续执行循环。<strong>对于<code>while</code>或者<code>do while</code>语句来说，继续判断条件的值；对于传统的<code>for</code>循环来说，继续执行<code>for</code>语句头的<code>expression</code>；而对于范围<code>for</code>语句来说，则是用序列中的下一个元素初始化循环控制变量。</strong></p>
 </li>
 <li><p><strong><code>goto</code>语句</strong>（goto statement）的作用是从<code>goto</code>语句无条件跳转到<strong>同一函数</strong>内的另一条语句。</p>
