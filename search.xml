@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>C++ Primer - 第6章 函数</title>
+    <url>/archives/9c75f5df.html</url>
+    <content><![CDATA[<ol>
+<li></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>??</category>
+        <category>????</category>
+        <category>C/C++</category>
+        <category>?C++ Primer?</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>C++ Primer</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C++ Primer - 第5章 语句</title>
     <url>/archives/c7171333.html</url>
     <content><![CDATA[<ol>
@@ -108,7 +127,7 @@
 </ul>
 </li>
 </ol>
-<pre><code>&lt;style type=&quot;text/css&quot;&gt;
+<style type="text/css">
 .tg  {border-collapse:collapse;border-color:#9ABAD9;border-spacing:0;}
 .tg td{background-color:#EBF5FF;border-color:#9ABAD9;border-style:solid;border-width:1px;color:#444;
 font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
@@ -117,56 +136,58 @@ font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;
 .tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
 .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
 .tg .tg-0lax{text-align:left;vertical-align:top}
-&lt;/style&gt;
-&lt;table class=&quot;tg&quot;&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-    &lt;th class=&quot;tg-c3ow&quot; colspan=&quot;2&quot;&gt;&amp;lt;stdexcept&amp;gt;定义的异常类&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-    &lt;td class=&quot;tg-0pky&quot;&gt;exception&lt;/td&gt;
-    &lt;td class=&quot;tg-0pky&quot;&gt;最常见的问题&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-    &lt;td class=&quot;tg-0pky&quot;&gt;runtime_error&lt;/td&gt;
-    &lt;td class=&quot;tg-0pky&quot;&gt;只有在运行时才能检测出的问题&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-    &lt;td class=&quot;tg-0pky&quot;&gt;range_error&lt;/td&gt;
-    &lt;td class=&quot;tg-0pky&quot;&gt;运行时错误：生成的结果超出了有意义的值域范围&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-    &lt;td class=&quot;tg-0pky&quot;&gt;overflow_error&lt;/td&gt;
-    &lt;td class=&quot;tg-0pky&quot;&gt;运行时错误：计算上溢&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-    &lt;td class=&quot;tg-0pky&quot;&gt;underflow_error&lt;/td&gt;
-    &lt;td class=&quot;tg-0pky&quot;&gt;运行时错误：计算下溢&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-    &lt;td class=&quot;tg-0lax&quot;&gt;logic_error&lt;/td&gt;
-    &lt;td class=&quot;tg-0lax&quot;&gt;程序逻辑错误&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-    &lt;td class=&quot;tg-0lax&quot;&gt;domain_error&lt;/td&gt;
-    &lt;td class=&quot;tg-0lax&quot;&gt;逻辑错误：参数对应的结果值不存在&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-    &lt;td class=&quot;tg-0lax&quot;&gt;invalid_argument&lt;/td&gt;
-    &lt;td class=&quot;tg-0lax&quot;&gt;逻辑错误：无效参数&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-    &lt;td class=&quot;tg-0lax&quot;&gt;length_error&lt;/td&gt;
-    &lt;td class=&quot;tg-0lax&quot;&gt;逻辑错误：试图创建一个超出该类型最大长度的对象&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-    &lt;td class=&quot;tg-0lax&quot;&gt;out_of_range&lt;/td&gt;
-    &lt;td class=&quot;tg-0lax&quot;&gt;逻辑错误：使用一个超出有效范围的值&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;</code></pre><ol start="29">
+</style>
+<table class="tg">
+<thead>
+<tr>
+    <th class="tg-c3ow" colspan="2">&lt;stdexcept&gt;定义的异常类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td class="tg-0pky">exception</td>
+    <td class="tg-0pky">最常见的问题</td>
+</tr>
+<tr>
+    <td class="tg-0pky">runtime_error</td>
+    <td class="tg-0pky">只有在运行时才能检测出的问题</td>
+</tr>
+<tr>
+    <td class="tg-0pky">range_error</td>
+    <td class="tg-0pky">运行时错误：生成的结果超出了有意义的值域范围</td>
+</tr>
+<tr>
+    <td class="tg-0pky">overflow_error</td>
+    <td class="tg-0pky">运行时错误：计算上溢</td>
+</tr>
+<tr>
+    <td class="tg-0pky">underflow_error</td>
+    <td class="tg-0pky">运行时错误：计算下溢</td>
+</tr>
+<tr>
+    <td class="tg-0lax">logic_error</td>
+    <td class="tg-0lax">程序逻辑错误</td>
+</tr>
+<tr>
+    <td class="tg-0lax">domain_error</td>
+    <td class="tg-0lax">逻辑错误：参数对应的结果值不存在</td>
+</tr>
+<tr>
+    <td class="tg-0lax">invalid_argument</td>
+    <td class="tg-0lax">逻辑错误：无效参数</td>
+</tr>
+<tr>
+    <td class="tg-0lax">length_error</td>
+    <td class="tg-0lax">逻辑错误：试图创建一个超出该类型最大长度的对象</td>
+</tr>
+<tr>
+    <td class="tg-0lax">out_of_range</td>
+    <td class="tg-0lax">逻辑错误：使用一个超出有效范围的值</td>
+</tr>
+</tbody>
+</table>
+
+<ol start="29">
 <li><p>标准库异常类只定义了几种运算，包括创建或接贝异常类型的对象，以及为异常类型的对象赋值。只能以默认初始化的方式初始化<code>exception</code>、<code>bad_alloc</code>和<code>bad_cast</code>对象，不允许为这些对象提供初始值。其他异常类型的行为则恰好相反：应该使用<code>string</code>对象或者C风格字符串初始化这些类型的对象，但是不允许使用默认初始化的方式。当创建此类对象时，必须提供初始值，该初始值含有错误相关的信息。异常类型只定义了一个名为<code>what</code>的成员函数，该函数没有任何参数，返回值是一个指向C风格字符串的<code>const char*</code>。该字符串的目的是提供关于异常的一些文本信息。<code>what</code>函数返回的C风格字符串的内容与异常对象的类型有关。如果异常类型有一个字符串初始值，则<code>what</code>返回该字符串。对于其他无初始值的异常类型来说，<code>what</code>返回的内容由编译器决定。</p>
 </li>
 <li><p>编写一段程序，从标准输入读取两个整数，当第二个数是0时抛出异常，使用<code>try</code>语句块捕获异常，<code>catch</code>子句为用户输出一条提示信息，询问是否输入新数并重新执行<code>try</code>语句块的内容。</p>
@@ -2770,15 +2791,16 @@ IO库定义了从<code>istream</code>向布尔值转换的规则，根据这一�
       </tags>
   </entry>
   <entry>
-    <title>Python字典数据结构的item()函数</title>
-    <url>/archives/b11e5b5a.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure>
-<p>会得到下面的输出：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure>
-
+    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
+    <url>/archives/43b2dca3.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
+<p>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure>
+<p>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -2793,16 +2815,15 @@ IO库定义了从<code>istream</code>向布尔值转换的规则，根据这一�
       </tags>
   </entry>
   <entry>
-    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
-    <url>/archives/43b2dca3.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
-<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
-<p>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure>
-<p>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
+    <title>Python字典数据结构的item()函数</title>
+    <url>/archives/b11e5b5a.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure>
+<p>会得到下面的输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure>
+
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
