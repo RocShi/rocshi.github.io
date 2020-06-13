@@ -303,22 +303,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="背景" class="heading-control"><a class="markdownIt-Anchor" href="#背景"></a> 背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1>
-<ul>
+        <h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><ul>
 <li>在ubuntu 14.04系统中临时编译了LaneViewer（项目中基于QGLViewer编写的一个GUI界面），但在ubuntu 14.04系统中无法正常运行，启动后闪退，想到了使用<code>core dump</code>文件进行调试，定位问题所在；</li>
 <li>项目中所负责的某模块在iECU中运行时会出现<code>defunct</code>（挂掉）问题，想到了使用<code>core dump</code>文件进行调试，定位问题所在。</li>
 </ul>
-<h1 id="解决" class="heading-control"><a class="markdownIt-Anchor" href="#解决"></a> 解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1>
-<ol>
-<li>临时开启<code>core dump</code>，取消core文件大小限制（仅对当前终端有效）<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br></pre></td></tr></table></figure>
-</li>
+<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
+<li>临时开启<code>core dump</code>，取消core文件大小限制（仅对当前终端有效）<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br></pre></td></tr></table></figure></li>
 <li>运行目标程序，若非正常退出，会在程序所在目录下生成对应core文件</li>
-<li>使用<code>gdb</code>调试core文件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb .&#x2F;LaneViewer core</span><br></pre></td></tr></table></figure>
-</li>
+<li>使用<code>gdb</code>调试core文件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb .&#x2F;LaneViewer core</span><br></pre></td></tr></table></figure></li>
 <li>进入<code>gdb</code>调试界面后，输入<code>r</code>并回车，可使程序运行至断点位置，输入<code>bt</code>并回车，可显示程序运行时的调用堆栈，<code>bt</code>代表<code>backtrace</code>。</li>
 </ol>
-<h1 id="参考" class="heading-control"><a class="markdownIt-Anchor" href="#参考"></a> 参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1>
-<ol>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuaXRleWUuY29tL2Jsb2cvdmFxZXRlYXJ0LTEwMTMzOTc=" title="https://www.iteye.com/blog/vaqeteart-1013397">利用Core Dump调试程序<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
@@ -332,10 +327,10 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\8b42591c.html" rel="bookmark">Linux gcc/g++中的-I、-l、-L</a></div>
+      <div class="popular-posts-title"><a href="\archives\c5106d85.html" rel="bookmark">Linux中的ld-so与ld-linux-so</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c5106d85.html" rel="bookmark">Linux中的ld-so与ld-linux-so</a></div>
+      <div class="popular-posts-title"><a href="\archives\8b42591c.html" rel="bookmark">Linux gcc/g++中的-I、-l、-L</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\ffbee3f1.html" rel="bookmark">Not able to execute a .sh file: /bin/bash^M: bad interpreter</a></div>
@@ -344,7 +339,7 @@
       <div class="popular-posts-title"><a href="\archives\31e5f0fe.html" rel="bookmark">Linux中使用sed命令进行字符串查找和替换</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\17a8c28.html" rel="bookmark">Shell中各种括号的作用</a></div>
+      <div class="popular-posts-title"><a href="\archives\55ffbd22.html" rel="bookmark">Shell中美元符$与数字及其它各种符号组合的含义</a></div>
     </li>
   </ul>
 
@@ -465,7 +460,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-text"> 背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决"><span class="nav-text"> 解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text"> 参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决"><span class="nav-text">解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

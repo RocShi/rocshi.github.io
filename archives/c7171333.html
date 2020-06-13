@@ -317,8 +317,7 @@
 
       
         <ol>
-<li>
-<p>一个表达式，末尾加上分号就变成了<strong>表达式语句</strong>（expression statement）。表达式语句的作用是执行表达式并丢弃掉求值结果。最简单的语句是<strong>空语句</strong>（null statement），空语句中只含有一个单独的分号。如果在程序的某个地方，语法上需要一条语句但是逻辑上不需要，此时应该使用空语句。一种常见的情况是，当循环的全部工作在条件部分就可以完成时，我们通常会用到空语句。例如，我们想读取输入流的内容直到遇到一个特定的值为止，除此之外什么事情也不做：</p>
+<li><p>一个表达式，末尾加上分号就变成了<strong>表达式语句</strong>（expression statement）。表达式语句的作用是执行表达式并丢弃掉求值结果。最简单的语句是<strong>空语句</strong>（null statement），空语句中只含有一个单独的分号。如果在程序的某个地方，语法上需要一条语句但是逻辑上不需要，此时应该使用空语句。一种常见的情况是，当循环的全部工作在条件部分就可以完成时，我们通常会用到空语句。例如，我们想读取输入流的内容直到遇到一个特定的值为止，除此之外什么事情也不做：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 重复读入数据直至到达文件末尾或某次输入的值等于sought</span></span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; s &amp;&amp; s != sought)</span><br><span class="line">    ;  <span class="comment">// 空语句</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>使用空语句时应该加上注释，从而令读这段代码的人知道该语句是有意省略。</p>
@@ -332,23 +331,17 @@
 <p>多余的空语句并非总是无害的。</p>
 </blockquote>
 </li>
-<li>
-<p><strong>复合语句</strong>（compound statement）是指用花括号括起来的（可能为空的）语句和声明的序列，复合语句也被称作<strong>块</strong>（block）。**一个块就是一个作用域，在块中引入的名字只能在块内部以及嵌套在块中的子块里访问。**通常，名字在有限的区域内可见，该区域从名字定义处开始，到名字所在的（最内层）块的结尾为止。所谓空块，是指内部没有任何语句的一对花括号。空块的作用等价于空语句，空语句显然没有空块更加直白。</p>
+<li><p><strong>复合语句</strong>（compound statement）是指用花括号括起来的（可能为空的）语句和声明的序列，复合语句也被称作<strong>块</strong>（block）。<strong>一个块就是一个作用域，在块中引入的名字只能在块内部以及嵌套在块中的子块里访问。</strong>通常，名字在有限的区域内可见，该区域从名字定义处开始，到名字所在的（最内层）块的结尾为止。所谓空块，是指内部没有任何语句的一对花括号。空块的作用等价于空语句，空语句显然没有空块更加直白。</p>
 </li>
-<li>
-<p>定义在控制结构当中的变量只在相应语句的内部可见，一旦语句结束，变量也就超出其作用范围了，如果其他代码也需要访问控制变量，则变量必须定义在语句的外部。</p>
+<li><p>定义在控制结构当中的变量只在相应语句的内部可见，一旦语句结束，变量也就超出其作用范围了，如果其他代码也需要访问控制变量，则变量必须定义在语句的外部。</p>
 </li>
-<li>
-<p>C++为解决<strong>悬垂<code>else</code></strong>（dangling else）问题，规定<code>else</code>与离它最近的尚未匹配的<code>if</code>匹配，从而消除了程序的二义性。</p>
+<li><p>C++为解决<strong>悬垂<code>else</code></strong>（dangling else）问题，规定<code>else</code>与离它最近的尚未匹配的<code>if</code>匹配，从而消除了程序的二义性。</p>
 </li>
-<li>
-<p><code>switch</code>语句首先对括号里的表达式求值，该表达式紧跟在关键字<code>switch</code>的后面，可以是一个初始化的变量声明。表达式的值转换成整数类型，然后与每个<code>case</code>标签的值比较。</p>
+<li><p><code>switch</code>语句首先对括号里的表达式求值，该表达式紧跟在关键字<code>switch</code>的后面，可以是一个初始化的变量声明。表达式的值转换成整数类型，然后与每个<code>case</code>标签的值比较。</p>
 </li>
-<li>
-<p><code>case</code>关键字和它对应的值一起被称为**<code>case</code>标签**（case label）。<code>case</code>标签必须是整型常量表达式。任何两个<code>case</code>标签的值不能相同，否则就会引发错误。另外，<code>default</code>也是一种特殊的<code>case</code>标签。</p>
+<li><p><code>case</code>关键字和它对应的值一起被称为<strong><code>case</code>标签</strong>（case label）。<code>case</code>标签必须是整型常量表达式。任何两个<code>case</code>标签的值不能相同，否则就会引发错误。另外，<code>default</code>也是一种特殊的<code>case</code>标签。</p>
 </li>
-<li>
-<p>**如果某个<code>case</code>标签匹配成功，将从该标签开始往后顺序执行所有<code>case</code>分支，除非程序显式地中断了这一过程，否则直到<code>switch</code>的结尾处才会停下来。**要想避免执行后续<code>case</code>分支的代码，我们必须显式地告诉编译器终止执行过程。大多数情况下，在下一个<code>case</code>标签之前应该有一条<code>break</code>语句。每个<code>case</code>标签只能对应一个值，但是有时候我们希望两个或更多个值共享同一组操作。此时，我们就故意省略掉<code>break</code>语句，使得程序能够连续执行若干个<code>case</code>标签。例如，我们想统计所有元音字母出现的总次数：</p>
+<li><p><strong>如果某个<code>case</code>标签匹配成功，将从该标签开始往后顺序执行所有<code>case</code>分支，除非程序显式地中断了这一过程，否则直到<code>switch</code>的结尾处才会停下来。</strong>要想避免执行后续<code>case</code>分支的代码，我们必须显式地告诉编译器终止执行过程。大多数情况下，在下一个<code>case</code>标签之前应该有一条<code>break</code>语句。每个<code>case</code>标签只能对应一个值，但是有时候我们希望两个或更多个值共享同一组操作。此时，我们就故意省略掉<code>break</code>语句，使得程序能够连续执行若干个<code>case</code>标签。例如，我们想统计所有元音字母出现的总次数：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> vowelCnt = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">switch</span> (ch)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 出现了a、e、i、o或u中的任意一个都会将vowelCnt的值加1</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">'a'</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'e'</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'i'</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'o'</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'u'</span>:</span><br><span class="line">        ++vowelCnt;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上述代码片段中<code>switch</code>语句还可以写成下面这种较为简洁的形式：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (ch)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'a'</span>: <span class="keyword">case</span> <span class="string">'e'</span>: <span class="keyword">case</span> <span class="string">'i'</span>: <span class="keyword">case</span> <span class="string">'o'</span>: <span class="keyword">case</span> <span class="string">'u'</span>:</span><br><span class="line">        ++vowelCnt;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -356,54 +349,40 @@
 <p>一般不要省略<code>case</code>分支最后的<code>break</code>语句。如果没写<code>break</code>语句，最好加一段注释说清楚程序的逻辑。尽管<code>switch</code>语句不是非得在最后一个标签后面写上<code>break</code>，但是为了安全起见，最好这么做。因为这样的话，即使以后再增加新的<code>case</code>分支，也不用再在前面补充<code>break</code>语句了。</p>
 </blockquote>
 </li>
-<li>
-<p>如果没有任何一个<code>case</code>标签能匹配上<code>switch</code>表达式的值，程序将执行紧跟在**<code>default</code>标签**（default label）后面的语句。</p>
+<li><p>如果没有任何一个<code>case</code>标签能匹配上<code>switch</code>表达式的值，程序将执行紧跟在<strong><code>default</code>标签</strong>（default label）后面的语句。</p>
 <blockquote>
 <p>即使不准备在<code>default</code>标签下做任何工作，定义一个<code>default</code>标签也是有用的。其目的在于告诉程序的读者，我们已经考虑到了默认的情况，只是目前什么也没做。</p>
 </blockquote>
 </li>
-<li>
-<p>如果在某处一个带有初值的变量位于作用域之外，在另一处该变量位于作用域之内，则从前一处跳转到后一处的行为是非法行为。<strong>C++语言规定，不允许跨过变量的初始化语句直接跳转到该变量作用域内的另一个位置。如果需要为某个<code>case</code>分支定义并初始化一个变量，我们应该把变量定义在块内，从而确保后面的所有<code>case</code>标签都在变量的作用域之外。</strong></p>
+<li><p>如果在某处一个带有初值的变量位于作用域之外，在另一处该变量位于作用域之内，则从前一处跳转到后一处的行为是非法行为。<strong>C++语言规定，不允许跨过变量的初始化语句直接跳转到该变量作用域内的另一个位置。如果需要为某个<code>case</code>分支定义并初始化一个变量，我们应该把变量定义在块内，从而确保后面的所有<code>case</code>标签都在变量的作用域之外。</strong></p>
 </li>
-<li>
-<p>在**<code>while</code>语句**（while statement）中，定义在<code>while</code>条件部分或者<code>while</code>循环体内的变量每次选代都经历从创建到销毁的过程。</p>
+<li><p>在<strong><code>while</code>语句</strong>（while statement）中，定义在<code>while</code>条件部分或者<code>while</code>循环体内的变量每次选代都经历从创建到销毁的过程。</p>
 </li>
-<li>
-<p><strong><code>for</code>语句</strong>中对循环控制变量的修改发生在每次循环迭代之后。</p>
+<li><p><strong><code>for</code>语句</strong>中对循环控制变量的修改发生在每次循环迭代之后。</p>
 </li>
-<li>
-<p><code>for</code>语句头中定义的对象只在<code>for</code>循环体内可见。</p>
+<li><p><code>for</code>语句头中定义的对象只在<code>for</code>循环体内可见。</p>
 </li>
-<li>
-<p>和其他的声明一样，<code>for</code>语句的<em>init_statement</em>也可以定义多个对象。但是<em>init_statement</em>只能有一条声明语句，因此，所有变量的基础类型必须相同。举个例子，我们用下面的循环把<code>vector</code>的元素拷贝一份添加到原来的元素后面：</p>
+<li><p>和其他的声明一样，<code>for</code>语句的<em>init_statement</em>也可以定义多个对象。但是<em>init_statement</em>只能有一条声明语句，因此，所有变量的基础类型必须相同。举个例子，我们用下面的循环把<code>vector</code>的元素拷贝一份添加到原来的元素后面：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 记录v的大小，当到达原来的最后一个元素后结束循环</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">decltype</span>(v.size()) i = <span class="number">0</span>, sz = v.size(); i != sz; ++i)</span><br><span class="line">    v.push_back(v[i]);</span><br></pre></td></tr></table></figure>
 <p>在这个循环中，我们在<em>init_statement</em>里同时定义了索引i和循环控制变量sz。</p>
 </li>
-<li>
-<p><code>for</code>语句头能省略掉<code>init_statement</code>、<code>condition</code>和<code>expression</code>中的任何一个（或者全部），省略掉<em>expression</em>时，就要求条件部分或者循环体必须改变迭代变量的值。</p>
+<li><p><code>for</code>语句头能省略掉<code>init_statement</code>、<code>condition</code>和<code>expression</code>中的任何一个（或者全部），省略掉<em>expression</em>时，就要求条件部分或者循环体必须改变迭代变量的值。</p>
 </li>
-<li>
-<p><strong>范围<code>for</code>语句</strong>（range for statement）的语法形式是：</p>
+<li><p><strong>范围<code>for</code>语句</strong>（range for statement）的语法形式是：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (declaration : expression)</span><br><span class="line">    statement</span><br></pre></td></tr></table></figure>
-<p><em>expression</em>表示的必须是一个序列，比如用花括号括起来的初始值列表、数组或者<code>vector</code>或<code>string</code>等类型的对象，这些类型的共同特点时拥有能返回迭代器<code>begin</code>和<code>end</code>成员。<em>declaration</em>定义一个变量，序列中的每个元素都得能转换成该变量的类型，确保类型相容最简单的办法是使用<code>auto</code>类型说明符，这个关键字可以令编译器帮助我们指定合适的类型。**如果需要对序列中的元素执行写操作，循环变量必须声明成引用类型。**每次迭代都会重新定义循环控制变量，并将其初始化成序列中的下一个值，之后才会执行<em>statement</em>。</p>
+<p><em>expression</em>表示的必须是一个序列，比如用花括号括起来的初始值列表、数组或者<code>vector</code>或<code>string</code>等类型的对象，这些类型的共同特点时拥有能返回迭代器<code>begin</code>和<code>end</code>成员。<em>declaration</em>定义一个变量，序列中的每个元素都得能转换成该变量的类型，确保类型相容最简单的办法是使用<code>auto</code>类型说明符，这个关键字可以令编译器帮助我们指定合适的类型。<strong>如果需要对序列中的元素执行写操作，循环变量必须声明成引用类型。</strong>每次迭代都会重新定义循环控制变量，并将其初始化成序列中的下一个值，之后才会执行<em>statement</em>。</p>
 </li>
-<li>
-<p>不能通过范围<code>for</code>语句增加<code>vector</code>对象（或者其他容器）的元素，因为在范围<code>for</code>语句中，预存了<code>end()</code>的值。一旦在序列中添加（删除）元素，<code>end</code>函数的值就可能变得无效了。</p>
+<li><p>不能通过范围<code>for</code>语句增加<code>vector</code>对象（或者其他容器）的元素，因为在范围<code>for</code>语句中，预存了<code>end()</code>的值。一旦在序列中添加（删除）元素，<code>end</code>函数的值就可能变得无效了。</p>
 </li>
-<li>
-<p><code>do while</code>语句应该在括号包围起来的条件后面用一个分号表示语句结束。</p>
+<li><p><code>do while</code>语句应该在括号包围起来的条件后面用一个分号表示语句结束。</p>
 </li>
-<li>
-<p><strong><code>break</code>语句</strong>（break statement）负责终止离它最近的<code>while</code>、<code>do while</code>、<code>for</code>或<code>switch</code>语句，并从这些语句之后的第一条语句开始继续执行。<strong><code>break</code>语句只能出现在迭代语句或者<code>switch</code>语句内部（包括嵌套在此类循环里的语句或块的内部）。</strong><code>break</code>语句的作用范围仅限于最近的循环或者<code>switch</code>。</p>
+<li><p><strong><code>break</code>语句</strong>（break statement）负责终止离它最近的<code>while</code>、<code>do while</code>、<code>for</code>或<code>switch</code>语句，并从这些语句之后的第一条语句开始继续执行。<strong><code>break</code>语句只能出现在迭代语句或者<code>switch</code>语句内部（包括嵌套在此类循环里的语句或块的内部）。</strong><code>break</code>语句的作用范围仅限于最近的循环或者<code>switch</code>。</p>
 </li>
-<li>
-<p><strong><code>continue</code>语句</strong>（continue statement）终止最近的循环中的当前迭代并立即开始下一次迭代。<code>continue</code>语句只能出现在<code>for</code>、<code>while</code>和<code>do while</code>循环的内部，或者嵌套在此类循环里的语句或块的内部。<strong>和<code>break</code>语句类似的是，出现在嵌套循环中的<code>continue</code>语句也仅作用于离它最近的循环。和<code>break</code>语句不同的是，只有当<code>switch</code>语句嵌套在迭代语句内部时，才能在<code>switch</code>里使用<code>continue</code>。</strong><code>continue</code>语句中断当前的迭代，但是仍然继续执行循环。<strong>对于<code>while</code>或者<code>do while</code>语句来说，继续判断条件的值；对于传统的<code>for</code>循环来说，继续执行<code>for</code>语句头的<code>expression</code>；而对于范围<code>for</code>语句来说，则是用序列中的下一个元素初始化循环控制变量。</strong></p>
+<li><p><strong><code>continue</code>语句</strong>（continue statement）终止最近的循环中的当前迭代并立即开始下一次迭代。<code>continue</code>语句只能出现在<code>for</code>、<code>while</code>和<code>do while</code>循环的内部，或者嵌套在此类循环里的语句或块的内部。<strong>和<code>break</code>语句类似的是，出现在嵌套循环中的<code>continue</code>语句也仅作用于离它最近的循环。和<code>break</code>语句不同的是，只有当<code>switch</code>语句嵌套在迭代语句内部时，才能在<code>switch</code>里使用<code>continue</code>。</strong><code>continue</code>语句中断当前的迭代，但是仍然继续执行循环。<strong>对于<code>while</code>或者<code>do while</code>语句来说，继续判断条件的值；对于传统的<code>for</code>循环来说，继续执行<code>for</code>语句头的<code>expression</code>；而对于范围<code>for</code>语句来说，则是用序列中的下一个元素初始化循环控制变量。</strong></p>
 </li>
-<li>
-<p><strong><code>goto</code>语句</strong>（goto statement）的作用是从<code>goto</code>语句无条件跳转到<strong>同一函数</strong>内的另一条语句。</p>
+<li><p><strong><code>goto</code>语句</strong>（goto statement）的作用是从<code>goto</code>语句无条件跳转到<strong>同一函数</strong>内的另一条语句。</p>
 </li>
-<li>
-<p><code>goto</code>语句的语法形式是：</p>
+<li><p><code>goto</code>语句的语法形式是：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">goto</span> label;</span><br></pre></td></tr></table></figure>
 <p>其中，label是用于标识一条语句的标示符。<strong>带标签语句</strong>（labeled statement）是一种特殊的语句，在它之前有一个标示符以及一个冒号：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">end: <span class="keyword">return</span>;  <span class="comment">// 带标签语句，可以作为goto的目标</span></span><br></pre></td></tr></table></figure>
@@ -413,50 +392,35 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 向后跳过一个带初始化的变量定义是合法的</span></span><br><span class="line">begin:</span><br><span class="line">    <span class="keyword">int</span> sz = get_size();</span><br><span class="line">    <span class="keyword">if</span> (sz &lt;= <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">goto</span> begin;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>在上面的代码中，<code>goto</code>语句执行后将销毁sz。因为跳回到begin的动作跨过了sz的定义语句，所以sz将重新定义并初始化。</p>
 </li>
-<li>
-<p>在C++语言中，异常处理包括：</p>
+<li><p>在C++语言中，异常处理包括：</p>
 <ul>
 <li><strong><code>throw</code>表达式</strong>（throw expression），异常检测部分使用<code>throw</code>表达式来表示它遇到了无法处理的问题。我们说<code>throw</code><strong>引发</strong>（raise）了异常。</li>
-<li><strong><code>try</code>语句块</strong>（try block），异常处理部分使用<code>try</code>语句块处理异常。<code>try</code>语句块以关键字<code>try</code>开始，并以一个或多个**<code>catch</code>子句**（catch clause）结束。<code>try</code>语句块中代码抛出的异常通常会被某个<code>catch</code>子句处理。因为<code>catch</code>子句“处理”异常，所以它们也被称作<strong>异常处理代码</strong>（exception handler）。</li>
+<li><strong><code>try</code>语句块</strong>（try block），异常处理部分使用<code>try</code>语句块处理异常。<code>try</code>语句块以关键字<code>try</code>开始，并以一个或多个<strong><code>catch</code>子句</strong>（catch clause）结束。<code>try</code>语句块中代码抛出的异常通常会被某个<code>catch</code>子句处理。因为<code>catch</code>子句“处理”异常，所以它们也被称作<strong>异常处理代码</strong>（exception handler）。</li>
 <li>一套<strong>异常类</strong>（exception class），用于在<code>throw</code>表达式和相关的<code>catch</code>子句之间传递异常的具体信息。</li>
 </ul>
 </li>
-<li>
-<p>程序的异常检测部分使用<code>throw</code>表达式引发一个异常。<code>throw</code>表达式包含关键字<code>throw</code>和紧随其后的一个表达式，其中表达式的类型就是抛出的异常类型。<code>throw</code>表达式后面通常紧跟一个分号，从而构成一条表达式语句。</p>
+<li><p>程序的异常检测部分使用<code>throw</code>表达式引发一个异常。<code>throw</code>表达式包含关键字<code>throw</code>和紧随其后的一个表达式，其中表达式的类型就是抛出的异常类型。<code>throw</code>表达式后面通常紧跟一个分号，从而构成一条表达式语句。</p>
 </li>
-<li>
-<p>类型<code>runtime_error</code>是标准库异常类型的一种，定义在<code>stdexcept</code>头文件中。必须初始化<code>runtime_error</code>的对象，方式是给它提供一个<code>string</code>对象或者一个C风格的字符串，例如：</p>
+<li><p>类型<code>runtime_error</code>是标准库异常类型的一种，定义在<code>stdexcept</code>头文件中。必须初始化<code>runtime_error</code>的对象，方式是给它提供一个<code>string</code>对象或者一个C风格的字符串，例如：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> runtime_error(<span class="string">"Data must refer to same ISBN"</span>);</span><br></pre></td></tr></table></figure>
 </li>
-<li>
-<p><code>try</code>语句块的通用语法形式是：</p>
+<li><p><code>try</code>语句块的通用语法形式是：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    program-statements</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (exception-declaration)</span><br><span class="line">&#123;</span><br><span class="line">    handler-statements</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (exception-declaration)</span><br><span class="line">&#123;</span><br><span class="line">    handler-statements</span><br><span class="line">&#125;  <span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
 <p>跟在<code>try</code>块之后的是一个或多个<code>catch</code>子句。<code>catch</code>子句包括三部分：关键字<code>catch</code>、括号内一个（可能未命名的）对象的声明（称作<strong>异常声明</strong>，exception declaration）以及一个块。当选中了某个<code>catch</code>子句处理异常之后，执行与之对应的块。<code>catch</code>一旦完成，程序跳转到<code>try</code>语句块最后一个<code>catch</code>子句之后的那条语句继续执行。<strong><code>try</code>语句块内声明的变量在外部无法访问，特别是在<code>catch</code>子句内也无法访问。</strong></p>
 </li>
-<li>
-<p>每个标准库异常类都定义了名为<code>what</code>的成员函数，这些函数没有参数，返回值是C风格字符串（即<code>const char*</code>）。其中，<code>runtime_error</code>的<code>what</code>成员返回的是初始化一个具体对象时所用的<code>string</code>对象的副本。</p>
+<li><p>每个标准库异常类都定义了名为<code>what</code>的成员函数，这些函数没有参数，返回值是C风格字符串（即<code>const char*</code>）。其中，<code>runtime_error</code>的<code>what</code>成员返回的是初始化一个具体对象时所用的<code>string</code>对象的副本。</p>
 </li>
-<li>
-<p>寻找处理代码的过程与函数调用链刚好相反。当异常被抛出时，首先搜索抛出该异常的函数。如果没找到匹配的<code>catch</code>子句，终止该函数，并在调用该函数的函数中继续寻找。如果还是没有找到匹配的<code>catch</code>子句，这个新的函数也被终止，继续搜索调用它的函数。以此类推，沿着程序的执行路径逐层回退，直到找到适当类型的<code>catch</code>子句为止。如果最终还是没能找到任何匹配的<code>catch</code>子句，程序转到名为**<code>terminate</code>**的标准库函数。该函数的行为与系统有关，一般情况下，执行该函数将导致程序非正常退出。对于那些没有任何<code>try</code>语句块定义的异常，也按照类似的方式处理：毕竟，没有<code>try</code>语句块也就意味着没有匹配的<code>catch</code>子句。如果一段程序没有<code>try</code>语句块且发生了异常，系统会调用<code>terminate</code>函数并终止当前程序的执行。</p>
+<li><p>寻找处理代码的过程与函数调用链刚好相反。当异常被抛出时，首先搜索抛出该异常的函数。如果没找到匹配的<code>catch</code>子句，终止该函数，并在调用该函数的函数中继续寻找。如果还是没有找到匹配的<code>catch</code>子句，这个新的函数也被终止，继续搜索调用它的函数。以此类推，沿着程序的执行路径逐层回退，直到找到适当类型的<code>catch</code>子句为止。如果最终还是没能找到任何匹配的<code>catch</code>子句，程序转到名为<strong><code>terminate</code></strong>的标准库函数。该函数的行为与系统有关，一般情况下，执行该函数将导致程序非正常退出。对于那些没有任何<code>try</code>语句块定义的异常，也按照类似的方式处理：毕竟，没有<code>try</code>语句块也就意味着没有匹配的<code>catch</code>子句。如果一段程序没有<code>try</code>语句块且发生了异常，系统会调用<code>terminate</code>函数并终止当前程序的执行。</p>
 </li>
-<li>
-<p>C++标准库定义了一组类，用于报告标准库函数遇到的问题，它们分别定义在4个头文件中：</p>
+<li><p>C++标准库定义了一组类，用于报告标准库函数遇到的问题，它们分别定义在4个头文件中：</p>
 <ul>
 <li><code>exception</code>头文件定义了最通用的异常类<code>exception</code>。它只报告异常的发生，不提供任何额外信息。</li>
 <li><code>stdexcept</code>头文件定义了几种常用的异常类，如下表所示。</li>
 <li><code>new</code>头文件定义了<code>bad_alloc</code>异常类型。</li>
 <li><code>type_info</code>头文件定义了<code>bad_cast</code>异常类型。</li>
 </ul>
-<style type="text/css">
-.tg  {border-collapse:collapse;border-color:#9ABAD9;border-spacing:0;}
-.tg td{background-color:#EBF5FF;border-color:#9ABAD9;border-style:solid;border-width:1px;color:#444;
-font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{background-color:#409cff;border-color:#9ABAD9;border-style:solid;border-width:1px;color:#fff;
-font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
-.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-.tg .tg-0lax{text-align:left;vertical-align:top}
-</style>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-color:#9ABAD9;border-spacing:0;}<br>.tg td{background-color:#EBF5FF;border-color:#9ABAD9;border-style:solid;border-width:1px;color:#444;<br>font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{background-color:#409cff;border-color:#9ABAD9;border-style:solid;border-width:1px;color:#fff;<br>font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+</style></p>
 <table class="tg">
 <thead>
 <tr>
@@ -507,15 +471,13 @@ font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;
 </tbody>
 </table>
 </li>
-<li>
-<p>标准库异常类只定义了几种运算，包括创建或接贝异常类型的对象，以及为异常类型的对象赋值。只能以默认初始化的方式初始化<code>exception</code>、<code>bad_alloc</code>和<code>bad_cast</code>对象，不允许为这些对象提供初始值。其他异常类型的行为则恰好相反：应该使用<code>string</code>对象或者C风格字符串初始化这些类型的对象，但是不允许使用默认初始化的方式。当创建此类对象时，必须提供初始值，该初始值含有错误相关的信息。异常类型只定义了一个名为<code>what</code>的成员函数，该函数没有任何参数，返回值是一个指向C风格字符串的<code>const char*</code>。该字符串的目的是提供关于异常的一些文本信息。<code>what</code>函数返回的C风格字符串的内容与异常对象的类型有关。如果异常类型有一个字符串初始值，则<code>what</code>返回该字符串。对于其他无初始值的异常类型来说，<code>what</code>返回的内容由编译器决定。</p>
+<li><p>标准库异常类只定义了几种运算，包括创建或接贝异常类型的对象，以及为异常类型的对象赋值。只能以默认初始化的方式初始化<code>exception</code>、<code>bad_alloc</code>和<code>bad_cast</code>对象，不允许为这些对象提供初始值。其他异常类型的行为则恰好相反：应该使用<code>string</code>对象或者C风格字符串初始化这些类型的对象，但是不允许使用默认初始化的方式。当创建此类对象时，必须提供初始值，该初始值含有错误相关的信息。异常类型只定义了一个名为<code>what</code>的成员函数，该函数没有任何参数，返回值是一个指向C风格字符串的<code>const char*</code>。该字符串的目的是提供关于异常的一些文本信息。<code>what</code>函数返回的C风格字符串的内容与异常对象的类型有关。如果异常类型有一个字符串初始值，则<code>what</code>返回该字符串。对于其他无初始值的异常类型来说，<code>what</code>返回的内容由编译器决定。</p>
 </li>
-<li>
-<p>编写一段程序，从标准输入读取两个整数，当第二个数是0时抛出异常，使用<code>try</code>语句块捕获异常，<code>catch</code>子句为用户输出一条提示信息，询问是否输入新数并重新执行<code>try</code>语句块的内容。</p>
+<li><p>编写一段程序，从标准输入读取两个整数，当第二个数是0时抛出异常，使用<code>try</code>语句块捕获异常，<code>catch</code>子句为用户输出一条提示信息，询问是否输入新数并重新执行<code>try</code>语句块的内容。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a, b;</span><br><span class="line"><span class="function"><span class="built_in">std</span>::invalid_argument <span class="title">err</span><span class="params">(<span class="string">"Wrong input for the 2nd argument!"</span>)</span></span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="number">0</span> == b)</span><br><span class="line">            <span class="keyword">throw</span> err;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"a/b = "</span> &lt;&lt; a / b;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (<span class="keyword">const</span> <span class="built_in">std</span>::invalid_argument &amp;e)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; e.what() &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Try again? Enter y or n"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">char</span> c;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; c;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">cin</span> || <span class="string">'n'</span> == c)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<hr />
+<hr>
 
     </div>
 
@@ -529,13 +491,13 @@ font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>

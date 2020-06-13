@@ -305,18 +305,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1-win10安装" class="heading-control"><a class="markdownIt-Anchor" href="#1-win10安装"></a> 1 Win10安装<a class="heading-anchor" href="#1-win10安装" aria-hidden="true"></a></h1>
-<h2 id="11-系统盘制作" class="heading-control"><a class="markdownIt-Anchor" href="#11-系统盘制作"></a> 1.1 系统盘制作<a class="heading-anchor" href="#11-系统盘制作" aria-hidden="true"></a></h2>
-<p>老毛桃Win10系统盘制作工具，注意根据主机BIOS选择传统版或支持UEFI的最新版。</p>
-<h2 id="12-安装" class="heading-control"><a class="markdownIt-Anchor" href="#12-安装"></a> 1.2 安装<a class="heading-anchor" href="#12-安装" aria-hidden="true"></a></h2>
-<p>U盘启动进入WinPE后，首先使用WinPE中集成的DiskGenius工具对硬盘进行格式化并分区。对于传统BIOS，分区格式必须为设置为MBR格式；对于UEFI BIOS，分区格式可设置为MBR或GUID（GPT）格式（推荐GUID），安装细节不再赘述。</p>
-<h1 id="2-ubuntu-18042安装与卸载" class="heading-control"><a class="markdownIt-Anchor" href="#2-ubuntu-18042安装与卸载"></a> 2 Ubuntu 18.04.2安装与卸载<a class="heading-anchor" href="#2-ubuntu-18042安装与卸载" aria-hidden="true"></a></h1>
-<h2 id="21-系统盘制作" class="heading-control"><a class="markdownIt-Anchor" href="#21-系统盘制作"></a> 2.1 系统盘制作<a class="heading-anchor" href="#21-系统盘制作" aria-hidden="true"></a></h2>
-<p>假设已安装好Win10系统，在安装Ubuntu前首先应在Win10系统中关闭快速启动，并在BIOS中关闭Security Boot选项。使用<span class="exturl" data-url="aHR0cHM6Ly9ydWZ1cy5pZS8=" title="https://rufus.ie/">rufus<i class="fa fa-external-link"></i></span>系统盘制作工具进行Ubuntu系统盘制作，制作过程中应根据主机的BIOS类型进行系统盘类型选择（MBR or GPT）。</p>
-<h2 id="22-安装" class="heading-control"><a class="markdownIt-Anchor" href="#22-安装"></a> 2.2 安装<a class="heading-anchor" href="#22-安装" aria-hidden="true"></a></h2>
-<p>安装前，首先应在Windows盘中压缩出一定空间用于Ubuntu安装，本文中同时实践了老式笔记本（Lenovo G475，传统BIOS）与新式笔记本（HP暗影精灵4，UEFI BIOS）下的Win10/Ubuntu 18.04.2双系统安装，两台笔记本的配置均为SSD/HDD双硬盘，本文中将HDD压缩出150G用于挂载/home目录（CARLA安装使用），SSD压缩100G用于其它目录挂载使用。在BIOS中设置U盘启动（启用USB启动，并将EFI模式下的启动项顺序），设置细节不再赘述。Ubuntu系统安装过程中最重要的部分为分区挂载。</p>
-<h3 id="221-传统bios" class="heading-control"><a class="markdownIt-Anchor" href="#221-传统bios"></a> 2.2.1 传统BIOS<a class="heading-anchor" href="#221-传统bios" aria-hidden="true"></a></h3>
-<p>最佳分区挂载实践为：</p>
+        <h1 id="1-Win10安装" class="heading-control"><a href="#1-Win10安装" class="headerlink" title="1 Win10安装"></a>1 Win10安装<a class="heading-anchor" href="#1-Win10安装" aria-hidden="true"></a></h1><h2 id="1-1-系统盘制作" class="heading-control"><a href="#1-1-系统盘制作" class="headerlink" title="1.1 系统盘制作"></a>1.1 系统盘制作<a class="heading-anchor" href="#1-1-系统盘制作" aria-hidden="true"></a></h2><p>老毛桃Win10系统盘制作工具，注意根据主机BIOS选择传统版或支持UEFI的最新版。</p>
+<h2 id="1-2-安装" class="heading-control"><a href="#1-2-安装" class="headerlink" title="1.2 安装"></a>1.2 安装<a class="heading-anchor" href="#1-2-安装" aria-hidden="true"></a></h2><p>U盘启动进入WinPE后，首先使用WinPE中集成的DiskGenius工具对硬盘进行格式化并分区。对于传统BIOS，分区格式必须为设置为MBR格式；对于UEFI BIOS，分区格式可设置为MBR或GUID（GPT）格式（推荐GUID），安装细节不再赘述。</p>
+<h1 id="2-Ubuntu-18-04-2安装与卸载" class="heading-control"><a href="#2-Ubuntu-18-04-2安装与卸载" class="headerlink" title="2 Ubuntu 18.04.2安装与卸载"></a>2 Ubuntu 18.04.2安装与卸载<a class="heading-anchor" href="#2-Ubuntu-18-04-2安装与卸载" aria-hidden="true"></a></h1><h2 id="2-1-系统盘制作" class="heading-control"><a href="#2-1-系统盘制作" class="headerlink" title="2.1 系统盘制作"></a>2.1 系统盘制作<a class="heading-anchor" href="#2-1-系统盘制作" aria-hidden="true"></a></h2><p>假设已安装好Win10系统，在安装Ubuntu前首先应在Win10系统中关闭快速启动，并在BIOS中关闭Security Boot选项。使用<span class="exturl" data-url="aHR0cHM6Ly9ydWZ1cy5pZS8=" title="https://rufus.ie/">rufus<i class="fa fa-external-link"></i></span>系统盘制作工具进行Ubuntu系统盘制作，制作过程中应根据主机的BIOS类型进行系统盘类型选择（MBR or GPT）。</p>
+<h2 id="2-2-安装" class="heading-control"><a href="#2-2-安装" class="headerlink" title="2.2 安装"></a>2.2 安装<a class="heading-anchor" href="#2-2-安装" aria-hidden="true"></a></h2><p>安装前，首先应在Windows盘中压缩出一定空间用于Ubuntu安装，本文中同时实践了老式笔记本（Lenovo G475，传统BIOS）与新式笔记本（HP暗影精灵4，UEFI BIOS）下的Win10/Ubuntu 18.04.2双系统安装，两台笔记本的配置均为SSD/HDD双硬盘，本文中将HDD压缩出150G用于挂载/home目录（CARLA安装使用），SSD压缩100G用于其它目录挂载使用。在BIOS中设置U盘启动（启用USB启动，并将EFI模式下的启动项顺序），设置细节不再赘述。Ubuntu系统安装过程中最重要的部分为分区挂载。</p>
+<h3 id="2-2-1-传统BIOS" class="heading-control"><a href="#2-2-1-传统BIOS" class="headerlink" title="2.2.1 传统BIOS"></a>2.2.1 传统BIOS<a class="heading-anchor" href="#2-2-1-传统BIOS" aria-hidden="true"></a></h3><p>最佳分区挂载实践为：</p>
 <ul>
 <li>新建SWAP交换分区，SSD中分配两倍内存空间</li>
 <li>新建分区，SSD中分配空间1G，主分区格式，挂载点/boot</li>
@@ -324,8 +317,7 @@
 <li>新建分区，HDD中空间全部分配，主分区格式，挂载点/home</li>
 </ul>
 <p><strong>分区挂载完成后，启动引导器安装在/boot目录所挂载分区。</strong> 完成Ubuntu系统安装后重启，默认会直接进入Win10，可通过<span class="exturl" data-url="aHR0cHM6Ly9uZW9zbWFydC5uZXQvRWFzeUJDRC8=" title="https://neosmart.net/EasyBCD/">easyBCD<i class="fa fa-external-link"></i></span>工具添加Ubuntu启动引导项，具体细节不再赘述。</p>
-<h3 id="222-uefi-bios" class="heading-control"><a class="markdownIt-Anchor" href="#222-uefi-bios"></a> 2.2.2 UEFI BIOS<a class="heading-anchor" href="#222-uefi-bios" aria-hidden="true"></a></h3>
-<p>最佳分区挂载实践为：</p>
+<h3 id="2-2-2-UEFI-BIOS" class="heading-control"><a href="#2-2-2-UEFI-BIOS" class="headerlink" title="2.2.2 UEFI BIOS"></a>2.2.2 UEFI BIOS<a class="heading-anchor" href="#2-2-2-UEFI-BIOS" aria-hidden="true"></a></h3><p>最佳分区挂载实践为：</p>
 <ul>
 <li>新建SWAP交换分区，SSD中分配两倍内存空间</li>
 <li>新建EFI系统分区，SSD中分配空间1G，主分区格式</li>
@@ -336,10 +328,8 @@
 <blockquote>
 <p>通过观察上述步骤可以发现，无论是传统BIOS还是UEFI BIOS，在安装Ubuntu时，启动引导器均未覆盖Windows的启动引导项所在分区，而是分别安装在了/boot目录所挂载分区（对于传统BIOS而言）或EFI系统分区（对于UEFI BIOS而言）。为什么要这样做？直接将启动引导器安装在Windows的启动引导项所在分区当然是可行的，但是这样将导致Windows系统引导分区被改写，此后只能通过GRUB引导才能进入Windows，这样便埋下了隐患：一旦Ubuntu引导项被破坏，Windows也将无法进入。而本文中的安装方式则实现了Windows/Ubuntu的引导解耦，任一操作系统引导项的损坏都不会对另一系统造成影响，即使这样，仍然建议通过傲梅的“轻松备份”工具定期对系统引导区进行备份。本文中实践过程中，受一篇博文启发较大，链接找不到了，找到了再补上。</p>
 </blockquote>
-<h2 id="23-卸载" class="heading-control"><a class="markdownIt-Anchor" href="#23-卸载"></a> 2.3 卸载<a class="heading-anchor" href="#23-卸载" aria-hidden="true"></a></h2>
-<p>先在Win10下使用傲梅分区助手删除各分区，再使用easyEFI或easy BCD删除Ubuntu的GRUB启动引导项。</p>
-<h1 id="3-参考" class="heading-control"><a class="markdownIt-Anchor" href="#3-参考"></a> 3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1>
-<ol>
+<h2 id="2-3-卸载" class="heading-control"><a href="#2-3-卸载" class="headerlink" title="2.3 卸载"></a>2.3 卸载<a class="heading-anchor" href="#2-3-卸载" aria-hidden="true"></a></h2><p>先在Win10下使用傲梅分区助手删除各分区，再使用easyEFI或easy BCD删除Ubuntu的GRUB启动引导项。</p>
+<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC9hMzk0ZGQ1MzA0MTI=" title="https://www.jianshu.com/p/a394dd530412">Win10 与 ubuntu 双系统，卸载 ubuntu 系统的方法<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
@@ -353,13 +343,13 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\c5106d85.html" rel="bookmark">Linux中的ld-so与ld-linux-so</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\8b42591c.html" rel="bookmark">Linux gcc/g++中的-I、-l、-L</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\f52fa610.html" rel="bookmark">Linux中使用core dump进行程序调试</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c5106d85.html" rel="bookmark">Linux中的ld-so与ld-linux-so</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\ffbee3f1.html" rel="bookmark">Not able to execute a .sh file: /bin/bash^M: bad interpreter</a></div>
@@ -488,7 +478,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-win10安装"><span class="nav-text"> 1 Win10安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#11-系统盘制作"><span class="nav-text"> 1.1 系统盘制作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-安装"><span class="nav-text"> 1.2 安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-ubuntu-18042安装与卸载"><span class="nav-text"> 2 Ubuntu 18.04.2安装与卸载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#21-系统盘制作"><span class="nav-text"> 2.1 系统盘制作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22-安装"><span class="nav-text"> 2.2 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#221-传统bios"><span class="nav-text"> 2.2.1 传统BIOS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#222-uefi-bios"><span class="nav-text"> 2.2.2 UEFI BIOS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-卸载"><span class="nav-text"> 2.3 卸载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-参考"><span class="nav-text"> 3 参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Win10安装"><span class="nav-text">1 Win10安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-系统盘制作"><span class="nav-text">1.1 系统盘制作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-安装"><span class="nav-text">1.2 安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Ubuntu-18-04-2安装与卸载"><span class="nav-text">2 Ubuntu 18.04.2安装与卸载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-系统盘制作"><span class="nav-text">2.1 系统盘制作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-安装"><span class="nav-text">2.2 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-传统BIOS"><span class="nav-text">2.2.1 传统BIOS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-UEFI-BIOS"><span class="nav-text">2.2.2 UEFI BIOS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-卸载"><span class="nav-text">2.3 卸载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-参考"><span class="nav-text">3 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
