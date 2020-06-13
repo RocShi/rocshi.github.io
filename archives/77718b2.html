@@ -317,10 +317,8 @@
 <h1 id="3-解决" class="heading-control"><a href="#3-解决" class="headerlink" title="3 解决"></a>3 解决<a class="heading-anchor" href="#3-解决" aria-hidden="true"></a></h1><p>因为仅仅是关联了远程仓库，本地仓库并未获取远程仓库的修改（包括分支信息），所以本地看不到远程仓库的分支，也就无法进行分支关联操作。以<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">参考1<i class="fa fa-external-link"></i></span>中的建议，在将本地仓库分支与远程仓库分支进行关联前，可先通过<code>git fetch origin</code>命令拉取远程仓库的修改，这样便可获取远程仓库分支信息，但还无法看到本地分支。最佳实践是使用<code>git pull origin develop</code>命令（前提是你必须知道想要将远程仓库的哪个分支并入本地分支），便可看到远程仓库的develop分支和本地仓库的develop分支（当前分支），进而可进行分支关联操作。</p>
 <h1 id="4-结论" class="heading-control"><a href="#4-结论" class="headerlink" title="4 结论"></a>4 结论<a class="heading-anchor" href="#4-结论" aria-hidden="true"></a></h1><p>总结一下最佳实践：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git checkout -b local_branch</span><br><span class="line">git remote add origin repo_addr</span><br><span class="line">git pull origin repo_branch</span><br><span class="line">git branch --<span class="built_in">set</span>-upstream-to=origin/repo_branch local_branch</span><br><span class="line">git fetch --all</span><br></pre></td></tr></table></figure>
-
 <p>当然，直接使用<code>git clone</code>也是可以的（<strong>这才应该算是最佳实践！</strong>）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch</span><br></pre></td></tr></table></figure>
-
 <p><code>git checkout target_repo_branch</code>将自动在本地创建一个名为target_repo_branch的分支，并将其与远程仓库中的target_repo_branch分支进行关联。执行完<code>git clone</code>后，默认在本地仓库创建的是master分支，并将其与远程仓库的master分支进行关联，但通常情况下，maser分支仅用于版本释放，我们并不会直接向mater分支推送修改，而是在其它分支（如develop分支）完成开发与调试后，再通过<code>git merge</code>将分支上的工作并入master分支。</p>
 <h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">Git branch -r 无法获取远程分支，ui可以看见分支但是git 命令无法查看解决方案<i class="fa fa-external-link"></i></span></li>
@@ -345,10 +343,10 @@
       <div class="popular-posts-title"><a href="\archives\f390ae43.html" rel="bookmark">git的cherry-pick命令</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\a38a4de1.html" rel="bookmark">如何删除本地Git仓库和远程Git仓库的tag</a></div>
+      <div class="popular-posts-title"><a href="\archives\296a9967.html" rel="bookmark">在腾讯云上搭建个人Git服务器</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\296a9967.html" rel="bookmark">在腾讯云上搭建个人Git服务器</a></div>
+      <div class="popular-posts-title"><a href="\archives\a38a4de1.html" rel="bookmark">如何删除本地Git仓库和远程Git仓库的tag</a></div>
     </li>
   </ul>
 
@@ -674,6 +672,8 @@ window.addEventListener('pjax:success', () => {
 
 
     <div id="pjax">
+  
+
   
 
   

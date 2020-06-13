@@ -306,15 +306,9 @@
         <h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
 <p>在腾讯云搭建Git服务器，托管个人工程代码，实现多地协同开发。</p>
 </blockquote>
-<h1 id="2-最佳实践" class="heading-control"><a href="#2-最佳实践" class="headerlink" title="2 最佳实践"></a>2 最佳实践<a class="heading-anchor" href="#2-最佳实践" aria-hidden="true"></a></h1><h2 id="2-1-安装Git" class="heading-control"><a href="#2-1-安装Git" class="headerlink" title="2.1 安装Git"></a>2.1 安装Git<a class="heading-anchor" href="#2-1-安装Git" aria-hidden="true"></a></h2><p>以Linux Ubuntu为例：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-2-创建证书登录" class="heading-control"><a href="#2-2-创建证书登录" class="headerlink" title="2.2 创建证书登录"></a>2.2 创建证书登录<a class="heading-anchor" href="#2-2-创建证书登录" aria-hidden="true"></a></h2><p>收集所有需要登录的用户的公钥，即个人主机<code>~/.ssh</code>目录中id_rsa.pub公钥文件中的内容，把所有公钥导入到服务器<code>~/.ssh/authorized_keys</code>文件里，一行一个，id_rsa.pub公钥文件不存在的话使用<code>ssh-keygen</code>命令生成：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -C “your email address”</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-3-初始化Git仓库" class="heading-control"><a href="#2-3-初始化Git仓库" class="headerlink" title="2.3 初始化Git仓库"></a>2.3 初始化Git仓库<a class="heading-anchor" href="#2-3-初始化Git仓库" aria-hidden="true"></a></h2><p>选定一个目录作为Git仓库目录，例如~/Code/example，<code>cd</code>到该目录，输入命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init --bare example.git</span><br></pre></td></tr></table></figure>
-
+<h1 id="2-最佳实践" class="heading-control"><a href="#2-最佳实践" class="headerlink" title="2 最佳实践"></a>2 最佳实践<a class="heading-anchor" href="#2-最佳实践" aria-hidden="true"></a></h1><h2 id="2-1-安装Git" class="heading-control"><a href="#2-1-安装Git" class="headerlink" title="2.1 安装Git"></a>2.1 安装Git<a class="heading-anchor" href="#2-1-安装Git" aria-hidden="true"></a></h2><p>以Linux Ubuntu为例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-2-创建证书登录" class="heading-control"><a href="#2-2-创建证书登录" class="headerlink" title="2.2 创建证书登录"></a>2.2 创建证书登录<a class="heading-anchor" href="#2-2-创建证书登录" aria-hidden="true"></a></h2><p>收集所有需要登录的用户的公钥，即个人主机<code>~/.ssh</code>目录中id_rsa.pub公钥文件中的内容，把所有公钥导入到服务器<code>~/.ssh/authorized_keys</code>文件里，一行一个，id_rsa.pub公钥文件不存在的话使用<code>ssh-keygen</code>命令生成：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -C “your email address”</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-3-初始化Git仓库" class="heading-control"><a href="#2-3-初始化Git仓库" class="headerlink" title="2.3 初始化Git仓库"></a>2.3 初始化Git仓库<a class="heading-anchor" href="#2-3-初始化Git仓库" aria-hidden="true"></a></h2><p>选定一个目录作为Git仓库目录，例如~/Code/example，<code>cd</code>到该目录，输入命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init --bare example.git</span><br></pre></td></tr></table></figure></p>
 <h2 id="2-4-在client端克隆仓库，并向远程仓库贡献代码" class="heading-control"><a href="#2-4-在client端克隆仓库，并向远程仓库贡献代码" class="headerlink" title="2.4 在client端克隆仓库，并向远程仓库贡献代码"></a>2.4 在client端克隆仓库，并向远程仓库贡献代码<a class="heading-anchor" href="#2-4-在client端克隆仓库，并向远程仓库贡献代码" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> server_username@server_addr:~/Code/example/example.git</span><br></pre></td></tr></table></figure>
 <p>server_username是你登录腾讯云服务器的用户名，server_addr是服务器IP地址或域名。</p>
 <h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
@@ -669,6 +663,8 @@ window.addEventListener('pjax:success', () => {
 
 
     <div id="pjax">
+  
+
   
 
   

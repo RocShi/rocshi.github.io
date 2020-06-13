@@ -310,7 +310,6 @@
 <li>在终端中打开bash shell的配置文件<code>.bashrc</code>：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure></li>
 <li>在文件末尾添加如下代码：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># These shell commands block are for the purpose of displaying the </span></span><br><span class="line"><span class="comment"># current branch name of the current repository.</span></span><br><span class="line">find_git_branch () </span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">local</span> dir=. head</span><br><span class="line">  until [ <span class="string">"<span class="variable">$dir</span>"</span> -ef / ]; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [ -f <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span> ]; <span class="keyword">then</span></span><br><span class="line">      head=$(&lt; <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span>)</span><br><span class="line">      <span class="keyword">if</span> [[ <span class="variable">$head</span> = ref:\ refs/heads/* ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*<span class="variable">$&#123;head#*/*/&#125;</span>)"</span></span><br><span class="line">      <span class="keyword">elif</span> [[ <span class="variable">$head</span> != <span class="string">''</span> ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*(detached))"</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        git_branch=<span class="string">"(*(unknow))"</span></span><br><span class="line">      <span class="keyword">fi</span>  </span><br><span class="line">      <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span>  </span><br><span class="line">    dir=<span class="string">"../<span class="variable">$dir</span>"</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">  git_branch=<span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line">PROMPT_COMMAND=<span class="string">"find_git_branch; <span class="variable">$PROMPT_COMMAND</span>"</span></span><br><span class="line"><span class="built_in">export</span> PS1=<span class="string">"\[\e]0;\u@\h: \w\a\]<span class="variable">$&#123;debian_chroot:+($debian_chroot)&#125;</span>\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]\$git_branch\[\033[0m\] \$ "</span></span><br></pre></td></tr></table></figure></li>
 <li>使更改立即生效：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-
 </li>
 </ol>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
@@ -333,13 +332,13 @@
       <div class="popular-posts-title"><a href="\archives\ffbee3f1.html" rel="bookmark">Not able to execute a .sh file: /bin/bash^M: bad interpreter</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\17a8c28.html" rel="bookmark">Shell中各种括号的作用</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\55ffbd22.html" rel="bookmark">Shell中美元符$与数字及其它各种符号组合的含义</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\a1691b48.html" rel="bookmark">Shell中设置文字输出的颜色及字体格式</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\17a8c28.html" rel="bookmark">Shell中各种括号的作用</a></div>
     </li>
   </ul>
 
@@ -667,6 +666,8 @@ window.addEventListener('pjax:success', () => {
 
 
     <div id="pjax">
+  
+
   
 
   

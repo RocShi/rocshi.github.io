@@ -304,9 +304,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在搭建某项目CI环境过程中，在Windows下写了个shell脚本，通过winscp传到了<code>gitlab runner</code>所在的Linux工作站上，在工作站上执行该shell脚本时报错：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash^M: bad interpreter: No such file or directory</span><br></pre></td></tr></table></figure>
-
+        <h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在搭建某项目CI环境过程中，在Windows下写了个shell脚本，通过winscp传到了<code>gitlab runner</code>所在的Linux工作站上，在工作站上执行该shell脚本时报错：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash^M: bad interpreter: No such file or directory</span><br></pre></td></tr></table></figure></p>
 <h1 id="知识" class="heading-control"><a href="#知识" class="headerlink" title="知识"></a>知识<a class="heading-anchor" href="#知识" aria-hidden="true"></a></h1><p>错误信息指出，脚本在试图查找位于<code>/bin/bash^M</code>处的解释器时出错：文件或目录不存在。事实也确实如此，目标解释器应该是<code>/bin/bash</code>。<code>^M</code>表示回车符（Carriage Return，CR）。</p>
 <p>回车符<code>\r</code>本义是光标重新回到本行开头，r的英文return，控制字符可以写成<code>CR</code>，即Carriage Return，十六进制表示为<code>0x0D</code>；换行符<code>\n</code>本义是光标往下一行（不一定到下一行行首），n的英文newline，控制字符可以写成<code>LF</code>，即Line Feed，十六进制表示为<code>0x0A</code>。<code>EOL</code>（End of Line）是<code>CR</code>和<code>LF</code>的组合，表示到下一行并把焦点移到第一列。</p>
 <p>在不同的操作系统这几个字符表现不同：</p>
@@ -321,9 +319,7 @@
 <li>Unix/Mac系统下的文件在Windows下打开的话，所有文字会变成一行；</li>
 <li>Windows下的文件在Unix/Mac下打开的话，在每行的结尾可能会多出一个<code>^M</code>符号。</li>
 </ul>
-<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><p>删除Windows环境下编辑的脚本中的多余<code>\r</code>回车符：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i -e <span class="string">'s/\r$//'</span> script.sh</span><br></pre></td></tr></table></figure>
-<p>关于Linux中<code>sed</code>命令的使用，可参考此前的一篇文章：<a href="https://blog.shipengx.com/archives/31e5f0fe.html">《Linux中使用sed命令进行字符串查找和替换》</a>。</p>
+<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><p>删除Windows环境下编辑的脚本中的多余<code>\r</code>回车符：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i -e <span class="string">'s/\r$//'</span> script.sh</span><br></pre></td></tr></table></figure><br>关于Linux中<code>sed</code>命令的使用，可参考此前的一篇文章：<a href="https://blog.shipengx.com/archives/31e5f0fe.html">《Linux中使用sed命令进行字符串查找和替换》</a>。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly9hc2t1YnVudHUuY29tL3F1ZXN0aW9ucy8zMDQ5OTkvbm90LWFibGUtdG8tZXhlY3V0ZS1hLXNoLWZpbGUtYmluLWJhc2htLWJhZC1pbnRlcnByZXRlcg==" title="https://askubuntu.com/questions/304999/not-able-to-execute-a-sh-file-bin-bashm-bad-interpreter">Not able to execute a .sh file: /bin/bash^M: bad interpreter<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3F1aW5jeWZhbmcvYXJ0aWNsZS9kZXRhaWxzLzUzMTU2NDc2" title="https://blog.csdn.net/quincyfang/article/details/53156476">The differences between Carriage Return(CR) and Line Feed(LF)<i class="fa fa-external-link"></i></span></li>
@@ -343,13 +339,13 @@
       <div class="popular-posts-title"><a href="\archives\31e5f0fe.html" rel="bookmark">Linux中使用sed命令进行字符串查找和替换</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\17a8c28.html" rel="bookmark">Shell中各种括号的作用</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\55ffbd22.html" rel="bookmark">Shell中美元符$与数字及其它各种符号组合的含义</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\a1691b48.html" rel="bookmark">Shell中设置文字输出的颜色及字体格式</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\17a8c28.html" rel="bookmark">Shell中各种括号的作用</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\74b2417b.html" rel="bookmark">配置Ubuntu下的shell默认显示所在git仓库的当前分支</a></div>
@@ -679,6 +675,8 @@ window.addEventListener('pjax:success', () => {
 
 
     <div id="pjax">
+  
+
   
 
   

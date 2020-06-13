@@ -328,39 +328,7 @@
 </li>
 <li><p>标准库类型<code>string</code>表示可变长的字符序列，<strong>使用<code>string</code>类型必须首先包含<code>string</code>头文件。</strong>作为标准库的一部分，<code>string</code>定义在命名空间<code>std</code>中：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">string</span>;</span><br></pre></td></tr></table></figure></li>
-<li><p>一个类可以定义很多种初始化对象的方式，只不过这些方式之间必须有所区别：或者是初始值的数量不同，或者是初始值的类型不同。下表列出了初始化<code>string</code>对象最常用的一些方式：</p>
-<table>
-<thead>
-<tr>
-<th>写法</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>string s1</td>
-<td>默认初始化，s1是一个空串</td>
-</tr>
-<tr>
-<td>string s2(s1)</td>
-<td>s2是s1的副本</td>
-</tr>
-<tr>
-<td>string s2 = s1</td>
-<td>等价于s2(s1)，s2是s1的副本</td>
-</tr>
-<tr>
-<td>string s3(“value”)</td>
-<td>s3是字面值“value”的副本，除了字面值最后的那个空字符外</td>
-</tr>
-<tr>
-<td>string s3 = “value”</td>
-<td>等价于s3(“value”)，s3是字面值“value”的副本</td>
-</tr>
-<tr>
-<td>string s4(n, ‘c’)</td>
-<td>把s4初始化为由连续n个字符c组成的串</td>
-</tr>
-</tbody></table>
+<li><p>一个类可以定义很多种初始化对象的方式，只不过这些方式之间必须有所区别：或者是初始值的数量不同，或者是初始值的类型不同。下表列出了初始化<code>string</code>对象最常用的一些方式：<br>| 写法                | 含义                                                  |<br>| —————————- | ——————————————————————————- |<br>| string s1           | 默认初始化，s1是一个空串                              |<br>| string s2(s1)       | s2是s1的副本                                          |<br>| string s2 = s1      | 等价于s2(s1)，s2是s1的副本                            |<br>| string s3(“value”)  | s3是字面值“value”的副本，除了字面值最后的那个空字符外 |<br>| string s3 = “value” | 等价于s3(“value”)，s3是字面值“value”的副本            |<br>| string s4(n, ‘c’)   | 把s4初始化为由连续n个字符c组成的串                    |</p>
 <p>下面是几个例子：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s1;           <span class="comment">// 默认初始化，s1是一个空字符串</span></span><br><span class="line"><span class="built_in">string</span> s2 = s1;      <span class="comment">// s2是s1的副本</span></span><br><span class="line"><span class="built_in">string</span> s3 = <span class="string">"hiya"</span>;  <span class="comment">// s3是该字符串字面值的副本</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s4</span><span class="params">(<span class="number">10</span>, <span class="string">'c'</span>)</span></span>;  <span class="comment">// s4的内容是cccccccccc</span></span><br></pre></td></tr></table></figure>
 </li>
@@ -369,15 +337,8 @@
 <p>对于用多个值进行初始化的情况，也可以使用拷贝初始化的方式，不过需要显式地创建一个（临时）对象用于拷贝：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s8 = <span class="built_in">string</span>(<span class="number">10</span>, <span class="string">'c'</span>);  <span class="comment">// 拷贝初始化，s8的内容是cccccccccc</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p><code>string</code>对象可进行的大多数操作如下表所示：</p>
- <style type="text/css">
- .tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
- .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
- .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
- .tg .tg-cly1{text-align:left;vertical-align:middle}
- .tg .tg-40h1{font-weight:bold;background-color:#ebf5ff;color:#000000;text-align:center;vertical-align:top}
- .tg .tg-0lax{text-align:left;vertical-align:top}
- </style>
+<li><p><code>string</code>对象可进行的大多数操作如下表所示：<br> <style type="text/css"><br> .tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}<br> .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}<br> .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}<br> .tg .tg-cly1{text-align:left;vertical-align:middle}<br> .tg .tg-40h1{font-weight:bold;background-color:#ebf5ff;color:#000000;text-align:center;vertical-align:top}<br> .tg .tg-0lax{text-align:left;vertical-align:top}
+ </style></p>
  <table class="tg">
  <tr>
      <td class="tg-40h1" colspan="2">string的操作</td>
@@ -476,16 +437,8 @@
 </li>
 <li><p><strong>C++语言中的字符串字面值并不是标准库类型<code>string</code>的对象。切记，字符串字面值与<code>string</code>是不同的类型。</strong></p>
 </li>
-<li><p>在<code>cctype</code>头文件中定义了一组标准库函数用于单独处理<code>string</code>对象中的字符，其中主要的函数名及其含义如下表所示：</p>
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
-.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}
-.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}
-.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-.tg .tg-0lax{text-align:left;vertical-align:top}
-</style>
+<li><p>在<code>cctype</code>头文件中定义了一组标准库函数用于单独处理<code>string</code>对象中的字符，其中主要的函数名及其含义如下表所示：<br><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}<br>.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}<br>.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+</style></p>
 <table class="tg">
 <tr>
     <th class="tg-xeqs" colspan="2">cctype头文件中的函数</th>
@@ -582,15 +535,8 @@
 </li>
 <li><p>在早期版本的C++标准中，如果<code>vector</code>的元素还是<code>vector</code>（或者其他模板类型），则其定义的形式与现在的C++11新标准略有不同。过去，必须在外层<code>vector</code>对象的右尖括号和其元素类型之间添加一个空格，如应该写成<code>vector&lt;vector&lt;int&gt; &gt;</code>而非<code>vector&lt;vector&lt;int&gt;&gt;</code>。</p>
 </li>
-<li><p>定义<code>vector</code>对象的常用方法如下表所示：</p>
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
-.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}
-.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}
-.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-</style>
+<li><p>定义<code>vector</code>对象的常用方法如下表所示：<br><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}<br>.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}<br>.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style></p>
 <table class="tg">
 <tr>
     <th class="tg-xeqs" colspan="2">初始化vector对象的方法</th>
@@ -670,16 +616,8 @@
 </li>
 <li><p><strong>如果循环体内部包含有向<code>vector</code>对象添加元素的语句，则不能使用范围<code>for</code>循环，范围<code>for</code>语句体内不应改变其所遍历序列的大小。</strong></p>
 </li>
-<li><p>比较重要的一些<code>vector</code>支持的操作如下表所示：</p>
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
-.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}
-.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}
-.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-.tg .tg-0lax{text-align:left;vertical-align:top}
-</style>
+<li><p>比较重要的一些<code>vector</code>支持的操作如下表所示：<br><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}<br>.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}<br>.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+</style></p>
 <table class="tg">
 <tr>
     <th class="tg-xeqs" colspan="2">vector支持的操作</th>
@@ -731,7 +669,7 @@
 </li>
 <li><p>只要<code>vector</code>对象不是一个常量，就能向下标运算符返回的元素赋值。</p>
 </li>
-<li><p><strong>两个整数相除，结果还是整数，余数部分被自动忽略掉了。</strong>下面的程序以10分为一个分数段统计成绩的数量：0<del>9，10</del>19…，90~99，100：</p>
+<li><p><strong>两个整数相除，结果还是整数，余数部分被自动忽略掉了。</strong>下面的程序以10分为一个分数段统计成绩的数量：0~9，10~19…，90~99，100：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span>&gt; <span class="title">scores</span><span class="params">(<span class="number">11</span>, <span class="number">0</span>)</span></span>;  <span class="comment">// 11个分数段，全都初始化为0</span></span><br><span class="line"><span class="keyword">unsigned</span> grade;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; grade)         <span class="comment">// 读取成绩</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (grade &lt;= <span class="number">100</span>)        <span class="comment">// 只处理有效的成绩</span></span><br><span class="line">        ++scores[grade/<span class="number">10</span>];  <span class="comment">// 将对应分数段的计数值加1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>下面的代码试图为<code>vector</code>对象ivec添加10个元素：</p>
@@ -746,15 +684,8 @@
 </li>
 <li><p>获取迭代器不是使用取地址符，有迭代器的类型同时拥有返回迭代器的成员。比如，这些类型都拥有名为<strong><code>begin</code></strong>和<strong><code>end</code></strong>的成员，其中<code>begin</code>成员负责返回指向第一个元素（或第一个字符）的迭代器。<code>end</code>成员则负责返回指向容器（或string对象）“尾元素的下一位置（one past the end）”的迭代器，也就是说，该迭代器指示的是容器的一个本不存在的“<strong>尾后</strong>（off the end）”元素。<code>end</code>成员返回的迭代器常被称作<strong>尾后迭代器</strong>（off-the-end iterator）或者简称为尾迭代器（end iterator）。特殊情况下如果容器为空，则<code>begin</code>和<code>end</code>返回的是同一个迭代器——尾迭代器。</p>
 </li>
-<li><p>下表列举了迭代器支持的一些运算。使用<code>==</code>和<code>!=</code>来比较两个合法的迭代器是否相等，如果两个迭代器指向的元素相同或者都是同一个容器的尾后迭代器，则它们相等：否则就说这两个迭代器不相等。</p>
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
-.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}
-.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}
-.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-</style>
+<li><p>下表列举了迭代器支持的一些运算。使用<code>==</code>和<code>!=</code>来比较两个合法的迭代器是否相等，如果两个迭代器指向的元素相同或者都是同一个容器的尾后迭代器，则它们相等：否则就说这两个迭代器不相等。<br><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}<br>.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}<br>.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style></p>
 <table class="tg">
 <tr>
     <th class="tg-xeqs" colspan="2">标准容器迭代器的运算符</th>
@@ -817,15 +748,8 @@
 <p>编译代码后，运行可执行程序，将输出：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">THE WORLD IS FANTASTIC.</span><br><span class="line">IF YOU HAVE A DREAM, STRUGGLE FOR IT.</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><code>vector</code>和<code>string</code>迭代器支持的运算如下表所示：</p>
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
-.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}
-.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}
-.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-</style>
+<li><p><code>vector</code>和<code>string</code>迭代器支持的运算如下表所示：<br><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}<br>.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}<br>.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style></p>
 <table class="tg">
 <tr>
     <th class="tg-xeqs" colspan="2">vector和string迭代器支持的运算</th>
@@ -954,14 +878,8 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p1 += p2 -p1;</span><br></pre></td></tr></table></figure>
 <p>使p1指向p2所指元素。当p1为常量指针时（即p1本身的值不可更改时），该程序非法。</p>
 </li>
-<li><p>C语言标准库提供了一组函数，如下表所示。这些函数可用于操作C风格字符串，它们定义在<code>cstring</code>头文件中。</p>
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}
-.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}
-.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-</style>
+<li><p>C语言标准库提供了一组函数，如下表所示。这些函数可用于操作C风格字符串，它们定义在<code>cstring</code>头文件中。<br><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}<br>.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}<br>.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}<br>.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style></p>
 <table class="tg">
 <tr>
     <th class="tg-xeqs" colspan="2">C风格字符串的函数</th>
@@ -1077,13 +995,13 @@
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+      <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
@@ -1412,6 +1330,8 @@ window.addEventListener('pjax:success', () => {
 
 
     <div id="pjax">
+  
+
   
 
   
