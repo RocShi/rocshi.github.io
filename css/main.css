@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #411a0a;
+  background: #400bf0;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2379,10 +2379,6 @@ ul.breadcrumb li + li:last-child {
   font-weight: normal;
   line-height: 2.4;
   margin: 0;
-}
-.has-jax {
-  overflow-x: auto;
-  overflow-y: hidden;
 }
 a {
   border-bottom-color: #ccc;

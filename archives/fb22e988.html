@@ -317,35 +317,43 @@
 
       
         <ol>
-<li><p>我们通过<strong>调用运算符</strong>（call operator）来执行函数。调用运算符的形式是一对圆括号，它作用于一个表达式，该表达式是函数或者指向函数的指针；圆括号之内是一个用逗号隔开的实参（argument）列表，我们用实参初始化函数的形参。调用表达式的类型就是函数的返回类型。</p>
+<li>
+<p>我们通过<strong>调用运算符</strong>（call operator）来执行函数。调用运算符的形式是一对圆括号，它作用于一个表达式，该表达式是函数或者指向函数的指针；圆括号之内是一个用逗号隔开的实参（argument）列表，我们用实参初始化函数的形参。调用表达式的类型就是函数的返回类型。</p>
 </li>
-<li><p>函数的调用完成两项工作：一是用实参初始化函数对应的形参，二是将控制权转移给被调用函数。此时，<strong>主调函数</strong>（calling function）的执行被暂时中断，被调函数（called function）开始执行。</p>
+<li>
+<p>函数的调用完成两项工作：一是用实参初始化函数对应的形参，二是将控制权转移给被调用函数。此时，<strong>主调函数</strong>（calling function）的执行被暂时中断，被调函数（called function）开始执行。</p>
 </li>
-<li><p>执行函数的第一步是（隐式地）定义并初始化它的形参，即创建与形参同名的匿名变量。</p>
+<li>
+<p>执行函数的第一步是（隐式地）定义并初始化它的形参，即创建与形参同名的匿名变量。</p>
 </li>
-<li><p>实参是形参的初始值。第一个实参初始化第一个形参，第二个实参初始化第二个形参，以此类推。尽管实参与形参存在对应关系，但是并没有规定实参的求值顺序。编译器能以任意可行的顺序对实参求值。</p>
+<li>
+<p>实参是形参的初始值。第一个实参初始化第一个形参，第二个实参初始化第二个形参，以此类推。尽管实参与形参存在对应关系，但是并没有规定实参的求值顺序。编译器能以任意可行的顺序对实参求值。</p>
 </li>
-<li><p><strong>函数的调用规定实参数量应与形参数量一致</strong>，所以形参一定会被初始化。</p>
+<li>
+<p><strong>函数的调用规定实参数量应与形参数量一致</strong>，所以形参一定会被初始化。</p>
 </li>
-<li><p>不能将<code>const char*</code>转换成<code>int</code>。</p>
+<li>
+<p>不能将<code>const char*</code>转换成<code>int</code>。</p>
 </li>
-<li><p>形参名是可选的，但是由于我们无法使用未命名的形参，所以形参一般都应该有个名字。偶尔，函数确实有个别形参不会被用到，则此类形参通常不命名以表示在函数体内不会使用它。不管怎样，是否设置未命名的形参并不影响调用时提供的实参数量。<strong>即使某个形参不被函数使用，也必须为它提供一个实参。</strong></p>
+<li>
+<p>形参名是可选的，但是由于我们无法使用未命名的形参，所以形参一般都应该有个名字。偶尔，函数确实有个别形参不会被用到，则此类形参通常不命名以表示在函数体内不会使用它。不管怎样，是否设置未命名的形参并不影响调用时提供的实参数量。<strong>即使某个形参不被函数使用，也必须为它提供一个实参。</strong></p>
 </li>
-<li><p>函数的返回类型不能是数组类型或函数类型，但可以是指向数组或函数的指针。</p>
+<li>
+<p>函数的返回类型不能是数组类型或函数类型，但可以是指向数组或函数的指针。</p>
 </li>
-<li><p>在C++语言中，名字有作用域，对象有<strong>生命周期</strong>（lifetime）：</p>
+<li>
+<p>在C++语言中，名字有作用域，对象有<strong>生命周期</strong>（lifetime）：</p>
 <ul>
 <li>名字的作用域是程序文本的一部分，名字在其中可见；</li>
 <li>对象的生命周期是程序执行过程中该对象存在的一段时间。</li>
 </ul>
 </li>
-</ol>
-<ol>
-<li><p>形参和函数体内部定义的变量统称为<strong>局部变量</strong>（local variable）。它们对函数而言是“局部”的，仅在函数的作用域内可见，同时局部变量还会<strong>隐藏</strong>（hide）外层作用域中同名的其他所有声明中。在所有函数体之外定义的对象存在于程序的整个执行过程中。此类对象在程序启动时被创建，直到程序结束才会销毁。</p>
+<li>
+<p>形参和函数体内部定义的变量统称为<strong>局部变量</strong>（local variable）。它们对函数而言是“局部”的，仅在函数的作用域内可见，同时局部变量还会<strong>隐藏</strong>（hide）外层作用域中同名的其他所有声明中。在所有函数体之外定义的对象存在于程序的整个执行过程中。此类对象在程序启动时被创建，直到程序结束才会销毁。</p>
 </li>
 <li></li>
 </ol>
-<hr>
+<hr />
 
     </div>
 
@@ -359,13 +367,13 @@
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>

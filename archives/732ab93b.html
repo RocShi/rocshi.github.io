@@ -303,11 +303,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
+        <h1 id="1-背景" class="heading-control"><a class="markdownIt-Anchor" href="#1-背景"></a> 1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1>
+<blockquote>
 <p>在搭建某项目CI环境过程中遇到这样一个需求：需要根据最新的tag号提取其中的版本信息。如何获取代码仓库中的最新tag号？</p>
 </blockquote>
-<h1 id="2-结论" class="heading-control"><a href="#2-结论" class="headerlink" title="2 结论"></a>2 结论<a class="heading-anchor" href="#2-结论" aria-hidden="true"></a></h1><p>通过如下命令行获取git仓库中的最新tag号：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LatestTag=$(git describe --tags `git rev-list --tags --max-count=1`)</span><br></pre></td></tr></table></figure></p>
-<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
+<h1 id="2-结论" class="heading-control"><a class="markdownIt-Anchor" href="#2-结论"></a> 2 结论<a class="heading-anchor" href="#2-结论" aria-hidden="true"></a></h1>
+<p>通过如下命令行获取git仓库中的最新tag号：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LatestTag=$(git describe --tags `git rev-list --tags --max-count=1`)</span><br></pre></td></tr></table></figure>
+<h1 id="3-参考" class="heading-control"><a class="markdownIt-Anchor" href="#3-参考"></a> 3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1>
+<ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC85NmE0NGE2MmU4MDY=" title="https://www.jianshu.com/p/96a44a62e806">不知道 tag 名的情况，如何检出 git 仓库中最新的 tag 号及切换代码<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
@@ -454,7 +458,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-背景"><span class="nav-text">1 背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-结论"><span class="nav-text">2 结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-参考"><span class="nav-text">3 参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-背景"><span class="nav-text"> 1 背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-结论"><span class="nav-text"> 2 结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-参考"><span class="nav-text"> 3 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

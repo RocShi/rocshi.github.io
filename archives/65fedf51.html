@@ -318,10 +318,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1-问题描述" class="heading-control"><a href="#1-问题描述" class="headerlink" title="1 问题描述"></a>1 问题描述<a class="heading-anchor" href="#1-问题描述" aria-hidden="true"></a></h1><p>有如下代码片段：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Please input your string: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">'\n'</span> &lt;&lt; <span class="string">"The string is: "</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>起初使用Code Runner插件的OUTPUT窗口进行调试，发现OUTPUT窗口只读，无法进行输入交互；后勾选了Code Runner插件的“Run In Terminal”选项（勾选方法不再赘述），从而在VS Code Terminal中进行调试，发现cin读取中文后，cout输出为乱码。</p>
-<h1 id="2-问题解决" class="heading-control"><a href="#2-问题解决" class="headerlink" title="2 问题解决"></a>2 问题解决<a class="heading-anchor" href="#2-问题解决" aria-hidden="true"></a></h1><p>将Windows自带的CMD终端的属性设置为旧版，<strong>但这会导致点击TERMINAL时弹出系统终端，而非vscode内置终端</strong>：</p>
+        <h1 id="1-问题描述" class="heading-control"><a class="markdownIt-Anchor" href="#1-问题描述"></a> 1 问题描述<a class="heading-anchor" href="#1-问题描述" aria-hidden="true"></a></h1>
+<p>有如下代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Please input your string: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">'\n'</span> &lt;&lt; <span class="string">"The string is: "</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>起初使用Code Runner插件的OUTPUT窗口进行调试，发现OUTPUT窗口只读，无法进行输入交互；后勾选了Code Runner插件的“Run In Terminal”选项（勾选方法不再赘述），从而在VS Code Terminal中进行调试，发现cin读取中文后，cout输出为乱码。</p>
+<h1 id="2-问题解决" class="heading-control"><a class="markdownIt-Anchor" href="#2-问题解决"></a> 2 问题解决<a class="heading-anchor" href="#2-问题解决" aria-hidden="true"></a></h1>
+<p>将Windows自带的CMD终端的属性设置为旧版，<strong>但这会导致点击TERMINAL时弹出系统终端，而非vscode内置终端</strong>：</p>
 <p><img src="https://i.loli.net/2020/02/03/1SUhtc3kCjzlmQ6.png" alt="附图"></p>
-<h1 id="3-结论" class="heading-control"><a href="#3-结论" class="headerlink" title="3 结论"></a>3 结论<a class="heading-anchor" href="#3-结论" aria-hidden="true"></a></h1><p>Windows自带CMD终端属性的修改影响所有IDE及代码编辑器。</p>
+<h1 id="3-结论" class="heading-control"><a class="markdownIt-Anchor" href="#3-结论"></a> 3 结论<a class="heading-anchor" href="#3-结论" aria-hidden="true"></a></h1>
+<p>Windows自带CMD终端属性的修改影响所有IDE及代码编辑器。</p>
 <hr>
 
     </div>
@@ -336,16 +341,16 @@
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
   </ul>
 
@@ -467,7 +472,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-问题描述"><span class="nav-text">1 问题描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-问题解决"><span class="nav-text">2 问题解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-结论"><span class="nav-text">3 结论</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-问题描述"><span class="nav-text"> 1 问题描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-问题解决"><span class="nav-text"> 2 问题解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-结论"><span class="nav-text"> 3 结论</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

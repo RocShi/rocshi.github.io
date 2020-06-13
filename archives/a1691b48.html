@@ -304,9 +304,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1-描述" class="heading-control"><a href="#1-描述" class="headerlink" title="1 描述"></a>1 描述<a class="heading-anchor" href="#1-描述" aria-hidden="true"></a></h1><p>在shell脚本中，有时会定制特殊格式的字符串用以强调一些信息，例如以下字符串：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gbError=<span class="string">"\033[1;31m[ERROR]\033[0m"</span></span><br><span class="line">gbWarning=<span class="string">"\033[1;33m[WARNING]\033[0m"</span></span><br><span class="line">gbInfo=<span class="string">"\033[1;32m[INFO]\033[0m"</span></span><br><span class="line">gbGood=<span class="string">"\033[1;32m[GOOD]\033[0m"</span></span><br><span class="line">gbCancel=<span class="string">"\033[1;4;35mCTRL + C\033[0m"</span></span><br></pre></td></tr></table></figure></p>
-<h1 id="2-结论" class="heading-control"><a href="#2-结论" class="headerlink" title="2 结论"></a>2 结论<a class="heading-anchor" href="#2-结论" aria-hidden="true"></a></h1><p>以<code>gbCancel=&quot;\033[1;4;35mCTRL + C\033[0m&quot;</code>为例：<br><code>\033[</code>表示转义序列开始，接下来的<code>1</code>表示加粗字体，<code>4</code>表示添加下划线，<code>35</code>表示文本颜色为紫红色，<code>m</code>表示终止转义序列，<code>CTRL + C</code>为待格式化的目标文本，<code>\033[0m</code>表示格式化效果仅对目标文本生效（若无此字段将导致后面的文本输出都被格式化）。</p>
-<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
+        <h1 id="1-描述" class="heading-control"><a class="markdownIt-Anchor" href="#1-描述"></a> 1 描述<a class="heading-anchor" href="#1-描述" aria-hidden="true"></a></h1>
+<p>在shell脚本中，有时会定制特殊格式的字符串用以强调一些信息，例如以下字符串：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gbError=<span class="string">"\033[1;31m[ERROR]\033[0m"</span></span><br><span class="line">gbWarning=<span class="string">"\033[1;33m[WARNING]\033[0m"</span></span><br><span class="line">gbInfo=<span class="string">"\033[1;32m[INFO]\033[0m"</span></span><br><span class="line">gbGood=<span class="string">"\033[1;32m[GOOD]\033[0m"</span></span><br><span class="line">gbCancel=<span class="string">"\033[1;4;35mCTRL + C\033[0m"</span></span><br></pre></td></tr></table></figure>
+<h1 id="2-结论" class="heading-control"><a class="markdownIt-Anchor" href="#2-结论"></a> 2 结论<a class="heading-anchor" href="#2-结论" aria-hidden="true"></a></h1>
+<p>以<code>gbCancel=&quot;\033[1;4;35mCTRL + C\033[0m&quot;</code>为例：<br>
+<code>\033[</code>表示转义序列开始，接下来的<code>1</code>表示加粗字体，<code>4</code>表示添加下划线，<code>35</code>表示文本颜色为紫红色，<code>m</code>表示终止转义序列，<code>CTRL + C</code>为待格式化的目标文本，<code>\033[0m</code>表示格式化效果仅对目标文本生效（若无此字段将导致后面的文本输出都被格式化）。</p>
+<h1 id="3-参考" class="heading-control"><a class="markdownIt-Anchor" href="#3-参考"></a> 3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1>
+<ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLjUxY3RvLmNvbS9sb25nbGVpLzIzNTc4OTg/c291cmNlPWRyYQ==" title="https://blog.51cto.com/longlei/2357898?source=dra">shell中设置文字输出的颜色及字体格式<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
@@ -454,7 +459,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-描述"><span class="nav-text">1 描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-结论"><span class="nav-text">2 结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-参考"><span class="nav-text">3 参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-描述"><span class="nav-text"> 1 描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-结论"><span class="nav-text"> 2 结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-参考"><span class="nav-text"> 3 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
