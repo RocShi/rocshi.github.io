@@ -348,7 +348,7 @@
 <li><p>逻辑与运算符和逻辑或运算符都是先求左侧运算对象的值再求右侧运算对象的值，当且仅当左侧运算对象无法确定表达式的结果时才会计算右侧运算对象的值。这种策略称为<strong>短路求值</strong>（short-circuit evaluation）。</p>
 <ul>
 <li>对于逻辑与运算符来说，当且仅当左侧运算对象为真时才对右侧运算对象求值；</li>
-<li>对于逻辑或运算符来说，当且仅当左侧运算对象为假时才对右侧运算对象求值。</li>
+<li>对于逻辑或运算符来说，当且仅当左侧运算对象为假时才对右侧运算对象求值。<br><br></li>
 </ul>
 </li>
 <li><p>声明成引用类型可以避免对元素的拷贝。</p>
@@ -433,7 +433,7 @@
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">sizeof</span>(type)</span><br><span class="line"><span class="keyword">sizeof</span> expr</span><br></pre></td></tr></table></figure>
 <p>在第二种形式中，<code>sizeof</code>并不实际计算其运算对象的值。</p>
 </li>
-<li><p>关于<code>sizeof *p</code>。首先，因为<code>sizeof</code>满足右结合律并且与 <em> 运算符的优先级一样，所以表达式按照从右向左的顺序组合。也就是说，它等价于`sizeof(</em>p)<code>。其次，因为</code>sizeof<code>不会实际求运算对象的值，所以即使p是一个无效（即未初始化）的指针也不会有什么影响。**在</code>sizeof<code>的运算对象中解引用一个无效指针仍然是一种安全的行为，因为指针实际上并没有被真正使用。**</code>sizeof<code>不需要真的解引用指针也能知道它所指对象的类型。C++11新标准允许我们使用作用域运算符来获取类成员的大小。通常情况下只有通过类的对象才能访问到类的成员，但是**</code>sizeof`运算符无须我们提供一个县体的对象，因为要想知道类成员的大小无须真的获取该成员**。</p>
+<li><p>关于<code>sizeof *p</code>。首先，因为<code>sizeof</code>满足右结合律并且与 <em> 运算符的优先级一样，所以表达式按照从右向左的顺序组合。也就是说，它等价于`sizeof(</em>p)<code>。其次，因为</code>sizeof<code>不会实际求运算对象的值，所以即使p是一个无效（即未初始化）的指针也不会有什么影响。**在</code>sizeof<code>的运算对象中解引用一个无效指针仍然是一种安全的行为，因为指针实际上并没有被真正使用。**</code>sizeof<code>不需要真的解引用指针也能知道它所指对象的类型。C++11新标准允许我们使用作用域运算符来获取类成员的大小。通常情况下只有通过类的对象才能访问到类的成员，但是 **</code>sizeof`运算符无须我们提供一个县体的对象，因为要想知道类成员的大小无须真的获取该成员**。</p>
 </li>
 <li><p><code>sizeof</code>运算符的结果部分地依赖于其作用的类型：</p>
 <ul>
