@@ -61,7 +61,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2020/04/14/zm7XC45kUQTHhIp.png">
 <meta property="article:published_time" content="2020-03-29T13:17:03.000Z">
-<meta property="article:modified_time" content="2020-06-13T16:41:37.898Z">
+<meta property="article:modified_time" content="2020-06-14T06:53:16.881Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -258,7 +258,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-14 00:41:37" itemprop="dateModified" datetime="2020-06-14T00:41:37+08:00">2020-06-14</time>
+                <time title="修改时间：2020-06-14 14:53:16" itemprop="dateModified" datetime="2020-06-14T14:53:16+08:00">2020-06-14</time>
               </span>
 
           <br>
@@ -328,7 +328,8 @@
 </li>
 <li><p>标准库类型<code>string</code>表示可变长的字符序列，<strong>使用<code>string</code>类型必须首先包含<code>string</code>头文件。</strong>作为标准库的一部分，<code>string</code>定义在命名空间<code>std</code>中：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">string</span>;</span><br></pre></td></tr></table></figure></li>
-<li><p>一个类可以定义很多种初始化对象的方式，只不过这些方式之间必须有所区别：或者是初始值的数量不同，或者是初始值的类型不同。下表列出了初始化<code>string</code>对象最常用的一些方式：<br>| 写法                | 含义                                                  |<br>| —————————- | ——————————————————————————- |<br>| string s1           | 默认初始化，s1是一个空串                              |<br>| string s2(s1)       | s2是s1的副本                                          |<br>| string s2 = s1      | 等价于s2(s1)，s2是s1的副本                            |<br>| string s3(“value”)  | s3是字面值“value”的副本，除了字面值最后的那个空字符外 |<br>| string s3 = “value” | 等价于s3(“value”)，s3是字面值“value”的副本            |<br>| string s4(n, ‘c’)   | 把s4初始化为由连续n个字符c组成的串                    |</p>
+<li><p>一个类可以定义很多种初始化对象的方式，只不过这些方式之间必须有所区别：或者是初始值的数量不同，或者是初始值的类型不同。下表列出了初始化<code>string</code>对象最常用的一些方式：</p>
+<p>| 写法                | 含义                                                  |<br>| —————————- | ——————————————————————————- |<br>| string s1           | 默认初始化，s1是一个空串                              |<br>| string s2(s1)       | s2是s1的副本                                          |<br>| string s2 = s1      | 等价于s2(s1)，s2是s1的副本                            |<br>| string s3(“value”)  | s3是字面值“value”的副本，除了字面值最后的那个空字符外 |<br>| string s3 = “value” | 等价于s3(“value”)，s3是字面值“value”的副本            |<br>| string s4(n, ‘c’)   | 把s4初始化为由连续n个字符c组成的串                    |</p>
 <p>下面是几个例子：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s1;           <span class="comment">// 默认初始化，s1是一个空字符串</span></span><br><span class="line"><span class="built_in">string</span> s2 = s1;      <span class="comment">// s2是s1的副本</span></span><br><span class="line"><span class="built_in">string</span> s3 = <span class="string">"hiya"</span>;  <span class="comment">// s3是该字符串字面值的副本</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s4</span><span class="params">(<span class="number">10</span>, <span class="string">'c'</span>)</span></span>;  <span class="comment">// s4的内容是cccccccccc</span></span><br></pre></td></tr></table></figure>
 </li>
@@ -998,13 +999,13 @@
       <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
   </ul>
 
