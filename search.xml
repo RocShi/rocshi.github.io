@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>工作中的一点关于C++ uint8/int8类型转换的思考</title>
+    <url>/archives/80d5496e.html</url>
+    <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><p>工作中需要向下游规划（Planning）模块发送视觉检测到的车道线线型与颜色数据，但软件总体使用的是旧有架构，只有<code>uint8_t</code>的线型结构没有颜色接口。</p>
+<h1 id="2-问题" class="heading-control"><a href="#2-问题" class="headerlink" title="2 问题"></a>2 问题<a class="heading-anchor" href="#2-问题" aria-hidden="true"></a></h1><p>实际上，颜色对应一个最大取值为3的枚举，线型对应一个最大取值为34的枚举，自然而然想到是使用线型接口的低六位存储线型值，使用线型接口的高两位存储颜色值，下游使用时，直接将线型接口位与<code>0x3f</code>获取真实线型值，将线型接口右移6位获取真实颜色值：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">uint8_t</span> line_type_interface = <span class="number">0b11100010</span>;</span><br><span class="line"><span class="keyword">uint8_t</span> line_type = line_type_interface &amp; <span class="number">0x3f</span>;</span><br><span class="line"><span class="keyword">uint8_t</span> line_color = line_type_interface &gt;&gt; <span class="number">6</span>;</span><br></pre></td></tr></table></figure><br>这在iECU（intelligent ECU） RTE（Run-Time Environment，AUTOSAR架构中VFB的接口实现）层上的表现是顺理成章的。</p>
+<p>问题出现在离线调试阶段。我们的调试手段是将iECU中的运行时RTE数据转换为<span class="exturl" data-url="aHR0cDovL2xjbS1wcm9qLmdpdGh1Yi5pby8=" title="http://lcm-proj.github.io/">LCM<i class="fa fa-external-link"></i></span>数据并通过LCM UDP组播的形式向外发送，通过x86的日志上位机实时接收并存储LCM UDP报文，离线调试时将存储的LCM日志文件进行回放。RTE的线型接口为<code>uint8_t</code>类型，但LCM消息中对应的线型接口被定义成了<code>int8_t</code>类型。</p>
+<p>我在为LCM消息赋值时，直接将RTE的线型接口的值赋给了LCM消息中的对应接口，这就造成的<code>uint8_t</code>向<code>int8_t</code>的隐式类型转换，我没有在意这一点，下游模块同样没有在意这一点，下游模块离线调试时直接将LCM日志文件中<code>int8_t</code>线型接口值做了向<code>uint8_t</code>的显式强制类型转换，然后进行了线型值和颜色值的提取操作，并且没有出过问题，直到同样需要接收相同信息的HMI（Human Machine Interface）下游模块遇到了问题：他在右移提取颜色值时出现了异常大的值</p>
+<h1 id="3-知识点" class="heading-control"><a href="#3-知识点" class="headerlink" title="3 知识点"></a>3 知识点<a class="heading-anchor" href="#3-知识点" aria-hidden="true"></a></h1>]]></content>
+      <categories>
+        <category>技术</category>
+        <category>程序语言</category>
+        <category>C/C++</category>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C++ Primer - 第6章 函数</title>
     <url>/archives/fb22e988.html</url>
     <content><![CDATA[<ol>
