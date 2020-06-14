@@ -1329,65 +1329,67 @@ IO库定义了从<code>istream</code>向布尔值转换的规则，根据这一�
 <li><p>泛化的转义序列，其形式是\x后紧跟1个或多个十六进制数字，或者\后紧跟1个、2个或3个八进制数字，其中数字部分表示的是字符对应的数值。<strong>如果反斜线\后面跟着的八进制数字超过3个，只有前3个数字与\构成转义序列。</strong>例如，”\1234”表示2个字符，即八进制数123对应的字符以及字符4。相反，\x要用到后面跟着的所有数字，例如，”\x1234”表示一个16位的字符，该字符由这4个十六进制数所对应的比特唯一确定。因为大多数机器的<code>char</code>型数据占8位，所以上面这个例子可能会报错。</p>
 </li>
 <li><p>通过添加如下表所列的前缀或后缀，可以改变整型、浮点型和字符型字面值的默认类型：</p>
-<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;}<br>.tg td{background-color:#fff;border-color:#ccc;border-style:solid;border-width:1px;color:#333;<br>font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{background-color:#f0f0f0;border-color:#ccc;border-style:solid;border-width:1px;color:#333;<br>font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-ca9m{background-color:#F9F9F9;color:#333;text-align:left;vertical-align:middle}<br>.tg .tg-6vty{background-color:#FFF;color:#333;font-weight:bold;text-align:left;vertical-align:middle}<br>.tg .tg-5vou{background-color:#F9F9F9;border-color:inherit;color:#333;font-weight:bold;text-align:left;vertical-align:middle}<br>.tg .tg-7fd7{background-color:#FFF;color:#333;text-align:left;vertical-align:middle}<br>.tg .tg-8447{background-color:#F9F9F9;color:#333;font-weight:bold;text-align:left;vertical-align:middle}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;<br>padding:10px 5px;word-break:normal;}<br>.tg th{border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;<br>overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-fymr{border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
 </style></p>
 <table class="tg">
+<thead>
+<tr>
+    <th class="tg-fymr" colspan="4">字符和字符串字面值</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-    <td class="tg-5vou" colspan="4">字符和字符串字面值</td>
+    <td class="tg-0pky">前缀</td>
+    <td class="tg-0pky">含义</td>
+    <td class="tg-0pky" colspan="2">类型</td>
 </tr>
 <tr>
-    <td class="tg-6vty">前缀</td>
-    <td class="tg-6vty">含义</td>
-    <td class="tg-6vty" colspan="2">类型</td>
+    <td class="tg-0pky"><span style="font-weight:normal">u</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">Unicode 16字符</span></td>
+    <td class="tg-0pky" colspan="2"><span style="font-weight:normal">char16_t</span></td>
 </tr>
 <tr>
-    <td class="tg-ca9m"><span style="font-weight:normal">u</span></td>
-    <td class="tg-ca9m"><span style="font-weight:normal">Unicode 16字符</span></td>
-    <td class="tg-ca9m" colspan="2"><span style="font-weight:normal">char16_t</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">U</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">Unicode 32字符</span></td>
+    <td class="tg-0pky" colspan="2"><span style="font-weight:normal">char32_t</span></td>
 </tr>
 <tr>
-    <td class="tg-7fd7"><span style="font-weight:normal">U</span></td>
-    <td class="tg-7fd7"><span style="font-weight:normal">Unicode 32字符</span></td>
-    <td class="tg-7fd7" colspan="2"><span style="font-weight:normal">char32_t</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">L</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">宽字符</span></td>
+    <td class="tg-0pky" colspan="2"><span style="font-weight:normal">wchar_t</span></td>
 </tr>
 <tr>
-    <td class="tg-ca9m"><span style="font-weight:normal">L</span></td>
-    <td class="tg-ca9m"><span style="font-weight:normal">宽字符</span></td>
-    <td class="tg-ca9m" colspan="2"><span style="font-weight:normal">wchar_t</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">u8</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">UTF-8（仅用于字符串字面常量）</span></td>
+    <td class="tg-0pky" colspan="2"><span style="font-weight:normal">char</span></td>
 </tr>
 <tr>
-    <td class="tg-7fd7"><span style="font-weight:normal">u8</span></td>
-    <td class="tg-7fd7"><span style="font-weight:normal">UTF-8（仅用于字符串字面常量）</span></td>
-    <td class="tg-7fd7" colspan="2"><span style="font-weight:normal">char</span></td>
+    <td class="tg-fymr" colspan="2">整型字面值</td>
+    <td class="tg-fymr" colspan="2">浮点型字面值</td>
 </tr>
 <tr>
-    <td class="tg-8447" colspan="2">整型字面值</td>
-    <td class="tg-8447" colspan="2">浮点型字面值</td>
+    <td class="tg-fymr">后缀</td>
+    <td class="tg-fymr">最小匹配类型</td>
+    <td class="tg-fymr">后缀</td>
+    <td class="tg-fymr">类型</td>
 </tr>
 <tr>
-    <td class="tg-6vty">后缀</td>
-    <td class="tg-6vty">最小匹配类型</td>
-    <td class="tg-6vty">后缀</td>
-    <td class="tg-6vty">类型</td>
+    <td class="tg-0pky"><span style="font-weight:normal">u 或 U</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">unsigned</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">f 或F</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">float</span></td>
 </tr>
 <tr>
-    <td class="tg-ca9m"><span style="font-weight:normal">u 或 U</span></td>
-    <td class="tg-ca9m"><span style="font-weight:normal">unsigned</span></td>
-    <td class="tg-ca9m"><span style="font-weight:normal">f 或F</span></td>
-    <td class="tg-ca9m"><span style="font-weight:normal">float</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">l 或 L</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">long</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">l或L</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">long double</span></td>
 </tr>
 <tr>
-    <td class="tg-7fd7"><span style="font-weight:normal">l 或 L</span></td>
-    <td class="tg-7fd7"><span style="font-weight:normal">long</span></td>
-    <td class="tg-7fd7"><span style="font-weight:normal">l或L</span></td>
-    <td class="tg-7fd7"><span style="font-weight:normal">long double</span></td>
-</tr>
-<tr>
-    <td class="tg-ca9m"><span style="font-weight:normal">ll或LL</span></td>
-    <td class="tg-ca9m"><span style="font-weight:normal">long long</span></td>
-    <td class="tg-0lax"></td>
-    <td class="tg-0lax"></td>
+    <td class="tg-0pky"><span style="font-weight:normal">ll或LL</span></td>
+    <td class="tg-0pky"><span style="font-weight:normal">long long</span></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
 </tr>
 </tbody>
 </table>
