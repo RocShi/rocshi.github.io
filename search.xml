@@ -15,7 +15,8 @@
 2^7 + 2^6 + 2^5 + 2^1 = 226</script>此时，数据在内存中的补码为<code>11100010</code>。做了向<code>int8_t</code>的类型转换后，数据在内存中的补码依然是<code>11100010</code>，但此时计算机认为其代表十进制为：  <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">-~(<span class="number">0b1100010</span> - <span class="number">1</span>) = <span class="number">-0b</span>0011110</span><br></pre></td></tr></table></figure>
   即：<script type="math/tex; mode=display">
   -(2^4 + 2^3 + 2^2 + 2^1) = -30</script></li>
-<li><strong>当赋给无符号类型一个超出它表示范围的值时，结果是初始值对无符号类型表示数值总数取模后的余数</strong>（《C++ Primer》），反之亦然（博主注）。</li>
+<li><strong>当赋给无符号类型一个超出它表示范围的值时，结果是初始值对无符号类型表示数值总数取模后的余数</strong>（《C++ Primer》），反之亦然（博主注）。注意到：<script type="math/tex; mode=display">
+226 - 2^8 = -30</script>$2^8$是<code>uint8_t</code>和<code>int8_t</code>类型数据的模。</li>
 </ul>
 ]]></content>
       <categories>
