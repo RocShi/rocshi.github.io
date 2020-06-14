@@ -61,7 +61,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2020/04/14/zm7XC45kUQTHhIp.png">
 <meta property="article:published_time" content="2020-03-29T13:17:03.000Z">
-<meta property="article:modified_time" content="2020-06-14T07:11:13.601Z">
+<meta property="article:modified_time" content="2020-06-14T07:13:29.795Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -258,7 +258,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-14 15:11:13" itemprop="dateModified" datetime="2020-06-14T15:11:13+08:00">2020-06-14</time>
+                <time title="修改时间：2020-06-14 15:13:29" itemprop="dateModified" datetime="2020-06-14T15:13:29+08:00">2020-06-14</time>
               </span>
 
           <br>
@@ -656,7 +656,7 @@
 <table>
 <tbody>
 <tr>
-    <td colspan="2"><b><center>vector支持的操作</b></center></td>
+    <td colspan="2"><b><center>vector支持的操作</center></b></td>
 </tr>
 <tr>
     <td>v.empty()</td>
@@ -725,7 +725,7 @@
 <table>
 <tbody>
 <tr>
-    <td colspan="2"><b><center>标准容器迭代器的运算符</b></center></td>
+    <td colspan="2"><b><center>标准容器迭代器的运算符</center></b></td>
 </tr>
 <tr>
     <td>*iter</td>
@@ -797,36 +797,47 @@
 <p>编译代码后，运行可执行程序，将输出：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">THE WORLD IS FANTASTIC.</span><br><span class="line">IF YOU HAVE A DREAM, STRUGGLE FOR IT.</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><code>vector</code>和<code>string</code>迭代器支持的运算如下表所示：<br><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;border-color:#9ABAD9;}<br>.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#444;background-color:#EBF5FF;}<br>.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#9ABAD9;color:#fff;background-color:#409cff;}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-xeqs{font-weight:bold;background-color:#ebf5ff;color:#000000;border-color:inherit;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-</style></p>
-<table class="tg">
+<li><p><code>vector</code>和<code>string</code>迭代器支持的运算如下表所示：</p>
+<table>
+<tbody>
 <tr>
-    <th class="tg-xeqs" colspan="2">vector和string迭代器支持的运算</th>
+    <td colspan="2"><b><center>vector和string迭代器支持的运算</center><b></td>
 </tr>
 <tr>
-    <td class="tg-0pky">iter + n</td>
-    <td class="tg-0pky">迭代器加上一个整数值仍得一个迭代器，迭代器指示的新位置与原来相比向前移动了若干个元素。结果迭代器或者指示容器内的一个元素，或者指示容器尾元素的下一位置</td>
+    <td>iter + n</td>
+    <td>迭代器加上一个整数值仍得一个迭代器，迭代器指示的新位置与原来相比向前移动了若干个元素。结果迭代器或者指示容器内的一个元素，或者指示容器尾元素的下一位置</td>
 </tr>
 <tr>
-    <td class="tg-0pky">iter - n</td>
-    <td class="tg-0pky">迭代器减去一个整数值仍得一个迭代器，迭代器指示的新位置与原来相比向后移动了若干个元素。结果迭代器或者指示容器内的一个元素，或者指示容器尾元素的下一位置</td>
+    <td>iter - n</td>
+    <td>迭代器减去一个整数值仍得一个迭代器，迭代器指示的新位置与原来相比向后移动了若干个元素。结果迭代器或者指示容器内的一个元素，或者指示容器尾元素的下一位置</td>
 </tr>
 <tr>
-    <td class="tg-0pky">iter1 += n</td>
-    <td class="tg-0pky">选代器加法的复合赋值语句，将iter1加n的结果赋给iter1</td>
+    <td>iter1 += n</td>
+    <td>选代器加法的复合赋值语句，将iter1加n的结果赋给iter1</td>
 </tr>
 <tr>
-    <td class="tg-0pky">iter1 -= n</td>
-    <td class="tg-0pky">迭代器减法的复合赋值语句，将iter1减n的结果赋给iter1</td>
+    <td>iter1 -= n</td>
+    <td>迭代器减法的复合赋值语句，将iter1减n的结果赋给iter1</td>
 </tr>
 <tr>
-    <td class="tg-lboi">iter1 - iter2</td>
-    <td class="tg-lboi">两个迭代器相减的结果是它们之间的距离，也就是说，将运算符右侧的迭代器向前移动差值个元素后将得到左侧的迭代器。参与运算的两个迭代器必须指向的是同一个容器中的元素或者尾元素的下一位置</td>
+    <td>iter1 - iter2</td>
+    <td rowspan="2">两个迭代器相减的结果是它们之间的距离，也就是说，将运算符右侧的迭代器向前移动差值个元素后将得到左侧的迭代器。参与运算的两个迭代器必须指向的是同一个容器中的元素或者尾元素的下一位置</td>
 </tr>
 <tr>
-    <td class="tg-0pky">&gt;、&gt;=、&lt;、&lt;=</td>
-    <td class="tg-0pky">迭代器的关系运算符，如果某迭代器指向的容器位置在另一个迭代器所指位置之前，则说前者小于后者。参与运算的两个迭代器必须指向的是同一个容器中的元素或者尾元素的下一位置</td>
+    <td>&gt;、&gt;=、&lt;、&lt;=</td>
 </tr>
+<tr>
+    <td>v1 == v2</td>
+    <td rowspan="2">v1和v2相等当且仅当它们的元素数量相同且对应位置的元素值都相同</td>
+</tr>
+<tr>
+    <td>v1 != v2</td>
+</tr>
+<tr>
+    <td>&lt;, &lt;=, &gt;, &gt;=</td>
+    <td>以字典顺序进行比较</td>
+</tr>
+</tbody>
 </table>
 </li>
 <li><p>只要两个迭代器指向的是同一个容器中的元素或者尾元素的下一位置，就能将其相减，所得结果是两个迭代器的距离。所谓距离指的是右侧的迭代器向前移动多少位置就能追上左侧的迭代器，其类型是名为<strong><code>difference_type</code></strong>的带符号整型数。<code>string</code>和<code>vector</code>都定义了<code>difference_type</code>，因为这个距离可正可负，所以<code>difference_type</code>是带符号类型的。</p>
@@ -1044,16 +1055,16 @@
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
+      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
   </ul>
 
