@@ -17,7 +17,6 @@
 
 <link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
   <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
   <script src="/lib/pace/pace.min.js"></script>
 
@@ -34,7 +33,7 @@
     copycode: {"enable":true,"show_result":true,"style":null},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: true,
+    fancybox: false,
     mediumzoom: false,
     lazyload: false,
     pangu: false,
@@ -79,22 +78,6 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
-<script>
-  function GetUrlRelativePath() {
-    var url = document.location.toString(); //获取当前链接
-    var arrUrl = url.split("//");
-    var start = arrUrl[1].indexOf("/");
-    var relUrl = arrUrl[1].substring(start); //截取从start开始到结尾的所有字符
-    if(relUrl.indexOf("?") != -1){
-      relUrl = relUrl.split("?")[0];
-    }
-      return relUrl;
-  }
-  var relUrl = GetUrlRelativePath()
-  if (relUrl.indexOf('/books/')>=0) {  //判断是否为豆瓣读书页面
-    document.write('<meta name="referrer" content="never" />');
-  }
-</script>
   <title>（九）与生俱来的VCU信号 | 朝花夕拾</title>
   
 
@@ -350,7 +333,7 @@
       <div class="popular-posts-title"><a href="\archives\1e9849c6.html" rel="bookmark">（八）被严重低估的传感器超声波雷达</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\78513fbc.html" rel="bookmark">（十一）无人驾驶中的CAN消息解析</a></div>
+      <div class="popular-posts-title"><a href="\archives\be221b74.html" rel="bookmark">（六）工程师又爱又恨的激光雷达</a></div>
     </li>
   </ul>
 
@@ -569,8 +552,6 @@
   <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
   <script src="/lib/anime.min.js"></script>
   <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
