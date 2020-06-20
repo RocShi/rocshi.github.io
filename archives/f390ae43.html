@@ -81,6 +81,22 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
+<script>
+  function GetUrlRelativePath() {
+    var url = document.location.toString(); //获取当前链接
+    var arrUrl = url.split("//");
+    var start = arrUrl[1].indexOf("/");
+    var relUrl = arrUrl[1].substring(start); //截取从start开始到结尾的所有字符
+    if(relUrl.indexOf("?") != -1){
+      relUrl = relUrl.split("?")[0];
+    }
+      return relUrl;
+  }
+  var relUrl = GetUrlRelativePath()
+  if (relUrl.indexOf('/books/')>=0) {  //判断是否为豆瓣读书页面
+    document.write('<meta name="referrer" content="never" />');
+  }
+</script>
   <title>git的cherry-pick命令 | 朝花夕拾</title>
   
 
@@ -335,7 +351,7 @@
       <div class="popular-posts-title"><a href="\archives\296a9967.html" rel="bookmark">在腾讯云上搭建个人Git服务器</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\732ab93b.html" rel="bookmark">如何检出git仓库中最新的tag号</a></div>
+      <div class="popular-posts-title"><a href="\archives\a38a4de1.html" rel="bookmark">如何删除本地Git仓库和远程Git仓库的tag</a></div>
     </li>
   </ul>
 

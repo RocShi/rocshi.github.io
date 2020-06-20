@@ -78,6 +78,22 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
+<script>
+  function GetUrlRelativePath() {
+    var url = document.location.toString(); //获取当前链接
+    var arrUrl = url.split("//");
+    var start = arrUrl[1].indexOf("/");
+    var relUrl = arrUrl[1].substring(start); //截取从start开始到结尾的所有字符
+    if(relUrl.indexOf("?") != -1){
+      relUrl = relUrl.split("?")[0];
+    }
+      return relUrl;
+  }
+  var relUrl = GetUrlRelativePath()
+  if (relUrl.indexOf('/books/')>=0) {  //判断是否为豆瓣读书页面
+    document.write('<meta name="referrer" content="never" />');
+  }
+</script>
   <title>分类: 程序语言 | 朝花夕拾</title>
   
 

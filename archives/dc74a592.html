@@ -82,6 +82,22 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
+<script>
+  function GetUrlRelativePath() {
+    var url = document.location.toString(); //获取当前链接
+    var arrUrl = url.split("//");
+    var start = arrUrl[1].indexOf("/");
+    var relUrl = arrUrl[1].substring(start); //截取从start开始到结尾的所有字符
+    if(relUrl.indexOf("?") != -1){
+      relUrl = relUrl.split("?")[0];
+    }
+      return relUrl;
+  }
+  var relUrl = GetUrlRelativePath()
+  if (relUrl.indexOf('/books/')>=0) {  //判断是否为豆瓣读书页面
+    document.write('<meta name="referrer" content="never" />');
+  }
+</script>
   <title>C++ Primer - 第4章 表达式 | 朝花夕拾</title>
   
 
@@ -559,10 +575,10 @@ IO库定义了从<code>istream</code>向布尔值转换的规则，根据这一�
       <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
+      <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
+      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
     </li>
   </ul>
 
