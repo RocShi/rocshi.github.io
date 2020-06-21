@@ -36,7 +36,7 @@
     bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: true`,
     mediumzoom: false,
-    lazyload: false,
+    lazyload: true,
     pangu: false,
     comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
     algolia: {
@@ -316,7 +316,7 @@
         <h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
 <p>在上一篇文章<a href="https://blog.shipengx.com/archives/208e6058.html">《使用Hexo + GitHub Pages搭建个人博客站点》</a>中我们介绍了如何使用Hexo搭建自己的个人博客站点并部署到GitHub Pages。将个人站点部署到GitHub Pages的显著优点是便捷、免费，但由于GitHub服务器位于国外，所以多数情况下，你访问你的GitHub Pages的速度将非常缓慢。为提升访问速度，将个人站点部署到腾讯云、阿里云或其它国内云服务提供商的云服务器上是一个很好的选择。当然，你也可以通过树莓派 + 内网穿透搭建自己的私有云服务器。</p>
 </blockquote>
-<h1 id="2-原理" class="heading-control"><a href="#2-原理" class="headerlink" title="2 原理"></a>2 原理<a class="heading-anchor" href="#2-原理" aria-hidden="true"></a></h1><p>使用VPS部署博客的原理如下图所示（图片来自<span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxNjEwNjU4NA==" title="https://segmentfault.com/a/1190000016106584">这里<i class="fa fa-external-link"></i></span>）：<br><img src="https://i.loli.net/2020/02/08/dcft5nz7RoX2Ixg.png" alt="VPS搭建Hexo博客原理示意图"></p>
+<h1 id="2-原理" class="heading-control"><a href="#2-原理" class="headerlink" title="2 原理"></a>2 原理<a class="heading-anchor" href="#2-原理" aria-hidden="true"></a></h1><p>使用VPS部署博客的原理如下图所示（图片来自<span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxNjEwNjU4NA==" title="https://segmentfault.com/a/1190000016106584">这里<i class="fa fa-external-link"></i></span>）：<br><img data-src="https://i.loli.net/2020/02/08/dcft5nz7RoX2Ixg.png" alt="VPS搭建Hexo博客原理示意图"></p>
 <p>使用VPS部署博客的主要思路分为四步：</p>
 <ul>
 <li><code>hexo -g</code>将source/_posts目录下的markdown文件渲染为静态资源，并将静态资源放置到public目录下；</li>
@@ -346,7 +346,7 @@
 <h2 id="3-2-VPS端配置——Nginx" class="heading-control"><a href="#3-2-VPS端配置——Nginx" class="headerlink" title="3.2 VPS端配置——Nginx"></a>3.2 VPS端配置——Nginx<a class="heading-anchor" href="#3-2-VPS端配置——Nginx" aria-hidden="true"></a></h2><h3 id="3-2-1-安装Nginx" class="heading-control"><a href="#3-2-1-安装Nginx" class="headerlink" title="3.2.1 安装Nginx"></a>3.2.1 安装Nginx<a class="heading-anchor" href="#3-2-1-安装Nginx" aria-hidden="true"></a></h3><p>直接通过终端命令进行安装：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
 <p>安装完成后，在浏览器中输入VPS公网IP，出现如下页面即表示安装成功：</p>
-<p><img src="https://i.loli.net/2020/02/08/TAuk6BIPhciEHqS.png" alt="Welcome to nginx!"></p>
+<p><img data-src="https://i.loli.net/2020/02/08/TAuk6BIPhciEHqS.png" alt="Welcome to nginx!"></p>
 <p>安装成功后，可通过<code>nginx -v</code>命令查看版本信息，本文中所使用版本为1.14.0；可通过 <code>service nginx status</code>或<code>systemctl status nginx</code>命令来查看Nginx运行状态；可通过<code>nginx -V</code>命令查看安装的Nginx所包含组件。</p>
 <h3 id="3-1-2-配置Nginx" class="heading-control"><a href="#3-1-2-配置Nginx" class="headerlink" title="3.1.2 配置Nginx"></a>3.1.2 配置Nginx<a class="heading-anchor" href="#3-1-2-配置Nginx" aria-hidden="true"></a></h3><p>Nginx安装成功后，所有配置文件将位于/etc/nginx目录下，/etc/nginx/nginx.conf是主配置文件。本文中对Nginx的配置主要做了以下五件事：</p>
 <ul>
@@ -609,9 +609,9 @@
   
   <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
   <script src="/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -625,69 +625,11 @@
 
 <script src="/js/next-boot.js"></script>
 
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (element.id) {
-      script.id = element.id;
-    }
-    if (element.className) {
-      script.className = element.className;
-    }
-    if (element.type) {
-      script.type = element.type;
-    }
-    if (element.src) {
-      script.src = element.src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (element.getAttribute('pjax') !== null) {
-      script.setAttribute('pjax', '');
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
   
-  <script pjax>
+  <script>
     (function(){
       var bp = document.createElement('script');
       var curProtocol = window.location.protocol.split(':')[0];
@@ -715,7 +657,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
   
 
   
@@ -751,6 +692,5 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
 });
 </script>
 
-    </div>
 </body>
 </html>
