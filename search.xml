@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>C++ Primer - ?7? ?</title>
+    <url>/archives/4173fa23.html</url>
+    <content><![CDATA[<ol>
+<li></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>??</category>
+        <category>????</category>
+        <category>C/C++</category>
+        <category>?C++ Primer?</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>C++ Primer</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>工作中的一点关于C++有符号数/无符号数类型转换的思考</title>
     <url>/archives/80d5496e.html</url>
     <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><p>工作中需要向下游规划（Planning）模块发送视觉检测到的车道线线型与颜色数据，但软件总体使用的是旧有架构，只有<code>uint8_t</code>的线型结构没有颜色接口。</p>
