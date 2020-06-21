@@ -34,9 +34,9 @@
     copycode: {"enable":true,"show_result":true,"style":null},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: true,
+    fancybox: true`,
     mediumzoom: false,
-    lazyload: true,
+    lazyload: false,
     pangu: false,
     comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
     algolia: {
@@ -61,7 +61,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2020/05/02/5wTraDpmiKg27yL.gif">
 <meta property="article:published_time" content="2020-01-30T09:42:15.000Z">
-<meta property="article:modified_time" content="2020-06-14T09:32:14.178Z">
+<meta property="article:modified_time" content="2020-06-21T03:42:55.371Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Hexo">
 <meta property="article:tag" content="Blog">
@@ -263,7 +263,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-14 17:32:14" itemprop="dateModified" datetime="2020-06-14T17:32:14+08:00">2020-06-14</time>
+                <time title="修改时间：2020-06-21 11:42:55" itemprop="dateModified" datetime="2020-06-21T11:42:55+08:00">2020-06-21</time>
               </span>
 
           <br>
@@ -365,7 +365,7 @@
 <ul>
 <li>配置主题配置文件hexo/themes/next/_config.xml中的font相关项，注意全局字体应设定为英文字体，避免设置为中文字体导致英文字体也被覆盖，中文字体稍后设置<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">font:</span></span><br><span class="line"><span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uri of fonts host, e.g. //fonts.googleapis.com (Default).</span></span><br><span class="line"><span class="attr">host:</span> <span class="string">fonts.loli.net</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Font options:</span></span><br><span class="line"><span class="comment"># `external: true` will load this font family from `host` above.</span></span><br><span class="line"><span class="comment"># `family: Times New Roman`. Without any quotes.</span></span><br><span class="line"><span class="comment"># `size: x.x`. Use `em` as unit. Default: 1 (16px)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Global font settings used for all elements inside &lt;body&gt;.</span></span><br><span class="line"><span class="attr">global:</span></span><br><span class="line">  <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">family:</span> <span class="string">EB</span> <span class="string">Garamond</span></span><br><span class="line">  <span class="attr">size:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Font settings for site title (.site-title).</span></span><br><span class="line"><span class="attr">title:</span></span><br><span class="line">  <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">family:</span> <span class="string">Cinzel</span> <span class="string">Decorative</span></span><br><span class="line">  <span class="attr">size:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Font settings for headlines (&lt;h1&gt; to &lt;h6&gt;).</span></span><br><span class="line"><span class="attr">headings:</span></span><br><span class="line">  <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">family:</span> <span class="string">Noto</span> <span class="string">Serif</span> <span class="string">SC</span></span><br><span class="line">  <span class="attr">size:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Font settings for posts (.post-body).</span></span><br><span class="line"><span class="attr">posts:</span></span><br><span class="line">  <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">family:</span> <span class="string">Noto</span> <span class="string">Serif</span> <span class="string">SC</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Font settings for &lt;code&gt; and code blocks.</span></span><br><span class="line"><span class="attr">codes:</span></span><br><span class="line">  <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">family:</span> <span class="string">Source</span> <span class="string">Code</span> <span class="string">Pro</span></span><br></pre></td></tr></table></figure></li>
 <li>修改hexo/themes/next/source/css/_variables/base.styl中的中文字体<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// Font families.</span><br><span class="line"><span class="deletion">- $font-family-chinese      = "PingFang SC", "Microsoft YaHei";</span></span><br><span class="line"><span class="addition">+ $font-family-chinese      = "Noto Serif SC";</span></span><br></pre></td></tr></table></figure></li>
-<li><p>在hexo/source/_data/head.swig中添加中文字体<code>Noto Serif SC</code>的<code>&lt;link&gt;</code>代码段<br>进入<span class="exturl" data-url="aHR0cHM6Ly9mb250cy5nb29nbGUuY29tLw==" title="https://fonts.google.com/">Google Fonts<i class="fa fa-external-link"></i></span>，搜索<code>Noto Serif SC</code>，按照下面动图中所示获取字体的<code>&lt;link&gt;</code>代码，其它字体操作相同<br><img data-src="https://i.loli.net/2020/05/02/5wTraDpmiKg27yL.gif" alt="在Google Fonts上查找喜欢的字体"></p>
+<li><p>在hexo/source/_data/head.swig中添加中文字体<code>Noto Serif SC</code>的<code>&lt;link&gt;</code>代码段<br>进入<span class="exturl" data-url="aHR0cHM6Ly9mb250cy5nb29nbGUuY29tLw==" title="https://fonts.google.com/">Google Fonts<i class="fa fa-external-link"></i></span>，搜索<code>Noto Serif SC</code>，按照下面动图中所示获取字体的<code>&lt;link&gt;</code>代码，其它字体操作相同<br><img src="https://i.loli.net/2020/05/02/5wTraDpmiKg27yL.gif" alt="在Google Fonts上查找喜欢的字体"></p>
 <p>将<code>&lt;link&gt;</code>代码中的将<code>googleapis.com</code>修改为<code>loli.net</code>后添加到hexo/source/_data/head.swig中</p>
 <figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="addition">+ &lt;link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"&gt;</span></span><br></pre></td></tr></table></figure>
 <p>若hexo/source/_data/head.swig文件不存在，需要开启hexo/themes/next/_config.xml中<code>custom_file_path</code>的相关选项，默认是注释掉的</p>
@@ -430,6 +430,17 @@
 <li>配置主题配置文件中的MathJax CDN加速<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># MathJax</span></span><br><span class="line"><span class="comment"># mathjax: //cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML</span></span><br><span class="line"><span class="comment"># mathjax: //cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML</span></span><br><span class="line"><span class="comment"># mhchem: //cdn.jsdelivr.net/npm/mathjax-mhchem@3</span></span><br><span class="line"><span class="comment"># mhchem: //cdnjs.cloudflare.com/ajax/libs/mathjax-mhchem/3.3.0</span></span><br><span class="line"><span class="attr">mathjax:</span> <span class="string">//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML</span></span><br><span class="line"><span class="attr">mhchem:</span> <span class="string">//cdn.jsdelivr.net/npm/mathjax-mhchem@3</span></span><br></pre></td></tr></table></figure></li>
 <li>为需要公式渲染的文章的Front-matter里打开mathjax开关，之所以要在文章头里设置开关，是因为考虑只有在用到公式的页面才加载Mathjax，这样不需要渲染数学公式的页面的访问速度就不会受到影响了<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">  ---</span><br><span class="line">  title: C++ Primer - 第2章 变量和基本类型</span><br><span class="line">  categories:</span><br><span class="line">  - 技术</span><br><span class="line">  - 程序语言</span><br><span class="line">  - C/C++</span><br><span class="line">  - 《C++ Primer》</span><br><span class="line">  tags:</span><br><span class="line">  - C/C++</span><br><span class="line">  - C++ Primer</span><br><span class="line">  description: 本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。</span><br><span class="line">  abbrlink: e005f4cb</span><br><span class="line"><span class="addition">+ mathjax: true</span></span><br><span class="line">  ---</span><br></pre></td></tr></table></figure>
 </li>
+</ul>
+<h3 id="4-2-28-添加豆瓣读书" class="heading-control"><a href="#4-2-28-添加豆瓣读书" class="headerlink" title="4.2.28 添加豆瓣读书"></a>4.2.28 添加豆瓣读书<a class="heading-anchor" href="#4-2-28-添加豆瓣读书" aria-hidden="true"></a></h3><ul>
+<li>在博客目录下安装<code>hexo-douban</code>插件，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL215dGhzbWFuL2hleG8tZG91YmFu" title="https://github.com/mythsman/hexo-douban">这里<i class="fa fa-external-link"></i></span>是插件的git仓库<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-douban --save</span><br></pre></td></tr></table></figure></li>
+<li>在站点配置文件hexo/_config.yml中增加如下配置<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">douban:</span></span><br><span class="line"><span class="attr">user:</span> <span class="string">mythsman</span></span><br><span class="line"><span class="attr">builtin:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">book:</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">'读书'</span></span><br><span class="line">  <span class="attr">quote:</span> <span class="string">'那些你读过的书'</span></span><br><span class="line"><span class="comment"># movie:</span></span><br><span class="line">  <span class="comment"># title: 'This is my movie title'</span></span><br><span class="line">  <span class="comment"># quote: 'This is my movie quote'</span></span><br><span class="line"><span class="comment"># game:</span></span><br><span class="line">  <span class="comment"># title: 'This is my game title'</span></span><br><span class="line">  <span class="comment"># quote: 'This is my game quote'</span></span><br><span class="line"><span class="attr">timeout:</span> <span class="number">10000</span></span><br></pre></td></tr></table></figure>
+<strong>user</strong>: 你的豆瓣ID。打开豆瓣，登入账户，然后在右上角点击 “个人主页” ，这时候地址栏的URL大概是这样：”<span class="exturl" data-url="aHR0cHM6Ly93d3cuZG91YmFuLmNvbS9wZW9wbGUveHh4eHh4Lw==" title="https://www.douban.com/people/xxxxxx/">https://www.douban.com/people/xxxxxx/<i class="fa fa-external-link"></i></span>“ ，其中的”xxxxxx”就是你的个人ID；<br><strong>builtin</strong>: 是否将生成页面的功能嵌入<code>hexo s</code>和<code>hexo g</code>中，默认是false,另一可选项为true(1.x.x版本新增配置项)；<br><strong>title</strong>: 该页面的标题；<br><strong>quote</strong>: 写在页面开头的一段话,支持html语法；<br><strong>timeout</strong>: 爬取数据的超时时间，默认是10000ms，如果在使用时发现报了超时的错(ETIMEOUT)可以把这个数据设置的大一点。</li>
+<li>在主题配置文件hexo/themes/next/_config.yml中添加books的菜单按钮<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">home</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">th</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">tags</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">archive</span></span><br><span class="line">  <span class="attr">books:</span> <span class="string">/books/</span> <span class="string">||</span> <span class="string">book</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">user</span></span><br></pre></td></tr></table></figure></li>
+<li>中文化books菜单按钮，修改hexo/themes/hexo-theme-next/languages/zh-CN.yml<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">首页</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">归档</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">分类</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">标签</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">关于</span></span><br><span class="line">  <span class="attr">search:</span> <span class="string">搜索</span></span><br><span class="line">  <span class="attr">schedule:</span> <span class="string">日程表</span></span><br><span class="line">  <span class="attr">sitemap:</span> <span class="string">站点地图</span></span><br><span class="line">  <span class="attr">commonweal:</span> <span class="string">公益</span> <span class="number">404</span></span><br><span class="line">  <span class="attr">books:</span> <span class="string">读书</span></span><br></pre></td></tr></table></figure></li>
+<li>在主题配置文件hexo/themes/next/_config.yml中开启lazyload选项<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Vanilla JavaScript plugin for lazyloading images.</span></span><br><span class="line"><span class="comment"># For more information: https://github.com/ApoorvSaxena/lozad.js</span></span><br><span class="line"><span class="attr">lazyload:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+配置lazyload的CDN加速<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Lazyload</span></span><br><span class="line"><span class="comment"># lazyload: //cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js</span></span><br><span class="line"><span class="comment"># lazyload: //cdnjs.cloudflare.com/ajax/libs/lozad.js/1.9.0/lozad.min.js</span></span><br><span class="line"><span class="attr">lazyload:</span> <span class="string">//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js</span></span><br></pre></td></tr></table></figure></li>
+<li>在主题配置文件hexo/themes/next/_config.yml中关闭pjax选项（若开启了的话）<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Easily enable fast Ajax navigation on your website.</span></span><br><span class="line"><span class="comment"># Dependencies: https://github.com/theme-next/theme-next-pjax</span></span><br><span class="line"><span class="attr">pjax:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+关闭了pjax后，在博客站点页面间互相访问时每次都会刷新页面，会稍微降低访问速度，但影响不大。<br>若未开启lazyload且未关闭pjax，则会出现如下情况：</li>
 </ul>
 <h1 id="5-新建文章" class="heading-control"><a href="#5-新建文章" class="headerlink" title="5 新建文章"></a>5 新建文章<a class="heading-anchor" href="#5-新建文章" aria-hidden="true"></a></h1><p>先将post模板hexo/scaffolds/post.md中的内容修改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: &#123;&#123; title &#125;&#125;</span><br><span class="line">date: &#123;&#123; date &#125;&#125;</span><br><span class="line">categories:</span><br><span class="line">tags:</span><br><span class="line">keywords:</span><br><span class="line">description:</span><br><span class="line">---</span><br></pre></td></tr></table></figure><br>再进入到博客目录下通过终端命令新建文章：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo n post postName</span><br></pre></td></tr></table></figure></p>
 <h1 id="6-生成静态页面" class="heading-control"><a href="#6-生成静态页面" class="headerlink" title="6 生成静态页面"></a>6 生成静态页面<a class="heading-anchor" href="#6-生成静态页面" aria-hidden="true"></a></h1><ul>
@@ -614,7 +625,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-环境安装"><span class="nav-text">1 环境安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Node-js"><span class="nav-text">1.1 Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-Git"><span class="nav-text">1.2 Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-Hexo"><span class="nav-text">1.3 Hexo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-初始化"><span class="nav-text">2 初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-主题安装"><span class="nav-text">3 主题安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-配置"><span class="nav-text">4 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-站点配置"><span class="nav-text">4.1 站点配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-主题配置"><span class="nav-text">4.2 主题配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-使能主题更新提醒"><span class="nav-text">4.2.1 使能主题更新提醒</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-配置网站图标"><span class="nav-text">4.2.2 配置网站图标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-3-配置网站页脚"><span class="nav-text">4.2.3 配置网站页脚</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-4-添加CC-License"><span class="nav-text">4.2.4 添加CC License</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-5-选择主题风格"><span class="nav-text">4.2.5 选择主题风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-6-为menu添加分类按钮"><span class="nav-text">4.2.6 为menu添加分类按钮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-7-使能menu-icons和item-badges"><span class="nav-text">4.2.7 使能menu icons和item badges</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-8-侧边栏、头像、社交相关"><span class="nav-text">4.2.8 侧边栏、头像、社交相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-9-配置侧边栏目录"><span class="nav-text">4.2.9 配置侧边栏目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-10-打赏"><span class="nav-text">4.2.10 打赏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-11-相关文章推荐"><span class="nav-text">4.2.11 相关文章推荐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-12-代码块"><span class="nav-text">4.2.12 代码块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-13-返回顶部"><span class="nav-text">4.2.13 返回顶部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-14-阅读进度"><span class="nav-text">4.2.14 阅读进度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-15-添加GitHub角标"><span class="nav-text">4.2.15 添加GitHub角标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-16-字体优化"><span class="nav-text">4.2.16 字体优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-17-使能顶部加载条"><span class="nav-text">4.2.17 使能顶部加载条</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-18-添加sitemap"><span class="nav-text">4.2.18 添加sitemap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-19-开启站内搜索"><span class="nav-text">4.2.19 开启站内搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-20-SEO优化"><span class="nav-text">4.2.20 SEO优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-21-开启图片灯箱"><span class="nav-text">4.2.21 开启图片灯箱</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-22-修改文章内链接的样式"><span class="nav-text">4.2.22 修改文章内链接的样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-23-添加valine评论系统"><span class="nav-text">4.2.23 添加valine评论系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-24-配置canvas-nest背景效果"><span class="nav-text">4.2.24 配置canvas_nest背景效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-25-配置标题锚点"><span class="nav-text">4.2.25 配置标题锚点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-26-为归档页面添加十二生肖图标"><span class="nav-text">4.2.26 为归档页面添加十二生肖图标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-27-添加数学公式渲染支持"><span class="nav-text">4.2.27 添加数学公式渲染支持</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-新建文章"><span class="nav-text">5 新建文章</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-生成静态页面"><span class="nav-text">6 生成静态页面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-本地启动"><span class="nav-text">7 本地启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-部署到GitHub-Pages"><span class="nav-text">8 部署到GitHub Pages</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-GitHub-Pages绑定到个人域名"><span class="nav-text">9 GitHub Pages绑定到个人域名</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-参考"><span class="nav-text">10  参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-环境安装"><span class="nav-text">1 环境安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Node-js"><span class="nav-text">1.1 Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-Git"><span class="nav-text">1.2 Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-Hexo"><span class="nav-text">1.3 Hexo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-初始化"><span class="nav-text">2 初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-主题安装"><span class="nav-text">3 主题安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-配置"><span class="nav-text">4 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-站点配置"><span class="nav-text">4.1 站点配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-主题配置"><span class="nav-text">4.2 主题配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-使能主题更新提醒"><span class="nav-text">4.2.1 使能主题更新提醒</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-配置网站图标"><span class="nav-text">4.2.2 配置网站图标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-3-配置网站页脚"><span class="nav-text">4.2.3 配置网站页脚</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-4-添加CC-License"><span class="nav-text">4.2.4 添加CC License</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-5-选择主题风格"><span class="nav-text">4.2.5 选择主题风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-6-为menu添加分类按钮"><span class="nav-text">4.2.6 为menu添加分类按钮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-7-使能menu-icons和item-badges"><span class="nav-text">4.2.7 使能menu icons和item badges</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-8-侧边栏、头像、社交相关"><span class="nav-text">4.2.8 侧边栏、头像、社交相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-9-配置侧边栏目录"><span class="nav-text">4.2.9 配置侧边栏目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-10-打赏"><span class="nav-text">4.2.10 打赏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-11-相关文章推荐"><span class="nav-text">4.2.11 相关文章推荐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-12-代码块"><span class="nav-text">4.2.12 代码块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-13-返回顶部"><span class="nav-text">4.2.13 返回顶部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-14-阅读进度"><span class="nav-text">4.2.14 阅读进度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-15-添加GitHub角标"><span class="nav-text">4.2.15 添加GitHub角标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-16-字体优化"><span class="nav-text">4.2.16 字体优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-17-使能顶部加载条"><span class="nav-text">4.2.17 使能顶部加载条</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-18-添加sitemap"><span class="nav-text">4.2.18 添加sitemap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-19-开启站内搜索"><span class="nav-text">4.2.19 开启站内搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-20-SEO优化"><span class="nav-text">4.2.20 SEO优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-21-开启图片灯箱"><span class="nav-text">4.2.21 开启图片灯箱</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-22-修改文章内链接的样式"><span class="nav-text">4.2.22 修改文章内链接的样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-23-添加valine评论系统"><span class="nav-text">4.2.23 添加valine评论系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-24-配置canvas-nest背景效果"><span class="nav-text">4.2.24 配置canvas_nest背景效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-25-配置标题锚点"><span class="nav-text">4.2.25 配置标题锚点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-26-为归档页面添加十二生肖图标"><span class="nav-text">4.2.26 为归档页面添加十二生肖图标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-27-添加数学公式渲染支持"><span class="nav-text">4.2.27 添加数学公式渲染支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-28-添加豆瓣读书"><span class="nav-text">4.2.28 添加豆瓣读书</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-新建文章"><span class="nav-text">5 新建文章</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-生成静态页面"><span class="nav-text">6 生成静态页面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-本地启动"><span class="nav-text">7 本地启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-部署到GitHub-Pages"><span class="nav-text">8 部署到GitHub Pages</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-GitHub-Pages绑定到个人域名"><span class="nav-text">9 GitHub Pages绑定到个人域名</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-参考"><span class="nav-text">10  参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -689,11 +700,6 @@
   </span>
   <span class="author" itemprop="copyrightHolder">ShiPeng</span>
 </div>
-  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动
-  </div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly9taXN0LnRoZW1lLW5leHQub3Jn">NexT.Mist</span>
-  </div>
 
         
 
@@ -712,9 +718,9 @@
   
   <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -728,11 +734,69 @@
 
 <script src="/js/next-boot.js"></script>
 
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.getAttribute('pjax') !== null) {
+      script.setAttribute('pjax', '');
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
 
 
 
   
-  <script>
+  <script pjax>
     (function(){
       var bp = document.createElement('script');
       var curProtocol = window.location.protocol.split(':')[0];
@@ -760,6 +824,7 @@
 
 
 
+    <div id="pjax">
   
 
   
@@ -795,5 +860,6 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
 });
 </script>
 
+    </div>
 </body>
 </html>
