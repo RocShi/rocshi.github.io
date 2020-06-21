@@ -36,7 +36,7 @@
     bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: true,
     mediumzoom: false,
-    lazyload: false,
+    lazyload: true,
     pangu: false,
     comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
     algolia: {
@@ -320,7 +320,7 @@
 <li>首先，登录iECU终端，使用<code>top</code>命令查看<code>CtApLaneFusion</code>模块所在进程的PID<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top</span><br></pre></td></tr></table></figure></li>
 <li>然后，记录perf数据。<code>-p</code>后指定的为PID号，<code>sleep</code>后指定的为数据记录持续时间（s），数据文件名称默认为<code>perf.data</code>，保存在打开终端的目录下，<strong>应注意<code>--</code>与<code>sleep</code>间有空格符</strong><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">perf record -e cpu-clock -g -p 3729 -- sleep 120</span><br></pre></td></tr></table></figure></li>
 <li>最后，分析perf数据<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">perf report</span><br></pre></td></tr></table></figure>
-可将perf数据文件拷贝至台架iECU的任意目录进行离线分析，<code>Self</code>是最后一列的符号（可以理解为函数）本身所占比例，<code>Self</code>列所有数据的和为100%，<code>Children</code>是这个符号调用的其它符号（可以理解为子函数，包括直接和间接调用）占用的比例之和。若<code>Children</code>列和<code>Self</code>列的数据都比较高(<strong>飙红</strong>)，说明该进程或函数存在资源消耗过高的情况，可按回车键展开该进程查看调用情况，如下图所示：<br><img src="https://i.loli.net/2020/06/17/jnSsxGqR5D7di9I.png" alt="perf report数据分析示例"><br>图中从上至下表明CPU占用较高进程的函数调用层级关系，可以发现，CPU占用较高的原因是使用ipc库时出现了读写锁死锁。</li>
+可将perf数据文件拷贝至台架iECU的任意目录进行离线分析，<code>Self</code>是最后一列的符号（可以理解为函数）本身所占比例，<code>Self</code>列所有数据的和为100%，<code>Children</code>是这个符号调用的其它符号（可以理解为子函数，包括直接和间接调用）占用的比例之和。若<code>Children</code>列和<code>Self</code>列的数据都比较高(<strong>飙红</strong>)，说明该进程或函数存在资源消耗过高的情况，可按回车键展开该进程查看调用情况，如下图所示：<br><img data-src="https://i.loli.net/2020/06/17/jnSsxGqR5D7di9I.png" alt="perf report数据分析示例"><br>图中从上至下表明CPU占用较高进程的函数调用层级关系，可以发现，CPU占用较高的原因是使用ipc库时出现了读写锁死锁。</li>
 </ul>
 </li>
 </ul>
@@ -566,9 +566,9 @@
   
   <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
   <script src="/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -582,69 +582,11 @@
 
 <script src="/js/next-boot.js"></script>
 
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (element.id) {
-      script.id = element.id;
-    }
-    if (element.className) {
-      script.className = element.className;
-    }
-    if (element.type) {
-      script.type = element.type;
-    }
-    if (element.src) {
-      script.src = element.src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (element.getAttribute('pjax') !== null) {
-      script.setAttribute('pjax', '');
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
   
-  <script pjax>
+  <script>
     (function(){
       var bp = document.createElement('script');
       var curProtocol = window.location.protocol.split(':')[0];
@@ -672,7 +614,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
   
 
   
@@ -708,6 +649,5 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
 });
 </script>
 
-    </div>
 </body>
 </html>

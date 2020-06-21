@@ -36,7 +36,7 @@
     bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: true,
     mediumzoom: false,
-    lazyload: false,
+    lazyload: true,
     pangu: false,
     comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
     algolia: {
@@ -323,13 +323,13 @@
 <p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">这里<i class="fa fa-external-link"></i></span>。</p>
 </blockquote>
 <h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>百度Apollo 1.0技术框架如下图所示：</p>
-<p><img src="https://i.loli.net/2020/03/01/XgGkhdfU2eSiKNc.jpg" alt="百度Apollo 1.0技术框架"></p>
+<p><img data-src="https://i.loli.net/2020/03/01/XgGkhdfU2eSiKNc.jpg" alt="百度Apollo 1.0技术框架"></p>
 <p>GPS全球定位系统（Global Position System）定位原理为<strong>三角定位法（Triangulation）</strong>，如下图所示，通过测量无人车分别距三颗卫星的距离来对无人车进行唯一定位：</p>
-<p><img src="https://i.loli.net/2020/03/01/niauPdXFYyBHIg3.jpg" alt="三角定位法原理图"></p>
+<p><img data-src="https://i.loli.net/2020/03/01/niauPdXFYyBHIg3.jpg" alt="三角定位法原理图"></p>
 <p>为降低天气、云层对定位的影响，引入了差分GPS的技术，原理如下图所示：</p>
-<p><img src="https://i.loli.net/2020/03/01/BCnQa5P9RheEbA4.jpg" alt="差分GPS技术原理图"></p>
+<p><img data-src="https://i.loli.net/2020/03/01/BCnQa5P9RheEbA4.jpg" alt="差分GPS技术原理图"></p>
 <p>在地面上建立基站（Base Station），基站在建立时可得到其精确的位置信息（经纬度），同时基站具有接收卫星信号的功能。当基站的GPS接收机与车载GPS接收机相距较近时（&lt;30km），可以认为两者的GPS信号通过的是同一片大气区域，即两者的信号误差基本一致。<strong>根据基站的精确位置和信号传播时间，可反推此时天气原因导致的信号传播误差，之后利用该误差便可修正车载GPS信号，从而降低云层、天气情况等对信号传输的影响。</strong>利用差分GPS技术，可使无人车定位精度由十米级别提升至米级。<strong>差分GPS技术可以解决定位的精度问题，但是无法解决遮挡和反射问题</strong>，当无人车在高楼林立的环境中行驶时，会发生信号丢失和多路径信号（Multi-Path Signal）的问题：</p>
-<p><img src="https://i.loli.net/2020/03/01/Rlh5aZ26CzQmuxj.jpg" alt="多路径信号问题示意图"></p>
+<p><img data-src="https://i.loli.net/2020/03/01/Rlh5aZ26CzQmuxj.jpg" alt="多路径信号问题示意图"></p>
 <p>同时，GPS定位频率不高，相当于定位实时性较差。</p>
 <h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">无人驾驶技术入门（三）| 百度无人车传感器 GPS 深入剖析<i class="fa fa-external-link"></i></span></li>
@@ -348,13 +348,13 @@
       <div class="popular-posts-title"><a href="\archives\24a03bff.html" rel="bookmark">（七）量产必备的毫米波雷达</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\fde458ab.html" rel="bookmark">（九）与生俱来的VCU信号</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c93d22e0.html" rel="bookmark">（五）没有视觉传感器，还谈什么无人驾驶</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\1e9849c6.html" rel="bookmark">（八）被严重低估的传感器超声波雷达</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\fde458ab.html" rel="bookmark">（九）与生俱来的VCU信号</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\be221b74.html" rel="bookmark">（六）工程师又爱又恨的激光雷达</a></div>
@@ -568,9 +568,9 @@
   
   <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
   <script src="/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -584,69 +584,11 @@
 
 <script src="/js/next-boot.js"></script>
 
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (element.id) {
-      script.id = element.id;
-    }
-    if (element.className) {
-      script.className = element.className;
-    }
-    if (element.type) {
-      script.type = element.type;
-    }
-    if (element.src) {
-      script.src = element.src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (element.getAttribute('pjax') !== null) {
-      script.setAttribute('pjax', '');
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
   
-  <script pjax>
+  <script>
     (function(){
       var bp = document.createElement('script');
       var curProtocol = window.location.protocol.split(':')[0];
@@ -674,7 +616,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
   
 
   
@@ -710,6 +651,5 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
 });
 </script>
 
-    </div>
 </body>
 </html>
