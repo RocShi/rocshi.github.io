@@ -36,7 +36,7 @@
     bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: true,
     mediumzoom: false,
-    lazyload: true,
+    lazyload: false,
     pangu: false,
     comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
     algolia: {
@@ -844,7 +844,7 @@
 </li>
 <li><p>字符数组有一种额外的初始化形式，可以用字符串字面值对此类数组初始化。当使用这种方式时，一定要注意<strong>字符串字面值的结尾处还有一个空字符，这个空字符也会像字符串的其他字符一样被拷贝到字符数组中去</strong>：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> a1[] = &#123;<span class="string">'c'</span>, <span class="string">'+'</span>, <span class="string">'+'</span>&#125;;         <span class="comment">// 列表初始化，没有空字符</span></span><br><span class="line"><span class="keyword">char</span> a1[] = &#123;<span class="string">'c'</span>, <span class="string">'+'</span>, <span class="string">'+'</span>, <span class="string">'\0'</span>&#125;;   <span class="comment">// 列表初始化，含有显式的空字符</span></span><br><span class="line"><span class="keyword">char</span> a3[] = <span class="string">"c++"</span>;                   <span class="comment">// 自动添加表示字符串结束的空字符</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> a4[<span class="number">5</span>] = <span class="string">"Hello"</span>;          <span class="comment">// 错误：没有空间可存放空字符！</span></span><br></pre></td></tr></table></figure>
-<p>关于最后一例，编译器会提示：<br><img data-src="https://i.loli.net/2020/04/14/zm7XC45kUQTHhIp.png" alt="数组空间不足，无法存放字符串字面值中的空字符"></p>
+<p>关于最后一例，编译器会提示：<br><img src="https://i.loli.net/2020/04/14/zm7XC45kUQTHhIp.png" alt="数组空间不足，无法存放字符串字面值中的空字符"></p>
 </li>
 <li><p><strong>不能将数组的内容拷贝给其他数组作为其初始值，也不能用数组为其他数组赋值</strong>：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;  <span class="comment">// 含有3个整数的数组</span></span><br><span class="line"><span class="keyword">int</span> a2[] = a;         <span class="comment">// 错误：不允许使用一个数组初始化另一个数组</span></span><br><span class="line">a2 = a;               <span class="comment">// 错误：不能把一个数组直接赋值给另一个数组</span></span><br></pre></td></tr></table></figure>
@@ -1040,16 +1040,16 @@
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
+      <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
+      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
   </ul>
 
@@ -1263,9 +1263,9 @@
   
   <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -1279,11 +1279,69 @@
 
 <script src="/js/next-boot.js"></script>
 
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.getAttribute('pjax') !== null) {
+      script.setAttribute('pjax', '');
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
 
 
 
   
-  <script>
+  <script pjax>
     (function(){
       var bp = document.createElement('script');
       var curProtocol = window.location.protocol.split(':')[0];
@@ -1311,6 +1369,7 @@
 
 
 
+    <div id="pjax">
   
 
   
@@ -1346,5 +1405,6 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
 });
 </script>
 
+    </div>
 </body>
 </html>
