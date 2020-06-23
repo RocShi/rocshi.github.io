@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-04T15:59:04.000Z">
-<meta property="article:modified_time" content="2020-06-21T12:49:57.226Z">
+<meta property="article:modified_time" content="2020-06-23T16:03:18.332Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -261,7 +261,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-21 20:49:57" itemprop="dateModified" datetime="2020-06-21T20:49:57+08:00">2020-06-21</time>
+                <time title="修改时间：2020-06-24 00:03:18" itemprop="dateModified" datetime="2020-06-24T00:03:18+08:00">2020-06-24</time>
               </span>
 
           <br>
@@ -375,6 +375,60 @@
 </li>
 <li><p><strong>值传递形参既可以传入左值，也可以传入右值。非常量引用的初始值只能是左值。</strong></p>
 </li>
+<li><p>当用实参初始化形参时会忽略掉顶层<code>const</code>。换句话说，形参的顶层<code>const</code>被忽略掉了。<strong>当形参有顶层<code>const</code>时，传给它常量对象或者非常量对象都是可以的。</strong></p>
+</li>
+<li><p><strong>可以使用非常量初始化一个底层<code>const</code>对象，但是反过来不行；同时一个普通的引用必须用同类型的对象初始化。</strong>观察下面的代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *cp = &amp;i;   <span class="comment">// 正确：但是cp不能改变i</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r = i;     <span class="comment">// 正确：但是r不能改变i</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r2 = <span class="number">42</span>;   <span class="comment">// 正确</span></span><br><span class="line"><span class="keyword">int</span> *p = cp;          <span class="comment">// 错误：p的类型和cp的类型不匹配</span></span><br><span class="line"><span class="keyword">int</span> &amp;r3 = r;          <span class="comment">// 错误：r3的类型和r的类型不匹配</span></span><br><span class="line"><span class="keyword">int</span> &amp;r4 = <span class="number">42</span>;         <span class="comment">// 错误：不能用字面值初始化一个非常量引用，即非常量引用的初值只能是左值</span></span><br></pre></td></tr></table></figure>
+<p>C++允许我们用字面值初始化常量引用，常量引用的常量属性已经限制了函数体内部对所传入实参的修改操作，所以用字面值初始化函数的常量引用形参并无大碍。</p>
+</li>
+<li><p>把函数不会改变的形参定义成（普通的）引用是一种比较常见的错误，这么做带给函数的调用者一种误导，即函数可以修改它的实参的值。此外，使用引用而非常量引用也会极大地限制函数所能接受的实参类型：我们<strong>不能把<code>const</code>对象、字面值或者需要类型转换的对象传递给普通的引用形参</strong>。</p>
+</li>
+<li><p>数组的两个特殊性质对我们定义和使用作用在数组上的函数有影响，这两个性质分别是：</p>
+<ul>
+<li>不允许拷贝数组；</li>
+<li>使用数组时（通常）会将其转换成指针。<br><strong>因为不能拷贝数组，所以我们无法以值传递的方式使用数组参数。因为数组会被转换成指针，所以当我们为函数传递一个数组时，实际上传递的是指向数组首元素的指针。</strong>尽管不能以值传递的方式传递数组，但是我们可以把形参写成类似数组的形式：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 尽管形式不同，但这三个print函数是等价的</span></span><br><span class="line"><span class="comment">// 每个函数都有一个const int*类型的形参</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>*)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>[])</span></span>;    <span class="comment">// 可以看出来，函数的意图是作用于一个数组</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>[<span class="number">10</span>])</span></span>;  <span class="comment">// 这里的维度表示我们期望数组含有多少元素，实际不一定</span></span><br></pre></td></tr></table></figure>
+数组的大小对函数的调用没有影响。<blockquote>
+<p>WARNING：和其他使用数组的代码一样，以数组作为形参的函数也必须确保使用数组时不会越界。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>管理指针形参有三种常用的技术：</p>
+<ul>
+<li><strong>使用标记指定数组长度</strong><br>管理数组实参的第一种方法是要求数组本身包含一个结束标记，使用这种方法的典型示例是C风格字符串。<strong>C风格字符串存储在字符数组中，并且在最后一个字符后面跟着一个空字符。</strong>这种方法适用于那些有明显结束标记且该标记不会与普通数据混淆的情况，但是对于像<code>int</code>这样所有取值都是合法值的数据就不太有效了。</li>
+<li><strong>使用标准库规范</strong><br>管理数组实参的第二种技术是传递指向数组首元素和尾后元素的指针，这种方法受到了标准库技术的启发。</li>
+<li><strong>显式传递一个表示数组大小的形参</strong></li>
+</ul>
+</li>
+<li><p><strong>当函数不需要对数组元素执行写操作的时候，数组形参应该是指向<code>const</code>的指针。只有当函数确实要改变元素值的时候，才把形参定义成指向非常量的指针。</strong></p>
+</li>
+<li><p><strong>形参也可以是数组的引用。此时，引用形参绑定到对应的实参上，也就是绑定到数组上</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> (&amp;arr)[<span class="number">10</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> elem : arr)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; elem &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>&amp;arr</code>两端的括号必不可少：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f(<span class="keyword">int</span> &amp;arr[<span class="number">10</span>])    <span class="comment">// 错误：将arr声明成了引用的数组</span></span><br><span class="line">f(<span class="keyword">int</span> (&amp;arr)[<span class="number">10</span>])  <span class="comment">// 正确：arr是具有10个整数的整型数组的引用</span></span><br></pre></td></tr></table></figure>
+<p>因为数组的大小是构成数组类型的一部分，所以只要不超过维度，在函数体内就可以放心地使用数组。但是，这一用法也无形中限制了<code>print</code>函数的可用性，我们只能将函数作用于大小为10的数组：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">inti=<span class="number">0</span>, j[<span class="number">2</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> k[<span class="number">10</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line">print(&amp;i);  <span class="comment">// 错误：实参不是含有10个整数的数组</span></span><br><span class="line">print(j);   <span class="comment">// 错误：实参不是含有10个整数的数组</span></span><br><span class="line">print(k);   <span class="comment">// 正确：实参是含有10个整数的数组</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>和所有数组一样，当将多维数组传递给函数时，真正传递的是指向数组首元素的指针。因为我们处理的是数组的数组，所以首元素本身就是一个数组，指针就是一个指向数组的指针：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// matrix指向数组的首元素，该数组的元素是由10个整数构成的数组</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> (*matrix)[<span class="number">10</span>], <span class="keyword">int</span> rowSize)</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>再一次强调，*matrix 两端的括号必不可少：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *matrix[<span class="number">10</span>];    <span class="comment">// 10个指针构成的数组</span></span><br><span class="line"><span class="keyword">int</span> (*matrix)[<span class="number">10</span>];  <span class="comment">// 指向含有10个整数的数组的指针</span></span><br></pre></td></tr></table></figure>
+<p>也可以使用数组的语法定义函数，此时编译器会一如既往地忽略掉第一个维度：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 等价定义</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> matrix[][<span class="number">10</span>], <span class="keyword">int</span> rowSize)</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>matrix的声明看起来是一个二维数组，实际上形参是指向含有10个整数的数组的指针。</p>
+</li>
+<li><p>有时我们需要给<code>main</code>传递实参，一种常见的情况是用户通过设置一组选项来确定函数所要执行的操作。例如，假定<code>main</code>函数位于可执行文件prog之内，我们可以向程序传递下面的选项：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prog-d-0 ofile data0</span><br></pre></td></tr></table></figure>
+<p>这些命令行选项通过两个（可选的）形参传递给<code>main</code>函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<p>第二个形参argv是一个数组，它的元素是指向C风格字符串的指针；第一个形参argc表示数组中字符串的数量。因为第二个形参是数组，所以<code>main</code>函数也可以定义成：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<p>其中argv指向<code>char*</code>。<strong>当实参传给<code>main</code>函数之后，argv的第一个元素指向程序的名字或者一个空字符串，接下来的元素依次传递命令行提供的实参。最后一个指针之后的元素值保证为0。</strong>以上面提供的命令行为例，argc应该等于5，argv应该包含如下的C风格字符串：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">argv[<span class="number">0</span>] = <span class="string">"prog"</span>;  <span class="comment">// 或者argv[0]也可以指向一个空字符串</span></span><br><span class="line">argv[<span class="number">1</span>] = <span class="string">"-d"</span>;</span><br><span class="line">argv[<span class="number">2</span>] = <span class="string">"-o"</span>;</span><br><span class="line">argv[<span class="number">3</span>] = <span class="string">"ofile"</span>;</span><br><span class="line">argv[<span class="number">4</span>] = <span class="string">"data0"</span>;</span><br><span class="line">argv[<span class="number">5</span>] = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>WARNING：当使用argv中的实参时，一定要记得可选的实参从argv[1]开始；argv[0]保存程序的名字，而非用户输入。</p>
+</blockquote>
+</li>
 <li></li>
 </ol>
 <hr>
@@ -391,16 +445,16 @@
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
+      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
     </li>
   </ul>
 
