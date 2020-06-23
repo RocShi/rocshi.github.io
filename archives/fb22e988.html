@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-04T15:59:04.000Z">
-<meta property="article:modified_time" content="2020-06-23T16:07:11.179Z">
+<meta property="article:modified_time" content="2020-06-23T16:14:46.409Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -261,7 +261,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-24 00:07:11" itemprop="dateModified" datetime="2020-06-24T00:07:11+08:00">2020-06-24</time>
+                <time title="修改时间：2020-06-24 00:14:46" itemprop="dateModified" datetime="2020-06-24T00:14:46+08:00">2020-06-24</time>
               </span>
 
           <br>
@@ -397,7 +397,7 @@
 <ul>
 <li><strong>使用标记指定数组长度</strong><br>管理数组实参的第一种方法是要求数组本身包含一个结束标记，使用这种方法的典型示例是C风格字符串。<strong>C风格字符串存储在字符数组中，并且在最后一个字符后面跟着一个空字符。</strong>这种方法适用于那些有明显结束标记且该标记不会与普通数据混淆的情况，但是对于像<code>int</code>这样所有取值都是合法值的数据就不太有效了。</li>
 <li><strong>使用标准库规范</strong><br>管理数组实参的第二种技术是传递指向数组首元素和尾后元素的指针，这种方法受到了标准库技术的启发。</li>
-<li><strong>显式传递一个表示数组大小的形参</strong><br><br></li>
+<li><strong>显式传递一个表示数组大小的形参。</strong><br><br></li>
 </ul>
 </li>
 <li><p><strong>当函数不需要对数组元素执行写操作的时候，数组形参应该是指向<code>const</code>的指针。只有当函数确实要改变元素值的时候，才把形参定义成指向非常量的指针。</strong></p>
@@ -431,7 +431,8 @@
 </li>
 <li><p>为了编写能处理不同数量实参的函数，C++11新标准提供了两种主要的方法：</p>
 <ul>
-<li>如果所有的实参类型相同，可以传递一个名为<code>initializer_list</code>的标准库类型；<em> 如果实参的类型不同，可以编写一种特殊的函数，也就是所谓的可变参数<em>*模板</em></em>。</li>
+<li>如果所有的实参类型相同，可以传递一个名为<code>initializer_list</code>的标准库类型；</li>
+<li>如果实参的类型不同，可以编写一种特殊的函数，也就是所谓的可变参数<strong>模板</strong>。<br><br></li>
 </ul>
 </li>
 <li><p>C++还有一种特殊的形参类型（即省略符），可以用它传递可变数量的实参。不过需要注意的是，这种功能一般只用于与C函数交互的接口程序。</p>
@@ -448,19 +449,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\53fe514.html" rel="bookmark">C++ Primer - 第7章 类</a></div>
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
     </li>
   </ul>
 
