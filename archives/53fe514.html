@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-06-27T04:41:48.180Z">
+<meta property="article:modified_time" content="2020-06-27T04:46:11.530Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -261,7 +261,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-27 12:41:48" itemprop="dateModified" datetime="2020-06-27T12:41:48+08:00">2020-06-27</time>
+                <time title="修改时间：2020-06-27 12:46:11" itemprop="dateModified" datetime="2020-06-27T12:46:11+08:00">2020-06-27</time>
               </span>
 
           <br>
@@ -491,7 +491,7 @@
 <li><p>通常情况下，<strong>名字查找</strong>（name lookup）（寻找与所用名字最匹配的声明的过程）的过程比较直截了当：</p>
 <ul>
 <li>首先，<strong>在名字所在的块中寻找其声明语句，只考虑在名字的使用之前出现的声明</strong>；</li>
-<li>如果没找到，继续查找外层作用域；</li>
+<li><strong>如果没找到，继续查找外层作用域；</strong></li>
 <li>如果最终没有找到匹配的声明，则程序报错。</li>
 </ul>
 <p>对于定义在类内部的成员函数来说，解析其中名字的方式与上述的查找规则有所区别。类的定义分两步处理：</p>
@@ -501,7 +501,10 @@
 </ul>
 <p>按照这种两阶段的方式处理类可以简化类代码的组织方式。<strong>因为成员函数体直到整个类可见后才会被处理，所以它能使用类中定义的任何名字。</strong>相反，如果函数的定义和成员的声明被同时处理，那么我们将不得不在成员函数中只使用那些已经出现的名字。</p>
 </li>
-<li></li>
+<li><p><strong>这种两阶段的处理方式只适用于成员函数中使用的名字。声明中使用的名字，包括返回类型或者参数列表中使用的名字，都必须在使用前确保可见。如果某个成员的声明使用了类中尚未出现的名字，则编译器将会在定义该类的作用域中继续查找。</strong>例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">double</span> Money;</span><br><span class="line"><span class="built_in">string</span> bal;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Money <span class="title">balance</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> bal; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Money bal;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>当编译器看到balance函数的声明语句时，它将在Account类的范围内寻找对Money的声明。编译器只考虑Account中在使用Money前出现的声明，因为没找到匹配的成员，所以编译器会接着到Account的外层作用域中查找。在这个例子中，编译器会找到Money的typedef语句，该类型被用作balance函数的返回类型以及数据成员bal的类型。另-方面，balance函数体在整个类可见后才被处理，因此，该函数的return语句返回名为bal的成员，而非外层作用域的string对象。</p>
+</li>
 </ol>
 <hr>
 
@@ -520,10 +523,10 @@
       <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
