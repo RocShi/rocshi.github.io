@@ -174,11 +174,17 @@
 <ul>
 <li>首先，<strong>在名字所在的块中寻找其声明语句，只考虑在名字的使用之前出现的声明</strong>；</li>
 <li><strong>如果没找到，继续查找外层作用域；</strong></li>
-<li>如果最终没有找到匹配的声明，则程序报错。<br><br><br>对于定义在类内部的成员函数来说，解析其中名字的方式与上述的查找规则有所区别。类的定义分两步处理：</li>
-<li><strong>首先，编译成员的声明；</strong></li>
-<li><strong>直到类全部可见后才编译函数体。</strong><br><br><br>按照这种两阶段的方式处理类可以简化类代码的组织方式。<strong>因为成员函数体直到整个类可见后才会被处理，所以它能使用类中定义的任何名字。</strong>相反，如果函数的定义和成员的声明被同时处理，那么我们将不得不在成员函数中只使用那些已经出现的名字。</li>
+<li>如果最终没有找到匹配的声明，则程序报错。</li>
 </ul>
 </li>
+</ol>
+<pre><code>对于定义在类内部的成员函数来说，解析其中名字的方式与上述的查找规则有所区别。类的定义分两步处理：
+* **首先，编译成员的声明；**
+* **直到类全部可见后才编译函数体。**
+
+
+按照这种两阶段的方式处理类可以简化类代码的组织方式。**因为成员函数体直到整个类可见后才会被处理，所以它能使用类中定义的任何名字。**相反，如果函数的定义和成员的声明被同时处理，那么我们将不得不在成员函数中只使用那些已经出现的名字。
+</code></pre><ol>
 <li><p><strong>这种两阶段的处理方式只适用于成员函数中使用的名字。声明中使用的名字，包括返回类型或者参数列表中使用的名字，都必须在使用前确保可见。如果某个成员的声明使用了类中尚未出现的名字，则编译器将会在定义该类的作用域中继续查找。</strong>例如：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">double</span> Money;</span><br><span class="line"><span class="built_in">string</span> bal;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Money <span class="title">balance</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> bal; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Money bal;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>当编译器看到balance函数的声明语句时，它将在Account类的范围内寻找对Money的声明。编译器只考虑Account中在使用Money前出现的声明，因为没找到匹配的成员，所以编译器会接着到Account的外层作用域中查找。在这个例子中，编译器会找到Money的typedef语句，该类型被用作balance函数的返回类型以及数据成员bal的类型。另一方面，<strong>balance函数体在整个类可见后才被处理，因此，该函数的return语句返回名为bal的成员，而非外层作用域的string对象</strong>。</p>
