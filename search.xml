@@ -121,7 +121,63 @@
 </li>
 <li><p>有时（但并不频繁）会发生这样一种情况，我们希望能修改类的某个数据成员，即使是在一个<code>const</code>成员函数内。可以通过在变量的声明中加入<code>mutable</code>关键字做到这一点。<strong>一个可变数据成员（mutable data member）永远不会是<code>const</code>，即使它是<code>const</code>对象的成员。因此，一个<code>const</code>成员函数可以改变一个可变成员的值。</strong></p>
 </li>
-<li><p>当我们初始化类类型的成员时，需要为构造函数传递一个符合成员类型的实参。</p>
+<li><p>当我们初始化类类型的成员时，需要为构造函数传递一个符合成员类型的实参。<strong>类内初始值必须使用<code>=</code>的初始化形式或者花括号括起来的直接初始化形式。</strong></p>
+</li>
+<li><p><strong>返回引用的函数是左值的，意味着这些函数返回的是对象本身而非对象的副本。</strong>（成员函数返回调用成员函数的对象本身似乎很有用——博主注）</p>
+</li>
+<li><blockquote>
+<p>一个const成员函数如果以引用的形式返回*this，那么它的返回类型将是常量引用。</p>
+</blockquote>
+</li>
+<li><p>通过区分成员函数是否是<code>const</code>的，我们可以对其进行重载。<strong>因为非常量版本的函数对于常量对象是不可用的，所以我们只能在一个常量对象上调用<code>const</code>成员函数。</strong>另一方面，虽然可以在非常量对象上调用常量版本或非常量版本，但显然此时非常量版本是一个更好的匹配。</p>
+</li>
+<li><p>普通成员函数调用常成员函数时，<code>this</code>指针将临时隐式地从指向非常量的指针转换成指向常量的指针。</p>
+</li>
+<li><p>在实践中，设计良好的C++代码常常包含大量小函数，通过调用这些函数，可以完成一组其他函数的“实际”工作。</p>
+</li>
+<li><p>即使两个类的成员列表完全一致，它们也是不同的类型。对于一个类来说，它的成员和其他任何类（或者任何其他作用域）的成员都不是一回事儿。</p>
+</li>
+<li><p>我们可以把类名作为类型的名字使用，从而直接指向类类型。或者，我们也可以把类名跟在关键字<code>class</code>或<code>struct</code>后面：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">Sales_data iteml;        <span class="comment">// 默认初始化sales_data类型的对象</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sales_data</span> <span class="title">item1</span>;</span>  <span class="comment">// 一条等价的声明</span></span><br></pre></td></tr></table></figure>
+<p>上面这两种使用类类型的方式是等价的，其中第二种方式从C语言继承而来，并且在C++语言中也是合法的。</p>
+</li>
+<li><p>我们也能仅仅声明类而暂时不定义它：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Screen</span>;</span>  <span class="comment">// Screen类的声明</span></span><br></pre></td></tr></table></figure>
+<p>这种声明有时被称作<strong>前向声明</strong>（forward declaration），它向程序中引入了名字Screen并且指明Screen是一种类类型。对于类型Screen来说，在它声明之后定义之前是一个<strong>不完全类型</strong>（incomplete type），<strong>不完全类型只能在非常有限的情景下使用：可以定义指向这种类型的指针或引用，也可以声明（但是不能定义）以不完全类型作为参数或者返回类型的函数</strong>。</p>
+</li>
+<li><p><strong>一个类的成员类型不能是该类自己。然而，一旦一个类的名字出现后，它就被认为是声明过了（但尚未定义），因此类允许包含指向它自身类型的引用或指针</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Link</span> <span class="title">screen</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Screen window;</span><br><span class="line">    Link_screen *next;</span><br><span class="line">    Link_screen *prev;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义一对类X和Y，其中X包含一个指向Y的指针，而Y包含一个类型为X的对象：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Y</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Y *py;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Y</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    X x;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>如果一个类指定了友元类，则友元类的成员函数可以访问此类包括非公有成员在内的所有成员。</strong></p>
+</li>
+<li><p>必须要注意的一点是，<strong>友元关系不存在传递性</strong>。（不能由“A是B的朋友，B是C的朋友”这一事实推导出“A是C的朋友”——博主注）</p>
+<blockquote>
+<p>每个类负责控制自己的友元类或友元函数。</p>
+</blockquote>
+</li>
+<li><p>当把一个成员函数声明成友元时，我们必须明确指出该成员函数属于哪个类：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Screen</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">// Window_mgr::clear必须在Screen类之前被声明</span></span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">Window_mgr::clear</span><span class="params">(ScreenIndex)</span></span>;</span><br><span class="line">    <span class="comment">// Screen类的剩余部分</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>要想令某个成员函数作为友元，我们必须仔细组织程序的结构以满足声明和定义的彼此依赖关系。</strong></p>
+</li>
+<li><p>尽管重载函数的名字相同，但它们仍然是不同的函数。因此，如果一个类想把一组重载函数声明成它的友元，它需要对这组函数中的每一个分别声明。</p>
+</li>
+<li><p><strong>类和非成员函数的声明不是必须在它们的友元声明之前。</strong>当一个名字第一次出现在一个友元声明中时，我们隐式地假定该名字在当前作用域中是可见的。然而，友元本身不一定真的声明在当前作用域中。<strong>甚至就算在类的内部定义该函数，我们也必须在类的外部提供相应的声明从而使得函数可见。换句话说，即使我们仅仅是用声明友元的类的成员调用该友元函数，它也必须是被声明过的</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">X</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123; <span class="comment">/* 友元函数可以定义在类的内部 */</span> &#125;</span><br><span class="line">    X() &#123; f(); &#125;  <span class="comment">// 错误：f还没有被声明</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">h</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">X::g</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> f(); &#125;  <span class="comment">// 错误：f还没有被声明</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>;                    <span class="comment">// 声明那个定义在X中的函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">X::h</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> f(); &#125;  <span class="comment">// 正确：现在f的声明在作用城中了</span></span><br></pre></td></tr></table></figure>
+<p>关于这段代码最重要的是理解<strong>友元声明的作用是影响访问权限，它本身并非普通意义上的声明</strong>。</p>
+</li>
+<li><p>一个类就是一个作用域的事实能够很好地解释为什么当我们在类的外部定义成员函数时必须同时提供类名和函数名。在类的外部，成员的名字被隐藏起来了。一旦遇到了类名，定义的剩余部分就在类的作用域之内了，这里的剩余部分包括参数列表和函数体。结果就是，我们可以直接使用类的其他成员而无须再次授权了。</p>
+</li>
+<li><p>通常情况下，<strong>名字查找</strong>（name lookup）（寻找与所用名字最匹配的声明的过程）的过程比较直截了当：</p>
+<ul>
+<li>首先，<strong>在名字所在的块中寻找其声明语句，只考虑在名字的使用之前出现的声明</strong>；</li>
+<li>如果没找到，继续查找外层作用域；</li>
+<li>如果最终没有找到匹配的声明，则程序报错。<br><br><br>对于定义在类内部的成员函数来说，解析其中名字的方式与上述的查找规则有所区别。类的定义分两步处理：</li>
+<li><strong>首先，编译成员的声明；</strong></li>
+<li><strong>直到类全部可见后才编译函数体。</strong><br><br><br>按照这种两阶段的方式处理类可以简化类代码的组织方式。<strong>因为成员函数体直到整个类可见后才会被处理，所以它能使用类中定义的任何名字。</strong>相反，如果函数的定义和成员的声明被同时处理，那么我们将不得不在成员函数中只使用那些已经出现的名字。</li>
+</ul>
 </li>
 </ol>
 <hr>
