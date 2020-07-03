@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>工作中关于CI持续集成的一些总结</title>
+    <url>/archives/9b577a68.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>CI</category>
+      </categories>
+      <tags>
+        <tag>CI</tag>
+        <tag>持续集成</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C++ Primer - 第7章 类</title>
     <url>/archives/53fe514.html</url>
     <content><![CDATA[<ol>
@@ -352,7 +366,7 @@
 </li>
 <li><p><strong>可变数据成员（mutable data member）</strong> 这种成员永远不是<code>const</code>，即使它属于<code>const</code>对象。<strong>在<code>const</code>函数内可以修改可变数据成员。</strong></p>
 </li>
-<li><p><strong>合成默认构造函数（synthesized default constructor）</strong> 对于没有显式地定义任何构造函数的类，编译器为其创建（合成）的默认构造函数。该构造函数检查类的数据成员，如果提供了类内初始值，就用它执行初始化操作；否则就对数据成员执行默认初始化。</p>
+<li><p><strong>合成默认构造函数（synthesized default constructor）</strong> 对于没有显式地定义任何构造函数的类，编译器为其创建（合成）的默认构造函数。<strong>合成默认构造函数检查类的数据成员，如果提供了类内初始值，就用它执行初始化操作；否则就对数据成员执行默认初始化。当某个数据成员被构造函数初始值列表忽略时，它将以与合成默认构造函数相同的方式隐式初始化。</strong></p>
 </li>
 <li><p><strong>= default</strong> 一种语法形式，位于类内部默认构造函数声明语句的参数列表之后，要求编译器生成构造函数，而不管类是否已经有了其他构造函数。</p>
 </li>
