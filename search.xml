@@ -4,9 +4,9 @@
     <title>工作中关于CI持续集成的一些总结</title>
     <url>/archives/9b577a68.html</url>
     <content><![CDATA[<h1 id="0-背景" class="heading-control"><a href="#0-背景" class="headerlink" title="0 背景"></a>0 背景<a class="heading-anchor" href="#0-背景" aria-hidden="true"></a></h1><p>持续集成（Continuous Integration，简称CI）、持续交付（Continuous Delivery）和持续部署（Continuous Deployment）都是互联网领域优秀且成熟的软件工程实践。关于CI，可以参考阮一峰老师的文章<span class="exturl" data-url="aHR0cDovL3d3dy5ydWFueWlmZW5nLmNvbS9ibG9nLzIwMTUvMDkvY29udGludW91cy1pbnRlZ3JhdGlvbi5odG1s" title="http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html">《持续集成是什么？》<i class="fa fa-external-link"></i></span>进行大致的了解。</p>
-<p>在自动驾驶软件开发过程中，也曾有过一段时间实践了CI平台的搭建，下图是基于GitLab + Jenkins的CI平台工作流程图，基于GitLab + GitLab CI + GitLab Runner的CI平台流程与之类似，工作中采用的后者的方式。<br><img data-src="https://i.loli.net/2020/07/04/d5vLuDa7l9Qfy1t.png" alt="基于GitLab + Jenkins的CI平台工作流程"></p>
+<p>在自动驾驶软件开发过程中，也曾有过一段时间实践了CI平台的搭建，下图是基于GitLab + Jenkins的CI平台工作流程图，基于GitLab + GitLab CI + GitLab Runner的CI平台流程与之类似，博主工作中采用的是后者的方式，两者差别不大。<br><img data-src="https://i.loli.net/2020/07/04/d5vLuDa7l9Qfy1t.png" alt="基于GitLab + Jenkins的CI平台工作流程"></p>
 <h1 id="1-基础概念" class="heading-control"><a href="#1-基础概念" class="headerlink" title="1 基础概念"></a>1 基础概念<a class="heading-anchor" href="#1-基础概念" aria-hidden="true"></a></h1><h2 id="1-1-GitLab" class="heading-control"><a href="#1-1-GitLab" class="headerlink" title="1.1 GitLab"></a>1.1 GitLab<a class="heading-anchor" href="#1-1-GitLab" aria-hidden="true"></a></h2><ul>
-<li>GitLab用于代码托管和版本控制。</li>
+<li>GitLab用于代码托管和版本控制</li>
 </ul>
 <h3 id="1-1-1-搭建GitLab服务器" class="heading-control"><a href="#1-1-1-搭建GitLab服务器" class="headerlink" title="1.1.1 搭建GitLab服务器"></a>1.1.1 搭建GitLab服务器<a class="heading-anchor" href="#1-1-1-搭建GitLab服务器" aria-hidden="true"></a></h3><ul>
 <li>安装依赖</li>
@@ -17,7 +17,7 @@
 </ul>
 <h3 id="1-1-2-创建Group" class="heading-control"><a href="#1-1-2-创建Group" class="headerlink" title="1.1.2 创建Group"></a>1.1.2 创建Group<a class="heading-anchor" href="#1-1-2-创建Group" aria-hidden="true"></a></h3><ul>
 <li>web页面操作（可见性选择“内部”）</li>
-<li>向Group内添加user，并为其分配角色：Reporter、Developer、Owner等</li>
+<li>向Group内添加user，并为其分配角色：<code>Reporter</code> <code>Developer</code> <code>Owner</code>等</li>
 </ul>
 <h3 id="1-1-3-在Group下创建Project" class="heading-control"><a href="#1-1-3-在Group下创建Project" class="headerlink" title="1.1.3 在Group下创建Project"></a>1.1.3 在Group下创建Project<a class="heading-anchor" href="#1-1-3-在Group下创建Project" aria-hidden="true"></a></h3><ul>
 <li>web页面操作（可见性选择“私有”）</li>
@@ -45,7 +45,7 @@
 </li>
 </ul>
 <h3 id="1-1-7-GitLab-Webhook" class="heading-control"><a href="#1-1-7-GitLab-Webhook" class="headerlink" title="1.1.7 GitLab Webhook"></a>1.1.7 GitLab Webhook<a class="heading-anchor" href="#1-1-7-GitLab-Webhook" aria-hidden="true"></a></h3><ul>
-<li>向GitLab Project发起的<code>push</code>、<code>merge</code>、<code>tag</code>等事件可以触发GitLab Webhook访问一个或多个Jenkins回调地址（创建的Jenkins Job），通知Jenkins拉取代码，并执行自动构建、打包等操作</li>
+<li>向GitLab Project发起的<code>push</code> <code>merge</code> <code>tag</code>等事件可以触发GitLab Webhook访问一个或多个Jenkins回调地址（创建的Jenkins Job），通知Jenkins拉取代码，并执行自动构建、打包等操作</li>
 </ul>
 <h3 id="1-1-8-如何配置GitLab-Project与Jenkins-Job间的联系" class="heading-control"><a href="#1-1-8-如何配置GitLab-Project与Jenkins-Job间的联系" class="headerlink" title="1.1.8 如何配置GitLab Project与Jenkins Job间的联系"></a>1.1.8 如何配置GitLab Project与Jenkins Job间的联系<a class="heading-anchor" href="#1-1-8-如何配置GitLab-Project与Jenkins-Job间的联系" aria-hidden="true"></a></h3><ul>
 <li>开放允许外发请求：管理中心 -&gt; 设置 -&gt; 网络 -&gt; 外发请求</li>
@@ -68,11 +68,11 @@
 <li>web页面操作</li>
 </ul>
 <h3 id="1-2-3-pipeline" class="heading-control"><a href="#1-2-3-pipeline" class="headerlink" title="1.2.3 pipeline"></a>1.2.3 pipeline<a class="heading-anchor" href="#1-2-3-pipeline" aria-hidden="true"></a></h3><ul>
-<li>Jenkins可以创建多种形式的构建Job，自由风格的和流水线（Pipeline）式的最为常用，流水线式的构建Job所使用的构建脚本被称为Pipeline Script，使用Groovy语法</li>
+<li>Jenkins可以创建多种形式的构建Job，自由风格的和流水线（Pipeline）式的最为常用，流水线式的构建Job所使用的构建脚本被称为Pipeline Script，使用<code>Groovy</code>语法</li>
 </ul>
 <h3 id="1-2-4-节点的定义" class="heading-control"><a href="#1-2-4-节点的定义" class="headerlink" title="1.2.4 节点的定义"></a>1.2.4 节点的定义<a class="heading-anchor" href="#1-2-4-节点的定义" aria-hidden="true"></a></h3><ul>
-<li>Jenkins服务器与集成服务器都是节点，Jenkins服务器是master节点，集成服务器是slave节点</li>
-<li>每个slave节点需配置节点名、最大任务数、远程根目录、用法（尽量运行或仅构建指定Job）、Jenkins服务器登录节点的方式（Launch method）：SSH、节点IP、凭据（Username + Password）</li>
+<li>Jenkins服务器与集成服务器都是节点，Jenkins服务器是<code>master</code>节点，集成服务器是<code>slave</code>节点</li>
+<li>每个<code>slave</code>节点需配置节点名、最大任务数、远程根目录、用法（尽量运行或仅构建指定Job）、Jenkins服务器登录节点的方式（Launch method）：SSH、节点IP、凭据（Username + Password）</li>
 </ul>
 <h3 id="1-2-5-如何配置多节点分布式构建" class="heading-control"><a href="#1-2-5-如何配置多节点分布式构建" class="headerlink" title="1.2.5 如何配置多节点分布式构建"></a>1.2.5 如何配置多节点分布式构建<a class="heading-anchor" href="#1-2-5-如何配置多节点分布式构建" aria-hidden="true"></a></h3><ul>
 <li>Pipeline Script中不要指定节点名即可</li>
@@ -119,7 +119,7 @@
 <h2 id="1-3-Jfrog-Artifactory" class="heading-control"><a href="#1-3-Jfrog-Artifactory" class="headerlink" title="1.3 Jfrog Artifactory"></a>1.3 Jfrog Artifactory<a class="heading-anchor" href="#1-3-Jfrog-Artifactory" aria-hidden="true"></a></h2><ul>
 <li>用于环境、存放库、软件包、集成版本等二进制文件</li>
 </ul>
-<h3 id="1-3-1-搭建Artifactory服务器" class="heading-control"><a href="#1-3-1-搭建Artifactory服务器" class="headerlink" title="1.3.1 搭建Artifactory服务器"></a>1.3.1 搭建Artifactory服务器<a class="heading-anchor" href="#1-3-1-搭建Artifactory服务器" aria-hidden="true"></a></h3><h4 id="1-3-2-基本操作（如何进行二进制文件版本管理）" class="heading-control"><a href="#1-3-2-基本操作（如何进行二进制文件版本管理）" class="headerlink" title="1.3.2 基本操作（如何进行二进制文件版本管理）"></a>1.3.2 基本操作（如何进行二进制文件版本管理）<a class="heading-anchor" href="#1-3-2-基本操作（如何进行二进制文件版本管理）" aria-hidden="true"></a></h4><ul>
+<h3 id="1-3-1-搭建Artifactory服务器" class="heading-control"><a href="#1-3-1-搭建Artifactory服务器" class="headerlink" title="1.3.1 搭建Artifactory服务器"></a>1.3.1 搭建Artifactory服务器<a class="heading-anchor" href="#1-3-1-搭建Artifactory服务器" aria-hidden="true"></a></h3><h3 id="1-3-2-基本操作（如何进行二进制文件版本管理）" class="heading-control"><a href="#1-3-2-基本操作（如何进行二进制文件版本管理）" class="headerlink" title="1.3.2 基本操作（如何进行二进制文件版本管理）"></a>1.3.2 基本操作（如何进行二进制文件版本管理）<a class="heading-anchor" href="#1-3-2-基本操作（如何进行二进制文件版本管理）" aria-hidden="true"></a></h3><ul>
 <li>web页面操作</li>
 </ul>
 <h3 id="1-3-3-安装插件" class="heading-control"><a href="#1-3-3-安装插件" class="headerlink" title="1.3.3 安装插件"></a>1.3.3 安装插件<a class="heading-anchor" href="#1-3-3-安装插件" aria-hidden="true"></a></h3><h2 id="1-4-集成服务器" class="heading-control"><a href="#1-4-集成服务器" class="headerlink" title="1.4 集成服务器"></a>1.4 集成服务器<a class="heading-anchor" href="#1-4-集成服务器" aria-hidden="true"></a></h2><ul>
@@ -127,9 +127,9 @@
 </ul>
 <h1 id="2-GitLab-GitLab-CI-GitLab-Runner实现CI" class="heading-control"><a href="#2-GitLab-GitLab-CI-GitLab-Runner实现CI" class="headerlink" title="2 GitLab + GitLab CI + GitLab Runner实现CI"></a>2 GitLab + GitLab CI + GitLab Runner实现CI<a class="heading-anchor" href="#2-GitLab-GitLab-CI-GitLab-Runner实现CI" aria-hidden="true"></a></h1><p>一些关键点：</p>
 <ul>
-<li><code>yaml</code>脚本中before_script、after_script及普通job scripts在Runner服务器的路径入口</li>
+<li><code>yaml</code>脚本中<code>before_script</code> <code>after_script</code>及普通job scripts在Runner服务器的路径入口</li>
 <li>将job配置为<code>tag</code>触发</li>
-<li>获取Project最新的<code>tag</code>信息</li>
+<li>获取Project最新的<code>tag</code>信息，可参考此前的文章<a href="https://blog.shipengx.com/archives/732ab93b.html">《如何检出git仓库中最新的tag号》</a></li>
 </ul>
 <h1 id="3-GitLab-Jenkins-Node实现CI" class="heading-control"><a href="#3-GitLab-Jenkins-Node实现CI" class="headerlink" title="3 GitLab + Jenkins + Node实现CI"></a>3 GitLab + Jenkins + Node实现CI<a class="heading-anchor" href="#3-GitLab-Jenkins-Node实现CI" aria-hidden="true"></a></h1><p>当时未进行此类实践。</p>
 <h1 id="4-总结" class="heading-control"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结<a class="heading-anchor" href="#4-总结" aria-hidden="true"></a></h1><h2 id="4-1-GitLab-CI与Jenkins非常相似" class="heading-control"><a href="#4-1-GitLab-CI与Jenkins非常相似" class="headerlink" title="4.1 GitLab CI与Jenkins非常相似"></a>4.1 GitLab CI与Jenkins非常相似<a class="heading-anchor" href="#4-1-GitLab-CI与Jenkins非常相似" aria-hidden="true"></a></h2><ul>
