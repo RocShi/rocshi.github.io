@@ -1207,7 +1207,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-16 00:21:09" itemprop="dateModified" datetime="2020-03-16T00:21:09+08:00">2020-03-16</time>
+                <time title="修改时间：2020-07-05 11:22:06" itemprop="dateModified" datetime="2020-07-05T11:22:06+08:00">2020-07-05</time>
               </span>
 
           <br>
@@ -1260,7 +1260,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <hr>
+          <blockquote>
+<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjY5MzM3Nw==" title="https://zhuanlan.zhihu.com/p/32693377">这里<i class="fa fa-external-link"></i></span>。</p>
+</blockquote>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>惯性测量单元（Inertial Measurement Unit，IMU）用于实时测量被测单元的姿态，通常指由3个加速度计和3个陀螺仪组成的组合单元，之前做平衡车时用到的MPU6050即为一种典型的IMU芯片。加速度计和陀螺仪安装在互相垂直的测量轴上。低精度的IMU可以通过其它方式进行修正，GPS用于修正位置的长期漂移，气压计用于修正高度，磁力计用于修正姿态。在无人驾驶系统中，GPS的更新频率一般为10Hz，IMU的更新频率一般为100Hz，<strong>GPS+IMU的组合定位方式，可以给出频率100Hz的定位输出</strong>。下图是两传感器数据融合的原理图：</p>
+<p><img data-src="https://i.loli.net/2020/07/05/Zaf6FGUL8lywn1s.jpg" alt="GPS+IMU数据融合原理示意图"></p>
+<p>运行在控制器上的软件对信息的处理流程在时间维度上类似下图:</p>
+<p><img data-src="https://i.loli.net/2020/07/05/neSQlfmENR8ko5a.jpg" alt="GPS+IMU数据处理流程示意图"></p>
+<p>在0~100ms的周期中，使用IMU进行9次位置的估计，待新的GPS定位数据进来时，则进行修正，以此实现高频率的定位结果输出。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjY5MzM3Nw==" title="https://zhuanlan.zhihu.com/p/32693377">无人驾驶技术入门（四）| 百度无人车传感器 IMU 深入剖析<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
 
       
     </div>
