@@ -52,16 +52,22 @@
   };
 </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="无人车中的高精地图。">
+<meta property="og:type" content="article">
 <meta property="og:title" content="（十）看不见的“传感器”高精度地图">
 <meta property="og:url" content="https://blog.shipengx.com/archives/4da6b2e.html">
 <meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="无人车中的高精地图。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/ltBXN6fHiMC4x1U.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/u7PRnwCx9HcK56G.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/3TrusBP5JanXZxO.jpg">
 <meta property="article:published_time" content="2018-09-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-15T16:20:48.478Z">
+<meta property="article:modified_time" content="2020-07-05T10:22:43.222Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/07/05/ltBXN6fHiMC4x1U.jpg">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/4da6b2e.html">
 
@@ -258,7 +264,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-16 00:20:48" itemprop="dateModified" datetime="2020-03-16T00:20:48+08:00">2020-03-16</time>
+                <time title="修改时间：2020-07-05 18:22:43" itemprop="dateModified" datetime="2020-07-05T18:22:43+08:00">2020-07-05</time>
               </span>
 
           <br>
@@ -301,6 +307,7 @@
   </span>
   
   
+            <div class="post-description">无人车中的高精地图。</div>
 
         </div>
       </header>
@@ -311,7 +318,27 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <hr>
+        <blockquote>
+<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNzg4NTU3Mw==" title="https://zhuanlan.zhihu.com/p/37885573">这里<i class="fa fa-external-link"></i></span>。</p>
+</blockquote>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>高精度电子地图也称为高分辨率地图（High Definition Map，<strong>HD Map</strong>），是一种专门用于无人驾驶的地图技术。与传统导航地图不同的是，高精度地图除了能提供道路（Road）级别的导航信息外，还能提供车道（Lane）级别的导航信息，高精度地图所提供信息的丰富度和精度远远高于传统导航地图。高精度地图能够为无人驾驶提供的内容包括：<br><strong>(1) 车道级道路信息</strong><br>传统导航地图只能提供道路级（Road）导航信息，如下图所示，道路R1连接着R2，R2同时连接着R3和R4。而高精度地图能够提供车道级（Lane）导航信息，这种导航信息能够精确到车道的连接关系，如下图所示，Lane1连着Lane4，Lane4连着Lane8，Lane3连着Lane6和Lane7，Lane7连着Lane10。</p>
+<p><img data-src="https://i.loli.net/2020/07/05/ltBXN6fHiMC4x1U.jpg" alt="高精地图道路拓扑关系示意图"></p>
+<p>车道级别的道路信息能够解决在路口转弯时，无人车不知道需要转多大的角度和保持多高车速的问题。如下图右侧绿色虚线即为高精度地图为无人车提供的虚拟车道线中心，只要提前变道到正确车道，并沿着虚拟车道线所在的车道行驶，即可顺利通过路口。</p>
+<p><img data-src="https://i.loli.net/2020/07/05/u7PRnwCx9HcK56G.jpg" alt="十字路口处的高精地图道路拓扑关系示意图"></p>
+<p><strong>(2) 道路先验信息</strong><br>先验信息是指某些可以预先采集且短时间内不会改变的信息。仅依靠传感器的信息很难感知：车辆现在是处在高速公路上，还是处在普通城市道路上；无限速牌的路段，车速最高可以开多快；前方道路的曲率；所处路段的GPS信号强弱等。这些都是传感器遇到性能瓶颈时，无法实时得到的信息，而这些信息却都是客观存在的，且短时间内不会随外部事物的变化而变化，因此可以对这些信息预先进行采集，并作为先验信息传给无人车做决策。如下图所示为高精度地图可以为无人车提供的某些先验信息，包括<strong>道路曲率</strong>、<strong>航向</strong>、<strong>坡度</strong>和<strong>横坡角</strong>，这些信息对于无人车的安全性和舒适性都至关重要。</p>
+<p><img data-src="https://i.loli.net/2020/07/05/3TrusBP5JanXZxO.jpg" alt="高精地图所能提供的一些关键先验信息"></p>
+<p><strong>(3) 感兴趣点</strong><br>交通场景中能成为感兴趣点（Point of Interest，<strong>POI</strong>）的目标有很多，比如：用中心点和多个外包络点描述的交通标志牌、地面标志、灯杆、红绿灯、收费站等；用一系列连续点所组成的链状信息描述的路沿、护栏、隧道、龙门架、桥等。高精度地图精确记录了这些POI的经纬度和高度，只要给定无人车的精确位置（经纬高），即可将各个POI相对于自车的位置计算出来。将这些POI信息的相对位置逆向投影到车载前视图像上，如下图所示：</p>
+<p><img data-src alt="Uploading 高精地图所能提供的POI信息.jpg… (aunyufzfh)"></p>
+<p>下图从要素、系统、用途方面更为清晰地囊括了传统地图和高精度地图的侧重点：</p>
+<p><img data-src alt="Uploading 高精地图与传统导航地图的侧重点差异.jpg… (u08ferblm)"></p>
+<p>高精度地图只是一个静态的数据，在实际使用时，不可能一开始就将全国的地图导入到系统中，这样不仅费时，而且会占用系统很多资源。高精度地图的供应商（图商）除了提供高精度地图外，还会提供一个叫做“地图引擎”的软件，由其负责整个高精度地图的资源调度，无人车只需告诉“地图引擎”当前的大致位置及目的地，“地图引擎”便会将这个过程中所要用到的高精度地图数据发布出来，供无人车使用，数据流如下图所示：</p>
+<p><img data-src alt="Uploading 高精地图数据流.jpg… (qtzamayik)"></p>
+<p>高精度地图的应用需要配合高精度的定位。高精度定位，至少包含无人车当<br>前的位置和航向角。位置是指无人车GPS天线安装位置所在的经度、纬度、<br>高度；航向角，是指无人车车头的朝向与正北方向的夹角。</p>
+<p>无人车的定位算法通常采用<strong>粒子滤波</strong>的方法，需要经过多个计算周期后，定<br>位结果才会收敛，进而提供一个相对稳定的定位结果。高精地图所面临的挑<br>战：<strong>地图众包</strong>与国内政策。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNzg4NTU3Mw==" title="https://zhuanlan.zhihu.com/p/37885573">无人驾驶技术入门（十）| 看不见的“传感器”高精度地图<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
 
     </div>
 
@@ -328,10 +355,10 @@
       <div class="popular-posts-title"><a href="\archives\c870f676.html" rel="bookmark">（三）百度无人车传感器GPS深入剖析</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c93d22e0.html" rel="bookmark">（五）没有视觉传感器，还谈什么无人驾驶</a></div>
+      <div class="popular-posts-title"><a href="\archives\fde458ab.html" rel="bookmark">（九）与生俱来的VCU信号</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\fde458ab.html" rel="bookmark">（九）与生俱来的VCU信号</a></div>
+      <div class="popular-posts-title"><a href="\archives\c93d22e0.html" rel="bookmark">（五）没有视觉传感器，还谈什么无人驾驶</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\1e9849c6.html" rel="bookmark">（八）被严重低估的传感器超声波雷达</a></div>
@@ -455,6 +482,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-正文"><span class="nav-text">1 正文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-参考"><span class="nav-text">2 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
