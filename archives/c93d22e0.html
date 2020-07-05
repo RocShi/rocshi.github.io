@@ -59,11 +59,13 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="无人车中的视觉传感器。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/1lInVFJcyxkTYqQ.jpg">
 <meta property="article:published_time" content="2018-09-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-05T03:39:42.680Z">
+<meta property="article:modified_time" content="2020-07-05T03:47:21.122Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/07/05/1lInVFJcyxkTYqQ.jpg">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/c93d22e0.html">
 
@@ -260,7 +262,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-05 11:39:42" itemprop="dateModified" datetime="2020-07-05T11:39:42+08:00">2020-07-05</time>
+                <time title="修改时间：2020-07-05 11:47:21" itemprop="dateModified" datetime="2020-07-05T11:47:21+08:00">2020-07-05</time>
               </span>
 
           <br>
@@ -322,7 +324,7 @@
 <li>单目摄像机</li>
 <li>双目摄像机</li>
 <li>三目摄像机</li>
-<li>环视摄像机。</li>
+<li>环视摄像机</li>
 </ul>
 <p>单目摄像机的算法成熟度更高，然而单目有着两个先天缺陷：</p>
 <ul>
@@ -332,6 +334,7 @@
 <p>双目摄像机可得到图像的深度信息，深度信息的加入，不仅能便于障碍物的分类，更能提高高精度地图定位匹配的精度。</p>
 <p>三目摄像机三个摄像头的感知范围由远及近，分别为前视窄视野摄像头（最远感知250米）、前视主视野摄像头（最远感知150米）及前视宽视野摄像头（最远感知60米）。<strong>三目的缺点是需要同时标定三个摄像机，因而工作量更大，并且软件部分需要关联三个摄像机的数据，对算法要求也很高。</strong></p>
 <p>环视摄像机是安装于车辆前方、车辆左右后视镜下和车辆后方的四个鱼眼镜头，采集到的图像如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/07/05/1lInVFJcyxkTYqQ.jpg" alt="环视相机采集图像结果"></p>
 <p>鱼眼摄像机为了获取足够大的视野，代价是图像的畸变严重。<strong>环视摄像机的感知范围并不大，主要用于车身5~10米内的障碍物检测、自主泊车时的库位线识别等。</strong></p>
 <p>摄像机在无人车上的应用，主要有两大类功能：感知能力和定位能力。摄像机可提供的感知能力有：</p>
 <ul>
@@ -358,16 +361,16 @@
       <div class="popular-posts-title"><a href="\archives\24a03bff.html" rel="bookmark">（七）量产必备的毫米波雷达</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c870f676.html" rel="bookmark">（三）百度无人车传感器GPS深入剖析</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\fde458ab.html" rel="bookmark">（九）与生俱来的VCU信号</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\be221b74.html" rel="bookmark">（六）工程师又爱又恨的激光雷达</a></div>
+      <div class="popular-posts-title"><a href="\archives\c870f676.html" rel="bookmark">（三）百度无人车传感器GPS深入剖析</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\1e9849c6.html" rel="bookmark">（八）被严重低估的传感器超声波雷达</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\be221b74.html" rel="bookmark">（六）工程师又爱又恨的激光雷达</a></div>
     </li>
   </ul>
 
