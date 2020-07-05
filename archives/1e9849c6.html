@@ -60,8 +60,11 @@
 <meta property="og:description" content="无人车中的超声波雷达。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2020/07/05/LCv78AGMEp6YDaR.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/JR2nYKiSkQONeG1.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/AMr1hKexkHDV2P9.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/QBlumz9W68hSgAL.jpg">
 <meta property="article:published_time" content="2018-09-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-05T07:53:42.718Z">
+<meta property="article:modified_time" content="2020-07-05T09:11:33.883Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta name="twitter:card" content="summary">
@@ -262,7 +265,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-05 15:53:42" itemprop="dateModified" datetime="2020-07-05T15:53:42+08:00">2020-07-05</time>
+                <time title="修改时间：2020-07-05 17:11:33" itemprop="dateModified" datetime="2020-07-05T17:11:33+08:00">2020-07-05</time>
               </span>
 
           <br>
@@ -322,9 +325,9 @@
 <h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>常见的超声波雷达有两种：第一种是安装在汽车前后保险杠上的，<strong>用于测量汽车前后障碍物的倒车雷达，称为UPA</strong>，探测距离一般在15~250cm之间，单个UPA的探测范围示意图如下图所示：</p>
 <p><img data-src="https://i.loli.net/2020/07/05/LCv78AGMEp6YDaR.jpg" alt="UPA探测范围示意图"></p>
 <p>第二种是安装在汽车侧面的，<strong>用于测量侧方障碍物距离的超声波雷达，称为APA</strong>，探测距离一般在30~500cm之间，<strong>更远的探测范围使得APA相比于UPA成本更高、功率更大</strong>，单个APA的探测范围示意图如下图所示：</p>
-<p><img data-src alt="Uploading APA探测范围示意图.jpg… (bnzeovi9h)"></p>
+<p><img data-src="https://i.loli.net/2020/07/05/JR2nYKiSkQONeG1.jpg" alt="APA探测范围示意图"></p>
 <p>虽然UPA和APA的探测距离和探测形状区别很大，但是可以用相同的数学模型对二者进行描述，描述一个超声波雷达的状态需要如下四个参数，其数学模型的示意图如下图所示：</p>
-<p><img data-src alt="Uploading 超声波雷达数学模型示意图.jpg… (f0iu5xfeb)"></p>
+<p><img data-src="https://i.loli.net/2020/07/05/AMr1hKexkHDV2P9.jpg" alt="超声波雷达数学模型示意图"></p>
 <ul>
 <li><strong>参数α</strong>：超声波雷达的探测角，一般UPA的探测角为120°左右，APA的探测角比UPA小，大概为80°</li>
 <li><strong>参数β</strong>：超声波雷达检测宽度范围的影响因素之一，该角度一般较小，UPA的β角为20°左右，APA的β角比较特殊，为0°</li>
@@ -332,7 +335,8 @@
 <li><strong>参数D</strong>：超声波雷达的最大量程，UPA的最大量程为2米~2.5米，APA的最大量程至少5米，目前已有超过7m的APA雷达在业内使用</li>
 </ul>
 <p>超声波雷达的特性：<br><strong>(1) 温度敏感</strong><br>由于超声波雷达的探测介质为声波，因而超声波雷达的测距结果具有温度敏感性。</p>
-<p><strong>(2) 无法精确描述障碍物位置</strong><br>超声波雷达在工作时会返回一个探测距离的值，如下图所示。处于A处和B处的障碍物会返回相同的探测距离d，在仅知道探测距离d的情况下，<strong>通过单个雷达的信息无法确定障碍物所处位置</strong>为A还是B<br><img data-src alt="Uploading 单个超声波雷达无法精确描述障碍物位置.jpg… (wp3ju68dd)"></p>
+<p><strong>(2) 无法精确描述障碍物位置</strong><br>超声波雷达在工作时会返回一个探测距离的值，如下图所示。处于A处和B处的障碍物会返回相同的探测距离d，在仅知道探测距离d的情况下，<strong>通过单个雷达的信息无法确定障碍物所处位置</strong>为A还是B</p>
+<p><img data-src="https://i.loli.net/2020/07/05/QBlumz9W68hSgAL.jpg" alt="单个超声波雷达无法精确描述障碍物位置"></p>
 <p>超声波雷达在自动驾驶中可以用于<strong>泊车库位检测</strong>和<strong>高速横向辅助</strong>。</p>
 <h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNTE3NzMxMw==" title="https://zhuanlan.zhihu.com/p/35177313">无人驾驶技术入门（八）| 被严重低估的传感器超声波雷达<i class="fa fa-external-link"></i></span></li>
@@ -351,10 +355,10 @@
       <div class="popular-posts-title"><a href="\archives\24a03bff.html" rel="bookmark">（七）量产必备的毫米波雷达</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c870f676.html" rel="bookmark">（三）百度无人车传感器GPS深入剖析</a></div>
+      <div class="popular-posts-title"><a href="\archives\fde458ab.html" rel="bookmark">（九）与生俱来的VCU信号</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\fde458ab.html" rel="bookmark">（九）与生俱来的VCU信号</a></div>
+      <div class="popular-posts-title"><a href="\archives\c870f676.html" rel="bookmark">（三）百度无人车传感器GPS深入剖析</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c93d22e0.html" rel="bookmark">（五）没有视觉传感器，还谈什么无人驾驶</a></div>
