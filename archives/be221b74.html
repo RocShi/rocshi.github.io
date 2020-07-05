@@ -52,16 +52,25 @@
   };
 </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="无人车中的激光雷达。">
+<meta property="og:type" content="article">
 <meta property="og:title" content="（六）工程师又爱又恨的激光雷达">
 <meta property="og:url" content="https://blog.shipengx.com/archives/be221b74.html">
 <meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="无人车中的激光雷达。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/RKlMH2DNeTUvt3C.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/3CWw6BOQcZqdjI1.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/KwblS9zxAUu3qZ1.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/ipz7hVgqZAlJ6jM.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/TUfqjbNILzdSOaV.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/1znpoZXGjbBQ6tk.jpg">
 <meta property="article:published_time" content="2018-09-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-15T16:20:38.015Z">
+<meta property="article:modified_time" content="2020-07-05T04:46:11.672Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/07/05/RKlMH2DNeTUvt3C.jpg">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/be221b74.html">
 
@@ -258,7 +267,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-16 00:20:38" itemprop="dateModified" datetime="2020-03-16T00:20:38+08:00">2020-03-16</time>
+                <time title="修改时间：2020-07-05 12:46:11" itemprop="dateModified" datetime="2020-07-05T12:46:11+08:00">2020-07-05</time>
               </span>
 
           <br>
@@ -301,6 +310,7 @@
   </span>
   
   
+            <div class="post-description">无人车中的激光雷达。</div>
 
         </div>
       </header>
@@ -311,7 +321,39 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <hr>
+        <blockquote>
+<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMzc5MjQ1MA==" title="https://zhuanlan.zhihu.com/p/33792450">这里<i class="fa fa-external-link"></i></span>。</p>
+</blockquote>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>激光雷达根据安装位置不同，可分为两类：一类安装在无人车四周，其激光线束一般小于8，常见的有单线激光雷达和四线激光雷达；另一类安装在无人车车顶，其激光线束一般不小于16，常见的有16/32/64线激光雷达。</p>
+<p>单束激光发射器在激光雷达内部匀速旋转，每旋转一个小角度即发射一次激光，轮巡一定角度后，就生成了一帧完整的数据。因此，单线激光雷达的数据可视作同一高度的一排点阵，单线激光雷达的数据缺少一个维度，只能描述线状信息，无法描述面。</p>
+<p>四线激光雷达将四个激光发射器进行轮询，一个轮询周期后，得到一帧的激光点云数据，四条点云数据可以组成面状信息，这样就能够获取障碍物的高度信息，根据单帧的点云坐标可得到障碍物的距离信息，根据多帧的点云坐标，对距离信息做微分处理，可得到障碍物的速度信息。16/32/64线的激光雷达的感知范围为360°，常被安装在无人车顶部。N线激光雷达的点云数据结构如下图：</p>
+<p><img data-src="https://i.loli.net/2020/07/05/RKlMH2DNeTUvt3C.jpg" alt="N线点云数据的数据结构"></p>
+<p>每一线点云的数据结构由点云数量和每一个点云的数据结构组成。由于激光雷达的数据采集频率及单线的点云数量都是可以设置的，因此1线点云数据中需要包含点云数量这个信息：</p>
+<p><img data-src="https://i.loli.net/2020/07/05/3CWw6BOQcZqdjI1.jpg" alt="1线点云数据的数据结构"></p>
+<p>最底层的是单个点云的数据结构。点的表达既可以使用theta/r的极坐标表示，也可以使用x/y/z的三维坐标表示。每个点云除了坐标外，还有一个很重要的元素，那就是激光的反射强度。<strong>激光在不同材料上的反射强度是不一样的。</strong>以三维坐标的表示方法为例，单个点云的数据结构如下图所示，X/Y/Z方向的偏移量以激光雷达的安装位置作为原点：</p>
+<p><img data-src="https://i.loli.net/2020/07/05/KwblS9zxAUu3qZ1.jpg" alt="单个点云数据的数据结构"></p>
+<p>激光雷达点云数据的一般处理方式是：</p>
+<ul>
+<li>数据预处理：坐标转换，去噪声等</li>
+<li>聚类：根据点云距离或反射强度</li>
+<li>特征提取</li>
+<li>根据特征进行分类等后处理</li>
+</ul>
+<p>激光雷达能胜任的工作包括：<br><strong>(1) 障碍物检测与分割</strong></p>
+<p><img data-src="https://i.loli.net/2020/07/05/ipz7hVgqZAlJ6jM.jpg" alt="激光雷达障碍物检测分割效果"></p>
+<p>利用高精度地图限定感兴趣区域（Region of Interest，ROI）后，基于全卷积深度神经网络学习点云特征并预测障碍物的相关属性，得到前景障碍物检测与分割。</p>
+<p><strong>(2) 可通行空间检测</strong></p>
+<p><img data-src="https://i.loli.net/2020/07/05/TUfqjbNILzdSOaV.jpg" alt="激光雷达可通行空间检测效果"></p>
+<p>利用高精度地图限定ROI后，可以对ROI内部（比如可行驶道路和交叉口）的点云的高度及连续性信息进行判断点云处是否可通行。</p>
+<p><strong>(3) 高精度电子地图制图与定位</strong></p>
+<p>利用多线激光雷达的点云信息与地图采集车载组合惯导的信息，进行高精地图制作。自动驾驶汽车利用激光点云信息与高精度地图匹配，以此实现高精度定位。</p>
+<p><strong>(4) 障碍物轨迹预测</strong></p>
+<p><img data-src="https://i.loli.net/2020/07/05/1znpoZXGjbBQ6tk.jpg" alt="障碍物轨迹预测"></p>
+<p>根据激光雷达的感知数据与障碍物所在车道的拓扑关系（道路连接关系）进行障碍物的轨迹预测，以此作为无人车规划（避障、换道、超车等）的判断依据。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMzc5MjQ1MA==" title="https://zhuanlan.zhihu.com/p/33792450">无人驾驶技术入门（六）| 工程师又爱又恨的激光雷达<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
 
     </div>
 
@@ -325,13 +367,13 @@
       <div class="popular-posts-title"><a href="\archives\24a03bff.html" rel="bookmark">（七）量产必备的毫米波雷达</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\fde458ab.html" rel="bookmark">（九）与生俱来的VCU信号</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c870f676.html" rel="bookmark">（三）百度无人车传感器GPS深入剖析</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c93d22e0.html" rel="bookmark">（五）没有视觉传感器，还谈什么无人驾驶</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\fde458ab.html" rel="bookmark">（九）与生俱来的VCU信号</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\1e9849c6.html" rel="bookmark">（八）被严重低估的传感器超声波雷达</a></div>
@@ -455,6 +497,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-正文"><span class="nav-text">1 正文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-参考"><span class="nav-text">2 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
