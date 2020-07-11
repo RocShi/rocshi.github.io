@@ -8,7 +8,7 @@
 <p><strong>IMU</strong><br>Inertial Measurement Unit，惯性测量单元，INS里的传感元件，平衡车经常使用的MPU6050/9050就属于很常用的IMU元件。</p>
 <p><strong>GNSS</strong><br>Global Navigation Satellite System，全球导航卫星系统，我国的北斗，美国的GPS，欧洲的Galileo，俄罗斯的Glonass，都属于GNSS的具体实现。</p>
 <p><strong>组合导航定位</strong><br>使用GNSS/INS的组合导航定位技术。GNSS测量结果准确，但更新周期长；INS更新频率高，瞬时结果精确，但存在累积误差。GNSS/INS组合导航定位则综合了两者的优点：GNSS长时间范围内的准确性和INS的高频特性。</p>
-<p><strong>RTK</strong></p>
+<p><strong>RTK</strong><br>Real Time Kinematic，实时动态，载波相位差分技术，是实时处理两个测量站载波相位观测量的差分方法，将基准站采集的载波相位发给用户接收机，进行求差解算坐标。分为单参考站RTK测量和网络RTK测量。</p>
 <hr>
 ]]></content>
       <categories>
