@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://blog.shipengx.com/archives/586b7559.html</loc>
+    <lastmod>2020-07-23</lastmod>
+  </url>  <url>
+    <loc>https://blog.shipengx.com/archives/31e5f0fe.html</loc>
+    <lastmod>2020-07-23</lastmod>
+  </url>  <url>
     <loc>https://blog.shipengx.com/archives/1e9849c6.html</loc>
     <lastmod>2020-07-23</lastmod>
   </url>  <url>
@@ -68,9 +74,6 @@
     <lastmod>2020-07-23</lastmod>
   </url>  <url>
     <loc>https://blog.shipengx.com/archives/77718b2.html</loc>
-    <lastmod>2020-07-23</lastmod>
-  </url>  <url>
-    <loc>https://blog.shipengx.com/archives/586b7559.html</loc>
     <lastmod>2020-07-23</lastmod>
   </url>  <url>
     <loc>https://blog.shipengx.com/archives/f6bc4afa.html</loc>
@@ -156,8 +159,5 @@
   </url>  <url>
     <loc>https://blog.shipengx.com/archives/f390ae43.html</loc>
     <lastmod>2020-07-23</lastmod>
-  </url>  <url>
-    <loc>https://blog.shipengx.com/archives/31e5f0fe.html</loc>
-    <lastmod>2020-04-04</lastmod>
   </url>
 </urlset>
