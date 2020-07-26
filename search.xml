@@ -4,7 +4,46 @@
     <title>C++ Primer - 第9章 顺序容器</title>
     <url>/archives/4c58da67.html</url>
     <content><![CDATA[<ol>
-<li></li>
+<li><p>所有顺序容器都提供了快速顺序访问元素的能力。但是，这些容器在以下方面都有不同的性能折中：</p>
+<ul>
+<li>向容器添加或从容器中删除元素的代价</li>
+<li>非顺序访问容器中元素的代价</li>
+</ul>
+<table>
+ <thead>
+ <tr>
+     <th colspan="2"><center>顺序容器类型</center></th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+     <td>vector</td>
+     <td>可变大小数组。支持快速随机访问。在尾部之外的位置插入或删除元素可能很慢</td>
+ </tr>
+ <tr>
+     <td>deque</td>
+     <td>双端队列。支持快速随机访问。在头尾位置插入/删除速度很快</td>
+ </tr>
+ <tr>
+     <td>list</td>
+     <td>双向链表。只支持双向顺序访问。在list中任何位置进行插入/删除操作速度都很快</td>
+ </tr>
+ <tr>
+     <td>forward_list</td>
+     <td>单向链表。只支持单向顺序访问。在链表任何位置进行插入/删除操作速度都很快</td>
+ </tr>
+ <tr>
+     <td>array</td>
+     <td>固定大小数组。支持快速随机访问。不能添加或删除元素</td>
+ </tr>
+ <tr>
+     <td>string</td>
+     <td>与vector相似的容器，但专门用于保存字符。随机访问快。在尾部插入/删除速度快</td>
+ </tr>
+ </tbody>
+ </table>
+
+</li>
 </ol>
 <hr>
 ]]></content>
