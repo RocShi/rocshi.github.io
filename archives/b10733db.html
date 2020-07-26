@@ -52,16 +52,23 @@
   };
 </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="无人驾驶中的坐标转换。">
+<meta property="og:type" content="article">
 <meta property="og:title" content="（十二）无人驾驶中的坐标转换">
 <meta property="og:url" content="https://blog.shipengx.com/archives/b10733db.html">
 <meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="无人驾驶中的坐标转换。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/07/26/apIGHZdzyu7NX8x.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/26/CQl5je3tbucfqHX.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/26/gsIhPiXezmS1Zx8.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/07/26/wI6ldTOeYgorqnz.jpg">
 <meta property="article:published_time" content="2018-09-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-23T04:30:11.206Z">
+<meta property="article:modified_time" content="2020-07-26T14:13:22.852Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/07/26/apIGHZdzyu7NX8x.jpg">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/b10733db.html">
 
@@ -258,7 +265,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 12:30:11" itemprop="dateModified" datetime="2020-07-23T12:30:11+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-26 22:13:22" itemprop="dateModified" datetime="2020-07-26T22:13:22+08:00">2020-07-26</time>
               </span>
 
           <br>
@@ -295,6 +302,7 @@
   </span>
   
   
+            <div class="post-description">无人驾驶中的坐标转换。</div>
 
         </div>
       </header>
@@ -305,7 +313,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <hr>
+        <blockquote>
+<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80MTI2MzcwMQ==" title="https://zhuanlan.zhihu.com/p/41263701">这里<i class="fa fa-external-link"></i></span></p>
+</blockquote>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>车辆坐标系的原点在车辆后轮轴的中心，如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/07/26/apIGHZdzyu7NX8x.jpg" alt="车辆坐标系示意图"></p>
+<p>以安装在无人车左前方的角雷达（Corner radar）为例，角雷达的安装位置和坐标系如下图绿线所示：</p>
+<p><img data-src="https://i.loli.net/2020/07/26/CQl5je3tbucfqHX.jpg" alt="角雷达坐标系示意图"></p>
+<p>角雷达检测到的障碍物如图中的绿点所示，绿点在雷达坐标系下的坐标为$(x_1, y_1)$，为了便于理解暂不加入$z$方向的坐标，绿点转换到自车坐标系下需要经过一定的数学运算：</p>
+<p><strong>(1) 旋转</strong><br>将角雷达坐标系沿着$z$轴进行一定角度的旋转，新坐标系与自车坐标系相平行，</p>
+<p><img data-src="https://i.loli.net/2020/07/26/gsIhPiXezmS1Zx8.jpg" alt="旋转角雷达坐标系使之与自车坐标系平行"></p>
+<p>障碍物在角雷达坐标系下的坐标为$(x_1, y_1)$，假设障碍物在旋转后的新坐标系下的坐标为$(x_0, y_0)$，安装角度$α$（可测量），做辅助线后如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/07/26/wI6ldTOeYgorqnz.jpg" alt="做辅助线后坐标系示意图"></p>
+<p>根据几何关系可得：</p>
+<script type="math/tex; mode=display">
+x_0=x_1*cosα-y_1*sinα \\
+y_0=x_1*sinα+y_1*cosα</script><p>矩阵形式为：</p>
+<script type="math/tex; mode=display">\begin{bmatrix}
+{x_0} \\
+{y_0}
+\end{bmatrix}
+=\begin{bmatrix}
+{cosα} & {-sinα} \\
+{sinα} & {cosα}
+\end{bmatrix}
+*\begin{bmatrix}
+{x_1} \\
+{y_1}
+\end{bmatrix}</script><h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80MTI2MzcwMQ==" title="https://zhuanlan.zhihu.com/p/41263701">无人驾驶技术入门（十二）| 无人驾驶中的坐标转换<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
 
     </div>
 
@@ -319,13 +357,13 @@
       <div class="popular-posts-title"><a href="\archives\24a03bff.html" rel="bookmark">（七）量产必备的毫米波雷达</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c93d22e0.html" rel="bookmark">（五）没有视觉传感器，还谈什么无人驾驶</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c870f676.html" rel="bookmark">（三）百度无人车传感器GPS深入剖析</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\fde458ab.html" rel="bookmark">（九）与生俱来的VCU信号</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\c93d22e0.html" rel="bookmark">（五）没有视觉传感器，还谈什么无人驾驶</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\1e9849c6.html" rel="bookmark">（八）被严重低估的传感器超声波雷达</a></div>
@@ -449,6 +487,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-正文"><span class="nav-text">1 正文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-参考"><span class="nav-text">2 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -592,6 +631,56 @@
   
 
   
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
