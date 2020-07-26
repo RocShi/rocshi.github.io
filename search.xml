@@ -69,7 +69,52 @@
 </li>
 <li><p><strong>当一个输入流被关联到一个输出流时，任何试图从输入流读取数据的操作都会先刷新关联的输出流。</strong>既可以将一个<code>istream</code>对象关联到另一个<code>ostream</code>，也可以将一个<code>ostream</code>关联到另一个<code>ostream</code>。每个流同时最多关联到一个流，但多个流可以同时关联到同一个<code>ostream</code>。</p>
 </li>
-<li></li>
+<li><p>头文件<code>fstream</code>定义了三个类型来支持文件IO：<code>ifstream</code>从一个给定文件读取数据，<code>ofstream</code>向一个给定文件写入数据，以及<code>fstream</code>可以读写给定文件。</p>
+</li>
+<li><p>创建文件流对象时，我们可以提供文件名（可选的）。如果提供了一个文件名，则<code>open</code>会自动被调用。在新C++标准中，文件名既可以是库类型<code>string</code>对象，也可以是C风格字符数组。</p>
+</li>
+<li><p>在要求使用基类型对象的地方，我们可以用继承类型的对象来替代。这意味着，接受一个<code>iostream</code>类型引用（或指针）参数的函数，可以用一个对应的<code>fstream</code>（或<code>sstream</code>）类型来调用。也就是说，如果有一个函数接受一个<code>ostream&amp;</code>参数，我们在调用这个函数时，可以传递给它一个<code>ofstream</code>对象，对<code>istream&amp;</code>和<code>ifstream</code>也是类似的。</p>
+</li>
+<li><p>如果我们定义了一个空文件流对象，可以随后调用<code>open</code>来将它与文件关联起来。如果调用<code>open</code>失败，<code>failbit</code>会被置位。因为调用<code>open</code>可能失败，进行<code>oppen</code>是否成功的检测通常是一个好习惯。一旦一个文件流已经打开，它就保持与对应文件的关联。实际上，<strong>对一个已经打开的文件流调用<code>open</code>会失败，并会导致<code>failbit</code>被置位。随后的试图使用文件流的操作都会失败</strong>。为了将文件流关联到另外一个文件，必须首先关闭已经关联的文件。一旦文件成功关闭，我们可以打开新的文件。</p>
+</li>
+<li><p>当一个<code>fstream</code>对象离开其作用域时，与之关联的文件会自动关闭。</p>
+</li>
+<li><p>每个流都有一个关联的<code>文件模式</code>（file mode）。如下表所示：</p>
+<table>
+<thead>
+<tr>
+    <th colspan="2">文件模式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td>in</td>
+    <td>以读方式打开</td>
+</tr>
+<tr>
+    <td>out</td>
+    <td>以写方式打开</td>
+</tr>
+<tr>
+    <td>app</td>
+    <td>每次写操作均定位到文件末尾</td>
+</tr>
+<tr>
+    <td>ate</td>
+    <td>打开文件后立即定位到文件末尾</td>
+</tr>
+<tr>
+    <td>trunc</td>
+    <td>截断文件</td>
+</tr>
+<tr>
+    <td>binary</td>
+    <td>以二进制方式进行IO</td>
+</tr>
+</tbody>
+</table>
+
+</li>
 </ol>
 <hr>
 ]]></content>
