@@ -121,8 +121,9 @@
 <li>只有当<code>out</code>也被设定时才可设定<code>trunc</code>模式。</li>
 <li>只要<code>trunc</code>没被设定，就可以设定<code>app</code>模式。在<code>app</code>模式下，即使没有显式指定<code>out</code>模式，文件也总是以输出方式被打开。</li>
 <li>默认情况下，即使我们没有指定<code>trunc</code>，以<code>out</code>模式打开的文件也会被截断。为了保留以<code>out</code>模式打开的文件的内容，我们必须同时指定<code>app</code>模式，这样只会将数据追加写到文件末尾；或者同时指定<code>in</code>模式，即打开文件同时进行读写操作。</li>
-<li><code>ate</code>和<code>binary</code>模式可用于任何类型的文件流对象，且可以与其他任何文件模式组合使用。<br><br><br>每个文件流类型都定义了一个默认的文件模式，当我们未指定文件模式时，就使用此默认模式。与<code>ifstream</code>关联的文件默认以<code>in</code>模式打开；与<code>ofstream</code>关联的文件默认以<code>out</code>模式打开；与<code>fstream</code>关联的文件默认以<code>in</code>和<code>out</code>模式打开。</li>
+<li><code>ate</code>和<code>binary</code>模式可用于任何类型的文件流对象，且可以与其他任何文件模式组合使用。</li>
 </ul>
+<p>每个文件流类型都定义了一个默认的文件模式，当我们未指定文件模式时，就使用此默认模式。与<code>ifstream</code>关联的文件默认以<code>in</code>模式打开；与<code>ofstream</code>关联的文件默认以<code>out</code>模式打开；与<code>fstream</code>关联的文件默认以<code>in</code>和<code>out</code>模式打开。</p>
 </li>
 <li></li>
 </ol>
