@@ -60,7 +60,7 @@
 <meta property="og:description" content="自动驾驶开发中经常涉及到多项式曲线拟合，本文详细描述了使用最小二乘法进行多项式曲线拟合的数学原理，并基于线性代数C++模板库——Eigen进行了优美实现。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-08-01T21:53:43.000Z">
-<meta property="article:modified_time" content="2020-08-02T10:34:34.201Z">
+<meta property="article:modified_time" content="2020-08-02T12:12:05.887Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="最小二乘法">
 <meta property="article:tag" content="多项式曲线拟合">
@@ -255,7 +255,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-08-02 05:53:43 / 修改时间：18:34:34" itemprop="dateCreated datePublished" datetime="2020-08-02T05:53:43+08:00">2020-08-02</time>
+              <time title="创建时间：2020-08-02 05:53:43 / 修改时间：20:12:05" itemprop="dateCreated datePublished" datetime="2020-08-02T05:53:43+08:00">2020-08-02</time>
             </span>
 
           <br>
@@ -306,16 +306,50 @@
         <h1 id="1-最小二乘法概述" class="heading-control"><a href="#1-最小二乘法概述" class="headerlink" title="1 最小二乘法概述"></a>1 最小二乘法概述<a class="heading-anchor" href="#1-最小二乘法概述" aria-hidden="true"></a></h1><p><strong>最小二乘法</strong>通过最小化误差（也叫残差）的平方和寻找数据的最优函数匹配。</p>
 <p>假设给定一组样本数据集 $P(x, y)$，$P$ 内各数据点 $P_i(x_i, y_i) (i=1, 2, 3, …, m)$ 来自于对多项式</p>
 <script type="math/tex; mode=display">
-f(x)=θ_0+θ_1*x+θ_2*x^2+θ_3*x^3+···+θ_n*x^n</script><p>的多次采样，其中</p>
+f(x_i)=θ_0+θ_1*x_i+θ_2*x_i^2+···+θ_n*x_i^n</script><p>的多次采样，其中</p>
 <ul>
-<li>$m 为样本维度$</li>
-<li>$n 为多项式阶数$</li>
+<li>$m$ 为样本维度</li>
+<li>$n$ 为多项式阶数</li>
 <li>$θ_i (i=1, 2, 3, …, m)$ 为多项式的各项系数</li>
 </ul>
 <p>针对样本数据集 $P$ 内各数据点的误差平方和为</p>
 <script type="math/tex; mode=display">
-S=\sum_{i=1}^k[f(x_i)-y_i]^2</script><p>最小二乘法认为，最优函数的各项系数 $θ_i (i=1, 2, 3, …, m)$ 应使得误差平方和 $S$ 取得最小值。最小二乘法与<strong>极大似然估计</strong>有着密切的联系，关于最小二乘法的数学本质可参考文章<span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS9tYWRvY3MvODE4Lmh0bWw=" title="https://www.matongxue.com/madocs/818.html">《如何理解最小二乘法？》<i class="fa fa-external-link"></i></span>。</p>
-<h1 id="2-最小二乘法求解多项式曲线系数向量的数学推导" class="heading-control"><a href="#2-最小二乘法求解多项式曲线系数向量的数学推导" class="headerlink" title="2 最小二乘法求解多项式曲线系数向量的数学推导"></a>2 最小二乘法求解多项式曲线系数向量的数学推导<a class="heading-anchor" href="#2-最小二乘法求解多项式曲线系数向量的数学推导" aria-hidden="true"></a></h1><h2 id="2-1-代数法" class="heading-control"><a href="#2-1-代数法" class="headerlink" title="2.1 代数法"></a>2.1 代数法<a class="heading-anchor" href="#2-1-代数法" aria-hidden="true"></a></h2><h2 id="2-2-矩阵法" class="heading-control"><a href="#2-2-矩阵法" class="headerlink" title="2.2 矩阵法"></a>2.2 矩阵法<a class="heading-anchor" href="#2-2-矩阵法" aria-hidden="true"></a></h2><h1 id="3-代码实现" class="heading-control"><a href="#3-代码实现" class="headerlink" title="3 代码实现"></a>3 代码实现<a class="heading-anchor" href="#3-代码实现" aria-hidden="true"></a></h1><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+S=\sum_{i=1}^m[f(x_i)-y_i]^2</script><p>最小二乘法认为，最优函数的各项系数 $θ_i (i=1, 2, 3, …, m)$ 应使得误差平方和 $S$ 取得极小值。最小二乘法与<strong>极大似然估计</strong>有着密切的联系，关于最小二乘法的数学本质可参考文章<span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS9tYWRvY3MvODE4Lmh0bWw=" title="https://www.matongxue.com/madocs/818.html">《如何理解最小二乘法？》<i class="fa fa-external-link"></i></span>。</p>
+<h1 id="2-最小二乘法求解多项式曲线系数向量的数学推导" class="heading-control"><a href="#2-最小二乘法求解多项式曲线系数向量的数学推导" class="headerlink" title="2 最小二乘法求解多项式曲线系数向量的数学推导"></a>2 最小二乘法求解多项式曲线系数向量的数学推导<a class="heading-anchor" href="#2-最小二乘法求解多项式曲线系数向量的数学推导" aria-hidden="true"></a></h1><h2 id="2-1-代数法" class="heading-control"><a href="#2-1-代数法" class="headerlink" title="2.1 代数法"></a>2.1 代数法<a class="heading-anchor" href="#2-1-代数法" aria-hidden="true"></a></h2><p>由于最优函数的各项系数 $θ_i (i=1, 2, 3, …, m)$ 使得误差平方和 $S$ 取得极小值，因而，对于最优函数而言，其误差平方和 $S$ 对各多项式系i数 $θ_i (i=1, 2, 3, …, m)$ 的偏导数应满足</p>
+<script type="math/tex; mode=display">
+\frac{\partial{S}}{\partial{θ_j}}=\sum_{i=1}^{m}[2(θ_0+θ_1*x_i+θ_2*x_i^2+···+θ_n*x_i^n-y_i)x_i^j]=0</script><p>整理上式，$j$ 分别取 $0,1,2,…,n$ 时，有</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+    mθ_0+(\sum\limits_{i=1}^{m}x_i)θ_1+(\sum\limits_{i=1}^{m}x_i^2)θ_2+\cdots+(\sum\limits_{i=1}^{m}x_i^n)θ_n=\sum\limits_{i=1}^{m}y_i \\
+    (\sum\limits_{i=1}^{m}x_i)θ_0+(\sum\limits_{i=1}^{m}x_i^2)θ_1+(\sum\limits_{i=1}^{m}x_i^3)θ_2+\cdots+(\sum\limits_{i=1}^{m}x_i^{n+1})θ_n=\sum\limits_{i=1}^{m}(x_iy_i) \\
+    (\sum\limits_{i=1}^{m}x_i^2)θ_0+(\sum\limits_{i=1}^{m}x_i^3)θ_1+(\sum\limits_{i=1}^{m}x_i^4)θ_2+\cdots+(\sum\limits_{i=1}^{m}x_i^{n+2})θ_n=\sum\limits_{i=1}^{m}(x_i^2y_i) \\
+    \cdots\cdots \\
+    (\sum\limits_{i=1}^{m}x_i^n)θ_0+(\sum\limits_{i=1}^{m}x_i^{n+1})θ_1+(\sum\limits_{i=1}^{m}x_i^{n+2})θ_2+\cdots+(\sum\limits_{i=1}^{m}x_i^{2n})θ_n=\sum\limits_{i=1}^{m}(x_i^ny_i)
+\end{cases}</script><p>令</p>
+<script type="math/tex; mode=display">
+X=\begin{bmatrix}
+    m & \sum\limits_{i=1}^{m}x_i & \sum\limits_{i=1}^{m}x_i^2 & \cdots & \sum\limits_{i=1}^{m}x_i^n \\
+    \sum\limits_{i=1}^{m}x_i & \sum\limits_{i=1}^{m}x_i^2 & \sum\limits_{i=1}^{m}x_i^3 & \cdots & \sum\limits_{i=1}^{m}x_i^{n+1} \\
+    \sum\limits_{i=1}^{m}x_i^2 & \sum\limits_{i=1}^{m}x_i^3 & \sum\limits_{i=1}^{m}x_i^4 & \cdots & \sum\limits_{i=1}^{m}x_i^{n+2} \\
+    \vdots & \vdots & \vdots &  \ddots & \vdots \\
+    \sum\limits_{i=1}^{m}x_i^n & \sum\limits_{i=1}^{m}x_i^{n+1} & \sum\limits_{i=1}^{m}x_i^{n+2} & \cdots & \sum\limits_{i=1}^{m}x_i^{2n}
+\end{bmatrix},
+\qquad
+θ=\begin{bmatrix}
+    θ_0 \\
+    θ_1 \\
+    θ_2 \\
+    \vdots \\
+    θ_n \\
+\end{bmatrix},
+\qquad
+Y=\begin{bmatrix}
+    \sum\limits_{i=1}^{m}y_i \\
+    \sum\limits_{i=1}^{m}(x_iy_i) \\
+    \sum\limits_{i=1}^{m}(x_i^2y_i) \\
+    \vdots \\
+    \sum\limits_{i=1}^{m}(x_i^ny_i)
+\end{bmatrix}</script><h2 id="2-2-矩阵法" class="heading-control"><a href="#2-2-矩阵法" class="headerlink" title="2.2 矩阵法"></a>2.2 矩阵法<a class="heading-anchor" href="#2-2-矩阵法" aria-hidden="true"></a></h2><h1 id="3-代码实现" class="heading-control"><a href="#3-代码实现" class="headerlink" title="3 代码实现"></a>3 代码实现<a class="heading-anchor" href="#3-代码实现" aria-hidden="true"></a></h1><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS9tYWRvY3MvODE4Lmh0bWw=" title="https://www.matongxue.com/madocs/818.html">如何理解最小二乘法？<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
