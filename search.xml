@@ -53,7 +53,7 @@ Y=\begin{bmatrix}
 <script type="math/tex; mode=display">
 Xθ=Y \\
 \Downarrow \\
-θ=X^-1Y</script><p>使用样本数据集构造出矩阵 $X$ 和矩阵 $Y$ 后，便可由上式解得最优函数的系数向量 $θ$。</p>
+θ=X^{-1}Y</script><p>使用样本数据集构造出矩阵 $X$ 和矩阵 $Y$ 后，便可由上式解得最优函数的系数向量 $θ$。</p>
 <h2 id="2-2-矩阵法" class="heading-control"><a href="#2-2-矩阵法" class="headerlink" title="2.2 矩阵法"></a>2.2 矩阵法<a class="heading-anchor" href="#2-2-矩阵法" aria-hidden="true"></a></h2><h1 id="3-代码实现" class="heading-control"><a href="#3-代码实现" class="headerlink" title="3 代码实现"></a>3 代码实现<a class="heading-anchor" href="#3-代码实现" aria-hidden="true"></a></h1><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS9tYWRvY3MvODE4Lmh0bWw=" title="https://www.matongxue.com/madocs/818.html">如何理解最小二乘法？<i class="fa fa-external-link"></i></span></li>
 </ol>
