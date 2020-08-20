@@ -4,7 +4,7 @@
     <title>从概率到贝叶斯滤波</title>
     <url>/archives/9fb25cec.html</url>
     <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>  <strong>贝叶斯滤波</strong>基于马尔可夫假设与贝叶斯公式，通过上一时刻的状态及当前时刻的输入，对当前时刻的状态作出预测，并通过当前时刻的观测对预测作出更新（也可称为纠正），最终实现对当前时刻状态的估计。贝叶斯滤波思想是卡尔曼滤波、粒子滤波等算法的基础。本文从概率基础概念出发，逐步进行贝叶斯滤波的推导。</p>
-<h1 id="1-概率基础概念拾遗" class="heading-control"><a href="#1-概率基础概念拾遗" class="headerlink" title="1 概率基础概念拾遗"></a>1 概率基础概念拾遗<a class="heading-anchor" href="#1-概率基础概念拾遗" aria-hidden="true"></a></h1><h2 id="随机变量" class="heading-control"><a href="#随机变量" class="headerlink" title="随机变量"></a>随机变量<a class="heading-anchor" href="#随机变量" aria-hidden="true"></a></h2><p>定义在样本空间 $\Omega$ 上的实值函数：</p>
+<h1 id="1-概率基础概念拾遗" class="heading-control"><a href="#1-概率基础概念拾遗" class="headerlink" title="1 概率基础概念拾遗"></a>1 概率基础概念拾遗<a class="heading-anchor" href="#1-概率基础概念拾遗" aria-hidden="true"></a></h1><h2 id="1-1-随机变量" class="heading-control"><a href="#1-1-随机变量" class="headerlink" title="1.1 随机变量"></a>1.1 随机变量<a class="heading-anchor" href="#1-1-随机变量" aria-hidden="true"></a></h2><p>定义在样本空间 $\Omega$ 上的实值函数：</p>
 <script type="math/tex; mode=display">
 X = X(\omega), \omega \in \Omega</script><p>被称为<strong>随机变量</strong>（random variable），如下图所示。$\omega$ 表示样本空间 $\Omega$ 里的随机事件，可能与数量有关（如传感器随机测得的前方障碍物的距离值，随机掷硬币得到的点数），也可能与数量无关（如随机掷硬币的结果可能为正面或反面）。</p>
 <p><img data-src="https://i.loli.net/2020/08/20/14woEzlgNBSYasG.png" alt="随机变量"></p>
@@ -17,17 +17,26 @@ X = X(\omega), \omega \in \Omega</script><p>被称为<strong>随机变量</stron
 <p><img data-src="https://i.loli.net/2020/08/20/cGYlQKnNOWH7Akr.png" alt="离散型随机变量"></p>
 <p>如果随机变量的函数值是实数轴上某个区间上所有的值（也可以是 $(-\infty, +\infty)$ 区间），则称为<strong>连续型随机变量</strong>：</p>
 <p><img data-src="https://i.loli.net/2020/08/20/hDFNsjCcMuAY3tB.png" alt="连续型随机变量"></p>
-<h2 id="概率质量函数" class="heading-control"><a href="#概率质量函数" class="headerlink" title="概率质量函数"></a>概率质量函数<a class="heading-anchor" href="#概率质量函数" aria-hidden="true"></a></h2><p>（Probability Mass Function，PMF）<br>$f_X(x)$<br>$p_X(x)$</p>
-<h2 id="概率密度函数" class="heading-control"><a href="#概率密度函数" class="headerlink" title="概率密度函数"></a>概率密度函数<a class="heading-anchor" href="#概率密度函数" aria-hidden="true"></a></h2><p>（Probability Density Function，PDF）</p>
-<h2 id="累积分布函数" class="heading-control"><a href="#累积分布函数" class="headerlink" title="累积分布函数"></a>累积分布函数<a class="heading-anchor" href="#累积分布函数" aria-hidden="true"></a></h2><p>（Cumulative Distribution Function，CDF）</p>
-<p>联合概率<br>条件概率<br>全概率</p>
-<h1 id="正文" class="heading-control"><a href="#正文" class="headerlink" title="正文"></a>正文<a class="heading-anchor" href="#正文" aria-hidden="true"></a></h1><p>先验概率</p>
+<h2 id="1-2-概率质量函数" class="heading-control"><a href="#1-2-概率质量函数" class="headerlink" title="1.2 概率质量函数"></a>1.2 概率质量函数<a class="heading-anchor" href="#1-2-概率质量函数" aria-hidden="true"></a></h2><p>假设 $X$ 为离散型随机变量，其全部可能取值为 $x_1, x_2, x_3, ···$ ，其<strong>概率分布列</strong>可表述为：</p>
+<p>| —- | ———— | ———— | ———— | —- |<br>| $X$ | $x_1$    | $x_2$    | $x_3$    | ··· |<br>| $P$ | $p(x_1)$ | $p(x_2)$ | $p(x_3)$ | ··· |</p>
+<p>则称：</p>
+<script type="math/tex; mode=display">
+</script><p>概率质量函数（Probability Mass Function，PMF）<br>$f_X(x)$<br>$p_X(x)$</p>
+<h2 id="1-3-概率密度函数" class="heading-control"><a href="#1-3-概率密度函数" class="headerlink" title="1.3 概率密度函数"></a>1.3 概率密度函数<a class="heading-anchor" href="#1-3-概率密度函数" aria-hidden="true"></a></h2><p>概率密度函数（Probability Density Function，PDF）</p>
+<h2 id="累积分布函数" class="heading-control"><a href="#累积分布函数" class="headerlink" title="累积分布函数"></a>累积分布函数<a class="heading-anchor" href="#累积分布函数" aria-hidden="true"></a></h2><p>累积分布函数（Cumulative Distribution Function，CDF）</p>
+<h2 id="联合概率" class="heading-control"><a href="#联合概率" class="headerlink" title="联合概率"></a>联合概率<a class="heading-anchor" href="#联合概率" aria-hidden="true"></a></h2><h2 id="条件概率" class="heading-control"><a href="#条件概率" class="headerlink" title="条件概率"></a>条件概率<a class="heading-anchor" href="#条件概率" aria-hidden="true"></a></h2><h2 id="全概率" class="heading-control"><a href="#全概率" class="headerlink" title="全概率"></a>全概率<a class="heading-anchor" href="#全概率" aria-hidden="true"></a></h2><h1 id="正文" class="heading-control"><a href="#正文" class="headerlink" title="正文"></a>正文<a class="heading-anchor" href="#正文" aria-hidden="true"></a></h1><p>先验概率</p>
 <p>后验概率</p>
 <p>似然概率</p>
 <p>贝叶斯公式</p>
 <p>马尔可夫假设</p>
 <p>贝叶斯滤波推导</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><hr>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS9wYXJ0cy8xNTAzLw==" title="https://www.matongxue.com/parts/1503/">马同学《概率与统计》之随机变量-1<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS9wYXJ0cy8yNDIzLw==" title="https://www.matongxue.com/parts/2423/">马同学《概率与统计》之随机变量-2<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS9wYXJ0cy8xNTEwLw==" title="https://www.matongxue.com/parts/1510/">马同学《概率与统计》之离散与连续<i class="fa fa-external-link"></i></span></li>
+<li></li>
+</ol>
+<hr>
 ]]></content>
       <categories>
         <category>自动驾驶</category>
