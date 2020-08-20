@@ -13,8 +13,10 @@ X = X(\omega), \omega \in \Omega</script><p>被称为<strong>随机变量</stron
 <script type="math/tex; mode=display">
 “X=x”=\{\omega:X(\omega)=x\} \subset \Omega</script><p>类似地，有：</p>
 <script type="math/tex; mode=display">
-“X\leqslant x”=\{\omega:X(\omega)\leqslant x\} \subset \Omega</script><p>如果随机变量的函数值是实数轴上孤立的点（有限个或者无限个），则称为<strong>离散型随机变量</strong>：<br><img data-src="https://i.loli.net/2020/08/20/cGYlQKnNOWH7Akr.png" alt="离散型随机变量"></p>
-<p>如果随机变量的函数值是实数轴上某个区间上所有的值（也可以是 $(-\infty, +\infty)$ 区间），则称为<strong>连续型随机变量</strong></p>
+“X\leqslant x”=\{\omega:X(\omega)\leqslant x\} \subset \Omega</script><p>如果随机变量的函数值是实数轴上孤立的点（有限个或者无限个），则称为<strong>离散型随机变量</strong>：</p>
+<p><img data-src="https://i.loli.net/2020/08/20/cGYlQKnNOWH7Akr.png" alt="离散型随机变量"></p>
+<p>如果随机变量的函数值是实数轴上某个区间上所有的值（也可以是 $(-\infty, +\infty)$ 区间），则称为<strong>连续型随机变量</strong>：</p>
+<p><img data-src="https://i.loli.net/2020/08/20/hDFNsjCcMuAY3tB.png" alt="连续型随机变量"></p>
 <h2 id="概率质量函数" class="heading-control"><a href="#概率质量函数" class="headerlink" title="概率质量函数"></a>概率质量函数<a class="heading-anchor" href="#概率质量函数" aria-hidden="true"></a></h2><p>（Probability Mass Function，PMF）<br>$f_X(x)$<br>$p_X(x)$</p>
 <h2 id="概率密度函数" class="heading-control"><a href="#概率密度函数" class="headerlink" title="概率密度函数"></a>概率密度函数<a class="heading-anchor" href="#概率密度函数" aria-hidden="true"></a></h2><p>（Probability Density Function，PDF）</p>
 <h2 id="累积分布函数" class="heading-control"><a href="#累积分布函数" class="headerlink" title="累积分布函数"></a>累积分布函数<a class="heading-anchor" href="#累积分布函数" aria-hidden="true"></a></h2><p>（Cumulative Distribution Function，CDF）</p>
