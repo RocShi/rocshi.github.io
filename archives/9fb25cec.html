@@ -63,7 +63,7 @@
 <meta property="og:image" content="https://i.loli.net/2020/08/20/cGYlQKnNOWH7Akr.png">
 <meta property="og:image" content="https://i.loli.net/2020/08/20/hDFNsjCcMuAY3tB.png">
 <meta property="article:published_time" content="2020-08-16T10:22:26.000Z">
-<meta property="article:modified_time" content="2020-08-25T10:58:34.031Z">
+<meta property="article:modified_time" content="2020-08-28T14:13:54.739Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
@@ -267,7 +267,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-25 18:58:34" itemprop="dateModified" datetime="2020-08-25T18:58:34+08:00">2020-08-25</time>
+                <time title="修改时间：2020-08-28 22:13:54" itemprop="dateModified" datetime="2020-08-28T22:13:54+08:00">2020-08-28</time>
               </span>
 
           <br>
@@ -411,7 +411,7 @@ f_{X,Y}(x_i, y_i) \ge 0</script></li>
 <p>则称函数 $f_{X,Y}(x,y)$ 为 $(X,Y)$ 的<strong>联合概率质量函数</strong>（Joint Probability Mass Function），又称联合分布列，此定义可以推广到多维离散型随机变量。</p>
 <p><strong>二维离散型随机变量联合概率质量函数的叠加得到了二维离散型随机变量的联合累积分布函数（Joint Cumulative Distribution Function）</strong>：</p>
 <script type="math/tex; mode=display">
-F_{X,Y}(x,y)=P(X\le x, Y\le y)=\sum_{u\le x}\sum_{v\le y}f_{X,Y}(u, v)</script><h3 id="1-5-2-二维连续型随机变量的联合概率密度函数" class="heading-control"><a href="#1-5-2-二维连续型随机变量的联合概率密度函数" class="headerlink" title="1.5.2 二维连续型随机变量的联合概率密度函数"></a>1.5.2 二维连续型随机变量的联合概率密度函数<a class="heading-anchor" href="#1-5-2-二维连续型随机变量的联合概率密度函数" aria-hidden="true"></a></h3><p>若对于二维连续型随机变量 $(X,Y)$ 存在二元函数 $f_{X,Y}(x,y)$ 满足：</p>
+F_{X,Y}(x,y)=P(X\le x, Y\le y)=\sum_{u\le x}\sum_{v\le y}f_{X,Y}(u, v)</script><h3 id="1-5-2-二维连续型随机变量的联合概率密度函数" class="heading-control"><a href="#1-5-2-二维连续型随机变量的联合概率密度函数" class="headerlink" title="1.5.2 二维连续型随机变量的联合概率密度函数"></a>1.5.2 二维连续型随机变量的联合概率密度函数<a class="heading-anchor" href="#1-5-2-二维连续型随机变量的联合概率密度函数" aria-hidden="true"></a></h3><p>若对于二维连续型随机变量 $(X,Y)$，存在二元函数 $f_{X,Y}(x,y)$ 满足：</p>
 <ul>
 <li><p>非负性</p>
 <script type="math/tex; mode=display">
@@ -441,7 +441,8 @@ F_Y(y)=P(Y\le y)=\sum_{v\le y}f_Y(v)=\sum_{v\le y}\sum_{i=1}^{\infty}P(Y=v,X=x_i
 f_X(x)=\int_{-\infty}^{+\infty}f_{X,Y}(x,y)\mathrm{d}y</script><p>称为 $X$ 的<strong>边缘概率密度函数</strong>（Marginal Probability Density Function）。</p>
 <p>类似的：</p>
 <script type="math/tex; mode=display">
-f_Y(y)=\int_{-\infty}^{+\infty}f_{X,Y}(x,y)\mathrm{d}x</script><p>称为 $Y$ 的边缘概率密度函数。<strong>二维连续型随机变量边缘概率密度函数的积分得到了二维连续型随机变量的边缘累积分布函数</strong>：</p>
+f_Y(y)=\int_{-\infty}^{+\infty}f_{X,Y}(x,y)\mathrm{d}x</script><p>称为 $Y$ 的边缘概率密度函数。</p>
+<p><strong>二维连续型随机变量边缘概率密度函数的积分得到了二维连续型随机变量的边缘累积分布函数</strong>：</p>
 <script type="math/tex; mode=display">
 F_X(x)=P(X\le x)=\int_{-\infty}^xf_X(u)\mathrm{d}u=\int_{-\infty}^x\int_{-\infty}^{+\infty}f_{X,Y}(u,y)\mathrm{d}y\mathrm{d}u \\
 F_Y(y)=P(Y\le y)=\int_{-\infty}^yf_Y(v)\mathrm{d}v=\int_{-\infty}^y\int_{-\infty}^{+\infty}f_{X,Y}(x,v)\mathrm{d}x\mathrm{d}v</script><h2 id="1-7-条件概率" class="heading-control"><a href="#1-7-条件概率" class="headerlink" title="1.7 条件概率"></a>1.7 条件概率<a class="heading-anchor" href="#1-7-条件概率" aria-hidden="true"></a></h2><h3 id="1-7-1-二维离散型随机变量的条件概率质量函数" class="heading-control"><a href="#1-7-1-二维离散型随机变量的条件概率质量函数" class="headerlink" title="1.7.1 二维离散型随机变量的条件概率质量函数"></a>1.7.1 二维离散型随机变量的条件概率质量函数<a class="heading-anchor" href="#1-7-1-二维离散型随机变量的条件概率质量函数" aria-hidden="true"></a></h3><p>若 $(X,Y)$ 是二维离散型随机变量，对于固定的 $j$，若 $P(Y=y_j) \ge 0$ ，则称：</p>
@@ -449,9 +450,24 @@ F_Y(y)=P(Y\le y)=\int_{-\infty}^yf_Y(v)\mathrm{d}v=\int_{-\infty}^y\int_{-\infty
 f_{X|Y}(x \ | \ y)=P(X=x \ | \ Y=y)=\frac{P(X=x, Y=y)}{P(Y=y)}=\frac{f_{X,Y}(x,y)}{f_Y(y)}, \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>为 $Y=y$ 条件下离散型随机变量 $X$ 的<strong>条件概率质量函数</strong>（Conditional Probability Mass Function）。</p>
 <p>同样的，对于固定的 $i$，若 $P(X=x_i) \ge 0$，则称：</p>
 <script type="math/tex; mode=display">
-f_{Y|X}(x \ | \ y)=P(Y=y \ | \ X=x)=\frac{P(X=x, Y=y)}{P(X=x)}=\frac{f_{X,Y}(x,y)}{f_X(x)}, \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>为 $X=x$ 条件下离散型随机变量 $Y$ 的条件概率质量函数。<strong>二维离散型随机变量条件概率质量函数的叠加得到了二维离散型随机变量的条件累积分布函数（Conditional Cumulative Distribution Function）</strong>：</p>
+f_{Y|X}(x \ | \ y)=P(Y=y \ | \ X=x)=\frac{P(X=x, Y=y)}{P(X=x)}=\frac{f_{X,Y}(x,y)}{f_X(x)}, \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>为 $X=x$ 条件下离散型随机变量 $Y$ 的条件概率质量函数。</p>
+<p>简言之，对于二维离散型随机变量：</p>
 <script type="math/tex; mode=display">
-F_{X|Y}(x \ | \ y)=P(X\le x \ | \ Y=y)=</script><h3 id="1-7-2-二维连续型随机变量的条件概率密度函数" class="heading-control"><a href="#1-7-2-二维连续型随机变量的条件概率密度函数" class="headerlink" title="1.7.2 二维连续型随机变量的条件概率密度函数"></a>1.7.2 二维连续型随机变量的条件概率密度函数<a class="heading-anchor" href="#1-7-2-二维连续型随机变量的条件概率密度函数" aria-hidden="true"></a></h3><h2 id="1-6-全概率" class="heading-control"><a href="#1-6-全概率" class="headerlink" title="1.6 全概率"></a>1.6 全概率<a class="heading-anchor" href="#1-6-全概率" aria-hidden="true"></a></h2><h2 id="1-7-随机过程" class="heading-control"><a href="#1-7-随机过程" class="headerlink" title="1.7 随机过程"></a>1.7 随机过程<a class="heading-anchor" href="#1-7-随机过程" aria-hidden="true"></a></h2><h1 id="3-贝叶斯滤波" class="heading-control"><a href="#3-贝叶斯滤波" class="headerlink" title="3 贝叶斯滤波"></a>3 贝叶斯滤波<a class="heading-anchor" href="#3-贝叶斯滤波" aria-hidden="true"></a></h1><p>先验概率</p>
+条件概率质量函数=\frac{联合概率质量函数}{边缘概率质量函数}</script><p><strong>二维离散型随机变量条件概率质量函数的叠加得到了二维离散型随机变量的条件累积分布函数（Conditional Cumulative Distribution Function）</strong>：</p>
+<script type="math/tex; mode=display">
+F_{X|Y}(x \ | \ y)=P(X\le x \ | \ Y=y)=\sum_{u\le x}f_{X|Y}(u \ | \ y)=\sum_{u\le x}\frac{f_{X,Y}(u,y)}{f_Y(y)} \\
+F_{Y|X}(y \ | \ x)=P(Y\le y \ | \ X=x)=\sum_{v\le y}f_{Y|X}(v \ | \ x)=\sum_{v\le y}\frac{f_{Y,X}(x,v)}{f_X(x)}</script><h3 id="1-7-2-二维连续型随机变量的条件概率密度函数" class="heading-control"><a href="#1-7-2-二维连续型随机变量的条件概率密度函数" class="headerlink" title="1.7.2 二维连续型随机变量的条件概率密度函数"></a>1.7.2 二维连续型随机变量的条件概率密度函数<a class="heading-anchor" href="#1-7-2-二维连续型随机变量的条件概率密度函数" aria-hidden="true"></a></h3><p>假设二维连续型随机变量 $(X,Y)$ 的联合概率密度函数为 $f_{X,Y}(x,y)$，若对于固定的 $Y=y$，有边缘概率密度函数 $f_Y(y) &gt; 0$，则称函数：</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x\ | \ y)=\frac{f_{X,Y}(x,y)}{f_Y(y)}</script><p>为随机变量 $X$ 在 $Y=y$ 条件下的<strong>条件概率密度函数</strong>（Conditional Probability Density Function）。</p>
+<p>若对于固定的 $X=x$，有边缘概率密度函数 $f_X(x) &gt; 0$，则称函数：</p>
+<script type="math/tex; mode=display">
+f_{Y|X}(y\ | \ x)=\frac{f_{X,Y}(x,y)}{f_X(x)}</script><p>为随机变量 $Y$ 在 $X=x$ 条件下的条件概率密度函数。</p>
+<p>简言之，对于二维连续型随机变量：</p>
+<script type="math/tex; mode=display">
+条件概率密度函数=\frac{联合概率密度函数}{边缘概密度函数}</script><p><strong>二维连续型随机变量条件概率密度函数的积分得到了二维连续型随机变量的条件累积分布函数</strong>：</p>
+<script type="math/tex; mode=display">
+F_{X|Y}(x\ |\ y)=\int_{-\infty}^{x}f_{X|Y}(u\ | \ y)\mathrm{d}u=\int_{-\infty}^{x}\frac{f_{X,Y}(u,y)}{f_Y(y)}\mathrm{d}u \\
+F_{Y|X}(y\ |\ x)=\int_{-\infty}^{y}f_{Y|X}(v\ | \ x)\mathrm{d}v=\int_{-\infty}^{y}\frac{f_{X,Y}(x,v)}{f_X(x)}\mathrm{d}v</script><h2 id="1-8-全概率" class="heading-control"><a href="#1-8-全概率" class="headerlink" title="1.8 全概率"></a>1.8 全概率<a class="heading-anchor" href="#1-8-全概率" aria-hidden="true"></a></h2><h2 id="1-9-随机过程" class="heading-control"><a href="#1-9-随机过程" class="headerlink" title="1.9 随机过程"></a>1.9 随机过程<a class="heading-anchor" href="#1-9-随机过程" aria-hidden="true"></a></h2><h1 id="3-贝叶斯滤波" class="heading-control"><a href="#3-贝叶斯滤波" class="headerlink" title="3 贝叶斯滤波"></a>3 贝叶斯滤波<a class="heading-anchor" href="#3-贝叶斯滤波" aria-hidden="true"></a></h1><p>先验概率</p>
 <p>后验概率</p>
 <p>似然概率</p>
 <p>贝叶斯定理</p>
@@ -487,10 +503,10 @@ F_{X|Y}(x \ | \ y)=P(X\le x \ | \ Y=y)=</script><h3 id="1-7-2-二维连续型随
       <div class="popular-posts-title"><a href="\archives\24a03bff.html" rel="bookmark">（七）量产必备的毫米波雷达</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c870f676.html" rel="bookmark">（三）百度无人车传感器GPS深入剖析</a></div>
+      <div class="popular-posts-title"><a href="\archives\fde458ab.html" rel="bookmark">（九）与生俱来的VCU信号</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\fde458ab.html" rel="bookmark">（九）与生俱来的VCU信号</a></div>
+      <div class="popular-posts-title"><a href="\archives\c93d22e0.html" rel="bookmark">（五）没有视觉传感器，还谈什么无人驾驶</a></div>
     </li>
   </ul>
 
@@ -611,7 +627,7 @@ F_{X|Y}(x \ | \ y)=P(X\le x \ | \ Y=y)=</script><h3 id="1-7-2-二维连续型随
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-概率基础概念拾遗"><span class="nav-text">1 概率基础概念拾遗</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-随机变量"><span class="nav-text">1.1 随机变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-定义"><span class="nav-text">1.1.1 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-离散型随机变量"><span class="nav-text">1.1.2 离散型随机变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-连续型随机变量"><span class="nav-text">1.1.3 连续型随机变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-累积分布函数"><span class="nav-text">1.2 累积分布函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-概率质量函数"><span class="nav-text">1.3 概率质量函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-概率密度函数"><span class="nav-text">1.4 概率密度函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-联合概率"><span class="nav-text">1.5 联合概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-1-二维离散型随机变量的联合概率质量函数"><span class="nav-text">1.5.1 二维离散型随机变量的联合概率质量函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-2-二维连续型随机变量的联合概率密度函数"><span class="nav-text">1.5.2 二维连续型随机变量的联合概率密度函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-边缘概率"><span class="nav-text">1.6 边缘概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-1-二维离散型随机变量的边缘概率质量函数"><span class="nav-text">1.6.1 二维离散型随机变量的边缘概率质量函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-2-二维连续型随机变量的边缘概率密度函数"><span class="nav-text">1.6.2 二维连续型随机变量的边缘概率密度函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-条件概率"><span class="nav-text">1.7 条件概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-1-二维离散型随机变量的条件概率质量函数"><span class="nav-text">1.7.1 二维离散型随机变量的条件概率质量函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-2-二维连续型随机变量的条件概率密度函数"><span class="nav-text">1.7.2 二维连续型随机变量的条件概率密度函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-全概率"><span class="nav-text">1.6 全概率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-随机过程"><span class="nav-text">1.7 随机过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-贝叶斯滤波"><span class="nav-text">3 贝叶斯滤波</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-参考"><span class="nav-text">4 参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-概率基础概念拾遗"><span class="nav-text">1 概率基础概念拾遗</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-随机变量"><span class="nav-text">1.1 随机变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-定义"><span class="nav-text">1.1.1 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-离散型随机变量"><span class="nav-text">1.1.2 离散型随机变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-连续型随机变量"><span class="nav-text">1.1.3 连续型随机变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-累积分布函数"><span class="nav-text">1.2 累积分布函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-概率质量函数"><span class="nav-text">1.3 概率质量函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-概率密度函数"><span class="nav-text">1.4 概率密度函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-联合概率"><span class="nav-text">1.5 联合概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-1-二维离散型随机变量的联合概率质量函数"><span class="nav-text">1.5.1 二维离散型随机变量的联合概率质量函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-2-二维连续型随机变量的联合概率密度函数"><span class="nav-text">1.5.2 二维连续型随机变量的联合概率密度函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-边缘概率"><span class="nav-text">1.6 边缘概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-1-二维离散型随机变量的边缘概率质量函数"><span class="nav-text">1.6.1 二维离散型随机变量的边缘概率质量函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-2-二维连续型随机变量的边缘概率密度函数"><span class="nav-text">1.6.2 二维连续型随机变量的边缘概率密度函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-条件概率"><span class="nav-text">1.7 条件概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-1-二维离散型随机变量的条件概率质量函数"><span class="nav-text">1.7.1 二维离散型随机变量的条件概率质量函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-2-二维连续型随机变量的条件概率密度函数"><span class="nav-text">1.7.2 二维连续型随机变量的条件概率密度函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-全概率"><span class="nav-text">1.8 全概率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-9-随机过程"><span class="nav-text">1.9 随机过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-贝叶斯滤波"><span class="nav-text">3 贝叶斯滤波</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-参考"><span class="nav-text">4 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
