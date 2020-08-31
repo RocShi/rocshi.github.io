@@ -210,14 +210,26 @@ f_{X|Y}(x\ |\ y)=\frac{f_{Y|X}(y \ | \ x)f_X(x)}{\int_{-\infty}^{+\infty}f_{Y|X}
 <h2 id="3-2-先验概率、似然概率与后验概率" class="heading-control"><a href="#3-2-先验概率、似然概率与后验概率" class="headerlink" title="3.2 先验概率、似然概率与后验概率"></a>3.2 先验概率、似然概率与后验概率<a class="heading-anchor" href="#3-2-先验概率、似然概率与后验概率" aria-hidden="true"></a></h2><p>在二维连续型随机变量的贝叶斯公式中，有如下定义：</p>
 <ul>
 <li>$f_X(x)$ 被称为<strong>先验概率密度</strong>（Prior Probability Density），表示根据以往的经验和分析，在本次试验或采样前便可获得的随机变量 $X$ 概率密度；</li>
-<li>$f_{Y|X}(y \ | \ x)$ 被称为<strong>似然概率密度</strong>（Likelihood Probability Density）</li>
-<li>$f_{X|Y}(x\ |\ y)$ 被成为<strong>后验概率密度</strong></li>
+<li>$f_{Y|X}(y \ | \ x)$ 被称为<strong>似然概率密度</strong>（Likelihood Probability Density），表示在状态随机变量 $X$ 取值为 $x$ 的条件下，观测随机变量 $Y$ 取值为 $y$ 的概率密度，状态为因，观测为果，即<strong>由因推果</strong>；</li>
+<li>$f_{X|Y}(x\ |\ y)$ 被成为<strong>后验概率密度</strong>（Posterior Probability Density），表示在观测随机变量 $Y$ 取值为 $y$ 的条件下，状态随机变量 $X$ 取值为 $x$ 的概率密度，状态为因，观测为果，即<strong>由果推因</strong>。</li>
 </ul>
-<p>此外，当 $y$ 为定值时，$\eta=\frac{1}{\int_{-\infty}^{+\infty}f_{Y|X}(y \ | \ x)f_X(x)\mathrm{d}x}$ 为一常数，常被称为贝叶斯公式的<strong>归一化常数</strong>。</p>
+<p>此外，当 $y$ 为定值时，$\eta=[\int_{-\infty}^{+\infty}f_{Y|X}(y \ | \ x)f_X(x)\mathrm{d}x]^{-1}$ 为一常数，常被称为贝叶斯公式的<strong>归一化常数</strong>。</p>
 <p>因此，二维连续型随机变量的贝叶斯公式可表示为：</p>
 <script type="math/tex; mode=display">
-后验概率密度=\eta \ · \ 似然概率密度 \ · \ 先验概率密度</script><h2 id="3-3-再谈似然概率" class="heading-control"><a href="#3-3-再谈似然概率" class="headerlink" title="3.3 再谈似然概率"></a>3.3 再谈似然概率<a class="heading-anchor" href="#3-3-再谈似然概率" aria-hidden="true"></a></h2><p>贝叶斯滤波推导</p>
-<h2 id="贝叶斯滤波的缺点" class="heading-control"><a href="#贝叶斯滤波的缺点" class="headerlink" title="贝叶斯滤波的缺点"></a>贝叶斯滤波的缺点<a class="heading-anchor" href="#贝叶斯滤波的缺点" aria-hidden="true"></a></h2><p>b站忠实的王大头《贝叶斯滤波与卡尔曼滤波》系列教学视频<br><strong>三：</strong> 为什么叫把准确度叫做似然概率？<br>这是从最大似然估计那里借来的概念，似然的英语为likelihood，意思叫可能性，似然还有一个意思叫相似，相像，似然概率表示当我的观测值为10.3时，他最有可能，最像是哪个原因引起的，我们认为是因为有温度客观存在，才有对温度的观测，温度是因，观测是果，如果后验概率是说已知观测结结果问原因的话，似然就是问哪个原因最像是引起观测是10.3这个结果，所以两个后验概率T在条件概率前面，Tm在后面，表示已知结果问原因，而似然概率相反，T在后面，表示已知原因问结果。</p>
+后验概率密度=\eta \times 似然概率密度 \times 先验概率密度</script><h2 id="3-3-再谈似然概率" class="heading-control"><a href="#3-3-再谈似然概率" class="headerlink" title="3.3 再谈似然概率"></a>3.3 再谈似然概率<a class="heading-anchor" href="#3-3-再谈似然概率" aria-hidden="true"></a></h2><p>上文中提到，似然概率密度函数 $f_{Y|X}(y \ | \ x)$ 表示在状态随机变量 $X$ 取值为 $x$ 的条件下，观测随机变量 $Y$ 取值为 $y$ 的概率密度。<strong>似然概率密度函数表征了传感器检测精度</strong>，对于给定的状态条件 $X=x$，观测结果 $Y=y$ 的概率分布通常有三种模型：<br><strong>(1) 等可能型</strong><br>观测值在状态量真值附近呈均匀分布，此时的似然概率密度函数为常数。</p>
+<p><strong>(2) 阶梯型</strong><br>观测值在状态量真值附近呈阶梯分布，此时的似然概率密度函数为分段常数。</p>
+<p><strong>(3) 正态分布型</strong><br>观测值在状态量真值附近呈高斯分布，此时的似然概率密度函数为高斯函数：</p>
+<script type="math/tex; mode=display">
+f_{Y|X}(y \ | \ x)=\frac{1}{\sigma \sqrt{2\pi}}e^{-\frac{(y-x)^2}{2\sigma ^2}}</script><p>贝叶斯滤波依据第三种情形，假定<strong>似然概率密度函数为高斯函数</strong>，此时，似然概率密度函数的均值 $x$ 代表状态量真值，$\sigma$ 代表传感器检测精度范围。贝叶斯滤波同时假定<strong>先验概率密度函数为高斯函数</strong>，此时，可以得到关于二维连续型随机变量贝叶斯公式的一则重要定理，若</p>
+<script type="math/tex; mode=display">
+f_X(x) \sim N(\mu_1, \ \sigma_1^2), \quad f_{Y|X}(y \ | \ x) \sim N(\mu_2, \ \sigma_2^2)</script><p>则</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x \ | \ y) \sim N(\frac{\sigma_2^2}{\sigma_1^2 + \sigma_2^2}\mu_1+\frac{\sigma_1^2}{\sigma_1^2 + \sigma_2^2}\mu_2, \ \frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2})</script><p>由于</p>
+<script type="math/tex; mode=display">
+\frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2}=\frac{\sigma_1^2}{1+\frac{\sigma_1^2}{\sigma_2^2}} < \sigma_1^2</script><p>且</p>
+<script type="math/tex; mode=display">
+\frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2}=\frac{\sigma_2^2}{1+\frac{\sigma_2^2}{\sigma_1^2}} < \sigma_2^2</script><p>故，<strong>后验概率密度函数方差同时小于先验概率密度函数方差和似然概率密度函数方差，系统不确定度降低</strong>。</p>
+<h2 id="贝叶斯滤波推导" class="heading-control"><a href="#贝叶斯滤波推导" class="headerlink" title="贝叶斯滤波推导"></a>贝叶斯滤波推导<a class="heading-anchor" href="#贝叶斯滤波推导" aria-hidden="true"></a></h2><h2 id="贝叶斯滤波的缺点" class="heading-control"><a href="#贝叶斯滤波的缺点" class="headerlink" title="贝叶斯滤波的缺点"></a>贝叶斯滤波的缺点<a class="heading-anchor" href="#贝叶斯滤波的缺点" aria-hidden="true"></a></h2><p>b站忠实的王大头《贝叶斯滤波与卡尔曼滤波》系列教学视频<br><strong>三：</strong> 为什么叫把准确度叫做似然概率？<br>这是从最大似然估计那里借来的概念，似然的英语为likelihood，意思叫可能性，似然还有一个意思叫相似，相像，似然概率表示当我的观测值为10.3时，他最有可能，最像是哪个原因引起的，我们认为是因为有温度客观存在，才有对温度的观测，温度是因，观测是果，如果后验概率是说已知观测结结果问原因的话，似然就是问哪个原因最像是引起观测是10.3这个结果，所以两个后验概率T在条件概率前面，Tm在后面，表示已知结果问原因，而似然概率相反，T在后面，表示已知原因问结果。</p>
 <p><strong>四：</strong> 正态分布的样本均值与方差相互独立</p>
 <h1 id="4-参考" class="heading-control"><a href="#4-参考" class="headerlink" title="4 参考"></a>4 参考<a class="heading-anchor" href="#4-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS8=" title="https://www.matongxue.com/">马同学数学课程<i class="fa fa-external-link"></i></span></li>
