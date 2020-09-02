@@ -322,13 +322,41 @@ f_{X_1}^-(x)=\frac{\mathrm{d}F_{X_1}^-(x)}{\mathrm{d}x}=\int_{-\infty}^{+\infty}
 <script type="math/tex; mode=display">
 f_{X_1}^+(x)=\eta_1·f_{Y_1|X_1}(y_1 \ | \ x)·f_{X_1}^-(x)=\eta_1·f_{R_1}[y_1-h(x)]·f_{X_1}^-(x)</script><p>其中，归一化常数 $\eta_1$为：</p>
 <script type="math/tex; mode=display">
-\eta_1=\left[\int_{-\infty}^{+\infty}f_{Y_1|X_1}(y_1 \ | \ x)f_{X_1}^-(x)\mathrm{d}x\right]^{-1}=\left\langle\int_{-\infty}^{+\infty}f_{R_1}[y_1-h(x)]f_{X_1}^-(x)\mathrm{d}x\right\rangle^{-1}</script><p>推导完毕。</p>
+\eta_1=\left[\int_{-\infty}^{+\infty}f_{Y_1|X_1}(y_1 \ | \ x)f_{X_1}^-(x)\mathrm{d}x\right]^{-1}=\left\{\int_{-\infty}^{+\infty}f_{R_1}[y_1-h(x)]f_{X_1}^-(x)\mathrm{d}x\right\}^{-1}</script><p>推导完毕。</p>
 <h3 id="2-4-4-递推流程" class="heading-control"><a href="#2-4-4-递推流程" class="headerlink" title="2.4.4 递推流程"></a>2.4.4 递推流程<a class="heading-anchor" href="#2-4-4-递推流程" aria-hidden="true"></a></h3><p>由预测步和更新步的推导结果，可得到由 0 时刻状态量随机变量 $X_0$ 的后验概率密度函数 $f_{X_0}^+(x)$ 到 k 时刻状态量随机变量 $X_k$ 的后验概率密度函数 $f_{X_k}^+(x)$ 的递推流程：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
     f_{X_0}^+(x) & \stackrel{预测}{\Longrightarrow} f_{X_1}^-(x)=\int_{-\infty}^{+\infty}f_{Q_1}[x-f(v)]f_{X_0}^+(v)\mathrm{d}v \stackrel{观测更新}{\Longrightarrow} f_{X_1}^+(x)=\eta_1·f_{R_1}[y_1-h(x)]·f_{X_1}^-(x) \\
-    & \stackrel{预测}{\Longrightarrow} f_{X_2}^-(x)=\int_{-\infty}^{+\infty}f_{Q_2}[x-f(v)]f_{X_1}^+(v)\mathrm{d}v \stackrel{观测更新}{\Longrightarrow} f_{X_2}^+(x)=\eta_2·f_{R_2}[y_2-h(x)]·f_{X_2}^-(x) 
-\end{aligned}</script><h3 id="2-4-5-完整算法框架" class="heading-control"><a href="#2-4-5-完整算法框架" class="headerlink" title="2.4.5 完整算法框架"></a>2.4.5 完整算法框架<a class="heading-anchor" href="#2-4-5-完整算法框架" aria-hidden="true"></a></h3><h2 id="2-5-贝叶斯滤波的缺点及解决方法" class="heading-control"><a href="#2-5-贝叶斯滤波的缺点及解决方法" class="headerlink" title="2.5 贝叶斯滤波的缺点及解决方法"></a>2.5 贝叶斯滤波的缺点及解决方法<a class="heading-anchor" href="#2-5-贝叶斯滤波的缺点及解决方法" aria-hidden="true"></a></h2><h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
+    & \stackrel{预测}{\Longrightarrow} f_{X_2}^-(x)=\int_{-\infty}^{+\infty}f_{Q_2}[x-f(v)]f_{X_1}^+(v)\mathrm{d}v \stackrel{观测更新}{\Longrightarrow} f_{X_2}^+(x)=\eta_2·f_{R_2}[y_2-h(x)]·f_{X_2}^-(x) \\
+    & \cdots \\
+    & \stackrel{预测}{\Longrightarrow} f_{X_k}^-(x)=\int_{-\infty}^{+\infty}f_{Q_k}[x-f(v)]f_{X_{k-1}}^+(v)\mathrm{d}v \stackrel{观测更新}{\Longrightarrow} f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)
+\end{aligned}</script><p>其中，归一化常数 $\eta_k$为：</p>
+<script type="math/tex; mode=display">
+\eta_k=\left\{\int_{-\infty}^{+\infty}f_{R_k}[y_k-h(x)]f_{X_k}^-(x)\mathrm{d}x\right\}^{-1}</script><p>最终，可得到 k 时刻状态量随机变量 $X_k$ 的最优估计 $\hat{x}_k$：</p>
+<script type="math/tex; mode=display">
+\hat{x}_k=E[f_{X_k}^+(x)]=\int_{-\infty}^{+\infty}xf_{X_k}^+(x)\mathrm{d}x</script><h3 id="2-4-5-完整算法框架" class="heading-control"><a href="#2-4-5-完整算法框架" class="headerlink" title="2.4.5 完整算法框架"></a>2.4.5 完整算法框架<a class="heading-anchor" href="#2-4-5-完整算法框架" aria-hidden="true"></a></h3><p><strong>(1) 设初值</strong><br>初始 0 时刻状态量随机变量 $X_0$ 的后验概率密度函数：</p>
+<script type="math/tex; mode=display">
+f_{X_0}^+(x)</script><p><strong>(2) 预测步</strong><br>k 时刻状态量随机变量 $X_k$ 的先验概率密度函数：</p>
+<script type="math/tex; mode=display">
+f_{X_k}^-(x)=\int_{-\infty}^{+\infty}f_{Q_k}[x-f(v)]f_{X_{k-1}}^+(v)\mathrm{d}v</script><p><strong>(3) 更新步</strong><br>k 时刻状态量随机变量 $X_k$ 的后验概率密度函数：</p>
+<script type="math/tex; mode=display">
+f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 $\eta_k$：</p>
+<script type="math/tex; mode=display">
+\eta_k=\left\{\int_{-\infty}^{+\infty}f_{R_k}[y_k-h(x)]f_{X_k}^-(x)\mathrm{d}x\right\}^{-1}</script><p><strong>(4) 求解状态量最优估计</strong></p>
+<script type="math/tex; mode=display">
+\hat{x}_k=E[f_{X_k}^+(x)]=\int_{-\infty}^{+\infty}xf_{X_k}^+(x)\mathrm{d}x</script><h2 id="2-5-贝叶斯滤波的缺点及解决方法" class="heading-control"><a href="#2-5-贝叶斯滤波的缺点及解决方法" class="headerlink" title="2.5 贝叶斯滤波的缺点及解决方法"></a>2.5 贝叶斯滤波的缺点及解决方法<a class="heading-anchor" href="#2-5-贝叶斯滤波的缺点及解决方法" aria-hidden="true"></a></h2><h3 id="2-5-1-缺点" class="heading-control"><a href="#2-5-1-缺点" class="headerlink" title="2.5.1 缺点"></a>2.5.1 缺点<a class="heading-anchor" href="#2-5-1-缺点" aria-hidden="true"></a></h3><p>从上文的推导及结论中可以发现，求解预测步中的先验概率密度函数 $f_{X_k}^-(x)$、更新步中的归一化常数 $\eta_k$ 和 最终求解最优估计 $\hat{x}_k$ 时均涉及到<strong>无穷积分</strong>，而大多数情况无法得到解析解，使得贝叶斯滤波算法的直接应用十分有限。</p>
+<h3 id="2-5-2-解决办法" class="heading-control"><a href="#2-5-2-解决办法" class="headerlink" title="2.5.2 解决办法"></a>2.5.2 解决办法<a class="heading-anchor" href="#2-5-2-解决办法" aria-hidden="true"></a></h3><p>为了解决贝叶斯滤波中的无穷积分问题，通常从两个角度出发：<br><strong>(1) 作理想假设</strong></p>
+<ul>
+<li>假设状态转移函数 $f(x)$ 和观察函数 $h(x)$ 均为线性函数，过程噪声随机变量 $Q_k$ 和 观测噪声随机变量 $R_k$ 均服从正态分布：卡尔曼滤波（Kalman Filter）</li>
+<li>假设状态转移函数 $f(x)$ 和观察函数 $h(x)$ 均为非线性函数，过程噪声随机变量 $Q_k$ 和 观测噪声随机变量 $R_k$ 均服从正态分布：扩展卡尔曼滤波（Extended Kalman Filter）和无迹卡尔曼滤波（Unscented Kalman Filter）</li>
+</ul>
+<p><strong>(2) 化连续为离散</strong><br>将无穷积分转化为数值积分，一般有以下方法：</p>
+<ul>
+<li>高斯积分（不常用）</li>
+<li>蒙特卡罗积分（粒子滤波，Particle Filter）</li>
+<li>直方图滤波</li>
+</ul>
+<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS8=" title="https://www.matongxue.com/">马同学数学课程<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS8lRTUlODglODYlRTUlQjglODMlRTUlODclQkQlRTYlOTUlQjAvMjQzOTc5Nj9mcj1hbGFkZGlu" title="https://baike.baidu.com/item/%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0/2439796?fr=aladdin">百度百科 - 分布函数<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS8lRTklOUElOEYlRTYlOUMlQkElRTglQkYlODclRTclQTglOEIvMzY4ODk1P2ZyPWFsYWRkaW4=" title="https://baike.baidu.com/item/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/368895?fr=aladdin">百度百科 - 随机过程<i class="fa fa-external-link"></i></span></li>
