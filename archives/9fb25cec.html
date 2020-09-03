@@ -63,7 +63,7 @@
 <meta property="og:image" content="https://i.loli.net/2020/08/20/cGYlQKnNOWH7Akr.png">
 <meta property="og:image" content="https://i.loli.net/2020/08/20/hDFNsjCcMuAY3tB.png">
 <meta property="article:published_time" content="2020-08-16T10:22:26.000Z">
-<meta property="article:modified_time" content="2020-09-02T12:54:51.938Z">
+<meta property="article:modified_time" content="2020-09-03T04:52:59.359Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
@@ -267,7 +267,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-02 20:54:51" itemprop="dateModified" datetime="2020-09-02T20:54:51+08:00">2020-09-02</time>
+                <time title="修改时间：2020-09-03 12:52:59" itemprop="dateModified" datetime="2020-09-03T12:52:59+08:00">2020-09-03</time>
               </span>
 
           <br>
@@ -332,9 +332,9 @@ X = X(\omega), \omega \in \Omega</script><p>被称为<strong>随机变量</stron
 <h2 id="1-2-累积分布函数" class="heading-control"><a href="#1-2-累积分布函数" class="headerlink" title="1.2 累积分布函数"></a>1.2 累积分布函数<a class="heading-anchor" href="#1-2-累积分布函数" aria-hidden="true"></a></h2><p>设 $X$ 为一个随机变量，对于任意实数 $x$，称：</p>
 <script type="math/tex; mode=display">
 F(x)=P(X\le x)</script><p>为随机变量 $X$ 的<strong>累积分布函数</strong>（Cumulative Distribution Function，CDF），又称概率分布函数，简称<strong>分布函数</strong>。</p>
-<p>若 $X$ 为离散型随机变量，存在函数 $f_X(x)$，则其分布函数满足：</p>
+<p>若 $X$ 为离散型随机变量，存在函数 $f_X(x)$，使其分布函数满足：</p>
 <script type="math/tex; mode=display">
-F(x)=P(X\le x)=\sum_{u \le x}f_X(u)</script><p>若 $X$ 为连续型随机变量，存在函数 $f_X(x)$，则其分布函数满足：</p>
+F(x)=P(X\le x)=\sum_{u \le x}f_X(u)</script><p>若 $X$ 为连续型随机变量，存在函数 $f_X(x)$，使其分布函数满足：</p>
 <script type="math/tex; mode=display">
 F(x)=P(X\le x)= \int_{-\infty}^{x}f_X(u)\mathrm{d}u</script><p>分布函数满足单调性、有界性和右连续性：</p>
 <ul>
@@ -375,7 +375,7 @@ f_X(x)=
     p(x)=P(X=x), \quad x \in \{x_i\}, i=1, 2, 3, ··· \\
     0, \quad 其它
 \end{cases}</script><p>为离散型随机变量 $X$ 的<strong>概率质量函数</strong>（Probability Mass Function，PMF）。</p>
-<p>有时候也如下表示：</p>
+<p>也可采用如下的表示方法：</p>
 <script type="math/tex; mode=display">
 X\sim p(x)</script><p>读作 $X$ 服从 $p(x)$ 的概率分布。</p>
 <p>概率质量函数表征了离散型随机变量在各特定取值上的概率，其满足<strong>非负性</strong>、<strong>规范性</strong>和<strong>可加性</strong>：</p>
@@ -397,7 +397,7 @@ f_X(x) \ge 0</script></li>
 <p>概率密度函数表征了连续型随机变量的输出值在某个确定的取值点<strong>附近</strong>的可能性。连续型随机变量的输出值在某个确定的取值点上的概率为0，但并不代表该事件不会发生。</p>
 <h2 id="1-5-联合概率" class="heading-control"><a href="#1-5-联合概率" class="headerlink" title="1.5 联合概率"></a>1.5 联合概率<a class="heading-anchor" href="#1-5-联合概率" aria-hidden="true"></a></h2><h3 id="1-5-1-二维离散型随机变量的联合概率质量函数" class="heading-control"><a href="#1-5-1-二维离散型随机变量的联合概率质量函数" class="headerlink" title="1.5.1 二维离散型随机变量的联合概率质量函数"></a>1.5.1 二维离散型随机变量的联合概率质量函数<a class="heading-anchor" href="#1-5-1-二维离散型随机变量的联合概率质量函数" aria-hidden="true"></a></h3><p>若二维离散型随机变量 $(X,Y)$ 所有可能的取值为</p>
 <script type="math/tex; mode=display">
-(x_i, y_j), i, j=1, 2, \cdots</script><p>且存在函数 $f_{X,Y}(x,y)$：</p>
+(x_i, y_j), i, j=1, 2, 3, \cdots</script><p>且存在函数 $f_{X,Y}(x,y)$：</p>
 <script type="math/tex; mode=display">
 f_{X,Y}(x,y)=p(x,y)=P(X=x,Y=y), \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>函数 $f_{X,Y}(x,y)$ 满足如下性质（即概率的三大公理）：</p>
 <ul>
@@ -420,12 +420,12 @@ f_{X,Y}(x,y) \ge 0</script></li>
 <script type="math/tex; mode=display">
 \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}f_{X,Y}(x,y)\mathrm{d}x\mathrm{d}y=1</script></li>
 </ul>
-<p>则称函数 $f_{X,Y}(x,y)$ 为 $(X,Y)$ 的<strong>联合概率密度函数</strong>（Joint Probability Density Function），又称联合分布列，此定义可以推广到多维连续型随机变量。</p>
+<p>则称函数 $f_{X,Y}(x,y)$ 为 $(X,Y)$ 的<strong>联合概率密度函数</strong>（Joint Probability Density Function），此定义可以推广到多维连续型随机变量。</p>
 <p><strong>二维连续型随机变量联合概率密度函数的积分得到了二维连续型随机变量的联合累积分布函数</strong>：</p>
 <script type="math/tex; mode=display">
-F_{X,Y}(x,y)=P(X\le x, Y\le y)=\int_{-\infty}^{x}\int_{-\infty}^{y}f_{X,Y}(u,v)\mathrm{d}u\mathrm{d}v</script><h2 id="1-6-边缘概率" class="heading-control"><a href="#1-6-边缘概率" class="headerlink" title="1.6 边缘概率"></a>1.6 边缘概率<a class="heading-anchor" href="#1-6-边缘概率" aria-hidden="true"></a></h2><h3 id="1-6-1-二维离散型随机变量的边缘概率质量函数" class="heading-control"><a href="#1-6-1-二维离散型随机变量的边缘概率质量函数" class="headerlink" title="1.6.1 二维离散型随机变量的边缘概率质量函数"></a>1.6.1 二维离散型随机变量的边缘概率质量函数<a class="heading-anchor" href="#1-6-1-二维离散型随机变量的边缘概率质量函数" aria-hidden="true"></a></h3><p>若二维离散型随机变量 $(X,Y)$ 所有可能的取值为</p>
+F_{X,Y}(x,y)=P(X\le x, Y\le y)=\int_{-\infty}^{x}\int_{-\infty}^{y}f_{X,Y}(u,v)\mathrm{d}v\mathrm{d}u</script><h2 id="1-6-边缘概率" class="heading-control"><a href="#1-6-边缘概率" class="headerlink" title="1.6 边缘概率"></a>1.6 边缘概率<a class="heading-anchor" href="#1-6-边缘概率" aria-hidden="true"></a></h2><h3 id="1-6-1-二维离散型随机变量的边缘概率质量函数" class="heading-control"><a href="#1-6-1-二维离散型随机变量的边缘概率质量函数" class="headerlink" title="1.6.1 二维离散型随机变量的边缘概率质量函数"></a>1.6.1 二维离散型随机变量的边缘概率质量函数<a class="heading-anchor" href="#1-6-1-二维离散型随机变量的边缘概率质量函数" aria-hidden="true"></a></h3><p>若二维离散型随机变量 $(X,Y)$ 所有可能的取值为</p>
 <script type="math/tex; mode=display">
-(x_i, y_j), i, j=1, 2, \cdots</script><p>且联合概率质量函数 $f_{X,Y}(x,y)$ 为：</p>
+(x_i, y_j), i, j=1, 2, 3, \cdots</script><p>且联合概率质量函数 $f_{X,Y}(x,y)$ 为：</p>
 <script type="math/tex; mode=display">
 f_{X,Y}(x,y)=p(x,y)=P(X=x,Y=y), \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>对 $j$ 求和所得的函数：</p>
 <script type="math/tex; mode=display">
@@ -445,10 +445,10 @@ f_Y(y)=\int_{-\infty}^{+\infty}f_{X,Y}(x,y)\mathrm{d}x</script><p>称为 $Y$ 的
 <p><strong>二维连续型随机变量边缘概率密度函数的积分得到了二维连续型随机变量的边缘累积分布函数</strong>：</p>
 <script type="math/tex; mode=display">
 F_X(x)=P(X\le x)=\int_{-\infty}^xf_X(u)\mathrm{d}u=\int_{-\infty}^x\int_{-\infty}^{+\infty}f_{X,Y}(u,y)\mathrm{d}y\mathrm{d}u \\
-F_Y(y)=P(Y\le y)=\int_{-\infty}^yf_Y(v)\mathrm{d}v=\int_{-\infty}^y\int_{-\infty}^{+\infty}f_{X,Y}(x,v)\mathrm{d}x\mathrm{d}v</script><h2 id="1-7-条件概率" class="heading-control"><a href="#1-7-条件概率" class="headerlink" title="1.7 条件概率"></a>1.7 条件概率<a class="heading-anchor" href="#1-7-条件概率" aria-hidden="true"></a></h2><h3 id="1-7-1-二维离散型随机变量的条件概率质量函数" class="heading-control"><a href="#1-7-1-二维离散型随机变量的条件概率质量函数" class="headerlink" title="1.7.1 二维离散型随机变量的条件概率质量函数"></a>1.7.1 二维离散型随机变量的条件概率质量函数<a class="heading-anchor" href="#1-7-1-二维离散型随机变量的条件概率质量函数" aria-hidden="true"></a></h3><p>若 $(X,Y)$ 是二维离散型随机变量，对于固定的 $j$，若 $P(Y=y_j) \ge 0$ ，则称：</p>
+F_Y(y)=P(Y\le y)=\int_{-\infty}^yf_Y(v)\mathrm{d}v=\int_{-\infty}^y\int_{-\infty}^{+\infty}f_{X,Y}(x,v)\mathrm{d}x\mathrm{d}v</script><h2 id="1-7-条件概率" class="heading-control"><a href="#1-7-条件概率" class="headerlink" title="1.7 条件概率"></a>1.7 条件概率<a class="heading-anchor" href="#1-7-条件概率" aria-hidden="true"></a></h2><h3 id="1-7-1-二维离散型随机变量的条件概率质量函数" class="heading-control"><a href="#1-7-1-二维离散型随机变量的条件概率质量函数" class="headerlink" title="1.7.1 二维离散型随机变量的条件概率质量函数"></a>1.7.1 二维离散型随机变量的条件概率质量函数<a class="heading-anchor" href="#1-7-1-二维离散型随机变量的条件概率质量函数" aria-hidden="true"></a></h3><p>若 $(X,Y)$ 是二维离散型随机变量，对于固定的 $j$，若 $P(Y=y_j) &gt; 0$ ，则称：</p>
 <script type="math/tex; mode=display">
 f_{X|Y}(x \ | \ y)=P(X=x \ | \ Y=y)=\frac{P(X=x, Y=y)}{P(Y=y)}=\frac{f_{X,Y}(x,y)}{f_Y(y)}, \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>为 $Y=y$ 条件下离散型随机变量 $X$ 的<strong>条件概率质量函数</strong>（Conditional Probability Mass Function）。</p>
-<p>同样的，对于固定的 $i$，若 $P(X=x_i) \ge 0$，则称：</p>
+<p>同样的，对于固定的 $i$，若 $P(X=x_i) &gt; 0$，则称：</p>
 <script type="math/tex; mode=display">
 f_{Y|X}(y \ | \ x)=P(Y=y \ | \ X=x)=\frac{P(X=x, Y=y)}{P(X=x)}=\frac{f_{X,Y}(x,y)}{f_X(x)}, \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>为 $X=x$ 条件下离散型随机变量 $Y$ 的条件概率质量函数。</p>
 <p>简言之，对于二维离散型随机变量：</p>
@@ -456,7 +456,7 @@ f_{Y|X}(y \ | \ x)=P(Y=y \ | \ X=x)=\frac{P(X=x, Y=y)}{P(X=x)}=\frac{f_{X,Y}(x,y
 条件概率质量函数=\frac{联合概率质量函数}{边缘概率质量函数}</script><p><strong>二维离散型随机变量条件概率质量函数的叠加得到了二维离散型随机变量的条件累积分布函数（Conditional Cumulative Distribution Function）</strong>：</p>
 <script type="math/tex; mode=display">
 F_{X|Y}(x \ | \ y)=P(X\le x \ | \ Y=y)=\sum_{u\le x}f_{X|Y}(u \ | \ y)=\sum_{u\le x}\frac{f_{X,Y}(u,y)}{f_Y(y)} \\
-F_{Y|X}(y \ | \ x)=P(Y\le y \ | \ X=x)=\sum_{v\le y}f_{Y|X}(v \ | \ x)=\sum_{v\le y}\frac{f_{Y,X}(x,v)}{f_X(x)}</script><h3 id="1-7-2-二维连续型随机变量的条件概率密度函数" class="heading-control"><a href="#1-7-2-二维连续型随机变量的条件概率密度函数" class="headerlink" title="1.7.2 二维连续型随机变量的条件概率密度函数"></a>1.7.2 二维连续型随机变量的条件概率密度函数<a class="heading-anchor" href="#1-7-2-二维连续型随机变量的条件概率密度函数" aria-hidden="true"></a></h3><p>假设二维连续型随机变量 $(X,Y)$ 的联合概率密度函数为 $f_{X,Y}(x,y)$，若对于固定的 $Y=y$，有边缘概率密度函数 $f_Y(y) &gt; 0$，则称函数：</p>
+F_{Y|X}(y \ | \ x)=P(Y\le y \ | \ X=x)=\sum_{v\le y}f_{Y|X}(v \ | \ x)=\sum_{v\le y}\frac{f_{X,Y}(x,v)}{f_X(x)}</script><h3 id="1-7-2-二维连续型随机变量的条件概率密度函数" class="heading-control"><a href="#1-7-2-二维连续型随机变量的条件概率密度函数" class="headerlink" title="1.7.2 二维连续型随机变量的条件概率密度函数"></a>1.7.2 二维连续型随机变量的条件概率密度函数<a class="heading-anchor" href="#1-7-2-二维连续型随机变量的条件概率密度函数" aria-hidden="true"></a></h3><p>假设二维连续型随机变量 $(X,Y)$ 的联合概率密度函数为 $f_{X,Y}(x,y)$，若对于固定的 $Y=y$，有边缘概率密度函数 $f_Y(y) &gt; 0$，则称函数：</p>
 <script type="math/tex; mode=display">
 f_{X|Y}(x\ | \ y)=\frac{f_{X,Y}(x,y)}{f_Y(y)}</script><p>为随机变量 $X$ 在 $Y=y$ 条件下的<strong>条件概率密度函数</strong>（Conditional Probability Density Function）。</p>
 <p>若对于固定的 $X=x$，有边缘概率密度函数 $f_X(x) &gt; 0$，则称函数：</p>
@@ -502,7 +502,7 @@ f_Y(y)=\int_{-\infty}^{+\infty}f_{Y|X}(y \ | \ x)f_X(x)\mathrm{d}x</script><h2 i
 f_{X|Y}(x \ | \ y)=\frac{f_{X,Y}(x,y)}{f_Y(y)}=\frac{f_{Y|X}(y \ | \ x)f_X(x)}{\sum\limits_{i=1}^{\infty}f_{Y|X}(y \ | \ x_i)f_X(x_i)}, \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>二维离散型随机变量的贝叶斯公式可通过作图的方式轻松证得。</p>
 <h3 id="2-1-2-二维连续型随机变量的贝叶斯公式" class="heading-control"><a href="#2-1-2-二维连续型随机变量的贝叶斯公式" class="headerlink" title="2.1.2 二维连续型随机变量的贝叶斯公式"></a>2.1.2 二维连续型随机变量的贝叶斯公式<a class="heading-anchor" href="#2-1-2-二维连续型随机变量的贝叶斯公式" aria-hidden="true"></a></h3><p><strong>(1) 结论</strong><br>对于二维连续型随机变量 $(X, Y)$，由其条件概率密度函数与全概率公式，容易得到其贝叶斯公式：</p>
 <script type="math/tex; mode=display">
-f_{X|Y}(x \ | \ y)=\frac{f_{X,Y}(x,y)}{f_Y(y)}=\frac{f_{Y|X}(y \ | \ x)f_X(x)}{\int_{-\infty}^{+\infty}f_{Y|X}(y \ | \ x)f_X(x)\mathrm{d}x}</script><p><strong>(2) 推导</strong><br>二维连续型随机变量的全概率公式无法通过作图的方式推得，下面进行公式推导，首先计算二维连续型随机变量的条件累积分布函数：</p>
+f_{X|Y}(x \ | \ y)=\frac{f_{X,Y}(x,y)}{f_Y(y)}=\frac{f_{Y|X}(y \ | \ x)f_X(x)}{\int_{-\infty}^{+\infty}f_{Y|X}(y \ | \ x)f_X(x)\mathrm{d}x}</script><p><strong>(2) 推导</strong><br>二维连续型随机变量的贝叶斯公式无法通过作图的方式推得，下面进行公式推导，首先计算二维连续型随机变量的条件累积分布函数：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
     F_{X|Y}(x\ |\ y) & = P(X \le x \ | \ Y=y) \\
@@ -521,7 +521,7 @@ f_{X|Y}(x\ |\ y)=\frac{\mathrm{d}F_{X|Y}(x\ |\ y)}{\mathrm{d}x}=\frac{f_{Y|X}(y 
 f_{X|Y}(x\ |\ y)=\frac{f_{Y|X}(y \ | \ x)f_X(x)}{\int_{-\infty}^{+\infty}f_{Y|X}(y \ | \ x)f_X(x)\mathrm{d}x}</script><p>上式即为二维连续型随机变量的贝叶斯公式，推导完毕。</p>
 <h2 id="2-2-先验概率、似然概率与后验概率" class="heading-control"><a href="#2-2-先验概率、似然概率与后验概率" class="headerlink" title="2.2 先验概率、似然概率与后验概率"></a>2.2 先验概率、似然概率与后验概率<a class="heading-anchor" href="#2-2-先验概率、似然概率与后验概率" aria-hidden="true"></a></h2><p>在二维连续型随机变量的贝叶斯公式中，有如下定义：</p>
 <ul>
-<li>$f_X(x)$ 被称为<strong>先验概率密度</strong>（Prior Probability Density），表示根据以往的经验和分析，在本次试验或采样前便可获得的随机变量 $X$ 概率密度；</li>
+<li>$f_X(x)$ 被称为<strong>先验概率密度</strong>（Prior Probability Density），表示根据以往的经验和分析，在本次试验或采样前便可获得的随机变量 $X$ 的概率密度；</li>
 <li>$f_{Y|X}(y \ | \ x)$ 被称为<strong>似然概率密度</strong>（Likelihood Probability Density），表示在状态随机变量 $X$ 取值为 $x$ 的条件下，观测随机变量 $Y$ 取值为 $y$ 的概率密度，状态为因，观测为果，即<strong>由因推果</strong>；</li>
 <li>$f_{X|Y}(x\ |\ y)$ 被成为<strong>后验概率密度</strong>（Posterior Probability Density），表示在观测随机变量 $Y$ 取值为 $y$ 的条件下，状态随机变量 $X$ 取值为 $x$ 的概率密度，状态为因，观测为果，即<strong>由果推因</strong>。</li>
 </ul>
@@ -533,7 +533,7 @@ f_{X|Y}(x\ |\ y)=\frac{f_{Y|X}(y \ | \ x)f_X(x)}{\int_{-\infty}^{+\infty}f_{Y|X}
 <p><strong>(2) 阶梯型</strong><br>观测值在状态量真值附近呈阶梯分布，此时的似然概率密度函数为分段常数。</p>
 <p><strong>(3) 正态分布型</strong><br>观测值在状态量真值附近呈高斯分布，此时的似然概率密度函数为高斯函数：</p>
 <script type="math/tex; mode=display">
-f_{Y|X}(y \ | \ x)=\frac{1}{\sigma \sqrt{2\pi}}e^{-\frac{(y-x)^2}{2\sigma ^2}}</script><p>贝叶斯滤波依据第三种情形，假定<strong>似然概率密度函数为高斯函数</strong>，此时，似然概率密度函数的均值 $x$ 代表状态量真值，$\sigma$ 代表传感器检测精度范围。贝叶斯滤波同时假定<strong>先验概率密度函数为高斯函数</strong>，此时，可以得到关于二维连续型随机变量贝叶斯公式的一则重要定理，若</p>
+f_{Y|X}(y \ | \ x)=\frac{1}{\sigma \sqrt{2\pi}}e^{-\frac{(y-x)^2}{2\sigma ^2}}</script><p>若假定似然概率密度函数为高斯函数，此时，似然概率密度函数的均值 $x$ 代表状态量真值，$\sigma$ 代表传感器检测精度范围。若同时假定先验概率密度函数为高斯函数，即：</p>
 <script type="math/tex; mode=display">
 f_X(x) \sim N(\mu_1, \ \sigma_1^2), \quad f_{Y|X}(y \ | \ x) \sim N(\mu_2, \ \sigma_2^2)</script><p>则</p>
 <script type="math/tex; mode=display">
@@ -542,10 +542,10 @@ f_{X|Y}(x \ | \ y) \sim N(\frac{\sigma_2^2}{\sigma_1^2 + \sigma_2^2}\mu_1+\frac{
 \frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2}=\frac{\sigma_1^2}{1+\frac{\sigma_1^2}{\sigma_2^2}} < \sigma_1^2</script><p>且</p>
 <script type="math/tex; mode=display">
 \frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2}=\frac{\sigma_2^2}{1+\frac{\sigma_2^2}{\sigma_1^2}} < \sigma_2^2</script><p>故，<strong>后验概率密度函数方差既小于先验概率密度函数方差，也小于似然概率密度函数方差，系统不确定度降低</strong>。</p>
-<p>若 $\sigma_1^2 \gg \sigma_2^2$，近似有：</p>
+<p>若 $\sigma_1^2 \gg \sigma_2^2$，则近似有：</p>
 <script type="math/tex; mode=display">
 f_{X|Y}(x \ | \ y) \sim N(\mu_2, \ \sigma_2^2)</script><p>此时，后验倾向于观测。</p>
-<p>若 $\sigma_1^2 \ll \sigma_2^2$，近似有：</p>
+<p>若 $\sigma_1^2 \ll \sigma_2^2$，则近似有：</p>
 <script type="math/tex; mode=display">
 f_{X|Y}(x \ | \ y) \sim N(\mu_1, \ \sigma_1^2)</script><p>此时，后验倾向于先验。</p>
 <h2 id="2-4-贝叶斯滤波推导" class="heading-control"><a href="#2-4-贝叶斯滤波推导" class="headerlink" title="2.4 贝叶斯滤波推导"></a>2.4 贝叶斯滤波推导<a class="heading-anchor" href="#2-4-贝叶斯滤波推导" aria-hidden="true"></a></h2><h3 id="2-4-1-问题建模" class="heading-control"><a href="#2-4-1-问题建模" class="headerlink" title="2.4.1 问题建模"></a>2.4.1 问题建模<a class="heading-anchor" href="#2-4-1-问题建模" aria-hidden="true"></a></h3><p><strong>(1) 问题描述</strong><br>对于某状态量随机变量 $X$，从初始时刻 0 开始，对其进行观测，得到 0 ~ k 时刻的观测值：</p>
@@ -559,7 +559,7 @@ y_0, y_1, y_2, \cdots , y_k</script><p>求解 k 时刻状态量随机变量 $X_k
     X_k=f(X_{k-1})+Q_k \quad \Rightarrow \color{red}{状态方程} \\ 
     Y_k=h(X_k)+R_k \quad \Rightarrow \color{red}{观测方程}
 \end{cases}</script><p>$f(x)$ 被称为状态转移函数，$h(x)$ 被称为观测函数。</p>
-<p>对于 0 时刻的初始状态量随机变量 $X_0$，认为观测值 $y_0$ 即为其真值，其后验概率密度函数即为其先验概率密度函数。我们可以根据经验知识（建模精度和传感器精度）写出 0 时刻的初始状态量随机变量 $X_0$ 的后验概率密度函数 $f_{X_0}^+(x)$、k时刻过程噪声随机变量 $Q_k$ 的概率密度函数 $f_{Q_k}(x)$ 和 k 时刻观测噪声随机变量 $R_k$ 的概率密度函数 $f_{R_k}(x)$。</p>
+<p>对于 0 时刻的初始状态量随机变量 $X_0$，认为观测值 $y_0$ 即为其真值，其后验概率密度函数即为其先验概率密度函数。我们可以根据经验知识（建模精度和传感器精度）写出 0 时刻的初始状态量随机变量 $X_0$ 的后验概率密度函数 $f_{X_0}^+(x)$、k 时刻过程噪声随机变量 $Q_k$ 的概率密度函数 $f_{Q_k}(x)$ 和 k 时刻观测噪声随机变量 $R_k$ 的概率密度函数 $f_{R_k}(x)$。</p>
 <p><strong>(3) 符号定义</strong></p>
 <ul>
 <li><p>各时刻的状态量随机变量</p>
@@ -573,10 +573,10 @@ Y_0, Y_1, Y_2, \cdots , Y_k</script></li>
 y_0, y_1, y_2, \cdots , y_k</script></li>
 <li><p>各时刻的过程噪声随机变量</p>
 <script type="math/tex; mode=display">
-Q_1, Q_2, Q_3, \cdots , Q_k</script></li>
+Q_1, Q_2, \cdots , Q_k</script></li>
 <li><p>各时刻的观测噪声随机变量</p>
 <script type="math/tex; mode=display">
-R_1, R_2, R_3, \cdots , R_k</script></li>
+R_1, R_2, \cdots , R_k</script></li>
 <li><p>各时刻的过程噪声随机变量概率密度函数</p>
 <script type="math/tex; mode=display">
 f_{Q_1}(x), f_{Q_2}(x), \cdots , f_{Q_k}(x)</script></li>
@@ -595,14 +595,14 @@ f_{Y_1|X_1}(y_1 \ | \ x), f_{Y_2|X_2}(y_2 \ | \ x), \cdots , f_{Y_k|X_k}(y_k \ |
 </ul>
 <p><strong>(4) 重要假设</strong></p>
 <ul>
-<li>$X_0$ 分别与 $Q_1, Q_2, Q_3, \cdots , Q_k$ 相互独立；</li>
-<li>$X_0$ 分别与 $R_1, R_2, R_3, \cdots , R_k$ 相互独立；</li>
+<li>$X_0$ 分别与 $Q_1, Q_2, \cdots , Q_k$ 相互独立；</li>
+<li>$X_0$ 分别与 $R_1, R_2, \cdots , R_k$ 相互独立；</li>
 <li>$X_{k-1}$ 与 $Q_k$ 相互独立；</li>
 <li>$X_{k}$ 与 $R_k$ 相互独立。</li>
 </ul>
 <p><strong>(5) 重要定理</strong><br>$\star$ <strong>条件概率里的条件可以作逻辑推导</strong>。例如：</p>
 <script type="math/tex; mode=display">
-P(X=1 \ | \ Y=2,Z=3)=P(X+Y=3 \ | \ Y=2,Z=3)=P(X+Y=3 \ | \ Y=2,Z-Y=1)</script><h3 id="2-4-2-预测步推导" class="heading-control"><a href="#2-4-2-预测步推导" class="headerlink" title="2.4.2 预测步推导"></a>2.4.2 预测步推导<a class="heading-anchor" href="#2-4-2-预测步推导" aria-hidden="true"></a></h3><p>已知 0 时刻状态量随机变量 $X_0$ 的后验概率密度函数 $f_{X_0}^+(x)$，状态转移函数 $f(x)$，1 时刻过程噪声随机变量 $Q_k$ 的概率密度函数 $f_{Q_k}(x)$，求解 1 时刻状态量随机变量 $X_1$ 的先验概率密度函数 $f_{X_1}^-(x)$。</p>
+P(X=1 \ | \ Y=2,Z=3)=P(X+Y=3 \ | \ Y=2,Z=3)=P(X+Y=3 \ | \ Y=2,Z-Y=1)</script><h3 id="2-4-2-预测步推导" class="heading-control"><a href="#2-4-2-预测步推导" class="headerlink" title="2.4.2 预测步推导"></a>2.4.2 预测步推导<a class="heading-anchor" href="#2-4-2-预测步推导" aria-hidden="true"></a></h3><p>已知 0 时刻状态量随机变量 $X_0$ 的后验概率密度函数 $f_{X_0}^+(x)$，状态转移函数 $f(x)$，1 时刻过程噪声随机变量 $Q_1$ 的概率密度函数 $f_{Q_1}(x)$，求解 1 时刻状态量随机变量 $X_1$ 的先验概率密度函数 $f_{X_1}^-(x)$。</p>
 <p>类似二维连续型随机变量贝叶斯公式的推导过程，我们从求解 $X_1$ 的先验累积分布函数 $F_{X_1}^-$ 入手。</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
@@ -619,7 +619,7 @@ P(X=1 \ | \ Y=2,Z=3)=P(X+Y=3 \ | \ Y=2,Z=3)=P(X+Y=3 \ | \ Y=2,Z-Y=1)</script><h3
 \end{aligned}</script><p>故，1 时刻状态量随机变量 $X_1$ 的先验概率密度函数为：</p>
 <script type="math/tex; mode=display">
 f_{X_1}^-(x)=\frac{\mathrm{d}F_{X_1}^-(x)}{\mathrm{d}x}=\int_{-\infty}^{+\infty}f_{Q_1}[x-f(v)]f_{X_0}^+(v)\mathrm{d}v</script><p>推导完毕。</p>
-<h3 id="2-4-3-更新步推导" class="heading-control"><a href="#2-4-3-更新步推导" class="headerlink" title="2.4.3 更新步推导"></a>2.4.3 更新步推导<a class="heading-anchor" href="#2-4-3-更新步推导" aria-hidden="true"></a></h3><p>已知 1 时刻观测量随机变量 $Y_1$ 的取值 $y_1$，求解1时刻状态量随机变量与观测量随机变量的似然概率密度函数 $f_{Y_1|X_1}(y_1 \ | \ x)$，并联合预测步得到的 1 时刻状态量随机变量 $X_1$ 的先验概率密度函数 $f_{X_1}^-(x)$，求解 1 时刻状态量随机变量 $X_1$ 的后验概率密度函数 $f_{X_1}^+(x)$。</p>
+<h3 id="2-4-3-更新步推导" class="heading-control"><a href="#2-4-3-更新步推导" class="headerlink" title="2.4.3 更新步推导"></a>2.4.3 更新步推导<a class="heading-anchor" href="#2-4-3-更新步推导" aria-hidden="true"></a></h3><p>已知 1 时刻观测量随机变量 $Y_1$ 的取值 $y_1$，求解 1 时刻状态量随机变量与观测量随机变量的似然概率密度函数 $f_{Y_1|X_1}(y_1 \ | \ x)$，并联合预测步得到的 1 时刻状态量随机变量 $X_1$ 的先验概率密度函数 $f_{X_1}^-(x)$，求解 1 时刻状态量随机变量 $X_1$ 的后验概率密度函数 $f_{X_1}^+(x)$。</p>
 <p>首先，求解 $f_{Y_1|X_1}(y_1 \ | \ x)$：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
@@ -656,7 +656,7 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
 <script type="math/tex; mode=display">
 \eta_k=\left\{\int_{-\infty}^{+\infty}f_{R_k}[y_k-h(x)]f_{X_k}^-(x)\mathrm{d}x\right\}^{-1}</script><p><strong>(4) 求解状态量最优估计</strong></p>
 <script type="math/tex; mode=display">
-\hat{x}_k=E[f_{X_k}^+(x)]=\int_{-\infty}^{+\infty}xf_{X_k}^+(x)\mathrm{d}x</script><h2 id="2-5-贝叶斯滤波的缺点及解决方法" class="heading-control"><a href="#2-5-贝叶斯滤波的缺点及解决方法" class="headerlink" title="2.5 贝叶斯滤波的缺点及解决方法"></a>2.5 贝叶斯滤波的缺点及解决方法<a class="heading-anchor" href="#2-5-贝叶斯滤波的缺点及解决方法" aria-hidden="true"></a></h2><h3 id="2-5-1-缺点" class="heading-control"><a href="#2-5-1-缺点" class="headerlink" title="2.5.1 缺点"></a>2.5.1 缺点<a class="heading-anchor" href="#2-5-1-缺点" aria-hidden="true"></a></h3><p>从上文的推导及结论中可以发现，求解预测步中的先验概率密度函数 $f_{X_k}^-(x)$、更新步中的归一化常数 $\eta_k$、最终的最优估计 $\hat{x}_k$ 时均涉及到<strong>无穷积分</strong>，而大多数情况无法得到解析解，使得贝叶斯滤波算法的直接应用十分有限。</p>
+\hat{x}_k=E[f_{X_k}^+(x)]=\int_{-\infty}^{+\infty}xf_{X_k}^+(x)\mathrm{d}x</script><h2 id="2-5-贝叶斯滤波的缺点及解决方法" class="heading-control"><a href="#2-5-贝叶斯滤波的缺点及解决方法" class="headerlink" title="2.5 贝叶斯滤波的缺点及解决方法"></a>2.5 贝叶斯滤波的缺点及解决方法<a class="heading-anchor" href="#2-5-贝叶斯滤波的缺点及解决方法" aria-hidden="true"></a></h2><h3 id="2-5-1-缺点" class="heading-control"><a href="#2-5-1-缺点" class="headerlink" title="2.5.1 缺点"></a>2.5.1 缺点<a class="heading-anchor" href="#2-5-1-缺点" aria-hidden="true"></a></h3><p>从上文的推导及结论中可以发现，求解预测步中的先验概率密度函数 $f_{X_k}^-(x)$、更新步中的归一化常数 $\eta_k$、最终的最优估计 $\hat{x}_k$ 时均涉及到<strong>无穷积分</strong>，而大多数情况无法得到解析解，使得贝叶斯滤波算法的直接应用十分困难。</p>
 <h3 id="2-5-2-解决办法" class="heading-control"><a href="#2-5-2-解决办法" class="headerlink" title="2.5.2 解决办法"></a>2.5.2 解决办法<a class="heading-anchor" href="#2-5-2-解决办法" aria-hidden="true"></a></h3><p>为了解决贝叶斯滤波中的无穷积分问题，通常从两个角度出发：<br><strong>(1) 作理想假设</strong></p>
 <ul>
 <li>假设状态转移函数 $f(x)$ 和观测函数 $h(x)$ 均为线性函数，过程噪声随机变量 $Q_k$ 和 观测噪声随机变量 $R_k$ 均服从正态分布——卡尔曼滤波（Kalman Filter）</li>
