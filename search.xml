@@ -14,15 +14,21 @@ f_{Y_k|X_k}(y_k \ | \ x) = f_{R_k}[y_k-h(x)]</script><p><strong>(3) 后验概率
 f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>其中，后验概率密度函数中的归一化常数 $\eta_k$ 为：</p>
 <script type="math/tex; mode=display">
 \eta_k=\left\{\int_{-\infty}^{+\infty}f_{R_k}[y_k-h(x)]f_{X_k}^-(x)\mathrm{d}x\right\}^{-1}</script><h1 id="2-卡尔曼滤波的六个假设" class="heading-control"><a href="#2-卡尔曼滤波的六个假设" class="headerlink" title="2 卡尔曼滤波的六个假设"></a>2 卡尔曼滤波的六个假设<a class="heading-anchor" href="#2-卡尔曼滤波的六个假设" aria-hidden="true"></a></h1><p>卡尔曼滤波以贝叶斯滤波为理论基础，并作了六个前提假设：</p>
-<ul>
-<li>状态量服从正态分布</li>
-<li>观测量服从正态分布</li>
-<li>过程噪声服从标准正态分布</li>
-<li>观测噪声服从标准正态分布</li>
-<li>状态转移函数为线性函数</li>
-<li>观测函数为线性函数</li>
-</ul>
-<h1 id="3-卡尔曼滤波的五个公式" class="heading-control"><a href="#3-卡尔曼滤波的五个公式" class="headerlink" title="3 卡尔曼滤波的五个公式"></a>3 卡尔曼滤波的五个公式<a class="heading-anchor" href="#3-卡尔曼滤波的五个公式" aria-hidden="true"></a></h1><p>公式推导<br>    留数定理<br>    傅里叶变换+卷积<br>    Mathematica<br>    先验概率密度函数推导，从函数形式得到先验均值和方差<br>    后验概率密度函数推导，从函数形式得到后验均值、方差和卡尔曼增益<br>卡尔曼滤波的5个公式<br>    先验均值<br>    先验方差<br>    卡尔曼增益<br>    后验均值<br>    后验方差</p>
+<p><strong>(1) 假设一：状态量服从正态分布</strong></p>
+<script type="math/tex; mode=display">
+X \sim \Nu(\mu_X, \ \sigma_X^2)</script><p><strong>(2) 假设二：观测量服从正态分布</strong></p>
+<script type="math/tex; mode=display">
+Y \sim \Nu(\mu_Y, \ \sigma_Y^2)</script><p><strong>(3) 假设三：过程噪声服从标准正态分布</strong></p>
+<script type="math/tex; mode=display">
+Q \sim \Nu(0, \ \sigma_Q^2)</script><p><strong>(4) 假设四：观测噪声服从标准正态分布</strong></p>
+<script type="math/tex; mode=display">
+Q \sim \Nu(0, \ \sigma_R^2)</script><p><strong>(5) 假设五：状态转移函数为线性函数</strong></p>
+<script type="math/tex; mode=display">
+f(x)=F*x+B*u</script><p>其中，$F$ 为状态转移比例项，对于单一状态量的卡尔曼滤波中，$F$ 为一常数；$B$ 为控制比例项，$u$ 为控制量。</p>
+<p><strong>(6) 假设六：观测函数为线性函数</strong></p>
+<script type="math/tex; mode=display">
+h(x)=H*x</script><p>$H$ 为观测比例项，对于单一状态量的卡尔曼滤波中，$H$ 为一常数。</p>
+<h1 id="3-卡尔曼滤波的五个公式" class="heading-control"><a href="#3-卡尔曼滤波的五个公式" class="headerlink" title="3 卡尔曼滤波的五个公式"></a>3 卡尔曼滤波的五个公式<a class="heading-anchor" href="#3-卡尔曼滤波的五个公式" aria-hidden="true"></a></h1><h2 id="3-1-预测步的两个公式" class="heading-control"><a href="#3-1-预测步的两个公式" class="headerlink" title="3.1 预测步的两个公式"></a>3.1 预测步的两个公式<a class="heading-anchor" href="#3-1-预测步的两个公式" aria-hidden="true"></a></h2><h2 id="3-2-更新步的三个公式" class="heading-control"><a href="#3-2-更新步的三个公式" class="headerlink" title="3.2 更新步的三个公式"></a>3.2 更新步的三个公式<a class="heading-anchor" href="#3-2-更新步的三个公式" aria-hidden="true"></a></h2><p>公式推导<br>    留数定理<br>    傅里叶变换+卷积<br>    Mathematica<br>    先验概率密度函数推导，从函数形式得到先验均值和方差<br>    后验概率密度函数推导，从函数形式得到后验均值、方差和卡尔曼增益<br>卡尔曼滤波的5个公式<br>    先验均值<br>    先验方差<br>    卡尔曼增益<br>    后验均值<br>    后验方差</p>
 <h1 id="4-矩阵形式的卡尔曼滤波" class="heading-control"><a href="#4-矩阵形式的卡尔曼滤波" class="headerlink" title="4 矩阵形式的卡尔曼滤波"></a>4 矩阵形式的卡尔曼滤波<a class="heading-anchor" href="#4-矩阵形式的卡尔曼滤波" aria-hidden="true"></a></h1><p>状态量随机向量 $X$ $n_X \times 1$<br>状态转移矩阵 $F$ $n_X \times n_X$<br>控制矩阵 $B$ $n_X \times n_u$<br>控制向量 $\overrightarrow{u}$ $n_u \times 1$<br>状态协方差矩阵 $P$ $n_X \times n_X$<br>过程噪声协方差 $Q$ $n_X \times n_X$<br>观测量随机向量 $Y$ $n_Y \times 1$<br>观测矩阵 $H$ $n_Y \times n_X$<br>观测噪声协方差矩阵 $R$ $n_Y \times n_Y$<br>卡尔曼增益矩阵 $K$ $n_X \times n_Y$</p>
 <p>卡尔曼滤波与多传感器融合</p>
 <h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
@@ -4492,11 +4498,12 @@ H=
       </tags>
   </entry>
   <entry>
-    <title>Python字典数据结构的item()函数</title>
-    <url>/archives/b11e5b5a.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure><br>会得到下面的输出：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure></p>
+    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
+    <url>/archives/43b2dca3.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -4510,12 +4517,11 @@ H=
       </tags>
   </entry>
   <entry>
-    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
-    <url>/archives/43b2dca3.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
-<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
+    <title>Python字典数据结构的item()函数</title>
+    <url>/archives/b11e5b5a.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure><br>会得到下面的输出：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure></p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
