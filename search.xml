@@ -36,7 +36,7 @@ f_{X_{k-1}}^+=\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2\
 <script type="math/tex; mode=display">
 \begin{aligned}
     f_{X_k}^-(x) & = \int_{-\infty}^{+\infty}f_{Q_k}[x-f(v)]f_{X_{k-1}}^+(v)\mathrm{d}v \\
-    & = \int_{-\infty}^{+\infty}\frac{1}{\sigma_{Q_k}\sqrt{2\pi}}e^{-\frac{(x-Fv-Bu)^2}{2\sigma_{Q_k}}}*\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2\sigma_{k-1}^+}}\mathrm{d}v
+    & = \int_{-\infty}^{+\infty}\frac{1}{\sigma_{Q_k}\sqrt{2\pi}}e^{-\frac{(x-Fv-Bu)^2}{2{\sigma_{Q_k}}^2}}*\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2{\sigma_{k-1}^+}^2}}\mathrm{d}v
 \end{aligned}</script><p>对于 $f_{X_k}^-(x)$ 的推导，有三种方法：</p>
 <ul>
 <li>Mathemmatica 软件做符号推导</li>
@@ -45,9 +45,32 @@ f_{X_{k-1}}^+=\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2\
 </ul>
 <p>这里使用 Mathemmatica 软件做符号推导，创建 WolframScript（.wls）脚本文件，创建 $f_{X_k}^-(x)$ 公式：</p>
 <p><img data-src="https://i.loli.net/2020/09/19/8LJRmo6YSyF2Tzk.png" alt="卡尔曼滤波先验概率密度函数wls脚本公式"></p>
+<p>其中，${\sigma_{Q_k}}^2$ 表示 $k$ 时刻过程噪声的方差；$\mu_{k-one}^+$ 表示 $k-1$ 时刻状态量的后验概率密度函数均值；${\sigma_{k-one}^+}^2$ 表示 $k-1$ 时刻状态量的后验概率密度函数方差。</p>
 <p>运行代码进行化简，得到如下条件表达式结果：</p>
 <p><img data-src="https://i.loli.net/2020/09/19/zZRVjSFxOnIbAv2.png" alt="卡尔曼滤波先验概率密度函数wls脚本化简结果"></p>
-<h2 id="3-2-更新步的三个公式" class="heading-control"><a href="#3-2-更新步的三个公式" class="headerlink" title="3.2 更新步的三个公式"></a>3.2 更新步的三个公式<a class="heading-anchor" href="#3-2-更新步的三个公式" aria-hidden="true"></a></h2><p>公式推导<br>    留数定理<br>    傅里叶变换+卷积<br>    Mathematica<br>    先验概率密度函数推导，从函数形式得到先验均值和方差<br>    后验概率密度函数推导，从函数形式得到后验均值、方差和卡尔曼增益<br>卡尔曼滤波的5个公式<br>    先验均值<br>    先验方差<br>    卡尔曼增益<br>    后验均值<br>    后验方差</p>
+<p>条件表达式中的条件显然成立，整理表达式形式可知先验概率密度函数 $f_{X_k}^-(x)$ 的均值和方差分别为：</p>
+<script type="math/tex; mode=display">
+\mu_k^- = F*\mu_{k-1}^++B*u \tag{1} \\
+{\sigma_k^-}^2 = F^2*{\sigma_{k-1}^+}^2+{\sigma_{Q_k}}^2 \tag{2}</script><h2 id="3-2-更新步的三个公式" class="heading-control"><a href="#3-2-更新步的三个公式" class="headerlink" title="3.2 更新步的三个公式"></a>3.2 更新步的三个公式<a class="heading-anchor" href="#3-2-更新步的三个公式" aria-hidden="true"></a></h2><p>结合假设四、假设六及上文结论，$k$ 时刻状态量 $X_k$ 的后验概率密度函数为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    f_{X_k}^+(x) & = \eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x) \\
+    & = \eta_k*\frac{1}{\sigma_{R_k}\sqrt{2\pi}}e^{-\frac{(y_k-H*x)^2}{2{\sigma_{R_k}}^2}}*\frac{1}{\sigma_{k}^-\sqrt{2\pi}}e^{-\frac{(x-\mu_{k}^-)^2}{2{\sigma_{k}^-}^2}}
+\end{aligned}</script><p>其中，归一化常数 $\eta_k$ 为：</p>
+<script type="math/tex; mode=display">
+\eta_k=\int_{-\infty}^{\infty}\frac{1}{\sigma_{R_k}\sqrt{2\pi}}e^{-\frac{(y_k-H*x)^2}{2{\sigma_{R_k}}^2}}*\frac{1}{\sigma_{k}^-\sqrt{2\pi}}e^{-\frac{(x-\mu_{k}^-)^2}{2{\sigma_{k}^-}^2}}\mathrm{d}x</script><p>创建 WolframScript（.wls）脚本文件，创建 $f_{X_k}^+(x)$ 公式：</p>
+<p><img data-src="https://i.loli.net/2020/09/19/VCk9zmAq5FJUXTi.png" alt="卡尔曼滤波后验概率密度函数wls脚本公式"></p>
+<p>其中，${\sigma_{R_k}}^2$ 表示 $k$ 时刻观测噪声的方差；$y_k$ 表示 $k$ 时刻观测量的取值。<code>Simplify[]</code> 函数的使用是为了简化结果。</p>
+<p>运行代码进行化简，得到如下条件表达式结果：</p>
+<p><img data-src="https://i.loli.net/2020/09/19/mxED34lZVjXP7hM.png" alt="卡尔曼滤波后验概率密度函数wls脚本化简结果"></p>
+<p>条件表达式中的条件显然成立，整理表达式形式可知后验概率密度函数 $f_{X_k}^+(x)$ 的均值和方差分别为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \mu_k^+ & = \mu_k^-+K(y_k-H*\mu_k^-) \\
+    {\sigma_k^+}^2 & = (1-K)\sigma_k^-
+\end{aligned}</script><p>其中，$K$ 被称为卡尔曼增益系数：</p>
+<script type="math/tex; mode=display">
+K=\frac{H*\sigma_k^-}{H^2\sigma_k^-+{\sigma_{R_k}}^2}</script><p>公式推导<br>    留数定理<br>    傅里叶变换+卷积<br>    Mathematica<br>    先验概率密度函数推导，从函数形式得到先验均值和方差<br>    后验概率密度函数推导，从函数形式得到后验均值、方差和卡尔曼增益<br>卡尔曼滤波的5个公式<br>    先验均值<br>    先验方差<br>    卡尔曼增益<br>    后验均值<br>    后验方差</p>
 <h1 id="4-矩阵形式的卡尔曼滤波" class="heading-control"><a href="#4-矩阵形式的卡尔曼滤波" class="headerlink" title="4 矩阵形式的卡尔曼滤波"></a>4 矩阵形式的卡尔曼滤波<a class="heading-anchor" href="#4-矩阵形式的卡尔曼滤波" aria-hidden="true"></a></h1><p>状态量随机向量 $X$ $n_X \times 1$<br>状态转移矩阵 $F$ $n_X \times n_X$<br>控制矩阵 $B$ $n_X \times n_u$<br>控制向量 $\overrightarrow{u}$ $n_u \times 1$<br>状态协方差矩阵 $P$ $n_X \times n_X$<br>过程噪声协方差 $Q$ $n_X \times n_X$<br>观测量随机向量 $Y$ $n_Y \times 1$<br>观测矩阵 $H$ $n_Y \times n_X$<br>观测噪声协方差矩阵 $R$ $n_Y \times n_Y$<br>卡尔曼增益矩阵 $K$ $n_X \times n_Y$</p>
 <p>卡尔曼滤波与多传感器融合</p>
 <h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
@@ -66,8 +89,8 @@ f_{X_{k-1}}^+=\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2\
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -458,8 +481,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
