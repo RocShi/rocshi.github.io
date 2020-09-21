@@ -64,7 +64,7 @@
 <meta property="og:image" content="https://i.loli.net/2020/09/19/PZJHWSwkIjBbTry.png">
 <meta property="og:image" content="https://i.loli.net/2020/09/19/OG2EfwDmiFCYuxW.png">
 <meta property="article:published_time" content="2020-09-06T05:13:37.000Z">
-<meta property="article:modified_time" content="2020-09-21T08:38:38.792Z">
+<meta property="article:modified_time" content="2020-09-21T09:49:08.243Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
@@ -268,7 +268,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-21 16:38:38" itemprop="dateModified" datetime="2020-09-21T16:38:38+08:00">2020-09-21</time>
+                <time title="修改时间：2020-09-21 17:49:08" itemprop="dateModified" datetime="2020-09-21T17:49:08+08:00">2020-09-21</time>
               </span>
 
           <br>
@@ -413,7 +413,9 @@ K=\frac{H*{\sigma_k^-}^2}{H^2{\sigma_k^-}^2+{\sigma_{R_k}}^2} = \frac{H}{H^2+{\s
 \Sigma_k^+ = (I-K*H)*\Sigma_k^- \tag{4.4}</script><script type="math/tex; mode=display">
 K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公式 (4.3) 中 $\mu_k^+$ 即 k 时刻状态量 $X_k$ 的后验估计 $\hat{x}_k^+$，$\color{red}{y_k-H<em>\mu_k^-}$ 常被称为<strong>残差</strong>（Residual）或<em>*新息</em></em>（Innovation）；公式 (4.4) 中的 $I$ 代表单位矩阵，维数为 $n_X \times n_X$。</p>
 <p>从结果中还可以发现，外部控制项 $B*u_k$ 通过影响先验估计均值间接影响了后验估计均值，但对后验估计方差没有影响。</p>
-<h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
+<h1 id="5-应用实例" class="heading-control"><a href="#5-应用实例" class="headerlink" title="5 应用实例"></a>5 应用实例<a class="heading-anchor" href="#5-应用实例" aria-hidden="true"></a></h1><p>卡尔曼滤波的应用实例可参考此前的学习文章<a href="https://blog.shipengx.com/archives/d3b96bd5.html">《（十三）手把手教你写卡尔曼滤波器》</a>，文章中的应用场景是使用激光雷达（Lidar）对匀速直线运动（Constant Velocity，CV）目标的测距过程。</p>
+<p>博主工作中使用卡尔曼滤波对路口前的停止线（来自单目前向视觉）纵向距离进行了估计，系统模型抽象为匀加速直线运动（Constant Acceleration，CA），停止线距离估计结果用于下游规划控制模块的纵向速度规划输入参考。</p>
+<h1 id="6-参考" class="heading-control"><a href="#6-参考" class="headerlink" title="6 参考"></a>6 参考<a class="heading-anchor" href="#6-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUhUNHkxNTc3ZyNyZXBseTM0NjI4MDMxNTQ=" title="https://www.bilibili.com/video/BV1HT4y1577g#reply3462803154">b站忠实的王大头《贝叶斯滤波与卡尔曼滤波》第七讲：卡尔曼滤波<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80NTIzODY4MQ==" title="https://zhuanlan.zhihu.com/p/45238681">无人驾驶技术入门（十三）| 手把手教你写卡尔曼滤波器<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cDovL3d3dy5iemFyZy5jb20vcC9ob3ctYS1rYWxtYW4tZmlsdGVyLXdvcmtzLWluLXBpY3R1cmVzLw==" title="http://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/">How a Kalman filter works, in pictures<i class="fa fa-external-link"></i></span></li>
@@ -567,7 +569,7 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-贝叶斯滤波的三大概率密度函数"><span class="nav-text">1 贝叶斯滤波的三大概率密度函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-卡尔曼滤波的六个假设"><span class="nav-text">2 卡尔曼滤波的六个假设</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-卡尔曼滤波的五个公式"><span class="nav-text">3 卡尔曼滤波的五个公式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-预测步的两个公式"><span class="nav-text">3.1 预测步的两个公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-更新步的三个公式"><span class="nav-text">3.2 更新步的三个公式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-矩阵形式的卡尔曼滤波"><span class="nav-text">4 矩阵形式的卡尔曼滤波</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-参考"><span class="nav-text">5 参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-贝叶斯滤波的三大概率密度函数"><span class="nav-text">1 贝叶斯滤波的三大概率密度函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-卡尔曼滤波的六个假设"><span class="nav-text">2 卡尔曼滤波的六个假设</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-卡尔曼滤波的五个公式"><span class="nav-text">3 卡尔曼滤波的五个公式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-预测步的两个公式"><span class="nav-text">3.1 预测步的两个公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-更新步的三个公式"><span class="nav-text">3.2 更新步的三个公式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-矩阵形式的卡尔曼滤波"><span class="nav-text">4 矩阵形式的卡尔曼滤波</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-应用实例"><span class="nav-text">5 应用实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-参考"><span class="nav-text">6 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
