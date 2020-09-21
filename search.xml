@@ -4,8 +4,8 @@
     <title>从贝叶斯滤波到扩展卡尔曼滤波</title>
     <url>/archives/ea375326.html</url>
     <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><strong>扩展卡尔曼滤波</strong>（Extended Kalman Filter，EKF）是标准卡尔曼滤波在非线性情形下的一种扩展形式，它是一种高效率的递归滤波器（自回归滤波器）。</p>
-<p>EKF的基本思想是利用泰勒级数展开将非线性系统线性化，然后采用卡尔曼滤波框架对信号进行滤波，因此它是一种次优滤波。</p>
-<p>雅可比矩阵</p>
+<p>EKF 的基本思想是利用泰勒级数展开将非线性系统线性化，然后采用卡尔曼滤波框架对信号进行滤波，因此它是一种次优滤波。</p>
+<h1 id="1" class="heading-control"><a href="#1" class="headerlink" title="1"></a>1<a class="heading-anchor" href="#1" aria-hidden="true"></a></h1><p>雅可比矩阵</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUd6NHkxUjdrOA==" title="https://www.bilibili.com/video/BV1Gz4y1R7k8">b站忠实的王大头《贝叶斯滤波与卡尔曼滤波》第十三讲：扩展卡尔曼滤波及其代码<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC82MzY0MTY4MA==" title="https://zhuanlan.zhihu.com/p/63641680">无人驾驶技术入门（十八）| 手把手教你写扩展卡尔曼滤波器<i class="fa fa-external-link"></i></span></li>
@@ -73,8 +73,8 @@ f_{X_{k-1}}^+=\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2\
 <p><img data-src="https://i.loli.net/2020/09/19/o2rxygTaMwpZfv8.png" alt="卡尔曼滤波先验概率密度函数wls脚本化简结果"></p>
 <p>条件表达式中的条件显然成立，整理表达式形式可知先验概率密度函数 $f_{X_k}^-(x)$ 的均值和方差分别为：</p>
 <script type="math/tex; mode=display">
-\mu_k^- = F*\mu_{k-1}^++B*u \tag{1}</script><script type="math/tex; mode=display">
-{\sigma_k^-}^2 = F^2*{\sigma_{k-1}^+}^2+{\sigma_{Q_k}}^2 \tag{2}</script><h2 id="3-2-更新步的三个公式" class="heading-control"><a href="#3-2-更新步的三个公式" class="headerlink" title="3.2 更新步的三个公式"></a>3.2 更新步的三个公式<a class="heading-anchor" href="#3-2-更新步的三个公式" aria-hidden="true"></a></h2><p>结合假设四、假设六及上文结论，$k$ 时刻状态量 $X_k$ 的后验概率密度函数为：</p>
+\mu_k^- = F*\mu_{k-1}^++B*u_k \tag{3.1}</script><script type="math/tex; mode=display">
+{\sigma_k^-}^2 = F^2*{\sigma_{k-1}^+}^2+{\sigma_{Q_k}}^2 \tag{3.2}</script><h2 id="3-2-更新步的三个公式" class="heading-control"><a href="#3-2-更新步的三个公式" class="headerlink" title="3.2 更新步的三个公式"></a>3.2 更新步的三个公式<a class="heading-anchor" href="#3-2-更新步的三个公式" aria-hidden="true"></a></h2><p>结合假设四、假设六及上文结论，$k$ 时刻状态量 $X_k$ 的后验概率密度函数为：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
     f_{X_k}^+(x) & = \eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x) \\
@@ -88,10 +88,10 @@ f_{X_{k-1}}^+=\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2\
 <p><img data-src="https://i.loli.net/2020/09/19/OG2EfwDmiFCYuxW.png" alt="卡尔曼滤波后验概率密度函数wls脚本化简结果"></p>
 <p>条件表达式中的条件显然成立，整理表达式形式可知后验概率密度函数 $f_{X_k}^+(x)$ 的均值和方差分别为：</p>
 <script type="math/tex; mode=display">
-\mu_k^+ = \mu_k^-+K(y_k-H*\mu_k^-) \tag{3}</script><script type="math/tex; mode=display">
-{\sigma_k^+}^2 = (1-K*H){\sigma_k^-}^2 \tag{4}</script><p>$\mu_k^+$ 即 k 时刻状态量 $X_k$ 的后验估计 $\hat{x}_k^+$。其中，$K$ 被称为卡尔曼增益系数：</p>
+\mu_k^+ = \mu_k^-+K(y_k-H*\mu_k^-) \tag{3.3}</script><script type="math/tex; mode=display">
+{\sigma_k^+}^2 = (1-K*H){\sigma_k^-}^2 \tag{3.4}</script><p>$\mu_k^+$ 即 k 时刻状态量 $X_k$ 的后验估计 $\hat{x}_k^+$。其中，$K$ 被称为卡尔曼增益系数：</p>
 <script type="math/tex; mode=display">
-K=\frac{H*{\sigma_k^-}^2}{H^2{\sigma_k^-}^2+{\sigma_{R_k}}^2} \tag{5}</script><p>卡尔曼增益系数 $K$ 可变形为：</p>
+K=\frac{H*{\sigma_k^-}^2}{H^2{\sigma_k^-}^2+{\sigma_{R_k}}^2} \tag{3.5}</script><p>卡尔曼增益系数 $K$ 可变形为：</p>
 <script type="math/tex; mode=display">
 K=\frac{H*{\sigma_k^-}^2}{H^2{\sigma_k^-}^2+{\sigma_{R_k}}^2} = \frac{H}{H^2+{\sigma_{R_k}}^2/{\sigma_k^-}^2}</script><p>当 ${\sigma_{R_k}}^2 \gg {\sigma_k^-}^2$ 时，$K\to0$，故</p>
 <script type="math/tex; mode=display">
@@ -117,11 +117,12 @@ K=\frac{H*{\sigma_k^-}^2}{H^2{\sigma_k^-}^2+{\sigma_{R_k}}^2} = \frac{H}{H^2+{\s
 </ul>
 <p>对应的五个公式演变为：</p>
 <script type="math/tex; mode=display">
-\mu_k^- = F*\mu_{k-1}^++B*u_k \tag{1}</script><script type="math/tex; mode=display">
-\Sigma_k^- = F*\Sigma_{k-1}^+*F^T+{\Sigma_{Q_k}} \tag{2}</script><script type="math/tex; mode=display">
-\mu_k^+ = \mu_k^-+K*(y_k-H*\mu_k^-) \tag{3}</script><script type="math/tex; mode=display">
-\Sigma_k^+ = (I-K*H)*\Sigma_k^- \tag{4}</script><script type="math/tex; mode=display">
-K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{5}</script><p>公式 (4) 中的 $I$ 代表单位矩阵，维数为 $n_X \times n_X$。$\mu_k^+$ 即 k 时刻状态量 $X_k$ 的后验估计 $\hat{x}_k^+$。</p>
+\mu_k^- = F*\mu_{k-1}^++B*u_k \tag{4.1}</script><script type="math/tex; mode=display">
+\Sigma_k^- = F*\Sigma_{k-1}^+*F^T+{\Sigma_{Q_k}} \tag{4.2}</script><script type="math/tex; mode=display">
+\mu_k^+ = \mu_k^-+K*(y_k-H*\mu_k^-) \tag{4.3}</script><script type="math/tex; mode=display">
+\Sigma_k^+ = (I-K*H)*\Sigma_k^- \tag{4.4}</script><script type="math/tex; mode=display">
+K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公式 (4.4) 中的 $I$ 代表单位矩阵，维数为 $n_X \times n_X$。$\mu_k^+$ 即 k 时刻状态量 $X_k$ 的后验估计 $\hat{x}_k^+$。</p>
+<p>从结果中还可以发现，外部控制项 $B*u_k$ 通过影响先验估计均值间接影响了后验估计均值，但对后验估计方差没有影响。</p>
 <h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUhUNHkxNTc3ZyNyZXBseTM0NjI4MDMxNTQ=" title="https://www.bilibili.com/video/BV1HT4y1577g#reply3462803154">b站忠实的王大头《贝叶斯滤波与卡尔曼滤波》第七讲：卡尔曼滤波<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80NTIzODY4MQ==" title="https://zhuanlan.zhihu.com/p/45238681">无人驾驶技术入门（十三）| 手把手教你写卡尔曼滤波器<i class="fa fa-external-link"></i></span></li>
