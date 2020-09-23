@@ -48,7 +48,7 @@ f(X_{k-1}) \approx F_j*X_{k-1}+C_F</script><p>结合假设三与上式，$k$ 时
 \end{aligned}</script><p>类似推导标准卡尔曼滤波时的做法，使用 Mathemmatica 软件做符号推导，整理表达式结果可知，先验概率密度函数 $f_{X_k}^-(x)$ 为正态分布函数，均值和方差分别为：</p>
 <script type="math/tex; mode=display">
 \mu_k^- = F_j*\mu_{k-1}^++C_F=f(\mu_{k-1}^+) \tag{3.1}</script><script type="math/tex; mode=display">
-{\sigma_k^-}^2 = F_j^2*{\sigma_{k-1}^+}^2+{\sigma_{Q_k}}^2 \tag{3.2}</script><p>其中，$F_j=f’(\hat{x}_{k-1}^+)$。</p>
+{\sigma_k^-}^2 = F_j^2*{\sigma_{k-1}^+}^2+{\sigma_{Q_k}}^2 \tag{3.2}</script><p>其中，$F_j=f’(\hat{x}_{k-1}^+)$，对于一维扩展卡尔曼滤波，$F_j$ 为一常数项，即状态转移函数 $f(x)$ 的一阶导函数 $f’(x)$ 在上一时刻状态量后验估计处的函数值。</p>
 <h2 id="3-2-更新步的三个公式" class="heading-control"><a href="#3-2-更新步的三个公式" class="headerlink" title="3.2 更新步的三个公式"></a>3.2 更新步的三个公式<a class="heading-anchor" href="#3-2-更新步的三个公式" aria-hidden="true"></a></h2><p>当观测函数为线性函数时，扩展卡尔曼滤波的更新步与标准卡尔曼滤波相同；当观测函数为非线性函数时，扩展卡尔曼滤波的更新步采用下面的推导过程。</p>
 <p>对观测函数 $h(x)$ 在 $X_k$ 的先验估计处 $\hat{x}_k^-$（即 $\mu_k^-$）进行<strong>一阶泰勒级数展开</strong>：</p>
 <script type="math/tex; mode=display">
@@ -71,8 +71,28 @@ h(X_k) \approx H_j*X_k+C_H</script><p>结合假设四、公式 (3.1)、公式 (3
 \mu_k^+ = \mu_k^-+K*(y_k-H_j*\mu_k^--C_H)= \mu_k^-+K*[y_k-h(\mu_k^-)] \tag{3.3}</script><script type="math/tex; mode=display">
 {\sigma_k^+}^2 = (1-K*H_j)*{\sigma_k^-}^2 \tag{3.4}</script><p>$\mu_k^+$ 即 k 时刻状态量 $X_k$ 的后验估计 $\hat{x}_k^+$。其中，$K$ 被称为卡尔曼增益系数：</p>
 <script type="math/tex; mode=display">
-K=\frac{H_j*{\sigma_k^-}^2}{H_j^2*{\sigma_k^-}^2+{\sigma_{R_k}}^2} \tag{3.5}</script><p>其中，$H_j=h’(\hat{x}_k^-)$。</p>
-<h1 id="4-矩阵形式的扩展卡尔曼滤波" class="heading-control"><a href="#4-矩阵形式的扩展卡尔曼滤波" class="headerlink" title="4 矩阵形式的扩展卡尔曼滤波"></a>4 矩阵形式的扩展卡尔曼滤波<a class="heading-anchor" href="#4-矩阵形式的扩展卡尔曼滤波" aria-hidden="true"></a></h1><h1 id="5-应用实例" class="heading-control"><a href="#5-应用实例" class="headerlink" title="5 应用实例"></a>5 应用实例<a class="heading-anchor" href="#5-应用实例" aria-hidden="true"></a></h1><p>毫米波雷达（Radar）</p>
+K=\frac{H_j*{\sigma_k^-}^2}{H_j^2*{\sigma_k^-}^2+{\sigma_{R_k}}^2} \tag{3.5}</script><p>其中，$H_j=h’(\hat{x}_k^-)$，对于一维扩展卡尔曼滤波，$H_j$ 为一常数项，即观测函数 $h(x)$ 的一阶导函数 $h’(x)$ 在当前时刻状态量先验估计处的函数值。</p>
+<h1 id="4-矩阵形式的扩展卡尔曼滤波" class="heading-control"><a href="#4-矩阵形式的扩展卡尔曼滤波" class="headerlink" title="4 矩阵形式的扩展卡尔曼滤波"></a>4 矩阵形式的扩展卡尔曼滤波<a class="heading-anchor" href="#4-矩阵形式的扩展卡尔曼滤波" aria-hidden="true"></a></h1><p>上文内容所描述的是一维的扩展卡尔曼滤波，当状态量和观测量不再是单一的随机变量而是由多个随机变量组成的序列时，扩展卡尔曼滤波中各个量的维数也将随之改变：</p>
+<ul>
+<li>状态量 $X$ 由随机变量演变为随机向量，随机向量中的每一个分量为一个状态量随机变量。维数为 $n_X \times 1$</li>
+<li>状态转移比例项 $F_j$ 演变为<strong>雅可比矩阵</strong>，维数为 $n_X \times n_X$。此时，$F_j$ 是由每个状态转移函数对每个状态量分量求偏导后，将上一时刻状态量的后验估计代入得到：<script type="math/tex; mode=display">
+\begin{pmatrix}
+    \frac{\partial f_1}{\partial X_{k-1}^1} & \frac{\partial f_2}{\partial X_{k-1}^2} & \cdots & \frac{\partial f_{n_X}}{\partial X_{k-1}^1}\\
+    c & a
+\end{pmatrix}
+\bigg |_{X_{k-1}=\hat{X}_{k-1}^+}</script></li>
+<li>控制量 $u_k$ 演变为矩阵，维数为 $n_u \times 1$</li>
+<li>控制比例项 $B$ 演变为矩阵，维数为 $n_X \times n_u$</li>
+<li>状态量概率密度函数均值 $\mu$ 演变为矩阵，维数为 $n_X \times 1$</li>
+<li>状态量概率密度函数方差 $\sigma^2$ 演变为协方差矩阵，用 $\Sigma$ 表示，维数为 $n_X \times n_X$</li>
+<li>过程噪声方差 ${\sigma_Q}^2$ 演变为协方差矩阵，用 $\Sigma_Q$ 表示，维数为 $n_X \times n_X$</li>
+<li>观测量 $Y$ 由随机变量演变为随机向量，随机向量中的每一个分量为一个观测量随机变量。维数为 $n_Y \times 1$</li>
+<li>观测值 $y_k$ 由单一值演变为由单一值组成的值矩阵，维数为 $n_Y \times 1$</li>
+<li>观测比例项 $H$ 演变为矩阵，维数为 $n_Y \times n_X$</li>
+<li>观测噪声方差 ${\sigma_R}^2$ 演变为协方差矩阵，用 $\Sigma_R$ 表示，维数为 $n_Y \times n_Y$</li>
+<li>卡尔曼增益系数 $K$ 演变为矩阵，维数为 $n_X \times n_Y$</li>
+</ul>
+<h1 id="5-应用实例" class="heading-control"><a href="#5-应用实例" class="headerlink" title="5 应用实例"></a>5 应用实例<a class="heading-anchor" href="#5-应用实例" aria-hidden="true"></a></h1><p>毫米波雷达（Radar）</p>
 <h1 id="6-参考" class="heading-control"><a href="#6-参考" class="headerlink" title="6 参考"></a>6 参考<a class="heading-anchor" href="#6-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUd6NHkxUjdrOA==" title="https://www.bilibili.com/video/BV1Gz4y1R7k8">b站忠实的王大头《贝叶斯滤波与卡尔曼滤波》第十三讲：扩展卡尔曼滤波及其代码<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC82MzY0MTY4MA==" title="https://zhuanlan.zhihu.com/p/63641680">无人驾驶技术入门（十八）| 手把手教你写扩展卡尔曼滤波器<i class="fa fa-external-link"></i></span></li>
@@ -209,8 +229,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -602,8 +622,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
@@ -4661,11 +4681,12 @@ H=
       </tags>
   </entry>
   <entry>
-    <title>Python字典数据结构的item()函数</title>
-    <url>/archives/b11e5b5a.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure><br>会得到下面的输出：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure></p>
+    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
+    <url>/archives/43b2dca3.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -4679,12 +4700,11 @@ H=
       </tags>
   </entry>
   <entry>
-    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
-    <url>/archives/43b2dca3.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
-<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
+    <title>Python字典数据结构的item()函数</title>
+    <url>/archives/b11e5b5a.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure><br>会得到下面的输出：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure></p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
