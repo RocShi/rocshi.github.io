@@ -60,7 +60,7 @@
 <meta property="og:description" content="扩展卡尔曼滤波是标准卡尔曼滤波在非线性情形下的一种扩展形式，它是一种高效率的递归滤波器（自回归滤波器）。扩展卡尔曼滤波的基本思想是利用泰勒级数展开将非线性系统的状态转移函数 f(x) 和（或）观测函数 h(x) 线性化，然后采用卡尔曼滤波框架对信号进行滤波，因此它是一种次优滤波。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-19T12:23:07.000Z">
-<meta property="article:modified_time" content="2020-09-23T16:12:46.532Z">
+<meta property="article:modified_time" content="2020-09-24T16:35:27.438Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
@@ -263,7 +263,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-24 00:12:46" itemprop="dateModified" datetime="2020-09-24T00:12:46+08:00">2020-09-24</time>
+                <time title="修改时间：2020-09-25 00:35:27" itemprop="dateModified" datetime="2020-09-25T00:35:27+08:00">2020-09-25</time>
               </span>
 
           <br>
@@ -384,22 +384,38 @@ K=\frac{H_j*{\sigma_k^-}^2}{H_j^2*{\sigma_k^-}^2+{\sigma_{R_k}}^2} \tag{3.5}</sc
 <ul>
 <li>状态量 $X$ 由随机变量演变为随机向量，随机向量中的每一个分量为一个状态量随机变量。维数为 $n_X \times 1$</li>
 <li>状态转移比例项 $F_j$ 演变为<strong>雅可比矩阵</strong>，维数为 $n_X \times n_X$。此时，$F_j$ 是由每个状态转移函数对每个状态量分量求偏导后，将上一时刻状态量的后验估计代入得到：<script type="math/tex; mode=display">
+F_j=
 \begin{pmatrix}
-    \frac{\partial f_1}{\partial X_{k-1}^1} & \frac{\partial f_2}{\partial X_{k-1}^2} & \cdots & \frac{\partial f_{n_X}}{\partial X_{k-1}^1}\\
-    c & a
+    \frac{\partial f_1}{\partial X_{k-1}^1} & \frac{\partial f_1}{\partial X_{k-1}^2} & \cdots & \frac{\partial f_1}{\partial X_{k-1}^{n_X}} \\
+    \frac{\partial f_2}{\partial X_{k-1}^1} & \frac{\partial f_2}{\partial X_{k-1}^2} & \cdots & \frac{\partial f_2}{\partial X_{k-1}^{n_X}} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \frac{\partial f_{n_X}}{\partial X_{k-1}^1} & \frac{\partial f_{n_X}}{\partial X_{k-1}^2} & \cdots & \frac{\partial f_{n_X}}{\partial X_{k-1}^{n_X}}
 \end{pmatrix}
-\bigg |_{X_{k-1}=\hat{X}_{k-1}^+}</script></li>
-<li>控制量 $u_k$ 演变为矩阵，维数为 $n_u \times 1$</li>
-<li>控制比例项 $B$ 演变为矩阵，维数为 $n_X \times n_u$</li>
+\Bigg|_{X_{k-1}=\hat{X}_{k-1}^+}</script></li>
 <li>状态量概率密度函数均值 $\mu$ 演变为矩阵，维数为 $n_X \times 1$</li>
 <li>状态量概率密度函数方差 $\sigma^2$ 演变为协方差矩阵，用 $\Sigma$ 表示，维数为 $n_X \times n_X$</li>
 <li>过程噪声方差 ${\sigma_Q}^2$ 演变为协方差矩阵，用 $\Sigma_Q$ 表示，维数为 $n_X \times n_X$</li>
 <li>观测量 $Y$ 由随机变量演变为随机向量，随机向量中的每一个分量为一个观测量随机变量。维数为 $n_Y \times 1$</li>
 <li>观测值 $y_k$ 由单一值演变为由单一值组成的值矩阵，维数为 $n_Y \times 1$</li>
-<li>观测比例项 $H$ 演变为矩阵，维数为 $n_Y \times n_X$</li>
+<li>观测比例项 $H_j$ 演变为<strong>雅可比矩阵</strong>，维数为 $n_Y \times n_X$。此时，$H_j$ 是由每个观测函数对每个观测量分量求偏导后，将当前时刻状态量的先验估计代入得到：<script type="math/tex; mode=display">
+H_j=
+\begin{pmatrix}
+    \frac{\partial h_1}{\partial X_k^1} & \frac{\partial h_1}{\partial X_k^2} & \cdots & \frac{\partial h_1}{\partial X_k^{n_X}} \\
+    \frac{\partial h_2}{\partial X_k^1} & \frac{\partial h_2}{\partial X_k^2} & \cdots & \frac{\partial h_2}{\partial X_k^{n_X}} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \frac{\partial h_{n_Y}}{\partial X_k^1} & \frac{\partial h_{n_Y}}{\partial X_k^2} & \cdots & \frac{\partial h_{n_Y}}{\partial X_k^{n_X}}
+\end{pmatrix}
+\Bigg|_{X_k=\hat{X}_k^-}</script></li>
 <li>观测噪声方差 ${\sigma_R}^2$ 演变为协方差矩阵，用 $\Sigma_R$ 表示，维数为 $n_Y \times n_Y$</li>
 <li>卡尔曼增益系数 $K$ 演变为矩阵，维数为 $n_X \times n_Y$</li>
 </ul>
+<p>对应的五个公式演变为：</p>
+<script type="math/tex; mode=display">
+\mu_k^- = f(\mu_{k-1}^+) \tag{4.1}</script><script type="math/tex; mode=display">
+\Sigma_k^- = F_j*\Sigma_{k-1}^+*F_j^T+{\Sigma_{Q_k}} \tag{4.2}</script><script type="math/tex; mode=display">
+\mu_k^+ = \mu_k^-+K*[y_k-h(\mu_k^-)] \tag{4.3}</script><script type="math/tex; mode=display">
+\Sigma_k^+ = (I-K*H_j)*\Sigma_k^- \tag{4.4}</script><script type="math/tex; mode=display">
+K=\Sigma_k^-*H_j^T*(H_j*\Sigma_k^-*H_j^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公式 (4.3) 中 $\mu_k^+$ 即 k 时刻状态量 $X_k$ 的后验估计 $\hat{x}_k^+$，$y_k-h(\mu_k^-)$ 常被称为<strong>残差</strong>（Residual）或<strong>新息</strong>（Innovation）；公式 (4.4) 中的 $I$ 代表单位矩阵，维数为 $n_X \times n_X$。</p>
 <h1 id="5-应用实例" class="heading-control"><a href="#5-应用实例" class="headerlink" title="5 应用实例"></a>5 应用实例<a class="heading-anchor" href="#5-应用实例" aria-hidden="true"></a></h1><p>毫米波雷达（Radar）</p>
 <h1 id="6-参考" class="heading-control"><a href="#6-参考" class="headerlink" title="6 参考"></a>6 参考<a class="heading-anchor" href="#6-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUd6NHkxUjdrOA==" title="https://www.bilibili.com/video/BV1Gz4y1R7k8">b站忠实的王大头《贝叶斯滤波与卡尔曼滤波》第十三讲：扩展卡尔曼滤波及其代码<i class="fa fa-external-link"></i></span></li>
@@ -417,10 +433,10 @@ K=\frac{H_j*{\sigma_k^-}^2}{H_j^2*{\sigma_k^-}^2+{\sigma_{R_k}}^2} \tag{3.5}</sc
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
+      <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
+      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\e0ebe48c.html" rel="bookmark">最小二乘法多项式曲线拟合数学原理及其C++实现</a></div>
@@ -429,7 +445,7 @@ K=\frac{H_j*{\sigma_k^-}^2}{H_j^2*{\sigma_k^-}^2+{\sigma_{R_k}}^2} \tag{3.5}</sc
       <div class="popular-posts-title"><a href="\archives\8ddff8f2.html" rel="bookmark">导航定位领域里的一些基本概念</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\24a03bff.html" rel="bookmark">（七）量产必备的毫米波雷达</a></div>
+      <div class="popular-posts-title"><a href="\archives\c870f676.html" rel="bookmark">（三）百度无人车传感器GPS深入剖析</a></div>
     </li>
   </ul>
 
