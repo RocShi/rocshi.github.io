@@ -153,10 +153,10 @@ h(X)=
     \frac{p_xv_x+p_yv_y}{\sqrt{ {p_x}^2+{p_y}^2} }
 \end{pmatrix}</script><p>$h(X)$ 显然为非线性函数，而系统的状态转移（CV 模型）又明显是线性的，因此，此处的扩展卡尔曼滤波形式为：线性的状态转移 + 非线性的观测。</p>
 <p>此时，滤波递推公式由卡尔曼滤波的预测步两公式和扩展卡尔曼滤波的更新步三公式组成：</p>
-<p><strong>卡尔曼滤波的预测步两公式</strong></p>
+<p><strong>卡尔曼滤波的预测步两公式：</strong></p>
 <script type="math/tex; mode=display">
 \mu_k^- = F*\mu_{k-1}^++B*u_k \tag{5.1}</script><script type="math/tex; mode=display">
-\Sigma_k^- = F*\Sigma_{k-1}^+*F^T+{\Sigma_{Q_k}} \tag{5.2}</script><p><strong>扩展卡尔曼滤波的更新步三公式</strong></p>
+\Sigma_k^- = F*\Sigma_{k-1}^+*F^T+{\Sigma_{Q_k}} \tag{5.2}</script><p><strong>扩展卡尔曼滤波的更新步三公式：</strong></p>
 <script type="math/tex; mode=display">
 \mu_k^+ = \mu_k^-+K*[y_k-h(\mu_k^-)] \tag{5.3}</script><script type="math/tex; mode=display">
 \Sigma_k^+ = (I-K*H_j)*\Sigma_k^- \tag{5.4}</script><script type="math/tex; mode=display">
