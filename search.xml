@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>从贝叶斯滤波到无迹卡尔曼滤波</title>
+    <url>/archives/cfd8b171.html</url>
+    <content><![CDATA[<h1 id="前言" class="heading-control"><a href="#前言" class="headerlink" title="前言"></a>前言<a class="heading-anchor" href="#前言" aria-hidden="true"></a></h1><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><hr>
+]]></content>
+      <categories>
+        <category>自动驾驶</category>
+        <category>多传感器信息融合</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>滤波</tag>
+        <tag>自动驾驶</tag>
+        <tag>无迹卡尔曼滤波</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>从贝叶斯滤波到扩展卡尔曼滤波</title>
     <url>/archives/ea375326.html</url>
     <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><strong>扩展卡尔曼滤波</strong>（Extended Kalman Filter，EKF）是标准卡尔曼滤波在非线性情形下的一种扩展形式，它是一种高效率的递归滤波器（自回归滤波器）。</p>
@@ -186,7 +202,7 @@ H_j=
 <h1 id="6-扩展卡尔曼滤波器的优缺点" class="heading-control"><a href="#6-扩展卡尔曼滤波器的优缺点" class="headerlink" title="6 扩展卡尔曼滤波器的优缺点"></a>6 扩展卡尔曼滤波器的优缺点<a class="heading-anchor" href="#6-扩展卡尔曼滤波器的优缺点" aria-hidden="true"></a></h1><p><strong>优点</strong></p>
 <p>扩展卡尔曼滤波与标准卡尔曼滤波有着相似的计算形式，因此运算速度同样很快。</p>
 <p><strong>缺点</strong></p>
-<p>扩展卡尔曼滤波对非线性的状态转移函数和（观测函数）使用一阶泰勒级数展开作了线性近似，忽略了高阶项，因此精度一般。此外，雅可比矩阵的计算较为繁琐，容易出错。</p>
+<p>扩展卡尔曼滤波对非线性的状态转移函数和（观测函数）使用一阶泰勒级数展开作了线性近似，忽略了高阶项，因此精度一般，对于高度非线性问题效果较差。此外，雅可比矩阵的计算较为繁琐，容易出错。</p>
 <h1 id="7-参考" class="heading-control"><a href="#7-参考" class="headerlink" title="7 参考"></a>7 参考<a class="heading-anchor" href="#7-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUd6NHkxUjdrOA==" title="https://www.bilibili.com/video/BV1Gz4y1R7k8">b站忠实的王大头《贝叶斯滤波与卡尔曼滤波》第十三讲：扩展卡尔曼滤波及其代码<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC82MzY0MTY4MA==" title="https://zhuanlan.zhihu.com/p/63641680">无人驾驶技术入门（十八）| 手把手教你写扩展卡尔曼滤波器<i class="fa fa-external-link"></i></span></li>
@@ -196,7 +212,7 @@ H_j=
 ]]></content>
       <categories>
         <category>自动驾驶</category>
-        <category>随笔</category>
+        <category>多传感器信息融合</category>
       </categories>
       <tags>
         <tag>数学</tag>
@@ -318,7 +334,7 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
 ]]></content>
       <categories>
         <category>自动驾驶</category>
-        <category>随笔</category>
+        <category>多传感器信息融合</category>
       </categories>
       <tags>
         <tag>数学</tag>
@@ -711,7 +727,7 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
 ]]></content>
       <categories>
         <category>自动驾驶</category>
-        <category>随笔</category>
+        <category>多传感器信息融合</category>
       </categories>
       <tags>
         <tag>数学</tag>
