@@ -3,7 +3,16 @@
   <entry>
     <title>从贝叶斯滤波到无迹卡尔曼滤波</title>
     <url>/archives/cfd8b171.html</url>
-    <content><![CDATA[<h1 id="前言" class="heading-control"><a href="#前言" class="headerlink" title="前言"></a>前言<a class="heading-anchor" href="#前言" aria-hidden="true"></a></h1><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><hr>
+    <content><![CDATA[<h1 id="前言" class="heading-control"><a href="#前言" class="headerlink" title="前言"></a>前言<a class="heading-anchor" href="#前言" aria-hidden="true"></a></h1><p>根据上一时刻状态量后验概率密度函数的均值和方差进行采样（2n+1）</p>
+<p>为粒子分配权重</p>
+<p>对粒子进行f(x)非线性变换</p>
+<p>将经过非线性变换后的粒子进行加权，计算得到f(X)概率密度函数均值和方差的近似</p>
+<p>根据状态转移方程f(X)+Q得到当前时刻状态量先验概率密度函数的均值和方差</p>
+<p>根据当前时刻状态量先验概率密度函数的均值和方差进行采样（2n+1）</p>
+<p>为粒子分配权重</p>
+<p>对粒子进行h(x)非线性变换</p>
+<p>将经过非线性变换后的粒子进行加权，计算得到h(X)概率密度函数均值和方差的近似</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><hr>
 ]]></content>
       <categories>
         <category>自动驾驶</category>
