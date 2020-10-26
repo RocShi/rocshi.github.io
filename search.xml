@@ -12,6 +12,7 @@
 <p>为粒子分配权重</p>
 <p>对粒子进行h(x)非线性变换</p>
 <p>将经过非线性变换后的粒子进行加权，计算得到h(X)概率密度函数均值和方差的近似</p>
+<p>EKF与UKF的区别和联系：<br>EKF利用一阶泰勒级数展开对非线性的状态转移函数f(X)、观测函数h(X)进行线性近似<br>UKF利用采样的方法对f(X)、h(X)计算结果（一个新的随机变量）的概率密度函数进行近似</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><hr>
 ]]></content>
       <categories>
@@ -715,8 +716,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
 <h3 id="2-5-2-解决办法" class="heading-control"><a href="#2-5-2-解决办法" class="headerlink" title="2.5.2 解决办法"></a>2.5.2 解决办法<a class="heading-anchor" href="#2-5-2-解决办法" aria-hidden="true"></a></h3><p>为了解决贝叶斯滤波中的无穷积分问题，通常从两个角度出发：</p>
 <p><strong>(1) 作理想假设</strong></p>
 <ul>
-<li>假设状态转移函数 $f(x)$ 和观测函数 $h(x)$ 均为线性函数，过程噪声随机变量 $Q_k$ 和 观测噪声随机变量 $R_k$ 均服从正态分布——卡尔曼滤波（Kalman Filter）</li>
-<li>假设状态转移函数 $f(x)$ 和观测函数 $h(x)$ 均为非线性函数，过程噪声随机变量 $Q_k$ 和 观测噪声随机变量 $R_k$ 均服从正态分布——扩展卡尔曼滤波（Extended Kalman Filter）和无迹卡尔曼滤波（Unscented Kalman Filter）</li>
+<li>假设状态转移函数 $f(x)$ 和观测函数 $h(x)$ 均为线性函数，过程噪声随机变量 $Q_k$ 和 观测噪声随机变量 $R_k$ 均服从均值为 0 的正态分布——卡尔曼滤波（Kalman Filter）</li>
+<li>假设状态转移函数 $f(x)$ 和（或）观测函数 $h(x)$ 为非线性函数，过程噪声随机变量 $Q_k$ 和 观测噪声随机变量 $R_k$ 均服从均值为 0 的正态分布——扩展卡尔曼滤波（Extended Kalman Filter）和无迹卡尔曼滤波（Unscented Kalman Filter）</li>
 </ul>
 <p><strong>(2) 化连续为离散</strong></p>
 <p>将无穷积分转化为数值积分，一般有以下方法：</p>
