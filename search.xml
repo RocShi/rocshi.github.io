@@ -71,7 +71,7 @@ f(X_{k-1}) \approx F_j*X_{k-1}+C_F</script><p>结合假设三与上式，$k$ 时
 \begin{aligned}
     f_{X_k}^-(x) & = \int_{-\infty}^{+\infty}f_{Q_k}[x-f(v)]f_{X_{k-1}}^+(v)\mathrm{d}v \\
     & = \int_{-\infty}^{+\infty}\frac{1}{\sigma_{Q_k}\sqrt{2\pi}}e^{-\frac{(x-F_j*v-C_F)^2}{2{\sigma_{Q_k}}^2}}*\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2{\sigma_{k-1}^+}^2}}\mathrm{d}v
-\end{aligned}</script><p>类似推导标准卡尔曼滤波时的做法，使用 Mathemmatica 软件做符号推导，整理表达式结果可知，先验概率密度函数 $f_{X_k}^-(x)$ 为正态分布函数，均值和方差分别为：</p>
+\end{aligned}</script><p>类似推导标准卡尔曼滤波时的做法，使用 Mathematica 软件做符号推导，整理表达式结果可知，先验概率密度函数 $f_{X_k}^-(x)$ 为正态分布函数，均值和方差分别为：</p>
 <script type="math/tex; mode=display">
 \mu_k^- = F_j*\mu_{k-1}^++C_F=f(\mu_{k-1}^+) \tag{3.1}</script><script type="math/tex; mode=display">
 {\sigma_k^-}^2 = F_j^2*{\sigma_{k-1}^+}^2+{\sigma_{Q_k}}^2 \tag{3.2}</script><p>其中，$F_j=f’(\hat{x}_{k-1}^+)$，对于一维扩展卡尔曼滤波，$F_j$ 为一常数项，即状态转移函数 $f(x)$ 的一阶导函数 $f’(x)$ 在上一时刻状态量后验估计处的函数值。</p>
@@ -92,7 +92,7 @@ h(X_k) \approx H_j*X_k+C_H</script><p>结合假设四、公式 (3.1)、公式 (3
     & = \eta_k*\frac{1}{\sigma_{R_k}\sqrt{2\pi}}e^{-\frac{(y_k-H_j*x-C_H)^2}{2{\sigma_{R_k}}^2}}*\frac{1}{\sigma_{k}^-\sqrt{2\pi}}e^{-\frac{(x-\mu_{k}^-)^2}{2{\sigma_{k}^-}^2}}
 \end{aligned}</script><p>其中，归一化常数 $\eta_k$ 为：</p>
 <script type="math/tex; mode=display">
-\eta_k=\int_{-\infty}^{\infty}\frac{1}{\sigma_{R_k}\sqrt{2\pi}}e^{-\frac{(y_k-H_j*x-C_H)^2}{2{\sigma_{R_k}}^2}}*\frac{1}{\sigma_{k}^-\sqrt{2\pi}}e^{-\frac{(x-\mu_{k}^-)^2}{2{\sigma_{k}^-}^2}}\mathrm{d}x</script><p>类似推导标准卡尔曼滤波时的做法，使用 Mathemmatica 软件做符号推导，整理表达式结果可知，后验概率密度函数 $f_{X_k}^+(x)$ 为正态分布函数，均值和方差分别为：</p>
+\eta_k=\int_{-\infty}^{\infty}\frac{1}{\sigma_{R_k}\sqrt{2\pi}}e^{-\frac{(y_k-H_j*x-C_H)^2}{2{\sigma_{R_k}}^2}}*\frac{1}{\sigma_{k}^-\sqrt{2\pi}}e^{-\frac{(x-\mu_{k}^-)^2}{2{\sigma_{k}^-}^2}}\mathrm{d}x</script><p>类似推导标准卡尔曼滤波时的做法，使用 Mathematica 软件做符号推导，整理表达式结果可知，后验概率密度函数 $f_{X_k}^+(x)$ 为正态分布函数，均值和方差分别为：</p>
 <script type="math/tex; mode=display">
 \mu_k^+ = \mu_k^-+K*(y_k-H_j*\mu_k^--C_H)= \mu_k^-+K*[y_k-h(\mu_k^-)] \tag{3.3}</script><script type="math/tex; mode=display">
 {\sigma_k^+}^2 = (1-K*H_j)*{\sigma_k^-}^2 \tag{3.4}</script><p>$\mu_k^+$ 即 k 时刻状态量 $X_k$ 的后验估计 $\hat{x}_k^+$。其中，$K$ 被称为卡尔曼增益系数：</p>
@@ -272,11 +272,11 @@ f_{X_{k-1}}^+=\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2{
     & = \int_{-\infty}^{+\infty}\frac{1}{\sigma_{Q_k}\sqrt{2\pi}}e^{-\frac{(x-F*v-B*u_k)^2}{2{\sigma_{Q_k}}^2}}*\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2{\sigma_{k-1}^+}^2}}\mathrm{d}v
 \end{aligned}</script><p>对于 $f_{X_k}^-(x)$ 的推导，有三种方法：</p>
 <ul>
-<li>Mathemmatica 软件做符号推导</li>
+<li>Mathematica 软件做符号推导</li>
 <li>复变函数留数定理</li>
 <li>傅里叶变换 + 卷积</li>
 </ul>
-<p>这里使用 Mathemmatica 软件做符号推导，创建 WolframScript（.wls）脚本文件，创建 $f_{X_k}^-(x)$ 公式：</p>
+<p>这里使用 Mathematica 软件做符号推导，创建 WolframScript（.wls）脚本文件，创建 $f_{X_k}^-(x)$ 公式：</p>
 <p><img data-src="https://i.loli.net/2020/09/19/s9aOCQveD6nIoUR.png" alt="卡尔曼滤波先验概率密度函数wls脚本公式"></p>
 <p>其中，${\sigma_{Q_k}}^2$ 表示 k 时刻过程噪声的方差；$\mu_{k-one}^+$ 表示 $k-1$ 时刻状态量的后验概率密度函数均值；${\sigma_{k-one}^+}^2$ 表示 $k-1$ 时刻状态量的后验概率密度函数方差。</p>
 <p>运行代码进行化简，得到如下条件表达式结果：</p>
