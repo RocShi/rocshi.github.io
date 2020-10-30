@@ -3,19 +3,21 @@
   <entry>
     <title>从贝叶斯滤波到无迹卡尔曼滤波</title>
     <url>/archives/cfd8b171.html</url>
-    <content><![CDATA[<h1 id="前言" class="heading-control"><a href="#前言" class="headerlink" title="前言"></a>前言<a class="heading-anchor" href="#前言" aria-hidden="true"></a></h1><p>无迹变换（Unscened Transform，UT）<br>Cholesky分解</p>
-<p>根据上一时刻状态量后验概率密度函数的均值和方差进行采样（2n+1），并为粒子分配权重</p>
-<p>对采样粒子进行f(x)非线性变换</p>
-<p>将经过非线性变换后的采样粒子进行加权，计算得到f(X)概率密度函数均值和方差的近似</p>
+    <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>近似概率分布（概率密度函数）比近似非线性函数或变换更加简单</p>
+<h2 id="什么是无迹变换" class="heading-control"><a href="#什么是无迹变换" class="headerlink" title="什么是无迹变换"></a>什么是无迹变换<a class="heading-anchor" href="#什么是无迹变换" aria-hidden="true"></a></h2><p>无迹变换（Unscented Transform，UT）<br>Cholesky分解，下三角矩阵</p>
+<p>根据上一时刻状态量后验概率密度函数的均值和方差进行采样（2n+1），并为采样点分配权重</p>
+<p>对采样点进行f(x)非线性变换</p>
+<p>将经过非线性变换后的采样点进行加权，计算得到f(X)概率密度函数均值和方差的近似</p>
 <p>根据状态转移方程f(X)+Q得到当前时刻状态量先验概率密度函数的均值和方差</p>
 <p>根据当前时刻状态量先验概率密度函数的均值和方差进行采样（2n+1）</p>
-<p>为粒子分配权重</p>
-<p>对粒子进行h(x)非线性变换</p>
-<p>将经过非线性变换后的粒子进行加权，计算得到h(X)概率密度函数均值和方差的近似</p>
+<p>为采样点分配权重</p>
+<p>对采样点进行h(x)非线性变换</p>
+<p>将经过非线性变换后的采样点进行加权，计算得到h(X)概率密度函数均值和方差的近似</p>
 <p>计算互协方差矩阵</p>
 <p>计算当前时刻状态量的后验均值和方差</p>
 <p>EKF与UKF的区别和联系：<br>均用于非线性高斯系统的状态估计<br>EKF利用一阶泰勒级数展开对非线性的状态转移函数f(X)、观测函数h(X)进行线性近似<br>UKF利用采样的方法对f(X)、h(X)计算结果（一个新的随机变量）的概率密度函数进行近似</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><p>概率机器人<br>机器人学的状态估计</p>
+<h1 id="2" class="heading-control"><a href="#2" class="headerlink" title="2"></a>2<a class="heading-anchor" href="#2" aria-hidden="true"></a></h1><p>两次无迹变换</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><p>概率机器人<br>机器人学的状态估计<br>最优状态估计——卡尔曼，$H∞$ 及非线性滤波<br>FilterPy</p>
 <hr>
 ]]></content>
       <categories>
