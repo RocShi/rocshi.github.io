@@ -21,8 +21,8 @@
 <p>计算当前时刻状态量的后验均值和方差</p>
 <p>EKF与UKF的区别和联系：<br>均用于非线性高斯系统的状态估计<br>EKF利用一阶泰勒级数展开对非线性的状态转移函数f(X)、观测函数h(X)进行线性近似<br>UKF利用采样的方法对f(X)、h(X)计算结果（一个新的随机变量）的概率密度函数进行近似</p>
 <h1 id="2" class="heading-control"><a href="#2" class="headerlink" title="2"></a>2<a class="heading-anchor" href="#2" aria-hidden="true"></a></h1><p>两次无迹变换</p>
-<h1 id="后记" class="heading-control"><a href="#后记" class="headerlink" title="后记"></a>后记<a class="heading-anchor" href="#后记" aria-hidden="true"></a></h1><p>对于线性问题，UKF与KF所得结果相同<br>UKF并不局限于解决高斯问题</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><p>概率机器人<br>机器人学的状态估计<br>最优状态估计——卡尔曼，$H∞$ 及非线性滤波<br>FilterPy</p>
+<h1 id="3-后记" class="heading-control"><a href="#3-后记" class="headerlink" title="3 后记"></a>3 后记<a class="heading-anchor" href="#3-后记" aria-hidden="true"></a></h1><p>对于线性问题，UKF与KF所得结果相同<br>UKF并不局限于解决高斯问题</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><p>概率机器人<br>机器人学的状态估计<br>最优状态估计——卡尔曼，$H∞$ 及非线性滤波<br>FilterPy<br>…</p>
 <hr>
 ]]></content>
       <categories>
@@ -361,8 +361,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -754,8 +754,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
