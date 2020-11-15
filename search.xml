@@ -3,8 +3,8 @@
   <entry>
     <title>从贝叶斯滤波到无迹卡尔曼滤波</title>
     <url>/archives/cfd8b171.html</url>
-    <content><![CDATA[<h1 id="0-引言" class="heading-control"><a href="#0-引言" class="headerlink" title="0 引言"></a>0 引言<a class="heading-anchor" href="#0-引言" aria-hidden="true"></a></h1><p>无迹变换（Unscented Transform，UT）与卡尔曼滤波的结合。<br>近似概率分布（概率密度函数）比近似非线性函数或变换更加简单<br>确定性采样<br>$\sigma$ 点卡尔曼滤波（Sigma-Point Kalman Filter，SPKF）</p>
-<h1 id="1-无迹变换" class="heading-control"><a href="#1-无迹变换" class="headerlink" title="1 无迹变换"></a>1 无迹变换<a class="heading-anchor" href="#1-无迹变换" aria-hidden="true"></a></h1><h2 id="1-1-Julier-形式的无迹变换" class="heading-control"><a href="#1-1-Julier-形式的无迹变换" class="headerlink" title="1.1 Julier 形式的无迹变换"></a>1.1 Julier 形式的无迹变换<a class="heading-anchor" href="#1-1-Julier-形式的无迹变换" aria-hidden="true"></a></h2><h2 id="1-2-Merwe-形式的无迹变换" class="heading-control"><a href="#1-2-Merwe-形式的无迹变换" class="headerlink" title="1.2 Merwe 形式的无迹变换"></a>1.2 Merwe 形式的无迹变换<a class="heading-anchor" href="#1-2-Merwe-形式的无迹变换" aria-hidden="true"></a></h2><h1 id="2-无迹卡尔曼滤波算法框架" class="heading-control"><a href="#2-无迹卡尔曼滤波算法框架" class="headerlink" title="2 无迹卡尔曼滤波算法框架"></a>2 无迹卡尔曼滤波算法框架<a class="heading-anchor" href="#2-无迹卡尔曼滤波算法框架" aria-hidden="true"></a></h1><h2 id="2-1-噪声可加的无迹卡尔曼滤波" class="heading-control"><a href="#2-1-噪声可加的无迹卡尔曼滤波" class="headerlink" title="2.1 噪声可加的无迹卡尔曼滤波"></a>2.1 噪声可加的无迹卡尔曼滤波<a class="heading-anchor" href="#2-1-噪声可加的无迹卡尔曼滤波" aria-hidden="true"></a></h2><h2 id="2-2-噪声不可加的无迹卡尔曼滤波" class="heading-control"><a href="#2-2-噪声不可加的无迹卡尔曼滤波" class="headerlink" title="2.2 噪声不可加的无迹卡尔曼滤波"></a>2.2 噪声不可加的无迹卡尔曼滤波<a class="heading-anchor" href="#2-2-噪声不可加的无迹卡尔曼滤波" aria-hidden="true"></a></h2><p>蒙特卡罗（Monte Carlo）方法</p>
+    <content><![CDATA[<h1 id="0-引言" class="heading-control"><a href="#0-引言" class="headerlink" title="0 引言"></a>0 引言<a class="heading-anchor" href="#0-引言" aria-hidden="true"></a></h1><p>无迹变换（Unscented Transform，UT）与卡尔曼滤波的结合。<br>近似概率分布（概率密度函数）比近似非线性函数或变换更加简单<br>确定性采样<br>中心差分卡尔曼滤波（Central Difference Kalman Filter，CDKF）<br>$\sigma$ 点卡尔曼滤波（Sigma-Point Kalman Filter，SPKF）</p>
+<h1 id="1-无迹变换" class="heading-control"><a href="#1-无迹变换" class="headerlink" title="1 无迹变换"></a>1 无迹变换<a class="heading-anchor" href="#1-无迹变换" aria-hidden="true"></a></h1><h2 id="1-1-什么是无迹变换" class="heading-control"><a href="#1-1-什么是无迹变换" class="headerlink" title="1.1 什么是无迹变换"></a>1.1 什么是无迹变换<a class="heading-anchor" href="#1-1-什么是无迹变换" aria-hidden="true"></a></h2><h2 id="1-2-Julier-形式的无迹变换" class="heading-control"><a href="#1-2-Julier-形式的无迹变换" class="headerlink" title="1.2 Julier 形式的无迹变换"></a>1.2 Julier 形式的无迹变换<a class="heading-anchor" href="#1-2-Julier-形式的无迹变换" aria-hidden="true"></a></h2><h2 id="1-2-Merwe-形式的无迹变换" class="heading-control"><a href="#1-2-Merwe-形式的无迹变换" class="headerlink" title="1.2 Merwe 形式的无迹变换"></a>1.2 Merwe 形式的无迹变换<a class="heading-anchor" href="#1-2-Merwe-形式的无迹变换" aria-hidden="true"></a></h2><h1 id="2-无迹卡尔曼滤波算法框架" class="heading-control"><a href="#2-无迹卡尔曼滤波算法框架" class="headerlink" title="2 无迹卡尔曼滤波算法框架"></a>2 无迹卡尔曼滤波算法框架<a class="heading-anchor" href="#2-无迹卡尔曼滤波算法框架" aria-hidden="true"></a></h1><h2 id="2-1-可加性噪声条件下的无迹卡尔曼滤波" class="heading-control"><a href="#2-1-可加性噪声条件下的无迹卡尔曼滤波" class="headerlink" title="2.1 可加性噪声条件下的无迹卡尔曼滤波"></a>2.1 可加性噪声条件下的无迹卡尔曼滤波<a class="heading-anchor" href="#2-1-可加性噪声条件下的无迹卡尔曼滤波" aria-hidden="true"></a></h2><h2 id="2-2-非可加性噪声条件下的无迹卡尔曼滤波" class="heading-control"><a href="#2-2-非可加性噪声条件下的无迹卡尔曼滤波" class="headerlink" title="2.2 非可加性噪声条件下的无迹卡尔曼滤波"></a>2.2 非可加性噪声条件下的无迹卡尔曼滤波<a class="heading-anchor" href="#2-2-非可加性噪声条件下的无迹卡尔曼滤波" aria-hidden="true"></a></h2><p>蒙特卡罗（Monte Carlo）方法</p>
 <p>Cholesky分解，下三角矩阵</p>
 <p>$\sigma$ 点的权重（想象这些权值和高斯分布中间高两边低对应）</p>
 <p>$\sigma$ 点的采样方法有很多种：Julier、Merwe</p>
@@ -24,7 +24,7 @@
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li>《概率机器人》</li>
 <li>《机器人学的状态估计》</li>
-<li>《最优状态估计——卡尔曼，$\mathrm{H}∞$ 及非线性滤波》</li>
+<li>《最优状态估计——卡尔曼，$H_∞$ 及非线性滤波》</li>
 <li>《卡尔曼滤波与组合导航原理》（第 3 版）</li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JsYWJiZS9LYWxtYW4tYW5kLUJheWVzaWFuLUZpbHRlcnMtaW4tUHl0aG9u" title="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">Kalman-and-Bayesian-Filters-in-Python<i class="fa fa-external-link"></i></span></li>
 <li>FilterPy</li>
@@ -367,8 +367,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -760,8 +760,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
