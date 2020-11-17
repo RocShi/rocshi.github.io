@@ -13,7 +13,7 @@
 <p>近似概率分布比近似任意的非线性函数或变换要相对容易。</p>
 </blockquote>
 <p>无迹卡尔曼滤波基于无迹变换（Unscented Transform，UT），无迹变换研究的是如何通过<strong>确定的</strong>采样点捕获经非线性变换的高斯随机变量的后验分布的问题。通过无迹变换得到相应的统计特性后，再结合标准卡尔曼滤波框架，便得到无迹卡尔曼滤波。标准无迹卡尔曼滤波的计算量与扩展卡尔曼滤波相当，但滤波精度要优于扩展卡尔曼滤波。</p>
-<h1 id="1-无迹变换" class="heading-control"><a href="#1-无迹变换" class="headerlink" title="1 无迹变换"></a>1 无迹变换<a class="heading-anchor" href="#1-无迹变换" aria-hidden="true"></a></h1><h2 id="1-1-什么是无迹变换" class="heading-control"><a href="#1-1-什么是无迹变换" class="headerlink" title="1.1 什么是无迹变换"></a>1.1 什么是无迹变换<a class="heading-anchor" href="#1-1-什么是无迹变换" aria-hidden="true"></a></h2><p>无迹卡尔曼滤波中使用的确定性采样方法是 $\mathrm{sigma}$ 点采样方法的一种具体实现，中心差分卡尔曼滤波（Central Difference Kalman Filter，CDKF）使用了 $\mathrm{sigma}$ 点采样方法的令一种具体实现，这类滤波算法我们统称为 $\mathrm{sigma}$ 点卡尔曼滤波（Sigma-Point Kalman Filter，SPKF）算法。</p>
+<h1 id="1-无迹变换" class="heading-control"><a href="#1-无迹变换" class="headerlink" title="1 无迹变换"></a>1 无迹变换<a class="heading-anchor" href="#1-无迹变换" aria-hidden="true"></a></h1><h2 id="1-1-什么是无迹变换" class="heading-control"><a href="#1-1-什么是无迹变换" class="headerlink" title="1.1 什么是无迹变换"></a>1.1 什么是无迹变换<a class="heading-anchor" href="#1-1-什么是无迹变换" aria-hidden="true"></a></h2><p>无迹卡尔曼滤波中使用的确定性采样方法是 sigma 点采样方法的一种具体实现，中心差分卡尔曼滤波（Central Difference Kalman Filter，CDKF）使用了 sigma 点采样方法的另一种具体实现，这类滤波算法我们统称为 sigma 点卡尔曼滤波（Sigma-Point Kalman Filter，SPKF）算法。</p>
 <h2 id="1-2-一般形式的无迹变换" class="heading-control"><a href="#1-2-一般形式的无迹变换" class="headerlink" title="1.2 一般形式的无迹变换"></a>1.2 一般形式的无迹变换<a class="heading-anchor" href="#1-2-一般形式的无迹变换" aria-hidden="true"></a></h2><h2 id="1-2-比例无迹变换" class="heading-control"><a href="#1-2-比例无迹变换" class="headerlink" title="1.2 比例无迹变换"></a>1.2 比例无迹变换<a class="heading-anchor" href="#1-2-比例无迹变换" aria-hidden="true"></a></h2><p>比例无迹变换（Scaled Unscented Transform，SUT）</p>
 <h1 id="2-无迹卡尔曼滤波的假设" class="heading-control"><a href="#2-无迹卡尔曼滤波的假设" class="headerlink" title="2 无迹卡尔曼滤波的假设"></a>2 无迹卡尔曼滤波的假设<a class="heading-anchor" href="#2-无迹卡尔曼滤波的假设" aria-hidden="true"></a></h1><p>无迹卡尔曼滤波与扩展卡尔曼滤波具有相同的前提假设。</p>
 <h2 id="2-1-与卡尔曼滤波相同的假设" class="heading-control"><a href="#2-1-与卡尔曼滤波相同的假设" class="headerlink" title="2.1 与卡尔曼滤波相同的假设"></a>2.1 与卡尔曼滤波相同的假设<a class="heading-anchor" href="#2-1-与卡尔曼滤波相同的假设" aria-hidden="true"></a></h2><p><strong>(1) 假设一：状态量服从正态分布</strong></p>
@@ -392,8 +392,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -785,8 +785,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>

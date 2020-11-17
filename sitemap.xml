@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.shipengx.com/about/index.html</loc>
+    
+    <lastmod>2020-11-17T01:13:34.808Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.shipengx.com/archives/cfd8b171.html</loc>
     
-    <lastmod>2020-11-16T15:55:48.048Z</lastmod>
+    <lastmod>2020-11-17T01:10:59.307Z</lastmod>
     
   </url>
   
@@ -47,13 +54,6 @@
     <loc>https://blog.shipengx.com/archives/208e6058.html</loc>
     
     <lastmod>2020-10-28T04:29:08.090Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/about/index.html</loc>
-    
-    <lastmod>2020-10-27T16:43:15.393Z</lastmod>
     
   </url>
   
