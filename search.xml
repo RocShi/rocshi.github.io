@@ -22,7 +22,12 @@
 <p><img data-src="https://i.loli.net/2020/11/17/8ilFnzojdq61Ok7.png" alt="无迹变换示例"></p>
 <p>无迹卡尔曼滤波中使用的确定性采样方法是 sigma 点采样方法的一种具体实现，中心差分卡尔曼滤波（Central Difference Kalman Filter，CDKF）使用了 sigma 点采样方法的另一种具体实现，这类滤波算法我们统称为 sigma 点卡尔曼滤波（Sigma-Point Kalman Filter，SPKF）算法。</p>
 <p>按照历史发展脉络来讲，无迹变换主要包括两种形式：一般形式的无迹变换和比例无迹变换（Scaled Unscented Transform，SUT）。两种无迹变换的区别主要体现在采样规则和权重计算上，下面将分别进行阐述。</p>
-<h2 id="1-2-一般形式的无迹变换" class="heading-control"><a href="#1-2-一般形式的无迹变换" class="headerlink" title="1.2 一般形式的无迹变换"></a>1.2 一般形式的无迹变换<a class="heading-anchor" href="#1-2-一般形式的无迹变换" aria-hidden="true"></a></h2><p>假设存在 $n$ 维随机向量 $X$，</p>
+<h2 id="1-2-一般形式的无迹变换" class="heading-control"><a href="#1-2-一般形式的无迹变换" class="headerlink" title="1.2 一般形式的无迹变换"></a>1.2 一般形式的无迹变换<a class="heading-anchor" href="#1-2-一般形式的无迹变换" aria-hidden="true"></a></h2><p>假设存在 $n$ 维随机向量 $X$，其服从正态分布：</p>
+<script type="math/tex; mode=display">
+X \sim \mathcal{N}(\mu, \Sigma)</script><p>$\mathcal{X}$ $\mathcal{Y}$<br><strong>步骤一：参数选择与权重计算</strong></p>
+<p><strong>步骤二：确定性采样</strong></p>
+<p><strong>步骤三：sigma 点非线性变换</strong></p>
+<p><strong>步骤四：加权计算近似均值与近似协方差</strong></p>
 <p>Cholesky 分解，下三角矩阵</p>
 <h2 id="1-2-比例无迹变换" class="heading-control"><a href="#1-2-比例无迹变换" class="headerlink" title="1.2 比例无迹变换"></a>1.2 比例无迹变换<a class="heading-anchor" href="#1-2-比例无迹变换" aria-hidden="true"></a></h2><p>比例无迹变换</p>
 <h1 id="2-无迹卡尔曼滤波的假设" class="heading-control"><a href="#2-无迹卡尔曼滤波的假设" class="headerlink" title="2 无迹卡尔曼滤波的假设"></a>2 无迹卡尔曼滤波的假设<a class="heading-anchor" href="#2-无迹卡尔曼滤波的假设" aria-hidden="true"></a></h1><p>无迹卡尔曼滤波与扩展卡尔曼滤波具有相同的前提假设。</p>
@@ -279,8 +284,8 @@ H_j=
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>扩展卡尔曼滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>扩展卡尔曼滤波</tag>
       </tags>
   </entry>
   <entry>
@@ -794,8 +799,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>贝叶斯滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
