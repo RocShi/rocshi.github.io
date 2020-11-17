@@ -17,7 +17,9 @@
 <p>无迹变换要解决的问题是：已知某高斯随机变量（多维情形下是随机向量）的概率分布（均值和方差），求其经过某非线性函数 $g(·)$ 变换后的概率分布。基于上述思想，无迹变换的主要步骤为：</p>
 <p>(1) 根据<strong>某种规则</strong>对高斯随机变量的概率分布进行<strong>确定性采样</strong>，并为采样点<strong>分配权重</strong>（均值权重和方差权重），采样点我们通常称之为 sigma 点；</p>
 <p>(2) 将每一个 sigma 点进行<strong>非线性变换</strong>，得到新的 sigma 点；</p>
-<p>(3) 对非线性变换后的 sigma 点进行<strong>加权求和</strong>，分别计算加权均值和加权方差，用加权均值和加权方差<strong>近似表征</strong>高斯随机变量经非线性变换后的概率分布。</p>
+<p>(3) 对非线性变换后的新的 sigma 点进行<strong>加权求和</strong>，分别计算加权均值和加权方差，用加权均值和加权方差<strong>近似表征</strong>高斯随机变量经非线性变换后的概率分布。</p>
+<p>如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/11/17/8ilFnzojdq61Ok7.png" alt="无迹变换示例"></p>
 <p>无迹卡尔曼滤波中使用的确定性采样方法是 sigma 点采样方法的一种具体实现，中心差分卡尔曼滤波（Central Difference Kalman Filter，CDKF）使用了 sigma 点采样方法的另一种具体实现，这类滤波算法我们统称为 sigma 点卡尔曼滤波（Sigma-Point Kalman Filter，SPKF）算法。</p>
 <p>按照历史发展脉络来讲，无迹变换主要包括两种形式：一般形式的无迹变换和比例无迹变换（Scaled Unscented Transform，SUT）。两种无迹变换的区别主要体现在采样规则和权重计算上，下面将分别进行阐述。</p>
 <h2 id="1-2-一般形式的无迹变换" class="heading-control"><a href="#1-2-一般形式的无迹变换" class="headerlink" title="1.2 一般形式的无迹变换"></a>1.2 一般形式的无迹变换<a class="heading-anchor" href="#1-2-一般形式的无迹变换" aria-hidden="true"></a></h2><p>假设存在 $n$ 维随机向量 $X$，</p>
@@ -277,8 +279,8 @@ H_j=
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>扩展卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -792,8 +794,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
