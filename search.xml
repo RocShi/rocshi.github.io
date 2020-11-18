@@ -18,7 +18,7 @@
 <p>(1) 根据<strong>某种规则</strong>对高斯随机变量的概率分布进行<strong>确定性采样</strong>，并为采样点<strong>分配权重</strong>（均值权重和方差权重），采样点我们通常称之为 sigma 点；</p>
 <p>(2) 将每一个 sigma 点进行<strong>非线性变换</strong>，得到新的 sigma 点；</p>
 <p>(3) 对非线性变换后的新的 sigma 点进行<strong>加权求和</strong>，分别计算加权均值和加权方差，用加权均值和加权方差<strong>近似表征</strong>高斯随机变量经非线性变换后的概率分布。</p>
-<p>如下图所示：</p>
+<p>如下图所示（《概率机器人》第 3.4 节 P49）：</p>
 <p><img data-src="https://i.loli.net/2020/11/17/8ilFnzojdq61Ok7.png" alt="无迹变换示例"></p>
 <p>无迹卡尔曼滤波中使用的确定性采样方法是 sigma 点采样方法的一种具体实现，中心差分卡尔曼滤波（Central Difference Kalman Filter，CDKF）使用了 sigma 点采样方法的另一种具体实现，这类滤波算法我们统称为 sigma 点卡尔曼滤波（Sigma-Point Kalman Filter，SPKF）算法。</p>
 <p>按照历史发展脉络来讲，无迹变换主要包括两种形式：一般形式的无迹变换和比例无迹变换（Scaled Unscented Transform，SUT）。两种无迹变换的区别主要体现在采样规则和权重计算上，下面将分别进行阐述。</p>
@@ -26,14 +26,23 @@
 <script type="math/tex; mode=display">
 X \sim \mathcal{N}(\mu, \Sigma)</script><p>将 $X$ 经过非线性函数 $g(·)$ 进行变换，得到随机向量 $Y$，我们使用一般形式的无迹变换估计 $Y$ 的概率分布。一般形式的无迹变换最早由 Julier 等人提出，其主要操作流程如下所述：</p>
 <p><strong>步骤一：参数选择与权重计算</strong></p>
-<p>一般形式的无迹变换只涉及一个外部引入参数 $\kappa$，</p>
-<p>$\mathcal{X}$ $\mathcal{Y}$</p>
+<p>一般形式的无迹变换只涉及一个外部引入参数 $\kappa$，各 sigma 点（$2n+1$ 个）的权重分配如下：</p>
+<script type="math/tex; mode=display">
+W^{(i)} = 
+\begin{cases}
+    \frac{\kappa}{n+\kappa} & \quad n = 0 \\
+    \frac{1}{2(n+\kappa)} & \quad n = 1, ··· ,2n
+\end{cases}</script><p>其中，$\kappa \in \mathbb{R}$。对于高斯问题，$n+\kappa = 3$ 是一个比较好的选择，对于非高斯问题（是的，无迹变换也适用于非高斯问题），$\kappa$ 应该选择其它更恰当的值。</p>
 <p><strong>步骤二：确定性采样</strong></p>
-<p>Cholesky 分解，下三角矩阵</p>
+<p>Cholesky 分解，下三角矩阵<br>$\mathcal{X}$ </p>
 <p><strong>步骤三：sigma 点非线性变换</strong></p>
+<p>$\mathcal{Y}$</p>
 <p><strong>步骤四：加权计算近似均值与近似协方差</strong></p>
-<h2 id="1-2-比例无迹变换" class="heading-control"><a href="#1-2-比例无迹变换" class="headerlink" title="1.2 比例无迹变换"></a>1.2 比例无迹变换<a class="heading-anchor" href="#1-2-比例无迹变换" aria-hidden="true"></a></h2><p>比例无迹变换</p>
-<h1 id="2-无迹卡尔曼滤波的假设" class="heading-control"><a href="#2-无迹卡尔曼滤波的假设" class="headerlink" title="2 无迹卡尔曼滤波的假设"></a>2 无迹卡尔曼滤波的假设<a class="heading-anchor" href="#2-无迹卡尔曼滤波的假设" aria-hidden="true"></a></h1><p>无迹卡尔曼滤波与扩展卡尔曼滤波具有相同的前提假设。</p>
+<h2 id="1-3-比例无迹变换" class="heading-control"><a href="#1-3-比例无迹变换" class="headerlink" title="1.3 比例无迹变换"></a>1.3 比例无迹变换<a class="heading-anchor" href="#1-3-比例无迹变换" aria-hidden="true"></a></h2><p>比例无迹变换</p>
+<script type="math/tex; mode=display">
+W^m_0 = \frac{\lambda}{n+\lambda}</script><script type="math/tex; mode=display">
+W^c_0 = \frac{\lambda}{n+\lambda} + 1 -\alpha^2 + \beta</script><script type="math/tex; mode=display">
+W^m_i = W^c_i = \frac{1}{2(n+\lambda)}\;\;\;i=1..2n</script><h1 id="2-无迹卡尔曼滤波的假设" class="heading-control"><a href="#2-无迹卡尔曼滤波的假设" class="headerlink" title="2 无迹卡尔曼滤波的假设"></a>2 无迹卡尔曼滤波的假设<a class="heading-anchor" href="#2-无迹卡尔曼滤波的假设" aria-hidden="true"></a></h1><p>无迹卡尔曼滤波与扩展卡尔曼滤波具有相同的前提假设。</p>
 <h2 id="2-1-与卡尔曼滤波相同的假设" class="heading-control"><a href="#2-1-与卡尔曼滤波相同的假设" class="headerlink" title="2.1 与卡尔曼滤波相同的假设"></a>2.1 与卡尔曼滤波相同的假设<a class="heading-anchor" href="#2-1-与卡尔曼滤波相同的假设" aria-hidden="true"></a></h2><p><strong>(1) 假设一：状态量服从正态分布</strong></p>
 <script type="math/tex; mode=display">
 X \sim \mathcal{N}(\mu_X, \ \sigma_X^2)</script><p><strong>(2) 假设二：观测量服从正态分布</strong></p>
