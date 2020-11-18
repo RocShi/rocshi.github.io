@@ -60,8 +60,9 @@
 <meta property="og:description" content="无迹卡尔曼滤波基于无迹变换，无迹变换研究的是如何通过确定的采样点捕获经非线性变换的高斯随机变量的后验分布的问题。通过无迹变换得到相应的统计特性后，再结合标准卡尔曼滤波框架，便得到无迹卡尔曼滤波。标准无迹卡尔曼滤波的计算量与扩展卡尔曼滤波相当，但滤波精度要优于扩展卡尔曼滤波。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2020/11/17/8ilFnzojdq61Ok7.png">
+<meta property="og:image" content="https://i.loli.net/2020/11/18/VAbNnhSfBKg56jp.png">
 <meta property="article:published_time" content="2020-10-03T04:43:54.000Z">
-<meta property="article:modified_time" content="2020-11-18T10:26:04.366Z">
+<meta property="article:modified_time" content="2020-11-18T13:36:37.933Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
@@ -265,7 +266,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-18 18:26:04" itemprop="dateModified" datetime="2020-11-18T18:26:04+08:00">2020-11-18</time>
+                <time title="修改时间：2020-11-18 21:36:37" itemprop="dateModified" datetime="2020-11-18T21:36:37+08:00">2020-11-18</time>
               </span>
 
           <br>
@@ -332,27 +333,48 @@
 <p><img data-src="https://i.loli.net/2020/11/17/8ilFnzojdq61Ok7.png" alt="无迹变换示例"></p>
 <p>无迹卡尔曼滤波中使用的确定性采样方法是 sigma 点采样方法的一种具体实现，中心差分卡尔曼滤波（Central Difference Kalman Filter，CDKF）使用了 sigma 点采样方法的另一种具体实现，这类滤波算法我们统称为 sigma 点卡尔曼滤波（Sigma-Point Kalman Filter，SPKF）算法。</p>
 <p>按照历史发展脉络来讲，无迹变换主要包括两种形式：一般形式的无迹变换和比例无迹变换（Scaled Unscented Transform，SUT）。两种无迹变换的区别主要体现在采样规则和权重计算上，下面将分别进行阐述。</p>
-<h2 id="1-2-一般形式的无迹变换" class="heading-control"><a href="#1-2-一般形式的无迹变换" class="headerlink" title="1.2 一般形式的无迹变换"></a>1.2 一般形式的无迹变换<a class="heading-anchor" href="#1-2-一般形式的无迹变换" aria-hidden="true"></a></h2><p>假设存在 $n$ 维随机向量 $X$，其服从均值 $\mu$ 和协方差 $\Sigma$ 的正态分布：</p>
+<h2 id="1-2-一般形式的无迹变换" class="heading-control"><a href="#1-2-一般形式的无迹变换" class="headerlink" title="1.2 一般形式的无迹变换"></a>1.2 一般形式的无迹变换<a class="heading-anchor" href="#1-2-一般形式的无迹变换" aria-hidden="true"></a></h2><p>假设存在 $n$ 维随机向量 $X$，其服从均值 $\mu_x$ 和协方差 $\Sigma_x$ 的正态分布：</p>
 <script type="math/tex; mode=display">
-X \sim \mathcal{N}(\mu, \Sigma)</script><p>将 $X$ 经过非线性函数 $g(·)$ 进行变换，得到随机向量 $Y$，我们使用一般形式的无迹变换估计 $Y$ 的概率分布。一般形式的无迹变换最早由 Julier 等人提出，其主要操作流程如下所述：</p>
+X \sim \mathcal{N}(\mu_x, \Sigma_x)</script><p>将 $X$ 经过非线性函数 $g(·)$ 进行变换，得到随机向量 $Y$，我们使用一般形式的无迹变换估计 $Y$ 的概率分布。一般形式的无迹变换最早由 Julier 等人提出，其主要操作流程如下所述：</p>
 <p><strong>步骤一：参数选择与权重计算</strong></p>
 <p>一般形式的无迹变换只涉及一个外部引入参数 $\kappa$，各 sigma 点（$2n+1$ 个）的权重分配如下：</p>
 <script type="math/tex; mode=display">
 W^{(i)} = 
 \begin{cases}
-    \frac{\kappa}{n+\kappa} & \quad n = 0 \\
-    \frac{1}{2(n+\kappa)} & \quad n = 1, ··· ,2n
+    \frac{\kappa}{n+\kappa} & i = 0 \\
+    \frac{1}{2(n+\kappa)} & i = 1, ··· , 2n
 \end{cases}</script><p>其中，$\kappa \in \mathbb{R}$。对于高斯问题，$n+\kappa = 3$ 是一个比较好的选择，对于非高斯问题（是的，无迹变换也适用于非高斯问题），$\kappa$ 应该选择其它更恰当的值。</p>
 <p><strong>步骤二：确定性采样</strong></p>
-<p>Cholesky 分解，下三角矩阵<br>$\mathcal{X}$ </p>
-<p><strong>步骤三：sigma 点非线性变换</strong></p>
-<p>$\mathcal{Y}$</p>
-<p><strong>步骤四：加权计算近似均值与近似协方差</strong></p>
-<h2 id="1-3-比例无迹变换" class="heading-control"><a href="#1-3-比例无迹变换" class="headerlink" title="1.3 比例无迹变换"></a>1.3 比例无迹变换<a class="heading-anchor" href="#1-3-比例无迹变换" aria-hidden="true"></a></h2><p>比例无迹变换</p>
+<p>按照如下方法采样得到 $2n + 1$ 个 sigma 点，构成 $n \times (2n + 1)$ 的点集矩阵 $\mathcal{X}$：</p>
 <script type="math/tex; mode=display">
-W^m_0 = \frac{\lambda}{n+\lambda}</script><script type="math/tex; mode=display">
-W^c_0 = \frac{\lambda}{n+\lambda} + 1 -\alpha^2 + \beta</script><script type="math/tex; mode=display">
-W^m_i = W^c_i = \frac{1}{2(n+\lambda)}\;\;\;i=1..2n</script><h1 id="2-无迹卡尔曼滤波的假设" class="heading-control"><a href="#2-无迹卡尔曼滤波的假设" class="headerlink" title="2 无迹卡尔曼滤波的假设"></a>2 无迹卡尔曼滤波的假设<a class="heading-anchor" href="#2-无迹卡尔曼滤波的假设" aria-hidden="true"></a></h1><p>无迹卡尔曼滤波与扩展卡尔曼滤波具有相同的前提假设。</p>
+\mathcal{X}^{(i)} = 
+\begin{cases}
+    \mu_x &  i = 0 \\
+    \mu_x + (\sqrt{(n + \kappa)\Sigma_x})^{(i)} & i = 1, ··· , n \\
+    \mu_x - (\sqrt{(n + \kappa)\Sigma_x})^{(i-n)} & i = n + 1, ··· , 2n 
+\end{cases}</script><p>其中，$(\sqrt{(n + \kappa)\Sigma_x})^{(i)}$ 表示矩阵 $(n + \kappa)\Sigma_x$ 作 <strong>Cholesky 分解</strong>后<strong>下三角矩阵</strong>的第 $i$ 列，$(\sqrt{(n + \kappa)\Sigma_x})^{(i-n)}$ 同理。</p>
+<p><strong>步骤三：sigma 点非线性变换</strong></p>
+<p>将每个 sigma 点（即 $\mathcal{X}$ 的每一列）进行 $g(·)$ 的非线性变换，得到变换后的新的点集矩阵 $\mathcal{Y}$：</p>
+<script type="math/tex; mode=display">
+\mathcal{Y}^{(i)} = g(\mathcal{X}^{(i)}) \quad i = 0, ··· , 2n</script><p><strong>步骤四：加权计算近似均值与近似协方差</strong></p>
+<script type="math/tex; mode=display">
+\mu_y = \sum_{i=0}^{i=2n}W^{(i)}\mathcal{Y}^{(i)}</script><script type="math/tex; mode=display">
+\Sigma_y = \sum_{i=0}^{i=2n}W^{(i)}[\mathcal{Y}^{(i)}-\mu_y][\mathcal{Y}^{(i)}-\mu_y]^T</script><h2 id="1-3-比例无迹变换" class="heading-control"><a href="#1-3-比例无迹变换" class="headerlink" title="1.3 比例无迹变换"></a>1.3 比例无迹变换<a class="heading-anchor" href="#1-3-比例无迹变换" aria-hidden="true"></a></h2><p>从 1.2 节的内容中我们可以发现，当参数 $\kappa &lt; 0$ 时，权重 $W^{(0)} = \frac{\kappa}{n+\kappa} &lt; 0$，加权算得的近似协方差可能存在非半正定的情况。为应对该问题，Julier 等人后来提出无迹变换的改进形式——比例无迹变换，并由 Merwe 等人对其进行了简化。比例无迹变换与一般形式的无迹变化的主要区别体现在参数选取与 sigma 点权重计算上，其主要操作流程如下所述：</p>
+<p><strong>步骤一：参数选择与权重计算</strong></p>
+<p>比例无迹变化引入了三个外部参数：$\alpha$、$\beta$ 和 $\lambda$，各 sigma 点（$2n+1$ 个）的权重分配如下：</p>
+<script type="math/tex; mode=display">
+W_m^{(i)} =
+\begin{cases}
+    \frac{\lambda}{n+\lambda} & i = 0 \\
+    \frac{1}{2(n+\lambda)} & i = 1, ··· , 2n
+\end{cases}</script><script type="math/tex; mode=display">
+W_c^{(i)} = 
+\begin{cases}
+    \frac{\lambda}{n+\lambda} + 1 -\alpha^2 + \beta  & i = 0 \\
+    \frac{1}{2(n+\lambda)} & i = 1, ··· , 2n
+\end{cases}</script><p>其中，$W_m^{(i)}$ 表示计算近似均值时 sigma 点的权重，$W_c^{(i)}$ 表示计算近似协方差时 sigma 点的权重。</p>
+<p><img data-src="https://i.loli.net/2020/11/18/VAbNnhSfBKg56jp.png" alt="alpha 取不同值时 sigma 点的散布示例"></p>
+<h1 id="2-无迹卡尔曼滤波的假设" class="heading-control"><a href="#2-无迹卡尔曼滤波的假设" class="headerlink" title="2 无迹卡尔曼滤波的假设"></a>2 无迹卡尔曼滤波的假设<a class="heading-anchor" href="#2-无迹卡尔曼滤波的假设" aria-hidden="true"></a></h1><p>无迹卡尔曼滤波与扩展卡尔曼滤波具有相同的前提假设。</p>
 <h2 id="2-1-与卡尔曼滤波相同的假设" class="heading-control"><a href="#2-1-与卡尔曼滤波相同的假设" class="headerlink" title="2.1 与卡尔曼滤波相同的假设"></a>2.1 与卡尔曼滤波相同的假设<a class="heading-anchor" href="#2-1-与卡尔曼滤波相同的假设" aria-hidden="true"></a></h2><p><strong>(1) 假设一：状态量服从正态分布</strong></p>
 <script type="math/tex; mode=display">
 X \sim \mathcal{N}(\mu_X, \ \sigma_X^2)</script><p><strong>(2) 假设二：观测量服从正态分布</strong></p>
@@ -383,12 +405,13 @@ R \sim \mathcal{N}(0, \ \sigma_R^2)</script><h2 id="2-2-与卡尔曼滤波不同
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly9pZWVleHBsb3JlLmllZWUub3JnL2llbDMvMzkyMC8xMTM1Mi8wMDUyOTc4My5wZGY=" title="https://ieeexplore.ieee.org/iel3/3920/11352/00529783.pdf">A New Approach for Filtering Nonlinear Systems<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZ2F0c2J5LnVjbC5hYy51ay9+Ynlyb24vbmxkcy9tZXJ3ZTIwMDNhLnBkZg==" title="https://www.gatsby.ucl.ac.uk/~byron/nlds/merwe2003a.pdf">Sigma-Point Kalman Filters for Probabilistic Inference in Dynamic State-Space Models<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY3MudW5jLmVkdS9+d2VsY2gva2FsbWFuL21lZGlhL3BkZi9KdWxpZXIxOTk3X1NQSUVfS0YucGRm" title="https://www.cs.unc.edu/~welch/kalman/media/pdf/Julier1997_SPIE_KF.pdf">A New Extension of the Kalman Filter to Nonlinear Systems<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JsYWJiZS9LYWxtYW4tYW5kLUJheWVzaWFuLUZpbHRlcnMtaW4tUHl0aG9u" title="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">Kalman-and-Bayesian-Filters-in-Python<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9maWx0ZXJweS5yZWFkdGhlZG9jcy5pby9lbi9sYXRlc3Qv" title="https://filterpy.readthedocs.io/en/latest/">FilterPy Documentation<i class="fa fa-external-link"></i></span></li>
 <li>《概率机器人》</li>
 <li>《机器人学中的状态估计》</li>
 <li>《最优状态估计——卡尔曼，$H_∞$ 及非线性滤波》</li>
 <li>《卡尔曼滤波与组合导航原理》（第 3 版）</li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JsYWJiZS9LYWxtYW4tYW5kLUJheWVzaWFuLUZpbHRlcnMtaW4tUHl0aG9u" title="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">Kalman-and-Bayesian-Filters-in-Python<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9maWx0ZXJweS5yZWFkdGhlZG9jcy5pby9lbi9sYXRlc3Qv" title="https://filterpy.readthedocs.io/en/latest/">FilterPy Documentation<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 
