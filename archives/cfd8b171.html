@@ -62,7 +62,7 @@
 <meta property="og:image" content="https://i.loli.net/2020/11/17/8ilFnzojdq61Ok7.png">
 <meta property="og:image" content="https://i.loli.net/2020/11/18/VAbNnhSfBKg56jp.png">
 <meta property="article:published_time" content="2020-10-03T04:43:54.000Z">
-<meta property="article:modified_time" content="2020-11-21T11:56:37.384Z">
+<meta property="article:modified_time" content="2020-11-21T14:19:26.836Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
@@ -266,7 +266,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-21 19:56:37" itemprop="dateModified" datetime="2020-11-21T19:56:37+08:00">2020-11-21</time>
+                <time title="修改时间：2020-11-21 22:19:26" itemprop="dateModified" datetime="2020-11-21T22:19:26+08:00">2020-11-21</time>
               </span>
 
           <br>
@@ -414,12 +414,12 @@ R \sim \mathcal{N}(0, \ \sigma_R^2)</script><h2 id="2-2-与卡尔曼滤波不同
 \end{cases}</script><p>从上式中我们可以发现，过程噪声 $Q_k$ 和观测噪声 $R_k$ 是以线性可加项的形式存在于系统状态方程和观测方程中的，这种形式的表述基于这样的前提假设：过程噪声 $Q_k$ 对系统状态转移过程的影响是线性的，观测噪声 $R_k$ 对系统观测过程的影响也是线性的。很明显，此种情况下，$Q_k$ 与 $X_k$ 是同维的，$R_k$ 与 $Y_k$ 是同维的。</p>
 <p>由此引申出可加性噪声条件下的无迹卡尔曼滤波算法，《概率机器人》第 3.4 节 P53 对算法流程有着很好的描述。假设有如下已知条件：</p>
 <ul>
-<li>高斯的状态量随机向量 $X$，$n_X \times 1$ 维</li>
+<li>高斯的状态量随机向量 $X$，$n_X$ 维，记 $n_X = n$</li>
 <li>$k - 1$ 时刻 $X$ 的后验均值与后验协方差：$\mu_{X_{k-1}}^+$，$\Sigma_{X_{k-1}}^+$</li>
 <li>$k$ 时刻的外部控制量输入 $u_k$</li>
 <li>高斯的过程噪声随机向量：$Q\sim\mathcal{N}(0, \Sigma_Q)$</li>
 <li>状态转移函数：$f(X_{k-1}, u_k)$</li>
-<li>高斯的观测量随机向量 $Z$，$n_Z \times 1$ 维</li>
+<li>高斯的观测量随机向量 $Z$，$n_Z$ 维</li>
 <li>$k$ 时刻 $Z$ 的观测取值 $z_k$</li>
 <li>高斯的观测噪声随机向量：$R\sim\mathcal{N}(0, \Sigma_R)$</li>
 <li>观测函数：$h(X_k)$</li>
@@ -465,7 +465,8 @@ W_c^{(i)} =
     \mu_{X_k}^- &  i = 0 \\
     \mu_{X_k}^- + \gamma(\sqrt{\Sigma_{X_k}^-})^{(i)} & i = 1, ··· , n \\
     \mu_{X_k}^- - \gamma(\sqrt{\Sigma_{X_k}^-})^{(i-n)} & i = n + 1, ··· , 2n 
-\end{cases}</script><p><strong>步骤六：观测非线性变换</strong></p>
+\end{cases}</script><p>某些时候，为降低运算量会省略此步，而在下一步骤中直接使用步骤三中的 sigma 点集 $\mathcal{X}_k^{-*(i)}$，这样做在一定程度上会降低精度。</p>
+<p><strong>步骤六：观测非线性变换</strong></p>
 <script type="math/tex; mode=display">
 \mathcal{Z}_k^{(i)} = h(\mathcal{X}_k^{-(i)}) \quad i = 0, 1, 2, ··· , 2n</script><p><strong>步骤七：加权计算 $k$ 时刻观测量 $Z_k$ 的概率分布</strong></p>
 <script type="math/tex; mode=display">
@@ -479,7 +480,93 @@ K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$
 <script type="math/tex; mode=display">
 \mu_{X_k}^+ = \mu_{X_k}^- + K_k(z_k-\mu_{Z_k})</script><script type="math/tex; mode=display">
 \Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤二、三、四构成了可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤五、六、七、八、九、十则构成了更新步。</p>
-<h2 id="3-2-非可加性噪声条件下的无迹卡尔曼滤波" class="heading-control"><a href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波" class="headerlink" title="3.2 非可加性噪声条件下的无迹卡尔曼滤波"></a>3.2 非可加性噪声条件下的无迹卡尔曼滤波<a class="heading-anchor" href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波" aria-hidden="true"></a></h2><p>矩阵</p>
+<h2 id="3-2-非可加性噪声条件下的无迹卡尔曼滤波" class="heading-control"><a href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波" class="headerlink" title="3.2 非可加性噪声条件下的无迹卡尔曼滤波"></a>3.2 非可加性噪声条件下的无迹卡尔曼滤波<a class="heading-anchor" href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波" aria-hidden="true"></a></h2><p>很多时候，噪声对系统的状态转移和观测的影响并非线性的，此种情况下，$Q_k$ 与 $X_k$ 不一定是同维的，$R_k$ 与 $Y_k$ 也不一定是同维的。此时，系统的状态方程和观测方程演变为：</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+    X_k=f(X_{k-1}, Q_k) & \Rightarrow \color{red}{状态方程} \\ 
+    Y_k=h(X_k, R_k) & \Rightarrow \color{red}{观测方程}
+\end{cases}</script><p>过程噪声协方差和观测噪声协方差便不能像 3.1 节中描述的那样直接加在加权协方差的末尾。非可加性噪声条件下的无迹卡尔曼滤波算法的处理方法是<strong>对原始状态量作增广（augment）处理</strong>：</p>
+<script type="math/tex; mode=display">
+\mu_k^a = 
+\begin{bmatrix}
+    \mu_k^a \\
+    \bold{0} \\
+    \bold{0}
+\end{bmatrix}, \quad
+\Sigma_k^a = 
+\begin{bmatrix}
+    \Sigma_k & \bold{0} & \bold{0} \\
+    \bold{0} & \Sigma_Q & \bold{0}\\
+    \bold{0} & \bold{0} & \Sigma_R
+\end{bmatrix}</script><p>增广处理的方式并非只此一种，也可分步增广：在预测步开始前先对上一时刻状态量的后验均值和后验协方差作过程噪声增广，再在更新步开始前对当前时刻状态量的先验均值和先验协方差作观测噪声增广，《机器人学中的状态估计》一书中使用的便是分步增广的方式，两种增广处理方式是等效的。</p>
+<p>记过程噪声随机向量 $Q$ 的维度为 $q$，观测噪声随机向量 $R$ 的维度为 $r$，增广状态量 $X_k^a$ 的维度为 $L = n + q + r$。下面我们基于 3.1 节中的已知条件和符号定义，阐述非可加性噪声条件下的无迹卡尔曼滤波算法的流程步骤。</p>
+<p><strong>步骤一：初始化</strong></p>
+<p>初始化步骤需要做三件事：</p>
+<p><strong>选定滤波初值</strong></p>
+<p>根据观测量初值 $z_0$及观测函数 $h(·)$ 计算对应的状态量初始均值 $X_0^+$，设定状态量协方差初值 $\Sigma_{X_0}^+$，并得到增广状态量和增广状态量协方差的初值：</p>
+<script type="math/tex; mode=display">
+X_0^{a+} = 
+\begin{bmatrix}
+    X_0^+ \\
+    \bold{0} \\
+    \bold{0}
+\end{bmatrix}, \quad
+\Sigma_0^{a+} = 
+\begin{bmatrix}
+    \Sigma_k^0 & \bold{0} & \bold{0} \\
+    \bold{0} & \Sigma_Q & \bold{0}\\
+    \bold{0} & \bold{0} & \Sigma_R
+\end{bmatrix}</script><p><strong>选定无迹变换参数</strong></p>
+<p>设定比例无迹变换参数 $\alpha$、$\beta$、$\kappa$ 和 $\lambda$ 的参数值，若使用一般形式的无迹变换，仅需设定 $\kappa$ 的取值。</p>
+<p><strong>sigma 点权重计算</strong></p>
+<p>根据无迹变换参数取值及权重计算公式计算各 sigma 点权重。</p>
+<script type="math/tex; mode=display">
+W_m^{(i)} =
+\begin{cases}
+    \frac{\lambda}{L+\lambda} & i = 0 \\
+    \frac{1}{2(L+\lambda)} & i = 1, ··· , 2L
+\end{cases}</script><script type="math/tex; mode=display">
+W_c^{(i)} = 
+\begin{cases}
+    \frac{\lambda}{L+\lambda} + 1 -\alpha^2 + \beta  & i = 0 \\
+    \frac{1}{2(L+\lambda)} & i = 1, ··· , 2L
+\end{cases}</script><p>对 $k = 1, 2, 3, ··· ,$ 执行：</p>
+<p><strong>步骤二：对 $k-1$ 时刻增广状态量 $X_{k-1}^a$ 的后验概率分布进行 sigma 采样</strong></p>
+<script type="math/tex; mode=display">
+\mathcal{X}_{k-1}^{a+(i)} = 
+\begin{cases}
+    \mu_{X_{k-1}}^{a+} &  i = 0 \\
+    \mu_{X_{k-1}}^{a+} + \gamma(\sqrt{\Sigma_{X_{k-1}}^{a+}})^{(i)} & i = 1, ··· , L \\
+    \mu_{X_{k-1}}^{a+} - \gamma(\sqrt{\Sigma_{X_{k-1}}^{a+}})^{(i-L)} & i = L + 1, ··· , 2L 
+\end{cases}</script><p>其中，$\gamma = \sqrt{(L + \lambda)}$。</p>
+<p><strong>步骤三：状态转移非线性变换</strong></p>
+<script type="math/tex; mode=display">
+\mathcal{X}_k^{a-*(i)} = f(\mathcal{X}_{k-1}^{+(i)}, u_k) \quad i = 0, 1, 2, ··· , 2L</script><p><strong>步骤四：加权计算 $k$ 时刻状态量的先验概率分布</strong></p>
+<script type="math/tex; mode=display">
+\mu_{X_k}^- = \sum_{i=0}^{i=2L}W_m^{(i)}\mathcal{X}_k^{-*(i)}</script><script type="math/tex; mode=display">
+\Sigma_{X_k}^- = \sum_{i=0}^{i=2L}W_c^{(i)}[\mathcal{X}_k^{-*(i)}-\mu_{X_k}^-][\mathcal{X}_k^{-*(i)}-\mu_{X_k}^-]^T+\Sigma_Q</script><p>由于过程噪声是线性可加的，所以此处 $\Sigma_Q$ 直接加在了加权协方差的末尾。</p>
+<p><strong>步骤五：对 $k$ 时刻状态量 $X_k$ 的先验概率分布进行 sigma 采样</strong></p>
+<script type="math/tex; mode=display">
+\mathcal{X}_k^{-(i)} = 
+\begin{cases}
+    \mu_{X_k}^- &  i = 0 \\
+    \mu_{X_k}^- + \gamma(\sqrt{\Sigma_{X_k}^-})^{(i)} & i = 1, ··· , L \\
+    \mu_{X_k}^- - \gamma(\sqrt{\Sigma_{X_k}^-})^{(i-L)} & i = L + 1, ··· , 2L 
+\end{cases}</script><p>某些时候，为降低运算量会省略此步，而在下一步骤中直接使用步骤三中的 sigma 点集 $\mathcal{X}_k^{-*(i)}$，这样做在一定程度上会降低精度。</p>
+<p><strong>步骤六：观测非线性变换</strong></p>
+<script type="math/tex; mode=display">
+\mathcal{Z}_k^{(i)} = h(\mathcal{X}_k^{-(i)}) \quad i = 0, 1, 2, ··· , 2L</script><p><strong>步骤七：加权计算 $k$ 时刻观测量 $Z_k$ 的概率分布</strong></p>
+<script type="math/tex; mode=display">
+\mu_{Z_k} = \sum_{i=0}^{i=2L}W_m^{(i)}\mathcal{Z}_k^{(i)}</script><script type="math/tex; mode=display">
+\Sigma_{Z_k} = \sum_{i=0}^{i=2L}W_c^{(i)}[\mathcal{Z}_k^{(i)}-\mu_{Z_k}][\mathcal{Z}_k^{(i)}-\mu_{Z_k}]^T+\Sigma_R</script><p>由于观测噪声是线性可加的，所以此处 $\Sigma_R$ 直接加在了加权协方差的末尾。</p>
+<p><strong>步骤八：计算状态量与观测量的互协方差</strong></p>
+<script type="math/tex; mode=display">
+\Sigma_{X_kZ_k} = \sum_{i=0}^{i=2L}W_c^{(i)}[\mathcal{X}_k^{-(i)}-\mu_{X_k}^-][\mathcal{Z}_k^{(i)}-\mu_{Z_k}]^T</script><p><strong>步骤九：计算卡尔曼增益</strong></p>
+<script type="math/tex; mode=display">
+K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$ 时刻状态量 $X_k$ 的后验概率分布</strong></p>
+<script type="math/tex; mode=display">
+\mu_{X_k}^+ = \mu_{X_k}^- + K_k(z_k-\mu_{Z_k})</script><script type="math/tex; mode=display">
+\Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤二、三、四构成了可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤五、六、七、八、九、十则构成了更新步。</p>
 <h1 id="4-应用实例" class="heading-control"><a href="#4-应用实例" class="headerlink" title="4 应用实例"></a>4 应用实例<a class="heading-anchor" href="#4-应用实例" aria-hidden="true"></a></h1><h1 id="5-总结" class="heading-control"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结<a class="heading-anchor" href="#5-总结" aria-hidden="true"></a></h1><p>EKF与UKF的区别和联系：<br>均用于非线性高斯系统的状态估计<br>EKF利用一阶泰勒级数展开对非线性的状态转移函数f(X)、观测函数h(X)进行线性近似<br>UKF利用采样的方法对f(X)、h(X)计算结果（一个新的随机变量）的概率密度函数进行近似<br>无迹卡尔曼滤波和扩展卡尔曼滤波代表了处理非线性高斯问题的两种思路，后面会讲到使用蒙特卡罗随机采样的粒子滤波<br>对于线性问题，UKF与KF所得结果相同<br>UKF并不局限于解决高斯问题</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly9pZWVleHBsb3JlLmllZWUub3JnL2llbDMvMzkyMC8xMTM1Mi8wMDUyOTc4My5wZGY=" title="https://ieeexplore.ieee.org/iel3/3920/11352/00529783.pdf">A New Approach for Filtering Nonlinear Systems<i class="fa fa-external-link"></i></span></li>
@@ -506,10 +593,10 @@ K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$
       <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
+      <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
+      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\e0ebe48c.html" rel="bookmark">最小二乘法多项式曲线拟合数学原理及其C++实现</a></div>
