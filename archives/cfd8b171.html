@@ -62,7 +62,7 @@
 <meta property="og:image" content="https://i.loli.net/2020/11/17/8ilFnzojdq61Ok7.png">
 <meta property="og:image" content="https://i.loli.net/2020/11/18/VAbNnhSfBKg56jp.png">
 <meta property="article:published_time" content="2020-10-03T04:43:54.000Z">
-<meta property="article:modified_time" content="2020-11-19T10:55:55.067Z">
+<meta property="article:modified_time" content="2020-11-21T09:37:38.517Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
@@ -266,7 +266,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-19 18:55:55" itemprop="dateModified" datetime="2020-11-19T18:55:55+08:00">2020-11-19</time>
+                <time title="修改时间：2020-11-21 17:37:38" itemprop="dateModified" datetime="2020-11-21T17:37:38+08:00">2020-11-21</time>
               </span>
 
           <br>
@@ -374,8 +374,10 @@ W_c^{(i)} =
     \frac{1}{2(n+\lambda)} & i = 1, ··· , 2n
 \end{cases}</script><p>其中，$W_m^{(i)}$ 表示计算近似均值时 sigma 点的权重，$W_c^{(i)}$ 表示计算近似协方差时 sigma 点的权重。参数 $\lambda$ 满足：</p>
 <script type="math/tex; mode=display">
-\lambda = \alpha^2(n+\kappa)-n</script><p>参数 $\alpha$ 和 $\kappa$ 为确定 sigma 点分布在均值多远的范围内的比例参数。如果分布是精确的高斯分布，则 $\beta = 2$ 是最佳选择。</p>
+\lambda = \alpha^2(n+\kappa)-n</script><p>参数 $\alpha$ 和 $\kappa$ 为确定 sigma 点分布在均值多远的范围内的比例参数。$\alpha$ 满足 $10^{-4} \le \alpha \le 1$，为避免强非线性系统中的非局部效应问题，$\alpha$ 通常取一个较小值；$\kappa$ 满足 $\kappa \ge 0$，通常取 $\kappa = 3-n$ 或 $\kappa = 0$。</p>
+<p>下图呈现了当 $\alpha$ 取值分别为 $0.3$ 和 $1$ 时，sigma 点的分布情况，从图中可以发现，$\alpha$ 取值越大，非均值处的 sigma 点距离均值越远。</p>
 <p><img data-src="https://i.loli.net/2020/11/18/VAbNnhSfBKg56jp.png" alt="alpha 取不同值时 sigma 点的散布示例"></p>
+<p>参数 $\beta$ 用于引入随机变量概率分布的高阶矩信息，如果分布是精确的高斯分布，则 $\beta = 2$ 是最优选择。</p>
 <p><strong>步骤二：确定性采样</strong></p>
 <p>通常情况下，siama 点位于均值处及对称分布于主轴的协方差处（每维两个）。按照如下方法采样得到 $2n + 1$ 个 sigma 点，构成 $n \times (2n + 1)$ 的点集矩阵 $\mathcal{X}$：</p>
 <script type="math/tex; mode=display">
@@ -403,7 +405,16 @@ Q \sim \mathcal{N}(0, \ \sigma_Q^2)</script><p><strong>(4) 假设四：观测噪
 R \sim \mathcal{N}(0, \ \sigma_R^2)</script><h2 id="2-2-与卡尔曼滤波不同的假设" class="heading-control"><a href="#2-2-与卡尔曼滤波不同的假设" class="headerlink" title="2.2 与卡尔曼滤波不同的假设"></a>2.2 与卡尔曼滤波不同的假设<a class="heading-anchor" href="#2-2-与卡尔曼滤波不同的假设" aria-hidden="true"></a></h2><p><strong>(5) 假设五：状态转移函数和（或）观测函数为非线性函数</strong></p>
 <p>在卡尔曼滤波的前提假设中，认为状态方程中的状态转移函数 $f(x)$ 以及观测方程中的观测函数 $h(x)$ 均为线性函数。基于这种线性假设，存在常数或常矩阵 $F$，使得 $f(x)$ 可以写成卡尔曼滤波中的线性形式，存在常数或常矩阵 $H$，使得 $h(x)$ 也可以写成卡尔曼滤波中的线性形式。</p>
 <p>不同于标准卡尔曼滤波，无迹卡尔曼滤波处理的是非线性高斯系统，假设系统的状态转移函数和（或）观测函数为非线性函数。</p>
-<h1 id="3-无迹卡尔曼滤波算法框架" class="heading-control"><a href="#3-无迹卡尔曼滤波算法框架" class="headerlink" title="3 无迹卡尔曼滤波算法框架"></a>3 无迹卡尔曼滤波算法框架<a class="heading-anchor" href="#3-无迹卡尔曼滤波算法框架" aria-hidden="true"></a></h1><h2 id="3-1-可加性噪声条件下的无迹卡尔曼滤波" class="heading-control"><a href="#3-1-可加性噪声条件下的无迹卡尔曼滤波" class="headerlink" title="3.1 可加性噪声条件下的无迹卡尔曼滤波"></a>3.1 可加性噪声条件下的无迹卡尔曼滤波<a class="heading-anchor" href="#3-1-可加性噪声条件下的无迹卡尔曼滤波" aria-hidden="true"></a></h2><p>《概率机器人》第 3.4 节 P53</p>
+<h1 id="3-无迹卡尔曼滤波算法框架" class="heading-control"><a href="#3-无迹卡尔曼滤波算法框架" class="headerlink" title="3 无迹卡尔曼滤波算法框架"></a>3 无迹卡尔曼滤波算法框架<a class="heading-anchor" href="#3-无迹卡尔曼滤波算法框架" aria-hidden="true"></a></h1><p>根据噪声对系统的状态转移过程和观测过程的影响是线性可加的还是非线性可加的，无迹卡尔曼滤波算法有两种形式：可加性噪声条件下的无迹卡尔曼滤波算法和非可加性噪声条件下的无迹卡尔曼滤波。</p>
+<h2 id="3-1-可加性噪声条件下的无迹卡尔曼滤波" class="heading-control"><a href="#3-1-可加性噪声条件下的无迹卡尔曼滤波" class="headerlink" title="3.1 可加性噪声条件下的无迹卡尔曼滤波"></a>3.1 可加性噪声条件下的无迹卡尔曼滤波<a class="heading-anchor" href="#3-1-可加性噪声条件下的无迹卡尔曼滤波" aria-hidden="true"></a></h2><p>在此前的文章<a href="https://blog.shipengx.com/archives/9fb25cec.html">《从概率到贝叶斯滤波》</a>中，我们曾经这样描述系统的状态方程和观测方程：</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+    X_k=f(X_{k-1})+Q_k & \Rightarrow \color{red}{状态方程} \\ 
+    Y_k=h(X_k)+R_k & \Rightarrow \color{red}{观测方程}
+\end{cases}</script><p>从上式中我们可以发现，过程噪声 $Q_k$ 和观测噪声 $R_k$ 是以线性可加项的形式存在于系统状态方程和观测方程中的，这种形式的表述基于这样的前提假设：过程噪声 $Q_k$ 对系统状态转移过程的影响是线性的，观测噪声 $R_k$ 对系统观测过程的影响也是线性的。</p>
+<p>由此引申出可加性噪声条件下的无迹卡尔曼滤波算法，《概率机器人》第 3.4 节 P53 对算法流程有着很好的描述。下面我们总结一下步骤。</p>
+<p><strong>步骤一：初始化</strong></p>
+<p><strong>步骤二：对 $k-1$ 时刻状态量</strong></p>
 <h2 id="3-2-非可加性噪声条件下的无迹卡尔曼滤波" class="heading-control"><a href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波" class="headerlink" title="3.2 非可加性噪声条件下的无迹卡尔曼滤波"></a>3.2 非可加性噪声条件下的无迹卡尔曼滤波<a class="heading-anchor" href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波" aria-hidden="true"></a></h2><p>根据上一时刻状态量后验概率密度函数的均值和方差进行采样（2n+1），并为采样点分配权重</p>
 <p>对采样点进行f(x)非线性变换</p>
 <p>将经过非线性变换后的采样点进行加权，计算得到f(X)概率密度函数均值和方差的近似</p>
