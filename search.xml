@@ -263,9 +263,10 @@ W_c^{(i)} =
 K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$ 时刻状态量 $X_k$ 的后验概率分布</strong></p>
 <script type="math/tex; mode=display">
 \mu_{X_k}^+ = \mu_{X_k}^- + K_k(z_k-\mu_{Z_k})</script><script type="math/tex; mode=display">
-\Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤三、四、五构成了非可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤六、七、八、九、十则构成了更新步。</p>
+\Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤二、三、四、五构成了非可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤六、七、八、九、十则构成了更新步。</p>
 <p>在某些系统中，过程噪声和观测噪声可能其中一个对系统的影响是线性的（可加性噪声），而另一个对系统的影响是非线性的（非可加性噪声），这时需要结合 3.1 节与 3.2 节的方法来进行无迹卡尔曼滤波算法的设计。</p>
-<h1 id="4-应用实例" class="heading-control"><a href="#4-应用实例" class="headerlink" title="4 应用实例"></a>4 应用实例<a class="heading-anchor" href="#4-应用实例" aria-hidden="true"></a></h1><h1 id="5-总结" class="heading-control"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结<a class="heading-anchor" href="#5-总结" aria-hidden="true"></a></h1><p>EKF与UKF的区别和联系：<br>均用于非线性高斯系统的状态估计<br>EKF利用一阶泰勒级数展开对非线性的状态转移函数f(X)、观测函数h(X)进行线性近似<br>UKF利用采样的方法对f(X)、h(X)计算结果（一个新的随机变量）的概率密度函数进行近似<br>无迹卡尔曼滤波和扩展卡尔曼滤波代表了处理非线性高斯问题的两种思路，后面会讲到使用蒙特卡罗随机采样的粒子滤波<br>对于线性问题，UKF与KF所得结果相同<br>UKF并不局限于解决高斯问题</p>
+<h1 id="4-应用实例" class="heading-control"><a href="#4-应用实例" class="headerlink" title="4 应用实例"></a>4 应用实例<a class="heading-anchor" href="#4-应用实例" aria-hidden="true"></a></h1><p>Radar（Constant Turn Rate and Velocity，CTRV）</p>
+<h1 id="5-总结" class="heading-control"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结<a class="heading-anchor" href="#5-总结" aria-hidden="true"></a></h1><p>EKF与UKF的区别和联系：<br>均用于非线性高斯系统的状态估计<br>EKF利用一阶泰勒级数展开对非线性的状态转移函数f(X)、观测函数h(X)进行线性近似<br>UKF利用采样的方法对f(X)、h(X)计算结果（一个新的随机变量）的概率密度函数进行近似<br>无迹卡尔曼滤波和扩展卡尔曼滤波代表了处理非线性高斯问题的两种思路，后面会讲到使用蒙特卡罗随机采样的粒子滤波<br>对于线性问题，UKF与KF所得结果相同<br>UKF并不局限于解决高斯问题</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly9pZWVleHBsb3JlLmllZWUub3JnL2llbDMvMzkyMC8xMTM1Mi8wMDUyOTc4My5wZGY=" title="https://ieeexplore.ieee.org/iel3/3920/11352/00529783.pdf">A New Approach for Filtering Nonlinear Systems<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZ2F0c2J5LnVjbC5hYy51ay9+Ynlyb24vbmxkcy9tZXJ3ZTIwMDNhLnBkZg==" title="https://www.gatsby.ucl.ac.uk/~byron/nlds/merwe2003a.pdf">Sigma-Point Kalman Filters for Probabilistic Inference in Dynamic State-Space Models<i class="fa fa-external-link"></i></span></li>
@@ -615,8 +616,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>卡尔曼滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>卡尔曼滤波</tag>
       </tags>
   </entry>
   <entry>
@@ -1008,8 +1009,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>贝叶斯滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
