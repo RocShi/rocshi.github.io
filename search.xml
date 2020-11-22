@@ -179,14 +179,14 @@ K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$
 \mu_{X_k}^a = 
 \begin{bmatrix}
     \mu_{X_k} \\
-    \bold{0} \\
-    \bold{0}
+    \mathbf{0} \\
+    \mathbf{0}
 \end{bmatrix}, \quad
 \Sigma_{X_k}^a = 
 \begin{bmatrix}
-    \Sigma_{X_k} & \bold{0} & \bold{0} \\
-    \bold{0} & \Sigma_Q & \bold{0}\\
-    \bold{0} & \bold{0} & \Sigma_R
+    \Sigma_{X_k} & \mathbf{0} & \mathbf{0} \\
+    \mathbf{0} & \Sigma_Q & \mathbf{0}\\
+    \mathbf{0} & \mathbf{0} & \Sigma_R
 \end{bmatrix}</script><p>增广处理的方式并非只此一种，也可分步增广：在预测步开始前先对上一时刻状态量的后验均值和后验协方差作过程噪声增广，再在更新步开始前对当前时刻状态量的先验均值和先验协方差作观测噪声增广，《机器人学中的状态估计》一书中使用的便是分步增广的方式，两种增广处理方式是等效的。</p>
 <p>记过程噪声随机向量 $Q$ 的维度为 $q$，观测噪声随机向量 $R$ 的维度为 $r$，增广状态量 $X_k^a$ 的维度为 $L = n + q + r$。下面我们基于 3.1 节中的已知条件和符号定义，阐述非可加性噪声条件下的无迹卡尔曼滤波算法的流程步骤。</p>
 <p><strong>步骤一：初始化</strong></p>
@@ -213,14 +213,14 @@ W_c^{(i)} =
 \mu_{X_{k-1}}^{+a} = 
 \begin{bmatrix}
     \mu_{X_{k-1}}^+ \\
-    \bold{0} \\
-    \bold{0}
+    \mathbf{0} \\
+    \mathbf{0}
 \end{bmatrix}, \quad
 \Sigma_{X_{k-1}}^{+a} = 
 \begin{bmatrix}
-    \Sigma_{X_{k-1}}^+ & \bold{0} & \bold{0} \\
-    \bold{0} & \Sigma_Q & \bold{0}\\
-    \bold{0} & \bold{0} & \Sigma_R
+    \Sigma_{X_{k-1}}^+ & \mathbf{0} & \mathbf{0} \\
+    \mathbf{0} & \Sigma_Q & \mathbf{0}\\
+    \mathbf{0} & \mathbf{0} & \Sigma_R
 \end{bmatrix}</script><p><strong>步骤三：对 $k-1$ 时刻状态量 $X_{k-1}$ 增广的后验概率分布进行 sigma 采样</strong></p>
 <script type="math/tex; mode=display">
 \mathcal{X}_{k-1}^{+a(i)} = 
@@ -244,7 +244,7 @@ W_c^{(i)} =
 </ul>
 <p><strong>步骤四：状态转移非线性变换</strong></p>
 <script type="math/tex; mode=display">
-\mathcal{X}_k^{-a(i)} = f(\mathcal{X}_{k-1}^{X(i)}, u_k, \mathcal{X}_{k-1}^{Q(i)}), \quad i = 0, 1, 2, ··· , 2L</script><p><strong>步骤四：加权计算 $k$ 时刻状态量的先验概率分布</strong></p>
+\mathcal{X}_k^{-a(i)} = f(\mathcal{X}_{k-1}^{+aX(i)}, u_k, \mathcal{X}_{k-1}^{Q(i)}), \quad i = 0, 1, 2, ··· , 2L</script><p><strong>步骤四：加权计算 $k$ 时刻状态量的先验概率分布</strong></p>
 <script type="math/tex; mode=display">
 \mu_{X_k}^- = \sum_{i=0}^{i=2L}W_m^{(i)}\mathcal{X}_k^{-*(i)}</script><script type="math/tex; mode=display">
 \Sigma_{X_k}^- = \sum_{i=0}^{i=2L}W_c^{(i)}[\mathcal{X}_k^{-*(i)}-\mu_{X_k}^-][\mathcal{X}_k^{-*(i)}-\mu_{X_k}^-]^T+\Sigma_Q</script><p>由于过程噪声是线性可加的，所以此处 $\Sigma_Q$ 直接加在了加权协方差的末尾。</p>
@@ -620,8 +620,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -1013,8 +1013,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
