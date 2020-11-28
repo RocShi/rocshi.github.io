@@ -63,7 +63,7 @@
 <meta property="og:image" content="https://i.loli.net/2020/11/18/VAbNnhSfBKg56jp.png">
 <meta property="og:image" content="https://i.loli.net/2020/11/28/1N7Z6MxdkBeEnsA.png">
 <meta property="article:published_time" content="2020-10-03T04:43:54.000Z">
-<meta property="article:modified_time" content="2020-11-28T12:34:24.768Z">
+<meta property="article:modified_time" content="2020-11-28T14:05:24.290Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
@@ -267,7 +267,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-28 20:34:24" itemprop="dateModified" datetime="2020-11-28T20:34:24+08:00">2020-11-28</time>
+                <time title="修改时间：2020-11-28 22:05:24" itemprop="dateModified" datetime="2020-11-28T22:05:24+08:00">2020-11-28</time>
               </span>
 
           <br>
@@ -580,7 +580,7 @@ K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$
 <h1 id="4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" class="heading-control"><a href="#4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" class="headerlink" title="4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪"></a>4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪<a class="heading-anchor" href="#4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" aria-hidden="true"></a></h1><h2 id="4-1-系统分析" class="heading-control"><a href="#4-1-系统分析" class="headerlink" title="4.1 系统分析"></a>4.1 系统分析<a class="heading-anchor" href="#4-1-系统分析" aria-hidden="true"></a></h2><p>在<a href="https://blog.shipengx.com/archives/ea375326.html">《从贝叶斯滤波到扩展卡尔曼滤波》</a>中，我们讲解了毫米波雷达的检测原理，并基于扩展卡尔曼滤波算法实现了 CV 运动模型下的目标跟踪。此处，我们仍以毫米波雷达传感器为例，来讲解基于无迹卡尔曼滤波算法的目标跟踪过程。</p>
 <p>不同的是，此次我们假设被跟踪目标近似地作匀速圆周运动，即运动模型为<strong>恒定转率和速度模型（Constant Turn Rate and Velocity，CTRV）</strong>，如下图所示（图片来自 Udacity）。</p>
 <p><img data-src="https://i.loli.net/2020/11/28/1N7Z6MxdkBeEnsA.png" alt="CTRV 运动模型示意图"></p>
-<p>在 CTRV 模型中，我们通常对目标在笛卡尔坐标系内的横坐标 $p_x$、纵坐标 $p_y$、速度 $v$、航向角 $\psi$ 和航向角变化率 $\omega$ 进行跟踪，因此状态量可设为：</p>
+<p>在 CTRV 模型中，我们通常对目标在笛卡尔坐标系内的横坐标 $p_x$、纵坐标 $p_y$、速度 $v$、航向角 $\psi$ 和航向角变化率 $\omega$ 进行跟踪，其中 $\omega = \dot{\psi}$。状态量可设为：</p>
 <script type="math/tex; mode=display">
 X=
 \begin{bmatrix}
@@ -596,9 +596,48 @@ Y=
     \rho \\
     \varphi \\
     \dot{\rho}
-\end{bmatrix}</script><p>CTRV 是 CV 的一般形式，当 $\omega = 0$ 时，CTRV 便退化为 CV。</p>
-<p>后面单独开一篇文章综述常见运动模型</p>
-<p>换元法复合函数求定积分</p>
+\end{bmatrix}</script><p>我们先暂不考虑过程噪声的影响，则系统的状态方程（未计入噪声的）可表示为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    X_k
+    & = X_{k-1} + \int_{t_{k-1}}^{t_k}
+        \begin{bmatrix}
+            \dot{p_x}(t) \\
+            \dot{p_y}(t) \\
+            \dot{v}(t) \\
+            \dot{\psi}(t) \\
+            \dot{\omega}(t)
+        \end{bmatrix}\mathrm{d}t \\
+    & = X_{k-1} +
+        \begin{bmatrix}
+            \int_{t_{k-1}}^{t_k}v·\mathrm{cos}(\psi(t))\mathrm{d}t \\
+            \int_{t_{k-1}}^{t_k}v·\mathrm{sin}(\psi(t))\mathrm{d}t \\
+            0 \\
+            \omega \Delta t \\
+            0
+        \end{bmatrix} \\
+    & = X_{k-1} +
+        \begin{bmatrix}
+            v\int_{t_{k-1}}^{t_k}\mathrm{cos}(\psi_{k-1}+\omega·(t-t_{k-1}))\mathrm{d}t \\
+            v\int_{t_{k-1}}^{t_k}\mathrm{sin}(\psi_{k-1}+\omega·(t-t_{k-1}))\mathrm{d}t \\
+            0 \\
+            \omega \Delta t \\
+            0
+        \end{bmatrix} \\
+\end{aligned}</script><p>由换元法求复合函数不定积分，容易得到：</p>
+<script type="math/tex; mode=display">
+\int_{t_{k-1}}^{t_k}\mathrm{cos}(\psi_{k-1}+\omega·(t-t_{k-1}))\mathrm{d}t = \frac{\mathrm{sin}(\psi_{k-1}+\omega\Delta t)-\mathrm{sin}(\psi_{k-1})}{\omega}, \quad \omega \neq 0</script><script type="math/tex; mode=display">
+\int_{t_{k-1}}^{t_k}\mathrm{sin}(\psi_{k-1}+\omega·(t-t_{k-1}))\mathrm{d}t = \frac{-\mathrm{cos}(\psi_{k-1}+\omega\Delta t)+\mathrm{cos}(\psi_{k-1})}{\omega}, \quad \omega \neq 0</script><p>故，求得系统的状态方程（未计入噪声的）为：</p>
+<script type="math/tex; mode=display">
+X_k = X_{k-1} +
+\begin{bmatrix}
+    \frac{v}{\omega} \bigl(\mathrm{sin}(\psi_{k-1}+\omega\Delta t)-\mathrm{sin}(\psi_{k-1}) \bigr) \\
+    \frac{v}{\omega} \bigl(-\mathrm{cos}(\psi_{k-1}+\omega\Delta t)+\mathrm{cos}(\psi_{k-1}) \bigr) \\
+    0 \\
+    \omega \Delta t \\
+    0
+\end{bmatrix}, \quad \omega \neq 0</script><p>CTRV 是 CV 的一般形式，当 $\omega = 0$ 时，CTRV 便退化为 CV。</p>
+<p>在上面的推导中，我们暂时忽略了过程噪声的干扰，但现实情况是</p>
 <h2 id="4-2-代码实现" class="heading-control"><a href="#4-2-代码实现" class="headerlink" title="4.2 代码实现"></a>4.2 代码实现<a class="heading-anchor" href="#4-2-代码实现" aria-hidden="true"></a></h2><h1 id="5-总结" class="heading-control"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结<a class="heading-anchor" href="#5-总结" aria-hidden="true"></a></h1><p>EKF与UKF的区别和联系：<br>均用于非线性高斯系统的状态估计<br>EKF利用一阶泰勒级数展开对非线性的状态转移函数f(X)、观测函数h(X)进行线性近似<br>UKF利用采样的方法对f(X)、h(X)计算结果（一个新的随机变量）的概率密度函数进行近似<br>无迹卡尔曼滤波和扩展卡尔曼滤波代表了处理非线性高斯问题的两种思路，后面会讲到使用蒙特卡罗随机采样的粒子滤波<br>对于线性问题，UKF与KF所得结果相同<br>UKF并不局限于解决高斯问题</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly9pZWVleHBsb3JlLmllZWUub3JnL2llbDMvMzkyMC8xMTM1Mi8wMDUyOTc4My5wZGY=" title="https://ieeexplore.ieee.org/iel3/3920/11352/00529783.pdf">A New Approach for Filtering Nonlinear Systems<i class="fa fa-external-link"></i></span></li>
@@ -622,10 +661,10 @@ Y=
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
+      <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
+      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
