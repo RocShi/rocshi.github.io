@@ -347,7 +347,7 @@ Q =
 <script type="math/tex; mode=display">
 \begin{aligned}
     X_k 
-    & = f(X_{k-1}, Q) \\
+    & = f(X_{k-1}, Q_{k-1}) \\
     & = X_{k-1} +
         \begin{bmatrix}
             \frac{v_{k-1} }{\omega_{k-1} } \bigl(\mathrm{sin}(\psi_{k-1}+\omega_{k-1}\Delta t)-\mathrm{sin}(\psi_{k-1}) \bigr) \\
@@ -357,8 +357,8 @@ Q =
             0
         \end{bmatrix} + 
         \begin{bmatrix}
-            \frac{1}{2} (\Delta t)^2 · q_{a, k-1} · \mathrm{sin}(\psi_{k-1}) \\
             \frac{1}{2} (\Delta t)^2 · q_{a, k-1} · \mathrm{cos}(\psi_{k-1}) \\
+            \frac{1}{2} (\Delta t)^2 · q_{a, k-1} · \mathrm{sin}(\psi_{k-1}) \\
             \Delta t · q_{a, k-1} \\
             \frac{1}{2} (\Delta t)^2 · q_{\dot{\omega}, k-1} \\
             \Delta t · q_{\dot{\omega}, k-1}
@@ -720,8 +720,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>卡尔曼滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>卡尔曼滤波</tag>
       </tags>
   </entry>
   <entry>
@@ -1113,8 +1113,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>贝叶斯滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
