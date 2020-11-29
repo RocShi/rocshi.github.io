@@ -65,7 +65,7 @@
 <meta property="og:image" content="https://i.loli.net/2020/11/29/V6t1DY2RO3WwbvZ.png">
 <meta property="og:image" content="https://i.loli.net/2020/11/28/1N7Z6MxdkBeEnsA.png">
 <meta property="article:published_time" content="2020-10-03T04:43:54.000Z">
-<meta property="article:modified_time" content="2020-11-29T10:19:17.625Z">
+<meta property="article:modified_time" content="2020-11-29T10:59:00.928Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
@@ -269,7 +269,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-29 18:19:17" itemprop="dateModified" datetime="2020-11-29T18:19:17+08:00">2020-11-29</time>
+                <time title="修改时间：2020-11-29 18:59:00" itemprop="dateModified" datetime="2020-11-29T18:59:00+08:00">2020-11-29</time>
               </span>
 
           <br>
@@ -581,7 +581,7 @@ K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$
 \Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤四、五构成了非可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤六、七、八、九、十则构成了更新步。非可加性噪声条件下的无迹卡尔曼滤波算法流程可总结为：</p>
 <p><img data-src="https://i.loli.net/2020/11/29/V6t1DY2RO3WwbvZ.png" alt="非可加性噪声条件下的无迹卡尔曼滤波算法流程图"></p>
 <p>在某些系统中，过程噪声和观测噪声可能其中一个对系统的影响是线性的（可加性噪声），而另一个对系统的影响是非线性的（非可加性噪声），这时需要结合 3.1 节与 3.2 节的方法来进行无迹卡尔曼滤波算法的设计，在下面的应用示例中你会看到具体是如何做的。</p>
-<h1 id="4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" class="heading-control"><a href="#4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" class="headerlink" title="4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪"></a>4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪<a class="heading-anchor" href="#4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" aria-hidden="true"></a></h1><h2 id="4-1-系统分析" class="heading-control"><a href="#4-1-系统分析" class="headerlink" title="4.1 系统分析"></a>4.1 系统分析<a class="heading-anchor" href="#4-1-系统分析" aria-hidden="true"></a></h2><p>在<a href="https://blog.shipengx.com/archives/ea375326.html">《从贝叶斯滤波到扩展卡尔曼滤波》</a>中，我们讲解了毫米波雷达的检测原理，并基于扩展卡尔曼滤波算法实现了 CV 运动模型下的目标跟踪。此处，我们仍以毫米波雷达传感器为例，来讲解基于无迹卡尔曼滤波算法的目标跟踪过程。</p>
+<h1 id="4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" class="heading-control"><a href="#4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" class="headerlink" title="4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪"></a>4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪<a class="heading-anchor" href="#4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" aria-hidden="true"></a></h1><h2 id="4-1-系统分析" class="heading-control"><a href="#4-1-系统分析" class="headerlink" title="4.1 系统分析"></a>4.1 系统分析<a class="heading-anchor" href="#4-1-系统分析" aria-hidden="true"></a></h2><h3 id="4-1-1-状态转移过程分析" class="heading-control"><a href="#4-1-1-状态转移过程分析" class="headerlink" title="4.1.1 状态转移过程分析"></a>4.1.1 状态转移过程分析<a class="heading-anchor" href="#4-1-1-状态转移过程分析" aria-hidden="true"></a></h3><p>在<a href="https://blog.shipengx.com/archives/ea375326.html">《从贝叶斯滤波到扩展卡尔曼滤波》</a>中，我们讲解了毫米波雷达的检测原理，并基于扩展卡尔曼滤波算法实现了 CV 运动模型下的目标跟踪。此处，我们仍以毫米波雷达传感器为例，来讲解基于无迹卡尔曼滤波算法的目标跟踪过程。</p>
 <p>不同的是，此次我们假设被跟踪目标近似地作匀速圆周运动，即运动模型为<strong>恒定转率和速度模型（Constant Turn Rate and Velocity，CTRV）</strong>，如下图所示（图片来自 Udacity）。</p>
 <p><img data-src="https://i.loli.net/2020/11/28/1N7Z6MxdkBeEnsA.png" alt="CTRV 运动模型示意图"></p>
 <p>在 CTRV 模型中，我们通常对目标在笛卡尔坐标系内的横坐标 $p_x$、纵坐标 $p_y$、线速率 $v$、航向角 $\psi$ 和航向角速率 $\omega$ 进行跟踪，其中 $\omega = \dot{\psi}$。状态量可设为：</p>
@@ -657,7 +657,7 @@ Q =
 \begin{bmatrix}
     \sigma_a^2 & 0 \\
     0 & \sigma_{\dot{\omega}}^2
-\end{bmatrix}</script><p>$q_a$ 和 $q_{\dot{\omega}}$ 都对 $p_x$ 和 $p_y$ 存在影响，但此处我们忽略 $q_{\dot{\omega}}$ 对位移的影响，由运动学公式容易得到系统最终的状态转移方程：</p>
+\end{bmatrix}</script><p>$q_a$ 和 $q_{\dot{\omega}}$ 都对 $p_x$ 和 $p_y$ 存在影响，但此处我们忽略 $q_{\dot{\omega}}$ 对位移的影响，由运动学公式容易得到系统最终的状态方程：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
     X_k 
@@ -677,14 +677,48 @@ Q =
             \frac{1}{2} (\Delta t)^2 · q_{\dot{\omega}, k-1} \\
             \Delta t · q_{\dot{\omega}, k-1}
         \end{bmatrix}
-\end{aligned}</script><p>观测量仍然是毫米波雷达极坐标系下目标的径向距离 $\rho$、方向角 $\varphi$ 和径向距离变化率（径向速度）$\dot{\rho}$：</p>
+\end{aligned}</script><h3 id="4-1-2-观测过程分析" class="heading-control"><a href="#4-1-2-观测过程分析" class="headerlink" title="4.1.2 观测过程分析"></a>4.1.2 观测过程分析<a class="heading-anchor" href="#4-1-2-观测过程分析" aria-hidden="true"></a></h3><p>观测量仍然是毫米波雷达极坐标系下目标的径向距离 $\rho$、方向角 $\varphi$ 和径向距离变化率（径向速度）$\dot{\rho}$：</p>
 <script type="math/tex; mode=display">
 Z=
 \begin{bmatrix}
     \rho \\
     \varphi \\
     \dot{\rho}
-\end{bmatrix}</script><h2 id="4-2-代码实现" class="heading-control"><a href="#4-2-代码实现" class="headerlink" title="4.2 代码实现"></a>4.2 代码实现<a class="heading-anchor" href="#4-2-代码实现" aria-hidden="true"></a></h2><h1 id="5-总结" class="heading-control"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结<a class="heading-anchor" href="#5-总结" aria-hidden="true"></a></h1><p>EKF与UKF的区别和联系：<br>均用于非线性高斯系统的状态估计<br>EKF利用一阶泰勒级数展开对非线性的状态转移函数f(X)、观测函数h(X)进行线性近似<br>UKF利用采样的方法对f(X)、h(X)计算结果（一个新的随机变量）的概率密度函数进行近似<br>无迹卡尔曼滤波和扩展卡尔曼滤波代表了处理非线性高斯问题的两种思路，后面会讲到使用蒙特卡罗随机采样的粒子滤波<br>对于线性问题，UKF与KF所得结果相同<br>UKF并不局限于解决高斯问题</p>
+\end{bmatrix}</script><p>各观测量分量 $\rho$、$\varphi$、$\dot{\varphi}$ 对应的观测噪声分别为 $r_{\rho}$、$r_{\varphi}$、$r_{\dot{\varphi}}$，同样都是零均值的高斯白噪声：</p>
+<script type="math/tex; mode=display">
+r_{\rho} \sim \mathcal{N} (0, \sigma_{\rho}^2)</script><script type="math/tex; mode=display">
+r_{\varphi} \sim \mathcal{N} (0, \sigma_{\varphi}^2)</script><script type="math/tex; mode=display">
+r_{\dot{\varphi}} \sim \mathcal{N} (0, \sigma_{\dot{\varphi}}^2)</script><p>则观测过程中总的观测噪声 $R$ 可表示为：</p>
+<script type="math/tex; mode=display">
+R = 
+\begin{bmatrix}
+    r_{\rho} \\
+    r_{\varphi} \\
+    r_{\dot{\varphi}}
+\end{bmatrix}</script><p>$R$ 的协方差 $\Sigma_R$ 为：</p>
+<script type="math/tex; mode=display">
+\Sigma_R = 
+\begin{bmatrix}
+    \sigma_{\rho}^2 & 0 & 0 \\
+    0 & \sigma_{\varphi}^2 & 0 \\
+    0 & 0 & \sigma_{\dot{\varphi}}^2
+\end{bmatrix}</script><p>观测方程与<a href="https://blog.shipengx.com/archives/ea375326.html">《从贝叶斯滤波到扩展卡尔曼滤波》</a>中相似，我们直接给出：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    Z_k 
+    & = h(X_k) + R_k \\
+    & = \begin{bmatrix}
+            \sqrt{p_{x,k}^2+p_{y,k}^2} \\
+            \mathrm{arctan}(\frac{p_{y,k} }{p_{x,k} }) \\
+            \frac{v_k·\mathrm{cos}(\psi_k)·p_{x,k}+v_k·\mathrm{sin}(\psi_k)·p_{y,k} }{\sqrt{p_{x,k}^2+p_{y,k}^2} }
+        \end{bmatrix} +
+        \begin{bmatrix}
+            r_{\rho,k} \\
+            r_{\varphi,k} \\
+            r_{\dot{\varphi},k}
+        \end{bmatrix}
+\end{aligned}</script><h2 id="4-2-代码实现" class="heading-control"><a href="#4-2-代码实现" class="headerlink" title="4.2 代码实现"></a>4.2 代码实现<a class="heading-anchor" href="#4-2-代码实现" aria-hidden="true"></a></h2><p>从上式中我们可以知道，过程噪声对系统的状态转移过程具有非线性影响，因此需要使用非可加噪声条件下的无迹卡尔曼滤波算法框架。</p>
+<h1 id="5-总结" class="heading-control"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结<a class="heading-anchor" href="#5-总结" aria-hidden="true"></a></h1><p>EKF与UKF的区别和联系：<br>均用于非线性高斯系统的状态估计<br>EKF利用一阶泰勒级数展开对非线性的状态转移函数f(X)、观测函数h(X)进行线性近似<br>UKF利用采样的方法对f(X)、h(X)计算结果（一个新的随机变量）的概率密度函数进行近似<br>无迹卡尔曼滤波和扩展卡尔曼滤波代表了处理非线性高斯问题的两种思路，后面会讲到使用蒙特卡罗随机采样的粒子滤波<br>对于线性问题，UKF与KF所得结果相同<br>UKF并不局限于解决高斯问题</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly9pZWVleHBsb3JlLmllZWUub3JnL2llbDMvMzkyMC8xMTM1Mi8wMDUyOTc4My5wZGY=" title="https://ieeexplore.ieee.org/iel3/3920/11352/00529783.pdf">A New Approach for Filtering Nonlinear Systems<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZ2F0c2J5LnVjbC5hYy51ay9+Ynlyb24vbmxkcy9tZXJ3ZTIwMDNhLnBkZg==" title="https://www.gatsby.ucl.ac.uk/~byron/nlds/merwe2003a.pdf">Sigma-Point Kalman Filters for Probabilistic Inference in Dynamic State-Space Models<i class="fa fa-external-link"></i></span></li>
@@ -840,7 +874,7 @@ Z=
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-引言"><span class="nav-text">0 引言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-无迹变换"><span class="nav-text">1 无迹变换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-什么是无迹变换"><span class="nav-text">1.1 什么是无迹变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-一般形式的无迹变换"><span class="nav-text">1.2 一般形式的无迹变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-比例无迹变换"><span class="nav-text">1.3 比例无迹变换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-无迹卡尔曼滤波的假设"><span class="nav-text">2 无迹卡尔曼滤波的假设</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-与卡尔曼滤波相同的假设"><span class="nav-text">2.1 与卡尔曼滤波相同的假设</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-与卡尔曼滤波不同的假设"><span class="nav-text">2.2 与卡尔曼滤波不同的假设</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-无迹卡尔曼滤波算法框架"><span class="nav-text">3 无迹卡尔曼滤波算法框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-可加性噪声条件下的无迹卡尔曼滤波"><span class="nav-text">3.1 可加性噪声条件下的无迹卡尔曼滤波</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波"><span class="nav-text">3.2 非可加性噪声条件下的无迹卡尔曼滤波</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪"><span class="nav-text">4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-系统分析"><span class="nav-text">4.1 系统分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-代码实现"><span class="nav-text">4.2 代码实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-总结"><span class="nav-text">5 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-引言"><span class="nav-text">0 引言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-无迹变换"><span class="nav-text">1 无迹变换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-什么是无迹变换"><span class="nav-text">1.1 什么是无迹变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-一般形式的无迹变换"><span class="nav-text">1.2 一般形式的无迹变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-比例无迹变换"><span class="nav-text">1.3 比例无迹变换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-无迹卡尔曼滤波的假设"><span class="nav-text">2 无迹卡尔曼滤波的假设</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-与卡尔曼滤波相同的假设"><span class="nav-text">2.1 与卡尔曼滤波相同的假设</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-与卡尔曼滤波不同的假设"><span class="nav-text">2.2 与卡尔曼滤波不同的假设</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-无迹卡尔曼滤波算法框架"><span class="nav-text">3 无迹卡尔曼滤波算法框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-可加性噪声条件下的无迹卡尔曼滤波"><span class="nav-text">3.1 可加性噪声条件下的无迹卡尔曼滤波</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波"><span class="nav-text">3.2 非可加性噪声条件下的无迹卡尔曼滤波</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪"><span class="nav-text">4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-系统分析"><span class="nav-text">4.1 系统分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-1-状态转移过程分析"><span class="nav-text">4.1.1 状态转移过程分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-2-观测过程分析"><span class="nav-text">4.1.2 观测过程分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-代码实现"><span class="nav-text">4.2 代码实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-总结"><span class="nav-text">5 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
