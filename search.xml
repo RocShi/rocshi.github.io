@@ -168,7 +168,8 @@ W_c^{(i)} =
 K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$ 时刻状态量 $X_k$ 的后验概率分布</strong></p>
 <script type="math/tex; mode=display">
 \mu_{X_k}^+ = \mu_{X_k}^- + K_k(z_k-\mu_{Z_k})</script><script type="math/tex; mode=display">
-\Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤二、三、四构成了可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤五、六、七、八、九、十则构成了更新步。</p>
+\Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤三、四构成了可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤六、七、八、九、十则构成了更新步，可加性噪声条件下的无迹卡尔曼滤波算法流程可总结为：</p>
+<p><img data-src="https://i.loli.net/2020/11/29/wxIGO2t6qaCQSl3.png" alt="可加性噪声条件下的无迹卡尔曼滤波算法流程图"></p>
 <h2 id="3-2-非可加性噪声条件下的无迹卡尔曼滤波" class="heading-control"><a href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波" class="headerlink" title="3.2 非可加性噪声条件下的无迹卡尔曼滤波"></a>3.2 非可加性噪声条件下的无迹卡尔曼滤波<a class="heading-anchor" href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波" aria-hidden="true"></a></h2><p>很多时候，噪声对系统的状态转移和观测的影响并非线性的，此种情况下，$Q_k$ 与 $X_k$ 不一定是同维的，$R_k$ 与 $Y_k$ 也不一定是同维的。此时，系统的状态方程和观测方程演变为：</p>
 <script type="math/tex; mode=display">
 \begin{cases}
@@ -187,7 +188,7 @@ K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$
     \Sigma_{X_k} & \mathbf{0} & \mathbf{0} \\
     \mathbf{0} & \Sigma_Q & \mathbf{0}\\
     \mathbf{0} & \mathbf{0} & \Sigma_R
-\end{bmatrix}</script><p>增广处理的方式并非只此一种，也可分步增广：在预测步开始前先对上一时刻状态量的后验概率分布作过程噪声增广，再在更新步开始前对当前时刻状态量的先验概率分布作观测噪声增广，《机器人学中的状态估计》一书中使用的便是分步增广的方式，两种增广处理方式实则是等效的。</p>
+\end{bmatrix}</script><p>注意，上式中的 $\mathbf{0}$ 表示元素均为 $0$ 的块向量或块矩阵，故作了粗体显示，应与常值 $0$ 作区分。增广处理的方式并非只此一种，也可分步增广：在预测步开始前先对上一时刻状态量的后验概率分布作过程噪声增广，再在更新步开始前对当前时刻状态量的先验概率分布作观测噪声增广，《机器人学中的状态估计》一书中使用的便是分步增广的方式，两种增广处理方式实则是等效的。</p>
 <p>记过程噪声随机向量 $Q$ 的维度为 $q$，观测噪声随机向量 $R$ 的维度为 $r$，增广状态量 $X_k^a$ 的维度为 $L = n + q + r$。下面我们基于 3.1 节中的已知条件和符号定义，阐述非可加性噪声条件下的无迹卡尔曼滤波算法的流程步骤。</p>
 <p><strong>步骤一：初始化</strong></p>
 <p>初始化步骤需要做三件事：</p>
@@ -312,7 +313,7 @@ Y=
             \omega \Delta t \\
             0
         \end{bmatrix} \\
-\end{aligned}</script><p>由换元法求复合函数不定积分，容易得到：</p>
+\end{aligned}</script><p>由换元法求复合函数定积分，容易得到：</p>
 <script type="math/tex; mode=display">
 \int_{t_{k-1}}^{t_k}\mathrm{cos}(\psi_{k-1}+\omega·(t-t_{k-1}))\mathrm{d}t = \frac{\mathrm{sin}(\psi_{k-1}+\omega\Delta t)-\mathrm{sin}(\psi_{k-1})}{\omega}, \quad \omega \neq 0</script><script type="math/tex; mode=display">
 \int_{t_{k-1}}^{t_k}\mathrm{sin}(\psi_{k-1}+\omega·(t-t_{k-1}))\mathrm{d}t = \frac{-\mathrm{cos}(\psi_{k-1}+\omega\Delta t)+\mathrm{cos}(\psi_{k-1})}{\omega}, \quad \omega \neq 0</script><p>故，求得系统的状态方程（未计入噪声的）为：</p>
@@ -690,8 +691,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>卡尔曼滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>卡尔曼滤波</tag>
       </tags>
   </entry>
   <entry>
@@ -1083,8 +1084,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>贝叶斯滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
