@@ -61,10 +61,11 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2020/11/17/8ilFnzojdq61Ok7.png">
 <meta property="og:image" content="https://i.loli.net/2020/11/18/VAbNnhSfBKg56jp.png">
-<meta property="og:image" content="https://i.loli.net/2020/11/29/wxIGO2t6qaCQSl3.png">
+<meta property="og:image" content="https://i.loli.net/2020/11/29/KDUCPIBr57GhXoW.png">
+<meta property="og:image" content="https://i.loli.net/2020/11/29/V6t1DY2RO3WwbvZ.png">
 <meta property="og:image" content="https://i.loli.net/2020/11/28/1N7Z6MxdkBeEnsA.png">
 <meta property="article:published_time" content="2020-10-03T04:43:54.000Z">
-<meta property="article:modified_time" content="2020-11-29T04:48:06.513Z">
+<meta property="article:modified_time" content="2020-11-29T05:25:40.189Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
@@ -268,7 +269,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-29 12:48:06" itemprop="dateModified" datetime="2020-11-29T12:48:06+08:00">2020-11-29</time>
+                <time title="修改时间：2020-11-29 13:25:40" itemprop="dateModified" datetime="2020-11-29T13:25:40+08:00">2020-11-29</time>
               </span>
 
           <br>
@@ -481,8 +482,8 @@ W_c^{(i)} =
 K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$ 时刻状态量 $X_k$ 的后验概率分布</strong></p>
 <script type="math/tex; mode=display">
 \mu_{X_k}^+ = \mu_{X_k}^- + K_k(z_k-\mu_{Z_k})</script><script type="math/tex; mode=display">
-\Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤三、四构成了可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤六、七、八、九、十则构成了更新步，可加性噪声条件下的无迹卡尔曼滤波算法流程可总结为：</p>
-<p><img data-src="https://i.loli.net/2020/11/29/wxIGO2t6qaCQSl3.png" alt="可加性噪声条件下的无迹卡尔曼滤波算法流程图"></p>
+\Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤三、四构成了可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤六、七、八、九、十则构成了更新步。可加性噪声条件下的无迹卡尔曼滤波算法流程可总结为：</p>
+<p><img data-src="https://i.loli.net/2020/11/29/KDUCPIBr57GhXoW.png" alt="可加性噪声条件下的无迹卡尔曼滤波算法流程图"></p>
 <h2 id="3-2-非可加性噪声条件下的无迹卡尔曼滤波" class="heading-control"><a href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波" class="headerlink" title="3.2 非可加性噪声条件下的无迹卡尔曼滤波"></a>3.2 非可加性噪声条件下的无迹卡尔曼滤波<a class="heading-anchor" href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波" aria-hidden="true"></a></h2><p>很多时候，噪声对系统的状态转移和观测的影响并非线性的，此种情况下，$Q_k$ 与 $X_k$ 不一定是同维的，$R_k$ 与 $Y_k$ 也不一定是同维的。此时，系统的状态方程和观测方程演变为：</p>
 <script type="math/tex; mode=display">
 \begin{cases}
@@ -577,7 +578,8 @@ W_c^{(i)} =
 K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$ 时刻状态量 $X_k$ 的后验概率分布</strong></p>
 <script type="math/tex; mode=display">
 \mu_{X_k}^+ = \mu_{X_k}^- + K_k(z_k-\mu_{Z_k})</script><script type="math/tex; mode=display">
-\Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤二、三、四、五构成了非可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤六、七、八、九、十则构成了更新步。</p>
+\Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤四、五构成了非可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤六、七、八、九、十则构成了更新步。非可加性噪声条件下的无迹卡尔曼滤波算法流程可总结为：</p>
+<p><img data-src="https://i.loli.net/2020/11/29/V6t1DY2RO3WwbvZ.png" alt="非可加性噪声条件下的无迹卡尔曼滤波算法流程图"></p>
 <p>在某些系统中，过程噪声和观测噪声可能其中一个对系统的影响是线性的（可加性噪声），而另一个对系统的影响是非线性的（非可加性噪声），这时需要结合 3.1 节与 3.2 节的方法来进行无迹卡尔曼滤波算法的设计，在下面的应用示例中你会看到具体是如何做的。</p>
 <h1 id="4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" class="heading-control"><a href="#4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" class="headerlink" title="4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪"></a>4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪<a class="heading-anchor" href="#4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" aria-hidden="true"></a></h1><h2 id="4-1-系统分析" class="heading-control"><a href="#4-1-系统分析" class="headerlink" title="4.1 系统分析"></a>4.1 系统分析<a class="heading-anchor" href="#4-1-系统分析" aria-hidden="true"></a></h2><p>在<a href="https://blog.shipengx.com/archives/ea375326.html">《从贝叶斯滤波到扩展卡尔曼滤波》</a>中，我们讲解了毫米波雷达的检测原理，并基于扩展卡尔曼滤波算法实现了 CV 运动模型下的目标跟踪。此处，我们仍以毫米波雷达传感器为例，来讲解基于无迹卡尔曼滤波算法的目标跟踪过程。</p>
 <p>不同的是，此次我们假设被跟踪目标近似地作匀速圆周运动，即运动模型为<strong>恒定转率和速度模型（Constant Turn Rate and Velocity，CTRV）</strong>，如下图所示（图片来自 Udacity）。</p>
@@ -680,10 +682,10 @@ Q =
       <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
+      <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
+      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\e0ebe48c.html" rel="bookmark">最小二乘法多项式曲线拟合数学原理及其C++实现</a></div>
