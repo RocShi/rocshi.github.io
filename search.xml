@@ -3,13 +3,16 @@
   <entry>
     <title>从贝叶斯滤波到粒子滤波</title>
     <url>/archives/f3c9e219.html</url>
-    <content><![CDATA[<h1 id="0-引言" class="heading-control"><a href="#0-引言" class="headerlink" title="0 引言"></a>0 引言<a class="heading-anchor" href="#0-引言" aria-hidden="true"></a></h1><p>Make a bunch of random particles, move them so they ‘kind of’ follow the robot, weight them according to how well they match the measurements, only let the likely ones live.</p>
-<p><strong>关键词：</strong> 贝叶斯，蒙特卡罗，重要性采样，重采样，定位</p>
-<h1 id="1-蒙特卡罗积分" class="heading-control"><a href="#1-蒙特卡罗积分" class="headerlink" title="1 蒙特卡罗积分"></a>1 蒙特卡罗积分<a class="heading-anchor" href="#1-蒙特卡罗积分" aria-hidden="true"></a></h1><p>Monte Carlo<br>伯努利大数定律</p>
+    <content><![CDATA[<h1 id="0-引言与回顾" class="heading-control"><a href="#0-引言与回顾" class="headerlink" title="0 引言与回顾"></a>0 引言与回顾<a class="heading-anchor" href="#0-引言与回顾" aria-hidden="true"></a></h1><p>贝叶斯滤波需要做无穷积分运算<br>线性高斯：卡尔曼<br>一般的非线性高斯：扩展卡尔曼与无迹卡尔曼</p>
+<p>Make a bunch of random particles, move them so they ‘kind of’ follow the robot, weight them according to how well they match the measurements, only let the likely ones live.</p>
+<p><strong>关键词：</strong> 贝叶斯，蒙特卡罗，大数定律，重要性采样，重采样，定位</p>
+<h1 id="1-蒙特卡罗积分" class="heading-control"><a href="#1-蒙特卡罗积分" class="headerlink" title="1 蒙特卡罗积分"></a>1 蒙特卡罗积分<a class="heading-anchor" href="#1-蒙特卡罗积分" aria-hidden="true"></a></h1><p>Monte Carlo</p>
+<p>将积分问题转化为有限样本点的求和问题</p>
 <p>越接近观测的粒子权重越高，越远离观测的粒子权重越低</p>
 <p>粒子滤波有很多变种</p>
-<h1 id="2-重要性采样" class="heading-control"><a href="#2-重要性采样" class="headerlink" title="2 重要性采样"></a>2 重要性采样<a class="heading-anchor" href="#2-重要性采样" aria-hidden="true"></a></h1><p>提议分布（proposal distribution），重要性密度（importance density），权重即为贝叶斯定理中的似然<br>重要性权重，归一化的重要性权重<br>序贯重要性采样（Sequential Importance Sampling，SIS）算法面临粒子退化的问题：大量粒子中只有少数粒子具有较高权重<br>Sampling Importance Resampling，SIR</p>
-<h1 id="3-重采样" class="heading-control"><a href="#3-重采样" class="headerlink" title="3 重采样"></a>3 重采样<a class="heading-anchor" href="#3-重采样" aria-hidden="true"></a></h1><p>为解决粒子退化问题，需要进行重采样：舍弃低权重粒子，并将它们替换为概率更高的粒子（拷贝权重更高的粒子），重采样后的粒子具有相同的权重<br>多种重采样方法：</p>
+<p>狄拉克 $\delta$ 函数（Dirac Delta function），有时也称之为单位脉冲函数，挑选性</p>
+<h1 id="2-重要性采样" class="heading-control"><a href="#2-重要性采样" class="headerlink" title="2 重要性采样"></a>2 重要性采样<a class="heading-anchor" href="#2-重要性采样" aria-hidden="true"></a></h1><p>狄拉克函数<br>提议分布（proposal distribution），重要性密度（importance density），权重即为贝叶斯定理中的似然<br>重要性权重，归一化的重要性权重<br>序贯重要性采样（Sequential Importance Sampling，SIS）算法面临粒子退化的问题：大量粒子中只有少数粒子具有较高权重<br>Condensation Filter</p>
+<h1 id="3-重采样" class="heading-control"><a href="#3-重采样" class="headerlink" title="3 重采样"></a>3 重采样<a class="heading-anchor" href="#3-重采样" aria-hidden="true"></a></h1><p>Sampling Importance Resampling，SIR<br>为解决粒子退化问题，需要进行重采样：舍弃低权重粒子，并将它们替换为概率更高的粒子（拷贝权重更高的粒子），重采样后的粒子具有相同的权重 $1/N$<br>多种重采样方法：</p>
 <ul>
 <li>多项式重采样（Multinomial Resampling）<br>又称简单随机重采样（Simple Random Resampling），对原粒子集重新采样 N 次，形成新的粒子集，权重越高的粒子被选中的概率越大；计算归一化权重的累积和数组，生成 [0, 1] 内的随机数，使用二分搜索查找该随机数在累计和数组中的位置，时间复杂度 $O(n\log(n))$</li>
 <li>残差重采样（Residual Resampling）</li>
@@ -18,11 +21,12 @@
 </ul>
 <p>并非每次迭代都需要进行重采样，通过<strong>有效 $N$</strong>（Effective N）决定是否需要重采样，有效 $N$ 近似反映了粒子集中对计算概率分布比较有意义的粒子的数量</p>
 <p>预测步只改变粒子的位置，不改变粒子的权重；更新步只改变粒子的权重，不改变粒子的位置</p>
-<p>样本贫化可能导致滤波器发散</p>
+<p>重采样会导致样本贫化，样本贫化可能导致滤波器发散</p>
 <p>粒子滤波适用于非线性非高斯问题</p>
 <p>当传感器模型是高斯的，且传感器噪声标准差比较小时（意味着传感器精度很高），粒子滤波的前几次迭代会导致比较多的重复粒子，进而造成粒子滤波性能变差，而卡尔曼滤波恰恰相反。为应对该问题，通常可以手动增加传感器噪声标准差或增加粒子数量 $N$。</p>
-<h1 id="4-应用实例" class="heading-control"><a href="#4-应用实例" class="headerlink" title="4 应用实例"></a>4 应用实例<a class="heading-anchor" href="#4-应用实例" aria-hidden="true"></a></h1><p>无人车定位</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JsYWJiZS9LYWxtYW4tYW5kLUJheWVzaWFuLUZpbHRlcnMtaW4tUHl0aG9u" title="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">Kalman-and-Bayesian-Filters-in-Python<i class="fa fa-external-link"></i></span></p>
+<p>无迹粒子滤波（Unscented Kalman Filter，UPF）</p>
+<h1 id="4-应用实例" class="heading-control"><a href="#4-应用实例" class="headerlink" title="4 应用实例"></a>4 应用实例<a class="heading-anchor" href="#4-应用实例" aria-hidden="true"></a></h1><p>无人车定位<br>在预测步中的每一个粒子上执行一次观测路标集与地图路标集间的关联匹配，最近邻<br>在更新步中，根据每个粒子各自的路标匹配结果，计算累乘联合概率密度，作为粒子更新后的权重</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JsYWJiZS9LYWxtYW4tYW5kLUJheWVzaWFuLUZpbHRlcnMtaW4tUHl0aG9u" title="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">Kalman-and-Bayesian-Filters-in-Python<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMXhXNDExTjdmMT9wPTg=" title="https://www.bilibili.com/video/BV1xW411N7f1?p=8">徐亦达机器学习：Particle Filter 粒子滤波<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zODQ0MTE3NA==" title="https://zhuanlan.zhihu.com/p/38441174">概率机器人——粒子滤波<i class="fa fa-external-link"></i></span></p>
 <hr>
 ]]></content>
       <categories>
@@ -745,7 +749,7 @@ f_{X_{k-1}}^+=\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2{
 <script type="math/tex; mode=display">
 \begin{aligned}
     f_{X_k}^-(x) & = \int_{-\infty}^{+\infty}f_{Q_k}[x-f(v)]f_{X_{k-1}}^+(v)\mathrm{d}v \\
-    & = \int_{-\infty}^{+\infty}\frac{1}{\sigma_{Q_k}\sqrt{2\pi}}e^{-\frac{(x-F*v-B*u_k)^2}{2{\sigma_{Q_k}}^2}}*\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2{\sigma_{k-1}^+}^2}}\mathrm{d}v
+    & = \int_{-\infty}^{+\infty}\frac{1}{\sigma_{Q_k}\sqrt{2\pi}}e^{-\frac{(x-F*v-B*u_k)^2}{2{\sigma_{Q_k}}^2}}*\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(v-\mu_{k-1}^+)^2}{2{\sigma_{k-1}^+}^2}}\mathrm{d}v
 \end{aligned}</script><p>对于 $f_{X_k}^-(x)$ 的推导，有三种方法：</p>
 <ul>
 <li>Mathematica 软件做符号推导</li>
@@ -5310,11 +5314,12 @@ H=
       </tags>
   </entry>
   <entry>
-    <title>Python字典数据结构的item()函数</title>
-    <url>/archives/b11e5b5a.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure><br>会得到下面的输出：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure></p>
+    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
+    <url>/archives/43b2dca3.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -5328,12 +5333,11 @@ H=
       </tags>
   </entry>
   <entry>
-    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
-    <url>/archives/43b2dca3.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
-<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
+    <title>Python字典数据结构的item()函数</title>
+    <url>/archives/b11e5b5a.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure><br>会得到下面的输出：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure></p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
