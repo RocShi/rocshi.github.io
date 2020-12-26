@@ -3,29 +3,27 @@
   <entry>
     <title>从贝叶斯滤波到粒子滤波</title>
     <url>/archives/f3c9e219.html</url>
-    <content><![CDATA[<!-- TOC -->
-<ul>
-<li><a href="#%E5%BC%95%E8%A8%80%E4%B8%8E%E5%9B%9E%E9%A1%BE">引言与回顾</a></li>
-<li><a href="#%E8%92%99%E7%89%B9%E5%8D%A1%E7%BD%97%E7%A7%AF%E5%88%86">蒙特卡罗积分</a></li>
-<li><a href="#%E9%87%8D%E8%A6%81%E6%80%A7%E9%87%87%E6%A0%B7">重要性采样</a><ul>
-<li><a href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%87%8D%E8%A6%81%E6%80%A7%E9%87%87%E6%A0%B7">什么是重要性采样</a></li>
-<li><a href="#%E5%BA%8F%E8%B4%AF%E9%87%8D%E8%A6%81%E6%80%A7%E9%87%87%E6%A0%B7">序贯重要性采样</a></li>
+    <content><![CDATA[<ul>
+<li><a href="#0-引言与回顾">0 引言与回顾</a></li>
+<li><a href="#1-蒙特卡罗积分">1 蒙特卡罗积分</a></li>
+<li><a href="#2-重要性采样">2 重要性采样</a><ul>
+<li><a href="#21-什么是重要性采样">2.1 什么是重要性采样</a></li>
+<li><a href="#22-序贯重要性采样">2.2 序贯重要性采样</a></li>
 </ul>
 </li>
-<li><a href="#%E7%B2%92%E5%AD%90%E9%80%80%E5%8C%96%E9%97%AE%E9%A2%98">粒子退化问题</a><ul>
-<li><a href="#%E6%8F%90%E8%AE%AE%E5%88%86%E5%B8%83%E7%9A%84%E9%80%89%E6%8B%A9">提议分布的选择</a></li>
-<li><a href="#%E9%87%8D%E9%87%87%E6%A0%B7">重采样</a></li>
-<li><a href="#sir-%E6%BB%A4%E6%B3%A2%E5%99%A8">SIR 滤波器</a><ul>
-<li><a href="#%E6%A0%87%E5%87%86-sir-%E6%BB%A4%E6%B3%A2%E5%99%A8">标准 SIR 滤波器</a></li>
-<li><a href="#%E7%AE%80%E5%8C%96%E7%9A%84-sir-%E6%BB%A4%E6%B3%A2%E5%99%A8%E5%87%9D%E8%81%9A%E6%BB%A4%E6%B3%A2">简化的 SIR 滤波器——凝聚滤波</a></li>
+<li><a href="#3-粒子退化问题">3 粒子退化问题</a><ul>
+<li><a href="#31-提议分布的选择">3.1 提议分布的选择</a></li>
+<li><a href="#32-重采样">3.2 重采样</a></li>
+<li><a href="#33-sir-滤波器">3.3 SIR 滤波器</a><ul>
+<li><a href="#331-标准-sir-滤波器">3.3.1 标准 SIR 滤波器</a></li>
+<li><a href="#332-简化的-sir-滤波器凝聚滤波">3.3.2 简化的 SIR 滤波器——凝聚滤波</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#%E5%BA%94%E7%94%A8%E5%AE%9E%E4%BE%8B">应用实例</a></li>
-<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+<li><a href="#4-应用实例">4 应用实例</a></li>
+<li><a href="#参考">参考</a></li>
 </ul>
-<!-- /TOC -->
 <h1 id="0-引言与回顾" class="heading-control"><a href="#0-引言与回顾" class="headerlink" title="0 引言与回顾"></a>0 引言与回顾<a class="heading-anchor" href="#0-引言与回顾" aria-hidden="true"></a></h1><p>贝叶斯滤波需要做无穷积分运算<br>线性高斯：卡尔曼<br>一般的非线性高斯：扩展卡尔曼与无迹卡尔曼</p>
 <p>Make a bunch of random particles, move them so they ‘kind of’ follow the robot, weight them according to how well they match the measurements, only let the likely ones live.</p>
 <p><strong>关键词：</strong> 贝叶斯，蒙特卡罗，大数定律，重要性采样，重采样，定位</p>
@@ -863,8 +861,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -1256,8 +1254,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
@@ -5346,12 +5344,11 @@ H=
       </tags>
   </entry>
   <entry>
-    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
-    <url>/archives/43b2dca3.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
-<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
+    <title>Python字典数据结构的item()函数</title>
+    <url>/archives/b11e5b5a.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure><br>会得到下面的输出：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure></p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -5365,11 +5362,12 @@ H=
       </tags>
   </entry>
   <entry>
-    <title>Python字典数据结构的item()函数</title>
-    <url>/archives/b11e5b5a.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure><br>会得到下面的输出：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure></p>
+    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
+    <url>/archives/43b2dca3.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
