@@ -3,28 +3,7 @@
   <entry>
     <title>从贝叶斯滤波到粒子滤波</title>
     <url>/archives/f3c9e219.html</url>
-    <content><![CDATA[<ul>
-<li><a href="#0-引言与回顾">0 引言与回顾</a></li>
-<li><a href="#1-蒙特卡罗积分">1 蒙特卡罗积分</a></li>
-<li><a href="#2-重要性采样">2 重要性采样</a><ul>
-<li><a href="#21-什么是重要性采样">2.1 什么是重要性采样</a></li>
-<li><a href="#22-序贯重要性采样">2.2 序贯重要性采样</a></li>
-</ul>
-</li>
-<li><a href="#3-粒子退化问题">3 粒子退化问题</a><ul>
-<li><a href="#31-提议分布的选择">3.1 提议分布的选择</a></li>
-<li><a href="#32-重采样">3.2 重采样</a></li>
-<li><a href="#33-sir-滤波器">3.3 SIR 滤波器</a><ul>
-<li><a href="#331-标准-sir-滤波器">3.3.1 标准 SIR 滤波器</a></li>
-<li><a href="#332-简化的-sir-滤波器凝聚滤波">3.3.2 简化的 SIR 滤波器——凝聚滤波</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#4-应用实例">4 应用实例</a></li>
-<li><a href="#参考">参考</a></li>
-</ul>
-<h1 id="0-引言与回顾" class="heading-control"><a href="#0-引言与回顾" class="headerlink" title="0 引言与回顾"></a>0 引言与回顾<a class="heading-anchor" href="#0-引言与回顾" aria-hidden="true"></a></h1><p>贝叶斯滤波需要做无穷积分运算<br>线性高斯：卡尔曼<br>一般的非线性高斯：扩展卡尔曼与无迹卡尔曼</p>
+    <content><![CDATA[<h1 id="0-引言与回顾" class="heading-control"><a href="#0-引言与回顾" class="headerlink" title="0 引言与回顾"></a>0 引言与回顾<a class="heading-anchor" href="#0-引言与回顾" aria-hidden="true"></a></h1><p>贝叶斯滤波需要做无穷积分运算<br>线性高斯：卡尔曼<br>一般的非线性高斯：扩展卡尔曼与无迹卡尔曼</p>
 <p>Make a bunch of random particles, move them so they ‘kind of’ follow the robot, weight them according to how well they match the measurements, only let the likely ones live.</p>
 <p><strong>关键词：</strong> 贝叶斯，蒙特卡罗，大数定律，重要性采样，重采样，定位</p>
 <h1 id="1-蒙特卡罗积分" class="heading-control"><a href="#1-蒙特卡罗积分" class="headerlink" title="1 蒙特卡罗积分"></a>1 蒙特卡罗积分<a class="heading-anchor" href="#1-蒙特卡罗积分" aria-hidden="true"></a></h1><p>Monte Carlo</p>
@@ -861,8 +840,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>卡尔曼滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>卡尔曼滤波</tag>
       </tags>
   </entry>
   <entry>
@@ -1254,8 +1233,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>贝叶斯滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
