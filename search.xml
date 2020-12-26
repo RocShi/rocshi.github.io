@@ -73,7 +73,37 @@
   <entry>
     <title>从贝叶斯滤波到无迹卡尔曼滤波</title>
     <url>/archives/cfd8b171.html</url>
-    <content><![CDATA[<h1 id="0-引言" class="heading-control"><a href="#0-引言" class="headerlink" title="0 引言"></a>0 引言<a class="heading-anchor" href="#0-引言" aria-hidden="true"></a></h1><p>在此前的文章<a href="https://blog.shipengx.com/archives/ea375326.html">《从贝叶斯滤波到扩展卡尔曼滤波》</a>中，我们讲述了扩展卡尔曼滤波通过一阶泰勒级数展开将非线性高斯系统的状态转移函数 $f(x)$ 和（或）观测函数 $h(x)$ 线性化，然后采用标准卡尔曼滤波框架实现状态量的滤波过程。扩展卡尔曼滤波存在两方面的明显缺点：</p>
+    <content><![CDATA[<ul>
+<li><a href="#0-引言">0 引言</a></li>
+<li><a href="#1-无迹变换">1 无迹变换</a><ul>
+<li><a href="#11-什么是无迹变换">1.1 什么是无迹变换</a></li>
+<li><a href="#12-一般形式的无迹变换">1.2 一般形式的无迹变换</a></li>
+<li><a href="#13-比例无迹变换">1.3 比例无迹变换</a></li>
+</ul>
+</li>
+<li><a href="#2-无迹卡尔曼滤波的假设">2 无迹卡尔曼滤波的假设</a><ul>
+<li><a href="#21-与卡尔曼滤波相同的假设">2.1 与卡尔曼滤波相同的假设</a></li>
+<li><a href="#22-与卡尔曼滤波不同的假设">2.2 与卡尔曼滤波不同的假设</a></li>
+</ul>
+</li>
+<li><a href="#3-无迹卡尔曼滤波算法框架">3 无迹卡尔曼滤波算法框架</a><ul>
+<li><a href="#31-可加性噪声条件下的无迹卡尔曼滤波">3.1 可加性噪声条件下的无迹卡尔曼滤波</a></li>
+<li><a href="#32-非可加性噪声条件下的无迹卡尔曼滤波">3.2 非可加性噪声条件下的无迹卡尔曼滤波</a></li>
+</ul>
+</li>
+<li><a href="#4-应用实例基于毫米波雷达与无迹卡尔曼滤波的目标跟踪">4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪</a><ul>
+<li><a href="#41-系统分析">4.1 系统分析</a><ul>
+<li><a href="#411-状态转移过程分析">4.1.1 状态转移过程分析</a></li>
+<li><a href="#412-观测过程分析">4.1.2 观测过程分析</a></li>
+</ul>
+</li>
+<li><a href="#42-代码实现">4.2 代码实现</a></li>
+</ul>
+</li>
+<li><a href="#5-总结">5 总结</a></li>
+<li><a href="#参考">参考</a></li>
+</ul>
+<h1 id="0-引言" class="heading-control"><a href="#0-引言" class="headerlink" title="0 引言"></a>0 引言<a class="heading-anchor" href="#0-引言" aria-hidden="true"></a></h1><p>在此前的文章<a href="https://blog.shipengx.com/archives/ea375326.html">《从贝叶斯滤波到扩展卡尔曼滤波》</a>中，我们讲述了扩展卡尔曼滤波通过一阶泰勒级数展开将非线性高斯系统的状态转移函数 $f(x)$ 和（或）观测函数 $h(x)$ 线性化，然后采用标准卡尔曼滤波框架实现状态量的滤波过程。扩展卡尔曼滤波存在两方面的明显缺点：</p>
 <ul>
 <li>一阶泰勒级数展开忽略了二阶及以上的高阶项，因此精度一般（通常称为一阶精度），对于高度非线性问题效果较差；</li>
 <li>雅可比矩阵的计算较为繁琐，容易出错。</li>
@@ -5344,11 +5374,12 @@ H=
       </tags>
   </entry>
   <entry>
-    <title>Python字典数据结构的item()函数</title>
-    <url>/archives/b11e5b5a.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure><br>会得到下面的输出：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure></p>
+    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
+    <url>/archives/43b2dca3.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -5362,12 +5393,11 @@ H=
       </tags>
   </entry>
   <entry>
-    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
-    <url>/archives/43b2dca3.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
-<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
+    <title>Python字典数据结构的item()函数</title>
+    <url>/archives/b11e5b5a.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure><br>会得到下面的输出：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure></p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
