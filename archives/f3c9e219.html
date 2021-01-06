@@ -60,7 +60,7 @@
 <meta property="og:description" content="未完待续">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-03T12:36:32.000Z">
-<meta property="article:modified_time" content="2020-12-26T06:09:07.638Z">
+<meta property="article:modified_time" content="2021-01-05T08:00:08.340Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
@@ -263,7 +263,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-26 14:09:07" itemprop="dateModified" datetime="2020-12-26T14:09:07+08:00">2020-12-26</time>
+                <time title="修改时间：2021-01-05 16:00:08" itemprop="dateModified" datetime="2021-01-05T16:00:08+08:00">2021-01-05</time>
               </span>
 
           <br>
@@ -311,18 +311,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="0-引言与回顾" class="heading-control"><a href="#0-引言与回顾" class="headerlink" title="0 引言与回顾"></a>0 引言与回顾<a class="heading-anchor" href="#0-引言与回顾" aria-hidden="true"></a></h1><p>贝叶斯滤波需要做无穷积分运算<br>线性高斯：卡尔曼<br>一般的非线性高斯：扩展卡尔曼与无迹卡尔曼</p>
+        <h1 id="0-引言与回顾" class="heading-control"><a href="#0-引言与回顾" class="headerlink" title="0 引言与回顾"></a>0 引言与回顾<a class="heading-anchor" href="#0-引言与回顾" aria-hidden="true"></a></h1><p>先前文章的结论<a href="https://blog.shipengx.com/archives/9fb25cec.html">《从概率到贝叶斯滤波》</a><br>贝叶斯滤波需要做无穷积分运算<br>线性高斯：卡尔曼<br>一般的非线性高斯：扩展卡尔曼与无迹卡尔曼</p>
 <p>Make a bunch of random particles, move them so they ‘kind of’ follow the robot, weight them according to how well they match the measurements, only let the likely ones live.</p>
-<p><strong>关键词：</strong> 贝叶斯，蒙特卡罗，大数定律，重要性采样，重采样，定位</p>
+<p><strong>关键词：</strong> 贝叶斯，大数定律，蒙特卡罗，重要性采样，重采样，定位</p>
 <h1 id="1-蒙特卡罗积分" class="heading-control"><a href="#1-蒙特卡罗积分" class="headerlink" title="1 蒙特卡罗积分"></a>1 蒙特卡罗积分<a class="heading-anchor" href="#1-蒙特卡罗积分" aria-hidden="true"></a></h1><p>Monte Carlo</p>
 <p>将积分问题转化为有限样本点的求和问题</p>
 <p>越接近观测的粒子权重越高，越远离观测的粒子权重越低</p>
-<p>粒子滤波有很多变种</p>
 <p>狄拉克 $\delta$ 函数（Dirac Delta function），有时也称之为单位脉冲函数，挑选性</p>
 <p>独立同分布（independently identically distribution，i.i.d.）</p>
 <p>概率分布的期望可以通过样本均值进行近似</p>
 <p>很难直接采样，甚至根本无法采样</p>
-<h1 id="2-重要性采样" class="heading-control"><a href="#2-重要性采样" class="headerlink" title="2 重要性采样"></a>2 重要性采样<a class="heading-anchor" href="#2-重要性采样" aria-hidden="true"></a></h1><h2 id="2-1-什么是重要性采样" class="heading-control"><a href="#2-1-什么是重要性采样" class="headerlink" title="2.1 什么是重要性采样"></a>2.1 什么是重要性采样<a class="heading-anchor" href="#2-1-什么是重要性采样" aria-hidden="true"></a></h2><p>狄拉克函数<br>提议分布（proposal distribution），重要性密度（importance density），重要性函数（importance function），权重即为贝叶斯定理中的似然<br>重要性权重，归一化的重要性权重</p>
+<h1 id="2-重要性采样" class="heading-control"><a href="#2-重要性采样" class="headerlink" title="2 重要性采样"></a>2 重要性采样<a class="heading-anchor" href="#2-重要性采样" aria-hidden="true"></a></h1><h2 id="2-1-什么是重要性采样" class="heading-control"><a href="#2-1-什么是重要性采样" class="headerlink" title="2.1 什么是重要性采样"></a>2.1 什么是重要性采样<a class="heading-anchor" href="#2-1-什么是重要性采样" aria-hidden="true"></a></h2><p>提议分布（proposal distribution），重要性密度（importance density），重要性函数（importance function），权重即为贝叶斯定理中的似然<br>重要性权重，归一化的重要性权重</p>
 <h2 id="2-2-序贯重要性采样" class="heading-control"><a href="#2-2-序贯重要性采样" class="headerlink" title="2.2 序贯重要性采样"></a>2.2 序贯重要性采样<a class="heading-anchor" href="#2-2-序贯重要性采样" aria-hidden="true"></a></h2><p>在基于重要性采样的蒙特卡罗方法中，估计后验概率密度需要利用所有的观测数据，每次新的观测数据来到都需要重新计算整个状态序列的重要性权值。为实现后验概率密度的递归估计，将统计学中的序贯分析方法应用到了蒙特卡罗方法中，通常称之为序贯重要性采样（Sequential Importance Sampling，SIS）。SIS 算法面临粒子退化的问题：大量粒子中只有少数粒子具有较高权重</p>
 <p>重要性采样要解决的是目标分布难以采样甚至无法采样的问题</p>
 <p>序贯重要性采样要实现的是递归地更新样本（粒子）的权重</p>
@@ -334,7 +333,7 @@
 <li>分层重采样（Stratified Resampling）</li>
 <li>系统重采样（Systematic Resampling）</li>
 </ul>
-<p>并非每次迭代都需要进行重采样，通过<strong>有效 $N$</strong>（Effective N）决定是否需要重采样，有效 $N$ 近似反映了粒子集中对计算概率分布比较有意义的粒子的数量</p>
+<p>并非每次迭代都需要进行重采样，通过<strong>有效粒子数 $N_{eff}$</strong> 决定是否需要重采样，有效 $N$ 近似反映了粒子集中对计算概率分布比较有意义的粒子的数量</p>
 <p>预测步只改变粒子的位置，不改变粒子的权重；更新步只改变粒子的权重，不改变粒子的位置</p>
 <p>重采样会导致样本贫化，样本贫化可能导致滤波器发散</p>
 <p>粒子滤波适用于非线性非高斯问题</p>
@@ -342,8 +341,9 @@
 <p>无迹粒子滤波（Unscented Kalman Filter，UPF）</p>
 <h2 id="3-3-SIR-滤波器" class="heading-control"><a href="#3-3-SIR-滤波器" class="headerlink" title="3.3 SIR 滤波器"></a>3.3 SIR 滤波器<a class="heading-anchor" href="#3-3-SIR-滤波器" aria-hidden="true"></a></h2><h3 id="3-3-1-标准-SIR-滤波器" class="heading-control"><a href="#3-3-1-标准-SIR-滤波器" class="headerlink" title="3.3.1 标准 SIR 滤波器"></a>3.3.1 标准 SIR 滤波器<a class="heading-anchor" href="#3-3-1-标准-SIR-滤波器" aria-hidden="true"></a></h3><p>序贯重要性重采样（Sequential Importance Resampling），有时也说采样重要性重采样（Sampling Importance Resampling）</p>
 <h3 id="3-3-2-简化的-SIR-滤波器——凝聚滤波" class="heading-control"><a href="#3-3-2-简化的-SIR-滤波器——凝聚滤波" class="headerlink" title="3.3.2 简化的 SIR 滤波器——凝聚滤波"></a>3.3.2 简化的 SIR 滤波器——凝聚滤波<a class="heading-anchor" href="#3-3-2-简化的-SIR-滤波器——凝聚滤波" aria-hidden="true"></a></h3><p>使用先验的状态转移概率密度分布作为提议分布，凝聚滤波（Condensation Filter），</p>
+<p>最佳估计：所有粒子的加权平均或权重最大的粒子</p>
 <h1 id="4-应用实例" class="heading-control"><a href="#4-应用实例" class="headerlink" title="4 应用实例"></a>4 应用实例<a class="heading-anchor" href="#4-应用实例" aria-hidden="true"></a></h1><p>无人车定位<br>在预测步中的每一个粒子上执行一次观测路标集与地图路标集间的关联匹配，最近邻<br>在更新步中，根据每个粒子各自的路标匹配结果，计算累乘联合概率密度，作为粒子更新后的权重</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JsYWJiZS9LYWxtYW4tYW5kLUJheWVzaWFuLUZpbHRlcnMtaW4tUHl0aG9u" title="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">Kalman-and-Bayesian-Filters-in-Python<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMXhXNDExTjdmMT9wPTg=" title="https://www.bilibili.com/video/BV1xW411N7f1?p=8">徐亦达机器学习：Particle Filter 粒子滤波<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zODQ0MTE3NA==" title="https://zhuanlan.zhihu.com/p/38441174">概率机器人——粒子滤波<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvUGFydGljbGVfZmlsdGVy" title="https://en.wikipedia.org/wiki/Particle_filter">维基百科：Particle filter<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMDcyMjMwMTI=" title="https://zhuanlan.zhihu.com/p/107223012">无人驾驶技术入门（二十）| 手把手教你用粒子滤波实现无人车定位<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9lbi5jcHByZWZlcmVuY2UuY29tL3cvY3BwL251bWVyaWMvcmFuZG9tL2Rpc2NyZXRlX2Rpc3RyaWJ1dGlvbg==" title="https://en.cppreference.com/w/cpp/numeric/random/discrete_distribution">std::discrete_distribution<i class="fa fa-external-link"></i></span></p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JsYWJiZS9LYWxtYW4tYW5kLUJheWVzaWFuLUZpbHRlcnMtaW4tUHl0aG9u" title="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">Kalman-and-Bayesian-Filters-in-Python<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMXhXNDExTjdmMT9wPTg=" title="https://www.bilibili.com/video/BV1xW411N7f1?p=8">b站徐亦达机器学习：Particle Filter 粒子滤波<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zODQ0MTE3NA==" title="https://zhuanlan.zhihu.com/p/38441174">概率机器人——粒子滤波<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvUGFydGljbGVfZmlsdGVy" title="https://en.wikipedia.org/wiki/Particle_filter">维基百科：Particle filter<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMDcyMjMwMTI=" title="https://zhuanlan.zhihu.com/p/107223012">无人驾驶技术入门（二十）| 手把手教你用粒子滤波实现无人车定位<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9lbi5jcHByZWZlcmVuY2UuY29tL3cvY3BwL251bWVyaWMvcmFuZG9tL2Rpc2NyZXRlX2Rpc3RyaWJ1dGlvbg==" title="https://en.cppreference.com/w/cpp/numeric/random/discrete_distribution">std::discrete_distribution<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cDovL3d3dy5hYXMubmV0LmNuL2ZpbGVaREhYQi9qb3VybmFsL2FydGljbGUvemRoeGIvMjAxNS8xMi9QREYvMjAxNS0xMi0xOTgxLnBkZg==" title="http://www.aas.net.cn/fileZDHXB/journal/article/zdhxb/2015/12/PDF/2015-12-1981.pdf">粒子滤波理论、方法及其在多目标跟踪中的应用<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL2hlbHAvcm9ib3RpY3MvdWcvcGFydGljbGUtZmlsdGVyLXBhcmFtZXRlcnMuaHRtbCNidTU3b2Y4" title="https://ww2.mathworks.cn/help/robotics/ug/particle-filter-parameters.html#bu57of8">MathWorks：Particle Filter Parameters<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cueHVlYnV5dWFuLmNvbS8zMjMyNjYzLmh0bWw=" title="https://www.xuebuyuan.com/3232663.html">粒子滤波（PF：Particle Filter）<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMVJLNDExTDdNdA==" title="https://www.bilibili.com/video/BV1RK411L7Mt">b站贝叶斯滤波与卡尔曼滤波第九讲：粒子滤波原理详述<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMVJLNDExTDdNdA==" title="https://www.bilibili.com/video/BV1RK411L7Mt">b站贝叶斯滤波与卡尔曼滤波第十讲：重采样<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMVJLNDExTDdNdA==" title="https://www.bilibili.com/video/BV1RK411L7Mt">b站贝叶斯滤波与卡尔曼滤波第十二讲：粒子滤波拾遗——采样方法、预测方程<i class="fa fa-external-link"></i></span></p>
 <hr>
 
     </div>
@@ -355,10 +355,10 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
+      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
+      <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
@@ -556,8 +556,8 @@
 
 <div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
