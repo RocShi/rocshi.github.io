@@ -30,14 +30,14 @@
 <script type="math/tex; mode=display">
 \begin{aligned}
     p(x_{0:k}|z_{1:k})
-    & = \frac{p(x_{0:k},z_{1:k})}{p(z_k,z_{1:{k-1}})} \\
-    & = \frac{p(z_k,x_{0:k},z_{1:{k-1}})}{p(z_k|z_{1:{k-1}})p(z_{1:{k-1}})} \\
-    & = \frac{p(z_k|x_{0:k},z_{1:{k-1}})p(x_{0:k},z_{1:{k-1}})}{p(z_k|z_{1:{k-1}})p(z_{1:{k-1}})} \\
-    & = \frac{p(z_k|x_{0:k},z_{1:{k-1}})p(x_k,x_{0:{k-1}},z_{1:{k-1}})}{p(z_k|z_{1:{k-1}})p(z_{1:{k-1}})} \\
-    & = \frac{p(z_k|x_{0:k},z_{1:{k-1}})p(x_k|x_{0:{k-1}},z_{1:{k-1}})p(x_{0:{k-1}},z_{1:{k-1}})}{p(z_k|z_{1:{k-1}})p(z_{1:{k-1}})} \\
-    & = \frac{p(z_k|x_{0:k},z_{1:{k-1}})p(x_k|x_{0:{k-1}},z_{1:{k-1}})p(x_{0:{k-1}}|z_{1:{k-1}})p(z_{1:{k-1}})}{p(z_k|z_{1:{k-1}})p(z_{1:{k-1}})} \\
-    & = \frac{p(z_k|x_{0:k},z_{1:{k-1}})p(x_k|x_{0:{k-1}},z_{1:{k-1}})p(x_{0:{k-1}}|z_{1:{k-1}})}{p(z_k|z_{1:{k-1}})} \\
-    & = \frac{p(z_k|x_k)p(x_k|x_{k-1})p(x_{0:{k-1}}|z_{1:{k-1}})}{p(z_k|z_{1:{k-1}})}
+    & = \frac{p(x_{0:k},z_{1:k})}{p(z_k,z_{1:{k-1} })} \\
+    & = \frac{p(z_k,x_{0:k},z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })p(z_{1:{k-1} })} \\
+    & = \frac{p(z_k|x_{0:k},z_{1:{k-1} })p(x_{0:k},z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })p(z_{1:{k-1} })} \\
+    & = \frac{p(z_k|x_{0:k},z_{1:{k-1} })p(x_k,x_{0:{k-1} },z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })p(z_{1:{k-1} })} \\
+    & = \frac{p(z_k|x_{0:k},z_{1:{k-1} })p(x_k|x_{0:{k-1} },z_{1:{k-1} })p(x_{0:{k-1} },z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })p(z_{1:{k-1} })} \\
+    & = \frac{p(z_k|x_{0:k},z_{1:{k-1} })p(x_k|x_{0:{k-1} },z_{1:{k-1} })p(x_{0:{k-1} }|z_{1:{k-1} })p(z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })p(z_{1:{k-1} })} \\
+    & = \frac{p(z_k|x_{0:k},z_{1:{k-1} })p(x_k|x_{0:{k-1} },z_{1:{k-1} })p(x_{0:{k-1} }|z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })} \\
+    & = \frac{p(z_k|x_k)p(x_k|x_{k-1})p(x_{0:{k-1} }|z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })}
 \end{aligned}</script><h1 id="3-粒子退化问题" class="heading-control"><a href="#3-粒子退化问题" class="headerlink" title="3 粒子退化问题"></a>3 粒子退化问题<a class="heading-anchor" href="#3-粒子退化问题" aria-hidden="true"></a></h1><h2 id="3-1-提议分布的选择" class="heading-control"><a href="#3-1-提议分布的选择" class="headerlink" title="3.1 提议分布的选择"></a>3.1 提议分布的选择<a class="heading-anchor" href="#3-1-提议分布的选择" aria-hidden="true"></a></h2><h2 id="3-2-重采样" class="heading-control"><a href="#3-2-重采样" class="headerlink" title="3.2 重采样"></a>3.2 重采样<a class="heading-anchor" href="#3-2-重采样" aria-hidden="true"></a></h2><p>为解决粒子退化问题，需要进行重采样：舍弃低权重粒子，并将它们替换为概率更高的粒子（拷贝权重更高的粒子），重采样后的粒子具有相同的权重 $1/N$<br>多种重采样方法：</p>
 <ul>
 <li>多项式重采样（Multinomial Resampling）<br>又称简单随机重采样（Simple Random Resampling），对原粒子集重新采样 N 次，形成新的粒子集，权重越高的粒子被选中的概率越大；计算归一化权重的累积和数组，生成 [0, 1] 内的随机数，使用二分搜索查找该随机数在累计和数组中的位置，时间复杂度 $O(n\log(n))$</li>
@@ -860,8 +860,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -1253,8 +1253,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
