@@ -37,7 +37,7 @@
         & \approx \frac{1}{N}\sum_{i=0}^{N-1}f(\mathcal{X}^{(i)})\frac{p(\mathcal{X}^{(i)})}{q(\mathcal{X}^{(i)})}
 \end{aligned} \tag{2.1}</script><p>其中</p>
 <script type="math/tex; mode=display">
-\mathcal{X}^{(i)}\sim q(x) \tag{2.2}</script><p>上述的采样方式称为<strong>重要性采样</strong>（Importance Sampling），其中的更易采样的概率密度函数 $q(x)$ 称为建议分布（Proposal Distribution），也称重要性密度（Importance Density）或重要性函数（Importance Function）。</p>
+\mathcal{X}^{(i)}\sim q(x) \tag{2.2}</script><p>上述的采样方式称为<strong>重要性采样</strong>（Importance Sampling），其中的更易采样的概率密度函数 $q(x)$ 称为<strong>建议分布</strong>（Proposal Distribution），也称重要性密度（Importance Density）或重要性函数（Importance Function）。</p>
 <p>令</p>
 <script type="math/tex; mode=display">
 w(x)=\frac{p(x)}{q(x)} \tag{2.3}</script><p>显然</p>
@@ -901,8 +901,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>卡尔曼滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>卡尔曼滤波</tag>
       </tags>
   </entry>
   <entry>
@@ -1294,8 +1294,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>贝叶斯滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
