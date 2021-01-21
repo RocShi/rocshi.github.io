@@ -198,7 +198,7 @@ q(x_k|x_{k-1},z_k)=p(x_k|x_{k-1}) \tag{3.4}</script><p>根据式 (3.4)，式 (2.
 \end{aligned} \tag{3.5}</script><p>从式 (3.5) 我们可以知道，只要确定了系统先验的状态转移概率分布，便可以根据系统的状态转移方程进行粒子序贯采样。根据式 (3.4) 和式 (3.5)，式 (2.25) 演变为</p>
 <script type="math/tex; mode=display">
 w_k^{(i)}=\underbrace{p(z_k|\mathcal{X}_k^{(i)})}_{似然概率分布} w_{k-1}^{(i)} \tag{3.6}</script><p>从式 (3.6) 我们可以知道，只要完成了粒子的序贯采样，并确定了系统的似然概率分布，便可以根据系统的观测方程以及上一时刻粒子的重要性权重递推地更新当前时刻粒子的重要性权重（非归一化的）。</p>
-<h2 id="3-3-重采样" class="heading-control"><a href="#3-3-重采样" class="headerlink" title="3.3 重采样"></a>3.3 重采样<a class="heading-anchor" href="#3-3-重采样" aria-hidden="true"></a></h2><p>重采样也可有效抑制粒子的退化问题。所谓重采样，指的是在得到当前时刻的粒子集及每个粒子归一化的重要性权重 $\lang \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \rang_{i=0}^{N-1}$ 后，根据每个粒子的权重需要进行重新采样，粒子权重越高，被重新采样到的概率也越高，这意味着，某些粒子在重采样后可能会被复制多份，而某些粒子在重采样后可能直接不存在了，如下图所示。</p>
+<h2 id="3-3-重采样" class="heading-control"><a href="#3-3-重采样" class="headerlink" title="3.3 重采样"></a>3.3 重采样<a class="heading-anchor" href="#3-3-重采样" aria-hidden="true"></a></h2><p>重采样也可有效抑制粒子的退化问题。所谓重采样，指的是在得到当前时刻的粒子集及每个粒子归一化的重要性权重 $\lang \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \rang_{i=0}^{N-1}$ 后，根据每个粒子的权重需要进行重新采样，粒子权重越高，被重新采样到的概率也越高，这意味着，某些粒子在重采样后可能会被复制多份，而某些粒子在重采样后可能直接不存在了，如下图所示（参考 10，P263）。</p>
 <p><img data-src="https://i.loli.net/2021/01/21/DAVj9QE3RU72dTW.png" alt="重采样示意图"></p>
 <p>重采样过程等价于对下面这个离散分布进行采样</p>
 <script type="math/tex; mode=display">
