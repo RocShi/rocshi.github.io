@@ -202,7 +202,7 @@ w_k^{(i)}=\underbrace{p(z_k|\mathcal{X}_k^{(i)})}_{似然概率分布} w_{k-1}^{
 <p><img data-src="https://i.loli.net/2021/01/21/DAVj9QE3RU72dTW.png" alt="重采样示意图"></p>
 <p>重采样过程等价于对下面这个离散分布进行采样</p>
 <script type="math/tex; mode=display">
-\mathrm{P}(x_k=\mathcal{X}_k^{(i)})=\widetilde{w}_k^{(i)} \tag{3.7}</script><p>我们记重采样得到的粒子集及每个粒子各自的权重为 $\{ \mathcal{X}_k^{\ast(i)}, w_k^{\ast(i)} \}_{i=0}^{N-1}$，</p>
+\mathrm{P}(x_k=\mathcal{X}_k^{(i)})=\widetilde{w}_k^{(i)} \tag{3.7}</script><p>我们记重采样得到的粒子集及每个粒子各自的权重为 $\{ \mathcal{X}_k^{\ast (i)}, w_k^{\ast (i)} \}_{i=0}^{N-1}$，</p>
 <p>多种重采样方法：</p>
 <ul>
 <li>多项式重采样（Multinomial Resampling）<br>又称简单随机重采样（Simple Random Resampling），对原粒子集重新采样 N 次，形成新的粒子集，权重越高的粒子被选中的概率越大；计算归一化权重的累积和数组，生成 [0, 1] 内的随机数，使用二分搜索查找该随机数在累计和数组中的位置，时间复杂度 $O(n\log(n))$</li>
@@ -1024,8 +1024,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>卡尔曼滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>卡尔曼滤波</tag>
       </tags>
   </entry>
   <entry>
@@ -1417,8 +1417,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>贝叶斯滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
