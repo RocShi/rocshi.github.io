@@ -198,11 +198,11 @@ q(x_k|x_{k-1},z_k)=p(x_k|x_{k-1}) \tag{3.4}</script><p>根据式 (3.4)，式 (2.
 \end{aligned} \tag{3.5}</script><p>从式 (3.5) 我们可以知道，只要确定了系统先验的状态转移概率分布，便可以根据系统的状态转移方程进行粒子序贯采样。根据式 (3.4) 和式 (3.5)，式 (2.25) 演变为</p>
 <script type="math/tex; mode=display">
 w_k^{(i)}=\underbrace{p(z_k|\mathcal{X}_k^{(i)})}_{似然概率分布} w_{k-1}^{(i)} \tag{3.6}</script><p>从式 (3.6) 我们可以知道，只要完成了粒子的序贯采样，并确定了系统的似然概率分布，便可以根据系统的观测方程以及上一时刻粒子的重要性权重递推地更新当前时刻粒子的重要性权重（非归一化的）。</p>
-<h2 id="3-3-重采样" class="heading-control"><a href="#3-3-重采样" class="headerlink" title="3.3 重采样"></a>3.3 重采样<a class="heading-anchor" href="#3-3-重采样" aria-hidden="true"></a></h2><p>重采样也可有效抑制粒子的退化问题。所谓重采样，指的是在得到当前时刻的粒子集及每个粒子归一化的重要性权重 $\{\mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}$ 后，根据每个粒子的权重需要进行重新采样，粒子权重越高，被重新采样到的概率也越高，这意味着，某些粒子在重采样后可能会被复制多份，而某些粒子在重采样后可能直接不存在了，如下图所示（参考 10，P263）。</p>
+<h2 id="3-3-重采样" class="heading-control"><a href="#3-3-重采样" class="headerlink" title="3.3 重采样"></a>3.3 重采样<a class="heading-anchor" href="#3-3-重采样" aria-hidden="true"></a></h2><p>重采样也可有效抑制粒子的退化问题。所谓重采样，指的是在得到当前时刻的粒子集及每个粒子归一化的重要性权重 $\lang \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \rang_{i=0}^{N-1}$ 后，根据每个粒子的权重需要进行重新采样，粒子权重越高，被重新采样到的概率也越高，这意味着，某些粒子在重采样后可能会被复制多份，而某些粒子在重采样后可能直接不存在了，如下图所示（参考 10，P263）。</p>
 <p><img data-src="https://i.loli.net/2021/01/21/DAVj9QE3RU72dTW.png" alt="重采样示意图"></p>
 <p>重采样过程等价于对下面这个离散分布进行采样</p>
 <script type="math/tex; mode=display">
-\mathrm{P}(x_k=\mathcal{X}_k^{(i)})=\widetilde{w}_k^{(i)} \tag{3.7}</script><p>我们记重采样得到的粒子集及每个粒子各自的权重为 $\{ \mathcal{X}_k^{<em>(i)}, w_k^{</em>(i)} \} _{i=0}^{N-1}$，</p>
+\mathrm{P}(x_k=\mathcal{X}_k^{(i)})=\widetilde{w}_k^{(i)} \tag{3.7}</script><p>我们记重采样得到的粒子集及每个粒子各自的权重为 $\{ \mathcal{X}_k^{\ast(i)}, w_k^{\ast(i)} \}_{i=0}^{N-1}$，</p>
 <p>多种重采样方法：</p>
 <ul>
 <li>多项式重采样（Multinomial Resampling）<br>又称简单随机重采样（Simple Random Resampling），对原粒子集重新采样 N 次，形成新的粒子集，权重越高的粒子被选中的概率越大；计算归一化权重的累积和数组，生成 [0, 1] 内的随机数，使用二分搜索查找该随机数在累计和数组中的位置，时间复杂度 $O(n\log(n))$</li>
@@ -1024,8 +1024,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -1417,8 +1417,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
