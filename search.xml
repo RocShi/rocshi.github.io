@@ -209,7 +209,7 @@ w_k^{\ast (j)}=\frac{1}{N}, \quad j=0, 1, 2, \dotsb, N-1 \tag{3.8}</script><p>é’
 <script type="math/tex; mode=display">
 \boxed{
     \begin{aligned}
-    & \texttt{Multinomial\underline{ }Resampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}, \{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=N-N_r}^{N-1}, N_r\big] \\
+    & \texttt{Multinomial\_Resampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}, \{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=N-N_r}^{N-1}, N_r\big] \\
     & c_0 = \widetilde{w}_k^{(0)} \\
     & \texttt{FOR} \quad i=1:N-1 \\
     & \qquad c_i=c_{i-1}+\widetilde{w}_k^{(i)}\\
