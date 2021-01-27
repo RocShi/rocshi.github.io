@@ -61,7 +61,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/01/21/DAVj9QE3RU72dTW.png">
 <meta property="article:published_time" content="2020-12-03T12:36:32.000Z">
-<meta property="article:modified_time" content="2021-01-26T08:45:38.283Z">
+<meta property="article:modified_time" content="2021-01-27T04:50:51.887Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
@@ -265,7 +265,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-26 16:45:38" itemprop="dateModified" datetime="2021-01-26T16:45:38+08:00">2021-01-26</time>
+                <time title="修改时间：2021-01-27 12:50:51" itemprop="dateModified" datetime="2021-01-27T12:50:51+08:00">2021-01-27</time>
               </span>
 
           <br>
@@ -533,6 +533,7 @@ u\sim\mathcal{U}(0,1) \tag{3.10}</script><p>使用二分搜索查找该随机数
 \boxed{
     \begin{aligned}
     & \texttt{MultinomialResampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}, \{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=N-N_r}^{N-1}, N_r\big] \\
+    & \\
     & c_0 = \widetilde{w}_k^{(0)} \\
     & \texttt{FOR} \quad i=1:N-1 \\
     & \qquad c_i=c_{i-1}+\widetilde{w}_k^{(i)}\\
@@ -554,12 +555,13 @@ u\sim\mathcal{U}(0,1) \tag{3.10}</script><p>使用二分搜索查找该随机数
     & \qquad w_k^{\ast (j)}=\frac{1}{N} \\
     & \texttt{END FOR}
 \end{aligned}
-}</script><p>其中，$N$ 表示粒子总数，$N_r$ 表示重采样的粒子数（$N_r \leq N$），$\lfloor \cdot\rfloor$ 表示向下取整。在计算粒子权重的累积分布时，为避免圆整误差，需要令 $c_{N-1}=1$。此外，使用二分搜索时需要注意搜索区间的设置。</p>
+}</script><p>其中，$N$ 表示粒子总数，$N_r$ 表示重采样的粒子数（$N_r \leq N$。在单独使用多项式重采样时，$N_r=N$；在用于残差重采样的步骤二时，$N_r \lt N$），$\lfloor \cdot\rfloor$ 表示向下取整。在计算粒子权重的累积分布时，为避免圆整误差，需要令 $c_{N-1}=1$。此外，使用二分搜索时需要注意搜索区间的设置。</p>
 <h3 id="3-3-2-分层重采样" class="heading-control"><a href="#3-3-2-分层重采样" class="headerlink" title="3.3.2 分层重采样"></a>3.3.2 分层重采样<a class="heading-anchor" href="#3-3-2-分层重采样" aria-hidden="true"></a></h3><p>分层重采样将粒子归一化重要性权重的累积分布等分为 $N_r$ 层子区间，对每层子区间，使用一个介于子区间左右边界值的随机数来查找该层子区间重采样粒子所对应的原粒子索引，分层重采样算法的时间复杂度为 $\mathcal{O}(n)$。下面我们给出分层重采样的伪代码。</p>
 <script type="math/tex; mode=display">
 \boxed{
     \begin{aligned}
     & \texttt{StratifiedResampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}, \{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=N-N_r}^{N-1}, N_r\big] \\
+    & \\
     & c_0 = \widetilde{w}_k^{(0)} \\
     & \texttt{FOR} \quad i=1:N-1 \\
     & \qquad c_i=c_{i-1}+\widetilde{w}_k^{(i)}\\
@@ -577,11 +579,13 @@ u\sim\mathcal{U}(0,1) \tag{3.10}</script><p>使用二分搜索查找该随机数
     & \qquad w_k^{\ast (j)}=\frac{1}{N} \\
     & \texttt{END FOR}
 \end{aligned}
-}</script><h3 id="3-3-3-系统重采样" class="heading-control"><a href="#3-3-3-系统重采样" class="headerlink" title="3.3.3 系统重采样"></a>3.3.3 系统重采样<a class="heading-anchor" href="#3-3-3-系统重采样" aria-hidden="true"></a></h3><p>系统重采样与分层重采样类似，唯一的区别在于，系统重采样中的每层子区间在查找各自重采样粒子对应的原粒子索引时使用的是同一个随机数，意即，系统重采样中只涉及一次随机数生成操作，系统重采样算法的时间复杂度同样为 $\mathcal{O}(n)$。下面我们给出系统重采样的伪代码。</p>
+}</script><p>其中，$N$ 表示粒子总数，$N_r$ 表示重采样的粒子数（$N_r \leq N$。在单独使用分层重采样时，$N_r=N$；在用于残差重采样的步骤二时，$N_r \lt N$）。</p>
+<h3 id="3-3-3-系统重采样" class="heading-control"><a href="#3-3-3-系统重采样" class="headerlink" title="3.3.3 系统重采样"></a>3.3.3 系统重采样<a class="heading-anchor" href="#3-3-3-系统重采样" aria-hidden="true"></a></h3><p>系统重采样与分层重采样类似，唯一的区别在于，系统重采样中的每层子区间在查找各自重采样粒子对应的原粒子索引时使用的是同一个随机数，意即，系统重采样只涉及一次随机数生成操作，系统重采样算法的时间复杂度同样为 $\mathcal{O}(n)$。下面我们给出系统重采样的伪代码。</p>
 <script type="math/tex; mode=display">
 \boxed{
     \begin{aligned}
     & \texttt{SystematicResampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}, \{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=N-N_r}^{N-1}, N_r\big] \\
+    & \\
     & c_0 = \widetilde{w}_k^{(0)} \\
     & \texttt{FOR} \quad i=1:N-1 \\
     & \qquad c_i=c_{i-1}+\widetilde{w}_k^{(i)}\\
@@ -599,16 +603,52 @@ u\sim\mathcal{U}(0,1) \tag{3.10}</script><p>使用二分搜索查找该随机数
     & \qquad w_k^{\ast (j)}=\frac{1}{N} \\
     & \texttt{END FOR}
 \end{aligned}
-}</script><h3 id="3-3-4-残差重采样" class="heading-control"><a href="#3-3-4-残差重采样" class="headerlink" title="3.3.4 残差重采样"></a>3.3.4 残差重采样<a class="heading-anchor" href="#3-3-4-残差重采样" aria-hidden="true"></a></h3><p>残差重采样分两个阶段进行</p>
-<p>预测步只改变粒子的位置，不改变粒子的权重；更新步只改变粒子的权重，不改变粒子的位置</p>
-<p>重采样会导致样本贫化，样本贫化可能导致滤波器发散</p>
+}</script><p>其中，$N$ 表示粒子总数，$N_r$ 表示重采样的粒子数（$N_r \leq N$。在单独使用系统重采样时，$N_r=N$；在用于残差重采样的步骤二时，$N_r \lt N$）。</p>
+<h3 id="3-3-4-残差重采样" class="heading-control"><a href="#3-3-4-残差重采样" class="headerlink" title="3.3.4 残差重采样"></a>3.3.4 残差重采样<a class="heading-anchor" href="#3-3-4-残差重采样" aria-hidden="true"></a></h3><p>残差重采样分两步进行：</p>
+<p><strong>步骤一：确定性拷贝</strong></p>
+<p>对原粒子集的每个粒子 $\mathcal{X}^{(i)}$ 根据 $N_{k_1}^{(i)}$ 作为复制次数进行拷贝采样，其中</p>
+<script type="math/tex; mode=display">
+N_{k_1}^{(i)}=\lfloor N \widetilde{w}_k^{(i)} \rfloor \qquad i=0,1,2, \cdots , N-1 \tag{3.12}</script><p>例如，原粒子集共有 $N=1000$ 个粒子，第 $i=10$ 个粒子 $\mathcal{X}_k^{(10)}$ 的归一化的重要性权重为 $\widetilde{w}_k^{(10)}=0.0036$，则在残差重采样的步骤一中，$\mathcal{X}_k^{(10)}$ 将被拷贝 $N_{k_1}^{(10)}=\lfloor 1000*0.0036 \rfloor=3$ 次。在步骤一中，总的重采样粒子数为</p>
+<script type="math/tex; mode=display">
+N_{k_1}=\sum_{i=0}^{N-1}N_{k_1}^{(i)} \tag{3.13}</script><p>每个拷贝后的重采样粒子的权重置为 $\frac{1}{N}$。</p>
+<p><strong>步骤二：残差随机采样</strong></p>
+<p>显然，完成步骤一后，重采样粒子集中还缺少 $N_{k_2}=N-N_{k_1}$ 个粒子 </p>
+<script type="math/tex; mode=display">
+\boxed{
+    \begin{aligned}
+    & \texttt{ResidualResampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}, \{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=0}^{N-1}\big] \\
+    & \\
+    & j=0 \\
+    & \texttt{FOR} \quad i=0:N-1 \\
+    & \qquad N_{k_1}^{(i)}=\lfloor N \widetilde{w}_k^{(i)} \rfloor \\
+    & \qquad \texttt{FOR} \quad m=0:N_{k_1}^{(i)}-1 \\
+    & \qquad \qquad \mathcal{X}_k^{\ast (j)}=\mathcal{X}_k^{(i)} \\
+    & \qquad \qquad w_k^{\ast (j)}=\frac{1}{N} \\
+    & \qquad \qquad j=j+1\\
+    & \qquad \texttt{END FOR} \\
+    & \texttt{END FOR} \\
+    & \\
+    & i=0 \\
+    & u_0\sim\mathcal{U}(0,\frac{1}{N_r}) \\
+    & \texttt{FOR} \quad j=N-N_r:N-1 \\
+    & \qquad u=u_0+\frac{j}{N_r} \\
+    & \qquad \texttt{WHILE} \quad c_i \lt u \\
+    & \qquad \qquad i=i+1 \\
+    & \qquad \texttt{END WHILE} \\
+    & \qquad \mathcal{X}_k^{\ast (j)}=\mathcal{X}_k^{(i)} \\
+    & \qquad w_k^{\ast (j)}=\frac{1}{N} \\
+    & \texttt{END FOR} \\
+    & \\
+    & \texttt{MultinomialResampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}, \{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=N-N_r}^{N-1}, N_r\big]
+\end{aligned}
+}</script><p>预测步只改变粒子的位置，不改变粒子的权重；更新步只改变粒子的权重，不改变粒子的位置<br>重采样会导致样本贫化，样本贫化可能导致滤波器发散</p>
 <p>当传感器模型是高斯的，且传感器噪声标准差比较小时（意味着传感器精度很高），粒子滤波的前几次迭代会导致比较多的重复粒子，进而造成粒子滤波性能变差，而卡尔曼滤波恰恰相反。为应对该问题，通常可以手动增加传感器噪声标准差或增加粒子数量 $N$。</p>
 <p>正则粒子滤波（Regularized Particle Filter，RPF）</p>
 <h2 id="3-3-SIR-滤波器" class="heading-control"><a href="#3-3-SIR-滤波器" class="headerlink" title="3.3 SIR 滤波器"></a>3.3 SIR 滤波器<a class="heading-anchor" href="#3-3-SIR-滤波器" aria-hidden="true"></a></h2><h3 id="3-3-1-标准-SIR-滤波器" class="heading-control"><a href="#3-3-1-标准-SIR-滤波器" class="headerlink" title="3.3.1 标准 SIR 滤波器"></a>3.3.1 标准 SIR 滤波器<a class="heading-anchor" href="#3-3-1-标准-SIR-滤波器" aria-hidden="true"></a></h3><p>序贯重要性重采样（Sequential Importance Resampling），有时也说采样重要性重采样（Sampling Importance Resampling）</p>
 <h3 id="3-3-2-简化的-SIR-滤波器——凝聚滤波" class="heading-control"><a href="#3-3-2-简化的-SIR-滤波器——凝聚滤波" class="headerlink" title="3.3.2 简化的 SIR 滤波器——凝聚滤波"></a>3.3.2 简化的 SIR 滤波器——凝聚滤波<a class="heading-anchor" href="#3-3-2-简化的-SIR-滤波器——凝聚滤波" aria-hidden="true"></a></h3><p>使用先验的状态转移概率密度分布作为提议分布，凝聚滤波（Condensation Filter），</p>
 <p>最佳估计：所有粒子的加权平均或权重最大的粒子</p>
 <h1 id="4-应用实例" class="heading-control"><a href="#4-应用实例" class="headerlink" title="4 应用实例"></a>4 应用实例<a class="heading-anchor" href="#4-应用实例" aria-hidden="true"></a></h1><p>无人车定位<br>在预测步中的每一个粒子上执行一次观测路标集与地图路标集间的关联匹配，最近邻<br>在更新步中，根据每个粒子各自的路标匹配结果，计算累乘联合概率密度，作为粒子更新后的权重</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JsYWJiZS9LYWxtYW4tYW5kLUJheWVzaWFuLUZpbHRlcnMtaW4tUHl0aG9u" title="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">Kalman-and-Bayesian-Filters-in-Python<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMXhXNDExTjdmMT9wPTg=" title="https://www.bilibili.com/video/BV1xW411N7f1?p=8">b站徐亦达机器学习：Particle Filter 粒子滤波<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zODQ0MTE3NA==" title="https://zhuanlan.zhihu.com/p/38441174">概率机器人——粒子滤波<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvUGFydGljbGVfZmlsdGVy" title="https://en.wikipedia.org/wiki/Particle_filter">维基百科：Particle filter<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JUE0JUE3JUU2JTk1JUIwJUU1JUFFJTlBJUU1JUJFJThC" title="https://zh.wikipedia.org/wiki/%E5%A4%A7%E6%95%B0%E5%AE%9A%E5%BE%8B">维基百科：大数定律<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMDcyMjMwMTI=" title="https://zhuanlan.zhihu.com/p/107223012">无人驾驶技术入门（二十）| 手把手教你用粒子滤波实现无人车定位<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9lbi5jcHByZWZlcmVuY2UuY29tL3cvY3BwL251bWVyaWMvcmFuZG9tL2Rpc2NyZXRlX2Rpc3RyaWJ1dGlvbg==" title="https://en.cppreference.com/w/cpp/numeric/random/discrete_distribution">std::discrete_distribution<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cDovL3d3dy5hYXMubmV0LmNuL2ZpbGVaREhYQi9qb3VybmFsL2FydGljbGUvemRoeGIvMjAxNS8xMi9QREYvMjAxNS0xMi0xOTgxLnBkZg==" title="http://www.aas.net.cn/fileZDHXB/journal/article/zdhxb/2015/12/PDF/2015-12-1981.pdf">粒子滤波理论、方法及其在多目标跟踪中的应用<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL2hlbHAvcm9ib3RpY3MvdWcvcGFydGljbGUtZmlsdGVyLXBhcmFtZXRlcnMuaHRtbCNidTU3b2Y4" title="https://ww2.mathworks.cn/help/robotics/ug/particle-filter-parameters.html#bu57of8">MathWorks：Particle Filter Parameters<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cueHVlYnV5dWFuLmNvbS8zMjMyNjYzLmh0bWw=" title="https://www.xuebuyuan.com/3232663.html">粒子滤波（PF：Particle Filter）<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMVJLNDExTDdNdA==" title="https://www.bilibili.com/video/BV1RK411L7Mt">b站贝叶斯滤波与卡尔曼滤波第九讲：粒子滤波原理详述<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMVJLNDExTDdNdA==" title="https://www.bilibili.com/video/BV1RK411L7Mt">b站贝叶斯滤波与卡尔曼滤波第十讲：重采样<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMVJLNDExTDdNdA==" title="https://www.bilibili.com/video/BV1RK411L7Mt">b站贝叶斯滤波与卡尔曼滤波第十二讲：粒子滤波拾遗——采样方法、预测方程<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9nYW95aWNoYW8uY29tL1hpYW90dS8/Ym9vaz10dXJ0bGVib3QmYW1wO3RpdGxlPSVFNyVCMiU5MiVFNSVBRCU5MCVFNiVCQiVBNCVFNiVCMyVBMiVFNSU5OSVBOA==" title="https://gaoyichao.com/Xiaotu/?book=turtlebot&amp;title=%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8">粒子滤波器<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMjYxOTg0MTY=" title="https://zhuanlan.zhihu.com/p/126198416">粒子滤波<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuaXJpc2EuZnIvYXNwaS9sZWdsYW5kL2Vuc3RhL3JlZi9hcnVsYW1wYWxhbTAyYS5wZGY=" title="https://www.irisa.fr/aspi/legland/ensta/ref/arulampalam02a.pdf">A Tutorial on Particle Filters for Online Nonlinear/Non-Gaussian Bayesian Tracking<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9oZXlpamlhLmJsb2cuY3Nkbi5uZXQvYXJ0aWNsZS9kZXRhaWxzLzQwODk5ODE5" title="https://heyijia.blog.csdn.net/article/details/40899819">Particle Filter Tutorial 粒子滤波：从推导到应用（一）<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9oZXlpamlhLmJsb2cuY3Nkbi5uZXQvYXJ0aWNsZS9kZXRhaWxzLzQwOTI5MDk3" title="https://heyijia.blog.csdn.net/article/details/40929097">Particle Filter Tutorial 粒子滤波：从推导到应用（二）<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9oZXlpamlhLmJsb2cuY3Nkbi5uZXQvYXJ0aWNsZS9kZXRhaWxzLzQxMTIyMTI1" title="https://heyijia.blog.csdn.net/article/details/41122125">Particle Filter Tutorial 粒子滤波：从推导到应用（三）<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9oZXlpamlhLmJsb2cuY3Nkbi5uZXQvYXJ0aWNsZS9kZXRhaWxzLzQxMTQyNjc5" title="https://heyijia.blog.csdn.net/article/details/41142679">Particle Filter Tutorial 粒子滤波：从推导到应用（四）<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93ZW5rdS5iYWlkdS5jb20vdmlldy84ODg5NmQyYjQ1MzYxMDY2MWVkOWY0YjQuaHRtbA==" title="https://wenku.baidu.com/view/88896d2b453610661ed9f4b4.html">百度文库：粒子滤波理论<i class="fa fa-external-link"></i></span><br>《卡尔曼滤波与组合导航原理》（第 3 版）<br>Bayesian Signal Processing : Classical, Modern, and Particle Filtering Methods<br><span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL21hdGxhYmNlbnRyYWwvZmlsZWV4Y2hhbmdlLzM1NDY4LXBhcnRpY2xlLWZpbHRlci10dXRvcmlhbD9zX3RpZD1td2Ffb3NhX2E=" title="https://ww2.mathworks.cn/matlabcentral/fileexchange/35468-particle-filter-tutorial?s_tid=mwa_osa_a">MathWorks: Particle filter tutorial<i class="fa fa-external-link"></i></span></p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JsYWJiZS9LYWxtYW4tYW5kLUJheWVzaWFuLUZpbHRlcnMtaW4tUHl0aG9u" title="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">Kalman-and-Bayesian-Filters-in-Python<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMXhXNDExTjdmMT9wPTg=" title="https://www.bilibili.com/video/BV1xW411N7f1?p=8">b站徐亦达机器学习：Particle Filter 粒子滤波<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zODQ0MTE3NA==" title="https://zhuanlan.zhihu.com/p/38441174">概率机器人——粒子滤波<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvUGFydGljbGVfZmlsdGVy" title="https://en.wikipedia.org/wiki/Particle_filter">维基百科：Particle filter<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JUE0JUE3JUU2JTk1JUIwJUU1JUFFJTlBJUU1JUJFJThC" title="https://zh.wikipedia.org/wiki/%E5%A4%A7%E6%95%B0%E5%AE%9A%E5%BE%8B">维基百科：大数定律<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMDcyMjMwMTI=" title="https://zhuanlan.zhihu.com/p/107223012">无人驾驶技术入门（二十）| 手把手教你用粒子滤波实现无人车定位<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9lbi5jcHByZWZlcmVuY2UuY29tL3cvY3BwL251bWVyaWMvcmFuZG9tL2Rpc2NyZXRlX2Rpc3RyaWJ1dGlvbg==" title="https://en.cppreference.com/w/cpp/numeric/random/discrete_distribution">std::discrete_distribution<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cDovL3d3dy5hYXMubmV0LmNuL2ZpbGVaREhYQi9qb3VybmFsL2FydGljbGUvemRoeGIvMjAxNS8xMi9QREYvMjAxNS0xMi0xOTgxLnBkZg==" title="http://www.aas.net.cn/fileZDHXB/journal/article/zdhxb/2015/12/PDF/2015-12-1981.pdf">粒子滤波理论、方法及其在多目标跟踪中的应用<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL2hlbHAvcm9ib3RpY3MvdWcvcGFydGljbGUtZmlsdGVyLXBhcmFtZXRlcnMuaHRtbCNidTU3b2Y4" title="https://ww2.mathworks.cn/help/robotics/ug/particle-filter-parameters.html#bu57of8">MathWorks：Particle Filter Parameters<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cueHVlYnV5dWFuLmNvbS8zMjMyNjYzLmh0bWw=" title="https://www.xuebuyuan.com/3232663.html">粒子滤波（PF：Particle Filter）<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMVJLNDExTDdNdA==" title="https://www.bilibili.com/video/BV1RK411L7Mt">b站贝叶斯滤波与卡尔曼滤波第九讲：粒子滤波原理详述<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMVJLNDExTDdNdA==" title="https://www.bilibili.com/video/BV1RK411L7Mt">b站贝叶斯滤波与卡尔曼滤波第十讲：重采样<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMVJLNDExTDdNdA==" title="https://www.bilibili.com/video/BV1RK411L7Mt">b站贝叶斯滤波与卡尔曼滤波第十二讲：粒子滤波拾遗——采样方法、预测方程<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9nYW95aWNoYW8uY29tL1hpYW90dS8/Ym9vaz10dXJ0bGVib3QmYW1wO3RpdGxlPSVFNyVCMiU5MiVFNSVBRCU5MCVFNiVCQiVBNCVFNiVCMyVBMiVFNSU5OSVBOA==" title="https://gaoyichao.com/Xiaotu/?book=turtlebot&amp;title=%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8">粒子滤波器<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMjYxOTg0MTY=" title="https://zhuanlan.zhihu.com/p/126198416">粒子滤波<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuaXJpc2EuZnIvYXNwaS9sZWdsYW5kL2Vuc3RhL3JlZi9hcnVsYW1wYWxhbTAyYS5wZGY=" title="https://www.irisa.fr/aspi/legland/ensta/ref/arulampalam02a.pdf">A Tutorial on Particle Filters for Online Nonlinear/Non-Gaussian Bayesian Tracking<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9oZXlpamlhLmJsb2cuY3Nkbi5uZXQvYXJ0aWNsZS9kZXRhaWxzLzQwODk5ODE5" title="https://heyijia.blog.csdn.net/article/details/40899819">Particle Filter Tutorial 粒子滤波：从推导到应用（一）<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9oZXlpamlhLmJsb2cuY3Nkbi5uZXQvYXJ0aWNsZS9kZXRhaWxzLzQwOTI5MDk3" title="https://heyijia.blog.csdn.net/article/details/40929097">Particle Filter Tutorial 粒子滤波：从推导到应用（二）<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9oZXlpamlhLmJsb2cuY3Nkbi5uZXQvYXJ0aWNsZS9kZXRhaWxzLzQxMTIyMTI1" title="https://heyijia.blog.csdn.net/article/details/41122125">Particle Filter Tutorial 粒子滤波：从推导到应用（三）<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly9oZXlpamlhLmJsb2cuY3Nkbi5uZXQvYXJ0aWNsZS9kZXRhaWxzLzQxMTQyNjc5" title="https://heyijia.blog.csdn.net/article/details/41142679">Particle Filter Tutorial 粒子滤波：从推导到应用（四）<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93ZW5rdS5iYWlkdS5jb20vdmlldy84ODg5NmQyYjQ1MzYxMDY2MWVkOWY0YjQuaHRtbA==" title="https://wenku.baidu.com/view/88896d2b453610661ed9f4b4.html">百度文库：粒子滤波理论<i class="fa fa-external-link"></i></span><br>《卡尔曼滤波与组合导航原理》（第 3 版）<br>Bayesian Signal Processing : Classical, Modern, and Particle Filtering Methods<br>Novel approach to nonlinear/non-Gaussian Bayesian state estimation<br>Monte Carlo Filter and Smoother for Non-Gaussian Nonlinear State Space Models<br><span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL21hdGxhYmNlbnRyYWwvZmlsZWV4Y2hhbmdlLzM1NDY4LXBhcnRpY2xlLWZpbHRlci10dXRvcmlhbD9zX3RpZD1td2Ffb3NhX2E=" title="https://ww2.mathworks.cn/matlabcentral/fileexchange/35468-particle-filter-tutorial?s_tid=mwa_osa_a">MathWorks: Particle filter tutorial<i class="fa fa-external-link"></i></span></p>
 <hr>
 
     </div>
