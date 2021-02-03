@@ -420,7 +420,7 @@ X_k = X_{k-1} +
         0 \\
         \omega \Delta t \\
         0
-    \end{bmatrix} \qquad & \omega \neq 0 \\
+    \end{bmatrix} \quad & \omega \neq 0 \\
     \\
     \begin{bmatrix}
         v·\mathrm{cos}(\psi_{k-1})\Delta t \\
@@ -428,8 +428,8 @@ X_k = X_{k-1} +
         0 \\
         0 \\
         0
-    \end{bmatrix} \qquad & \omega = 0
-\end{cases} \tag{5.1}</script><p>式 (5.1) 中， CTRV 是 CV 的一般形式，当 $\omega = 0$ 时，CTRV 便退化为 CV：</p>
+    \end{bmatrix} \quad & \omega = 0
+\end{cases} \tag{5.1}</script><p>式 (5.1) 中，$\omega$ 即自车的航向角速率。CTRV 是 CV 的一般形式，当 $\omega = 0$ 时，CTRV 退化为 CV。</p>
 <h3 id="5-2-3-更新" class="heading-control"><a href="#5-2-3-更新" class="headerlink" title="5.2.3 更新"></a>5.2.3 更新<a class="heading-anchor" href="#5-2-3-更新" aria-hidden="true"></a></h3><p><strong>坐标变换</strong></p>
 <p><strong>数据关联</strong><br>最近邻（Nearest Neighbor，NN）</p>
 <p><strong>粒子权重更新</strong></p>
@@ -1241,8 +1241,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -1634,8 +1634,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
