@@ -6,9 +6,9 @@
     <content><![CDATA[<h1 id="0-回顾与引言" class="heading-control"><a href="#0-回顾与引言" class="headerlink" title="0 回顾与引言"></a>0 回顾与引言<a class="heading-anchor" href="#0-回顾与引言" aria-hidden="true"></a></h1><p>在此前的文章<a href="https://blog.shipengx.com/archives/9fb25cec.html">《从概率到贝叶斯滤波》</a>中，我们曾经提到，贝叶斯滤波框架下求解预测步中的先验概率密度函数 $f_{X_k}^-(x)$、更新步中的归一化常数 $\eta_k$、状态量最优估计 $\hat{x}_k$ 时均涉及到<strong>无穷积分</strong>，大多数情况无法得到解析解，使得贝叶斯滤波算法的直接应用十分困难。为了解决贝叶斯滤波积分难的问题，通常从两个角度出发：</p>
 <p><strong>(1) 作理想假设</strong></p>
 <ul>
-<li><p><strong>线性高斯</strong><br>假设状态转移函数 $g(x)$ 和观测函数 $h(x)$ 均为线性函数，过程噪声随机变量 $Q_k$ 和 观测噪声随机变量 $R_k$ 均服从均值为 0 的正态分布。线性高斯问题可通过卡尔曼滤波（Kalman Filter）进行解决，详细内容请参考此前文章<a href="https://blog.shipengx.com/archives/3bb74af.html">《从贝叶斯滤波到卡尔曼滤波》</a>。</p>
+<li><p><strong>线性高斯</strong><br>假设状态转移函数 $g(x)$ 和观测函数 $h(x)$ 均为线性函数，过程噪声随机变量 $Q_k$ 和观测噪声随机变量 $R_k$ 均服从均值为 0 的正态分布。线性高斯问题可通过卡尔曼滤波（Kalman Filter）进行解决，详细内容请参考此前文章<a href="https://blog.shipengx.com/archives/3bb74af.html">《从贝叶斯滤波到卡尔曼滤波》</a>。</p>
 </li>
-<li><p><strong>非线性高斯</strong><br>假设状态转移函数 $g(x)$ 和（或）观测函数 $h(x)$ 为非线性函数，过程噪声随机变量 $Q_k$ 和 观测噪声随机变量 $R_k$ 均服从均值为 0 的正态分布。非线性高斯问题可通过扩展卡尔曼滤波（Extended Kalman Filter）和无迹卡尔曼滤波（Unscented Kalman Filter）进行解决。扩展卡尔曼滤波通过一阶泰勒级数展开将非线性高斯系统的状态转移函数 $g(x)$ 和（或）观测函数 $h(x)$ 线性化，然后采用标准卡尔曼滤波框架实现状态量的滤波过程，详细内容请参考此前文章<a href="https://blog.shipengx.com/archives/ea375326.html">《从贝叶斯滤波到扩展卡尔曼滤波》</a>；无迹卡尔曼滤波基于无迹变换，无迹变换研究的是如何通过确定的采样点捕获经非线性变换的高斯随机变量的后验分布的问题，通过无迹变换得到相应的统计特性后，再结合标准卡尔曼滤波框架，便得到无迹卡尔曼滤波，详细内容请参考此前文章<a href="https://blog.shipengx.com/archives/cfd8b171.html">《从贝叶斯滤波到无迹卡尔曼滤波》</a>。</p>
+<li><p><strong>非线性高斯</strong><br>假设状态转移函数 $g(x)$ 和（或）观测函数 $h(x)$ 为非线性函数，过程噪声随机变量 $Q_k$ 和观测噪声随机变量 $R_k$ 均服从均值为 0 的正态分布。非线性高斯问题可通过扩展卡尔曼滤波（Extended Kalman Filter）和无迹卡尔曼滤波（Unscented Kalman Filter）进行解决。扩展卡尔曼滤波通过一阶泰勒级数展开将非线性高斯系统的状态转移函数 $g(x)$ 和（或）观测函数 $h(x)$ 线性化，然后采用标准卡尔曼滤波框架实现状态量的滤波过程，详细内容请参考此前文章<a href="https://blog.shipengx.com/archives/ea375326.html">《从贝叶斯滤波到扩展卡尔曼滤波》</a>；无迹卡尔曼滤波基于无迹变换，无迹变换研究的是如何通过确定的采样点捕获经非线性变换的高斯随机变量的后验分布的问题，通过无迹变换得到相应的统计特性后，再结合标准卡尔曼滤波框架，便得到无迹卡尔曼滤波，详细内容请参考此前文章<a href="https://blog.shipengx.com/archives/cfd8b171.html">《从贝叶斯滤波到无迹卡尔曼滤波》</a>。</p>
 </li>
 </ul>
 <p><strong>(2) 化连续为离散</strong></p>
@@ -1320,8 +1320,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -1713,8 +1713,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
