@@ -10,7 +10,7 @@
 <li>将图片转换为 base64 字符串，在 markdown 文件中直接引用字符串来呈现图像</li>
 </ul>
 <p>方式一有网络访问的实时要求，方式二需要保证 markdown 文件总是能访问到图片文件，两种方式都不利于文档的共享传播。为实现方式三，使用 Python + Tkinter 写了一个 GUI 小工具，它长下面这样：</p>
-<p><img data-src="https://i.loli.net/2021/02/20/1GNIjU5Anvbl8Oq.png" alt="img2base64 工具截图"></p>
+<p><img data-src="https://i.loli.net/2021/02/20/pznt2SMsdo3evNx.png" alt="img2base64 工具截图"></p>
 <p>代码已经上传 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9pbWcyYmFzZTY0" title="https://github.com/RocShi/img2base64">github<i class="fa fa-external-link"></i></span>，下面我直接将工程的 README 搬过来了。</p>
 <h1 id="1-特性" class="heading-control"><a href="#1-特性" class="headerlink" title="1 特性"></a>1 特性<a class="heading-anchor" href="#1-特性" aria-hidden="true"></a></h1><ul>
 <li>将单一图片转换为 base64 字符串，并将转换结果自动复制到剪贴板</li>
