@@ -38,7 +38,7 @@
 <h2 id="3-3-多图片转换" class="heading-control"><a href="#3-3-多图片转换" class="headerlink" title="3.3 多图片转换"></a>3.3 多图片转换<a class="heading-anchor" href="#3-3-多图片转换" aria-hidden="true"></a></h2><ul>
 <li>首先点击<code>Select several images</code>按钮选择目标图片的存放路径，然后点击<code>Convert &amp; Export</code>按钮选择存放转换结果的路径，每张图片会被转换到各自对应的文件。</li>
 </ul>
-<h1 id="4-后记" class="heading-control"><a href="#4-后记" class="headerlink" title="4 后记"></a>4 后记<a class="heading-anchor" href="#4-后记" aria-hidden="true"></a></h1><p>可以使用 <a href="https://pypi.org/project/pyinstaller/" target="_blank" rel="noopener"><code>PyInstaller</code></a> 将工具脚本及其所有依赖打包为一个单一可执行文件。这里我没有将可执行文件上传，打包方法比较简单，有兴趣得话可以查阅相关资料，通常执行下面得命令行即可：</p>
+<h1 id="4-后记" class="heading-control"><a href="#4-后记" class="headerlink" title="4 后记"></a>4 后记<a class="heading-anchor" href="#4-后记" aria-hidden="true"></a></h1><p>可以使用 <a href="https://pypi.org/project/pyinstaller/" target="_blank" rel="noopener"><code>PyInstaller</code></a> 将工具脚本及其所有依赖打包为一个单一可执行文件。这里我没有将可执行文件上传，打包方法比较简单，有兴趣得话可以查阅相关资料，通常执行下面的命令行即可：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pyinstaller -F -w img2base64.py</span><br></pre></td></tr></table></figure>
 <hr>
 ]]></content>
