@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>一款图片文件转 Base64 编码的 GUI 工具</title>
+    <url>/archives/5c20384a.html</url>
+    <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>最近整理文件的时候找到了之前写的一个用于将图像转换为 base64 字符串的 Python GUI 小工具</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9pbWcyYmFzZTY0" title="https://github.com/RocShi/img2base64">github<i class="fa fa-external-link"></i></span></p>
+<h2 id class="heading-control"><a href="#" class="headerlink" title></a><img data-src="https://i.loli.net/2021/02/20/1GNIjU5Anvbl8Oq.png" alt="img2base64 工具截图"><a class="heading-anchor" href="#" aria-hidden="true"></a></h2>]]></content>
+      <categories>
+        <category>Python</category>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>工具开发</tag>
+        <tag>图像编码</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>从贝叶斯滤波到粒子滤波</title>
     <url>/archives/f3c9e219.html</url>
     <content><![CDATA[<h1 id="0-回顾与引言" class="heading-control"><a href="#0-回顾与引言" class="headerlink" title="0 回顾与引言"></a>0 回顾与引言<a class="heading-anchor" href="#0-回顾与引言" aria-hidden="true"></a></h1><p>在此前的文章<a href="https://blog.shipengx.com/archives/9fb25cec.html">《从概率到贝叶斯滤波》</a>中，我们曾经提到，贝叶斯滤波框架下求解预测步中的先验概率密度函数 $f_{X_k}^-(x)$、更新步中的归一化常数 $\eta_k$、状态量最优估计 $\hat{x}_k$ 时均涉及到<strong>无穷积分</strong>，大多数情况无法得到解析解，使得贝叶斯滤波算法的直接应用十分困难。为了解决贝叶斯滤波积分难的问题，通常从两个角度出发：</p>
