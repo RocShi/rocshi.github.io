@@ -61,7 +61,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/02/20/1GNIjU5Anvbl8Oq.png">
 <meta property="article:published_time" content="2021-02-20T07:25:38.000Z">
-<meta property="article:modified_time" content="2021-02-20T07:37:06.899Z">
+<meta property="article:modified_time" content="2021-02-20T08:14:35.351Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="工具开发">
@@ -258,7 +258,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-02-20 15:25:38 / 修改时间：15:37:06" itemprop="dateCreated datePublished" datetime="2021-02-20T15:25:38+08:00">2021-02-20</time>
+              <time title="创建时间：2021-02-20 15:25:38 / 修改时间：16:14:35" itemprop="dateCreated datePublished" datetime="2021-02-20T15:25:38+08:00">2021-02-20</time>
             </span>
 
           <br>
@@ -306,9 +306,45 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>最近整理文件的时候找到了之前写的一个用于将图像转换为 base64 字符串的 Python GUI 小工具</p>
-<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9pbWcyYmFzZTY0" title="https://github.com/RocShi/img2base64">github<i class="fa fa-external-link"></i></span></p>
-<h2 id class="heading-control"><a href="#" class="headerlink" title></a><img data-src="https://i.loli.net/2021/02/20/1GNIjU5Anvbl8Oq.png" alt="img2base64 工具截图"><a class="heading-anchor" href="#" aria-hidden="true"></a></h2>
+        <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>最近整理文件的时候找到了之前写的一个用于将图像转换为 base64 字符串的 Python GUI 小工具。写这个工具的初衷是当时刚刚接触 markdown，有时需要往 markdown 文件中嵌入一些图片，而向 markdown 中嵌入图片通常有以下三种方式：</p>
+<ul>
+<li>将图片上传图床，在 markdown 文件中进行 URL 引用</li>
+<li>将图片置于某个位置，在 markdown 文件中进行相对位置引用或绝对位置引用</li>
+<li>将图片转换为 base64 字符串，在 markdown 文件中直接引用字符串来呈现图像</li>
+</ul>
+<p>方式一有网络访问的实时要求，方式二需要保证 markdown 文件总是能访问到图片文件，两种方式都不利于文档的共享传播。为实现方式三，使用 Python + Tkinter 写了一个 GUI 小工具，它长下面这样：</p>
+<p><img data-src="https://i.loli.net/2021/02/20/1GNIjU5Anvbl8Oq.png" alt="img2base64 工具截图"></p>
+<p>代码已经上传 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9pbWcyYmFzZTY0" title="https://github.com/RocShi/img2base64">github<i class="fa fa-external-link"></i></span>，下面我直接将工程的 README 搬过来了。</p>
+<h1 id="1-特性" class="heading-control"><a href="#1-特性" class="headerlink" title="1 特性"></a>1 特性<a class="heading-anchor" href="#1-特性" aria-hidden="true"></a></h1><ul>
+<li>将单一图片转换为 base64 字符串，并将转换结果自动复制到剪贴板</li>
+<li>将多图片转换为 base64 字符串，并将转换结果保存至各自的文本文件</li>
+<li>转换进度显示</li>
+</ul>
+<h1 id="2-依赖" class="heading-control"><a href="#2-依赖" class="headerlink" title="2 依赖"></a>2 依赖<a class="heading-anchor" href="#2-依赖" aria-hidden="true"></a></h1><ul>
+<li>Python 3.1 及更高版本</li>
+<li><p><code>pyperclip</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pyperclip</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>tkinter</code></p>
+<p>对于 windows 系统，自 Python 3.1 起，<code>tkinter</code> 默认包含于 Python 发行版。对于 ubuntu系统，需要执行下述命令安装 <code>tkinter</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python3-tk</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>xclip</code></p>
+<p>对于 ubuntu 系统，在使用本工具前需要先安装 <code>xclip</code>。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install xclip</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="3-用法" class="heading-control"><a href="#3-用法" class="headerlink" title="3 用法"></a>3 用法<a class="heading-anchor" href="#3-用法" aria-hidden="true"></a></h1><h2 id="3-1-运行工具" class="heading-control"><a href="#3-1-运行工具" class="headerlink" title="3.1 运行工具"></a>3.1 运行工具<a class="heading-anchor" href="#3-1-运行工具" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python img2base64.py</span><br></pre></td></tr></table></figure>
+<h2 id="3-2-单一图片转换" class="heading-control"><a href="#3-2-单一图片转换" class="headerlink" title="3.2 单一图片转换"></a>3.2 单一图片转换<a class="heading-anchor" href="#3-2-单一图片转换" aria-hidden="true"></a></h2><ul>
+<li>首先点击<code>Select single image</code>按钮选择目标图片，然后点击<code>Convert &amp; Copy</code>按钮转换图片，转换得到的base64字符串会自动复制到剪贴板。</li>
+</ul>
+<h2 id="3-3-多图片转换" class="heading-control"><a href="#3-3-多图片转换" class="headerlink" title="3.3 多图片转换"></a>3.3 多图片转换<a class="heading-anchor" href="#3-3-多图片转换" aria-hidden="true"></a></h2><ul>
+<li>首先点击<code>Select several images</code>按钮选择目标图片的存放路径，然后点击<code>Convert &amp; Export</code>按钮选择存放转换结果的路径，每张图片会被转换到各自对应的文件。</li>
+</ul>
+<h1 id="4-后记" class="heading-control"><a href="#4-后记" class="headerlink" title="4 后记"></a>4 后记<a class="heading-anchor" href="#4-后记" aria-hidden="true"></a></h1><p>可以使用 <a href="https://pypi.org/project/pyinstaller/" target="_blank" rel="noopener"><code>PyInstaller</code></a> 将工具脚本及其所有依赖打包为一个单一可执行文件。这里我没有将可执行文件上传，打包方法比较简单，有兴趣得话可以查阅相关资料，通常执行下面得命令行即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pyinstaller -F -w img2base64.py</span><br></pre></td></tr></table></figure>
+<hr>
+
     </div>
 
     
@@ -450,7 +486,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#null"><span class="nav-text"></span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-特性"><span class="nav-text">1 特性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-依赖"><span class="nav-text">2 依赖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-用法"><span class="nav-text">3 用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-运行工具"><span class="nav-text">3.1 运行工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-单一图片转换"><span class="nav-text">3.2 单一图片转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-多图片转换"><span class="nav-text">3.3 多图片转换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-后记"><span class="nav-text">4 后记</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
