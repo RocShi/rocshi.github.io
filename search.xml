@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>当我们谈融合时我们在谈些什么？</title>
+    <url>/archives/e7b86cce.html</url>
+    <content><![CDATA[<p>当我们谈融合时我们在谈些什么？</p>
+<p>所谓融合，顾名思义，发挥多方输入信息的优势，得到更加可靠的输出信息。谈及融合，又通常会细分为前融合和后融合。</p>
+<p>前融合是数据层面的融合，例如 Lidar 点云数据向 Camera 像素图中进行映射，综合利用两个 Sensor 的数据实施感知层面的目标识别。我们姑且可以认为前融合是感知和融合的一个交叉领域。<br>后融合是目标层面的融合，例如 Camera 目标和 Radar 目标的融合，Camera 目标具有类别优势，Radar 目标具有距离和速度优势。</p>
+<p>上面所谈及的融合面向的都是外界对象，当讨论的对象是自身时又引申出融合领域的另一个话题——多传感器融合定位：综合利用多方外界信息，得到自身更加精准的位姿信息。</p>
+<p>具体来讲，多传感器融合定位又包括组合定位和匹配定位。组合定位往往由 GPS + IMU + 轮速在扩展卡尔曼滤波（Extended Kalman Filter，EKF）框架下来实现（假设自身是一辆无人车）。GPS 提供低频长周期的粗定位结果（为提高精度，通常会引入差分技术，如 RTK）；IMU + 轮速充当航迹推算（Dead Reckoning）的角色，提供短时间的位姿推算结果（EKF 中的预测步）。匹配定位是利用 Camera 的视觉特征或 Lidar 的点云特征与事先建好的高精地图进行配准，达到定位的目的，经典的方法有粒子滤波（Particle Filter，PF）等。谈及匹配定位，似乎又和同步定位与建图（Simultaneous Localization And Mapping，SLAM）扯上了千丝万缕的联系？这个话题就太大了……</p>
+<p>融合领域内容浩如烟海，以上仅是午夜时分的一家之言……</p>
+<hr>
+]]></content>
+      <categories>
+        <category>自动驾驶</category>
+        <category>多传感器信息融合</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+        <tag>多传感器信息融合</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>一款图片文件转 Base64 编码的 Python GUI 工具</title>
     <url>/archives/5c20384a.html</url>
     <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>最近整理文件的时候找到了之前写的一个用于将图像转换为 base64 字符串的 Python GUI 小工具。写这个工具的初衷是当时刚刚接触 markdown，有时需要往 markdown 文件中嵌入一些图片，而向 markdown 中嵌入图片通常有以下三种方式：</p>
@@ -1373,8 +1393,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -1766,8 +1786,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
