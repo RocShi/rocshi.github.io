@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>深度学习中的一些常见基本概念（一）</title>
+    <url>/archives/38fe8b1f.html</url>
+    <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>感知（Perception）系统是整个自动驾驶系统的第一环，也是至关重要的一环，其性能好坏从根本上决定了自动驾驶系统的能力边界。感知系统的传感器输入主要包括：</p>
+<ul>
+<li>来自相机的图像信息</li>
+<li>来自激光雷达的点云信息</li>
+<li>来自 4D 毫米波雷达（又称 4D 成像雷达）点云信息（目前尚未大规模应用，但日趋火热）</li>
+</ul>
+<p>感知系统的输出则主要包括：</p>
+<ul>
+<li>车辆（Vehicle）、行人（Pedestrian）等障碍物的类别、位置、速度、尺寸等信息</li>
+<li>交通灯（Traffic Light，TFL）、交通标志牌（Traffic Sign Recognition）等静态环境要素的类别、位置、尺寸等信息</li>
+<li>车道线（Lane）、路沿（Road Edge，RE）等静态环境要素的像素点位置、类别信息，或经拟合的多项式表征</li>
+<li>可通行空间（Free Space，FS）的包络表征</li>
+<li>······</li>
+</ul>
+<p>感知系统的上述输出给到下游模块，才能继续实施自车的决策（Decision）和横纵向规控（Planning and Control，PNC）等后续一系列动作。从感知系统的传感器原始输入到“初步”的结果输出这一阶段正是深度学习（Deep Learning，DL）的应用范畴，这里之所以强调“初步”，是因为到最终的感知结果输出前，往往还伴随着后处理（Post Process）步骤，这里我把它一并归到了感知层中，或者也可以放到感知层后面的融合（Fusion）层。</p>
+<p>最近正在看深度学习的一些内容，老规矩，先从宏观上把控一些基础概念。</p>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><h2 id="Backbone" class="heading-control"><a href="#Backbone" class="headerlink" title="Backbone"></a>Backbone<a class="heading-anchor" href="#Backbone" aria-hidden="true"></a></h2><p>主干网络，又称骨干网络，用于前端特征提取生成特征图（feature map），特征图用作后面其它网络的输入。Backbone 网络是整个模型的基础组成部分，如 VGGNet、ResNet、GoogleNet、MobileNet、Darknet 等都是常见的 Backbone 网络（某些语境下，Darknet 指的可能是同名同作者的深度学习框架）。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1>]]></content>
+      <categories>
+        <category>自动驾驶</category>
+        <category>感知</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+        <tag>深度学习</tag>
+        <tag>感知</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>当我们谈融合时我们在谈些什么？</title>
     <url>/archives/e7b86cce.html</url>
     <content><![CDATA[<p>当我们谈融合时我们在谈些什么？</p>
@@ -1393,8 +1424,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>卡尔曼滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>卡尔曼滤波</tag>
       </tags>
   </entry>
   <entry>
@@ -1786,8 +1817,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>贝叶斯滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
