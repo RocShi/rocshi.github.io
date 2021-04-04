@@ -20,7 +20,7 @@
 <p>感知系统的上述输出给到下游模块，才能继续实施自车的决策（Decision）和横纵向规控（Planning and Control，PNC）等后续一系列动作。从感知系统的传感器原始输入到“初步”的结果输出这一阶段正是深度学习（Deep Learning，DL）的应用范畴，这里之所以强调“初步”，是因为到最终的感知结果输出前，往往还伴随着后处理（Post Process）步骤，这里我把它一并归到了感知层中，或者也可以放到感知层后面的融合（Fusion）层。</p>
 <p>最近正在看深度学习的一些内容，老规矩，先从宏观上把控一些基础概念。</p>
 <h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><h2 id="Backbone" class="heading-control"><a href="#Backbone" class="headerlink" title="Backbone"></a>Backbone<a class="heading-anchor" href="#Backbone" aria-hidden="true"></a></h2><p>主干网络，又称骨干网络，用于前端特征提取生成特征图（feature map），特征图用作后面其它网络的输入。Backbone 网络是整个模型的基础组成部分，如 VGGNet、ResNet、GoogleNet、MobileNet、Darknet 等都是常见的 Backbone 网络（某些语境下，Darknet 指的可能是同名同作者的深度学习框架）。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1>]]></content>
+<h2 id="Head" class="heading-control"><a href="#Head" class="headerlink" title="Head"></a>Head<a class="heading-anchor" href="#Head" aria-hidden="true"></a></h2><h2 id="Neck" class="heading-control"><a href="#Neck" class="headerlink" title="Neck"></a>Neck<a class="heading-anchor" href="#Neck" aria-hidden="true"></a></h2><h2 id="Detector" class="heading-control"><a href="#Detector" class="headerlink" title="Detector"></a>Detector<a class="heading-anchor" href="#Detector" aria-hidden="true"></a></h2><h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1>]]></content>
       <categories>
         <category>自动驾驶</category>
         <category>感知</category>
