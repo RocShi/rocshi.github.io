@@ -52,20 +52,20 @@
   };
 </script>
 
-  <meta name="description" content="Linux中的动态链接器&#x2F;加载器。">
+  <meta name="description" content="本篇文章旨在记录笔者日常开发工作中一些常用的 Git 应用实践。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux中的ld-so与ld-linux-so">
-<meta property="og:url" content="https://blog.shipengx.com/archives/c5106d85.html">
+<meta property="og:title" content="工作中一些简单的 Git 应用实践">
+<meta property="og:url" content="https://blog.shipengx.com/archives/4511dcad.html">
 <meta property="og:site_name" content="朝花夕拾">
-<meta property="og:description" content="Linux中的动态链接器&#x2F;加载器。">
+<meta property="og:description" content="本篇文章旨在记录笔者日常开发工作中一些常用的 Git 应用实践。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2019-10-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-23T04:28:37.175Z">
+<meta property="article:published_time" content="2021-04-09T04:34:31.000Z">
+<meta property="article:modified_time" content="2021-04-09T04:48:36.224Z">
 <meta property="article:author" content="ShiPeng">
-<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://blog.shipengx.com/archives/c5106d85.html">
+<link rel="canonical" href="https://blog.shipengx.com/archives/4511dcad.html">
 
 
 <script id="page-configurations">
@@ -81,7 +81,7 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
-  <title>Linux中的ld-so与ld-linux-so | 朝花夕拾</title>
+  <title>工作中一些简单的 Git 应用实践 | 朝花夕拾</title>
   
 
 
@@ -230,7 +230,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/c5106d85.html">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/4511dcad.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -243,7 +243,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          Linux中的ld-so与ld-linux-so
+          工作中一些简单的 Git 应用实践
         </h2>
 
         <div class="post-meta">
@@ -252,16 +252,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2019-10-24 00:00:00" itemprop="dateCreated datePublished" datetime="2019-10-24T00:00:00+08:00">2019-10-24</time>
+              <time title="创建时间：2021-04-09 12:34:31 / 修改时间：12:48:36" itemprop="dateCreated datePublished" datetime="2021-04-09T12:34:31+08:00">2021-04-09</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 12:28:37" itemprop="dateModified" datetime="2020-07-23T12:28:37+08:00">2020-07-23</time>
-              </span>
 
           <br>
             <span class="post-meta-item">
@@ -270,8 +264,14 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
+                  <a href="/categories/%E6%95%88%E7%8E%87/" itemprop="url" rel="index">
+                    <span itemprop="name">效率</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%88%E7%8E%87/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
                   </a>
                 </span>
             </span>
@@ -285,13 +285,13 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/archives/c5106d85.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/archives/c5106d85.html" itemprop="commentCount"></span>
+    <a title="valine" href="/archives/4511dcad.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/4511dcad.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-            <div class="post-description">Linux中的动态链接器/加载器。</div>
+            <div class="post-description">本篇文章旨在记录笔者日常开发工作中一些常用的 Git 应用实践。</div>
 
         </div>
       </header>
@@ -302,11 +302,145 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>动态链接器/加载器，<code>ld.so</code>和 <code>ld-linux.so*</code>查找并加载程序运行时所需要的共享对象（共享库），然后准备好程序并运行它，Linux二进制文件需要在运行时进行动态链接，除非在程序编译期间为ld（GNU链接器）指定了<code>-static</code>选项。<code>ld.so</code>程序处理a.out二进制格式（一种年代久远的二进制格式），<code>ld-linux.so*</code>（于libc5而言是/lib/ld-linux.so.1，于glibc2而言是/lib/ld-linux.so.2）处理更加现代的ELF二进制格式。两个程序具有相同的行为，使用相同的支持文件和程序（ldd、ldconfig和/etc/ld.so.conf）。<strong>ld.so与ld-linux.so是相似的，于程序运行期间起作用</strong>。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL21hbjcub3JnL2xpbnV4L21hbi1wYWdlcy9tYW44L2xkLWxpbnV4LnNvLjguaHRtbA==" title="http://man7.org/linux/man-pages/man8/ld-linux.so.8.html">ld.so, ld-linux.so - dynamic linker/loader<i class="fa fa-external-link"></i></span></li>
+        <h1 id="前言" class="heading-control"><a href="#前言" class="headerlink" title="前言"></a>前言<a class="heading-anchor" href="#前言" aria-hidden="true"></a></h1><p>最近笔者在整理项目开发文档，深知代码版本管理的重要性，而 Git 作为代码版本管理的扛把子工具深受广大猿类喜爱。本篇文章旨在记录笔者日常开发工作中一些常用的 Git 应用实践。</p>
+<h1 id="常用命令" class="heading-control"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令<a class="heading-anchor" href="#常用命令" aria-hidden="true"></a></h1><p>下面是笔者常用的一些 Git 命令：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>git add —all</td>
+<td>将当前工作区（working directory）修改添加到暂存区（stage），只有添加到暂存区的修改才能被提交（commit）</td>
+</tr>
+<tr>
+<td>git checkout branch_name</td>
+<td>切换到名为 branch_name 分支</td>
+</tr>
+<tr>
+<td>git checkout -b branch_name</td>
+<td>创建名为 branch_name 的新分支</td>
+</tr>
+<tr>
+<td>git checkout commit_id</td>
+<td>切换到 id 为 commit_id 对应的提交</td>
+</tr>
+<tr>
+<td>git checkout tag_number</td>
+<td>切换到 tag 号 为 tag_number 对应的提交</td>
+</tr>
+<tr>
+<td>git commit -m “comment”</td>
+<td>向本地仓库提交修改，comment 代表本次提交的注释内容</td>
+</tr>
+<tr>
+<td>git push</td>
+<td>向远程仓库推送更新本地提交</td>
+</tr>
+<tr>
+<td>git push —tags</td>
+<td>向远程仓库推送本地仓库的所有 tag 信息</td>
+</tr>
+<tr>
+<td>git stash</td>
+<td>将工作区与暂存区中的修改临时保存到 git 栈（需要时可以恢复），并将工作区与暂存区恢复至上一次提交的状态</td>
+</tr>
+<tr>
+<td>git stash save -u “message”</td>
+<td>将工作区与暂存区中的修改以及未被追踪的修改（-u）临时保存到 git 栈（需要时可以恢复），并将工作区与暂存区恢复至上一次提交的状态，message 表示此次操作的备注信息</td>
+</tr>
+<tr>
+<td>git stash list</td>
+<td>列举当前 git 栈中所有被临时保存的修改，每一次临时修改都对应唯一的 stash_id，从 0 开始，依次往后追加</td>
+</tr>
+<tr>
+<td>git stash pop</td>
+<td>将 git 栈栈顶（即最新的）的临时修改弹出并恢复至当前分支</td>
+</tr>
+<tr>
+<td>git stash apply stash@{stash_id}</td>
+<td>将 git 栈中 stash_id 对应的临时修改恢复至当前分支，但不会删除 git 栈中的对应内容</td>
+</tr>
+<tr>
+<td>git stash drop stash@{stash_id}</td>
+<td>将 git 栈中 stash_id 对应的临时修改删除</td>
+</tr>
+<tr>
+<td>git stash clear</td>
+<td>删除 git 栈中所有的临时修改</td>
+</tr>
+<tr>
+<td>git tag tag_number</td>
+<td>为最新提交打上名为 tag_number 的 tag 号</td>
+</tr>
+<tr>
+<td>git tag tag_number commit_id</td>
+<td>为 id 为 commit_id 对应的提交打上名为 tag_number 的 tag 号</td>
+</tr>
+<tr>
+<td>git tag -d tag_number</td>
+<td>删除本地仓库名为 tag_number 的 tag 号</td>
+</tr>
+<tr>
+<td>git push origin :refs/tags/tag_number</td>
+<td>删除远程仓库名为 tag_number 的 tag 号</td>
+</tr>
+<tr>
+<td>git reset —hard HEAD</td>
+<td>丢弃工作区与暂存区中的修改（未被跟踪的修改需要先添加至暂存区），并恢复至最新提交的状态</td>
+</tr>
+<tr>
+<td>git reset —hard commit_id</td>
+<td>丢弃工作区与暂存区中的修改（未被跟踪的修改需要先添加至暂存区），并恢复至 id 为 commit_id 对应的提交的状态</td>
+</tr>
+<tr>
+<td>git branch -a</td>
+<td>查看本地及远程的所有分支</td>
+</tr>
+<tr>
+<td>git branch -D branch_name</td>
+<td>删除本地仓库名为 branch_name 的分支</td>
+</tr>
+<tr>
+<td>git push origin —delete branch_name</td>
+<td>删除远程仓库仓库名为 branch_name 的分支</td>
+</tr>
+<tr>
+<td>git log</td>
+<td>查看提交日志</td>
+</tr>
+<tr>
+<td>git status</td>
+<td>查看工作树状态，分别列举工作区和暂存区中的修改</td>
+</tr>
+<tr>
+<td>git config —list</td>
+<td>查看本地仓库的 git 配置</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>善用每一个命令的 <code>--help</code> 选项可以帮助你快速地了解该命令。</p>
+<h1 id="alias-别名" class="heading-control"><a href="#alias-别名" class="headerlink" title="alias 别名"></a>alias 别名<a class="heading-anchor" href="#alias-别名" aria-hidden="true"></a></h1><p>为常用命令设置 alias 别名可提升工作效率，具体设置在 <code>~/.gitconfig</code> 文件中，下面是笔者常用的一些 git alias 别名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[alias]</span><br><span class="line">	co &#x3D; checkout</span><br><span class="line">	st &#x3D; status</span><br><span class="line">	br &#x3D; branch</span><br><span class="line">	ci &#x3D; commit</span><br><span class="line">	lg &#x3D; log --color --graph --pretty&#x3D;format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#39; --abbrev-commit</span><br><span class="line">	go &#x3D; reset --hard</span><br></pre></td></tr></table></figure>
+<p>其中，<code>lg</code> 别名可以很好地美化提交历史显示。</p>
+<h1 id="配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支" class="heading-control"><a href="#配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支" class="headerlink" title="配置 Ubuntu 终端默认显示所在 Git 仓库的当前分支"></a>配置 Ubuntu 终端默认显示所在 Git 仓库的当前分支<a class="heading-anchor" href="#配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支" aria-hidden="true"></a></h1><p>Ubuntu 环境中，在一个 Git 仓库下打开终端无法显示当前所处分支，很不方便，可以按照如下步骤进行配置解决该问题：</p>
+<ol>
+<li><p>在终端中打开 bash shell 的配置文件 <code>.bashrc</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在文件末尾添加如下 shell 代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># These shell commands block are for the purpose of displaying the</span></span><br><span class="line"><span class="comment"># current branch name of the current repository.</span></span><br><span class="line">find_git_branch ()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">local</span> dir=. head</span><br><span class="line">  until [ <span class="string">"<span class="variable">$dir</span>"</span> -ef / ]; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [ -f <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span> ]; <span class="keyword">then</span></span><br><span class="line">      head=$(&lt; <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span>)</span><br><span class="line">      <span class="keyword">if</span> [[ <span class="variable">$head</span> = ref:\ refs/heads/* ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*<span class="variable">$&#123;head#*/*/&#125;</span>)"</span></span><br><span class="line">      <span class="keyword">elif</span> [[ <span class="variable">$head</span> != <span class="string">''</span> ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*(detached))"</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        git_branch=<span class="string">"(*(unknow))"</span></span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">      <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    dir=<span class="string">"../<span class="variable">$dir</span>"</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">  git_branch=<span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line">PROMPT_COMMAND=<span class="string">"find_git_branch; <span class="variable">$PROMPT_COMMAND</span>"</span></span><br><span class="line"><span class="built_in">export</span> PS1=<span class="string">"\[\e]0;\u@\h: \w\a\]<span class="variable">$&#123;debian_chroot:+($debian_chroot)&#125;</span>\[\033[01;32m\]   \u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]\$git_branch\[\033   [0m\] \$ "</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使更改立即生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<hr>
+<p>作者发表在独立博客的几篇 <a href="https://blog.shipengx.com/tags/Git/">Git 系列小文章</a> 可提供一些其它有益参考，此外，廖雪峰的 <span class="exturl" data-url="aHR0cHM6Ly93d3cubGlhb3h1ZWZlbmcuY29tL3dpa2kvODk2MDQzNDg4MDI5NjAw" title="https://www.liaoxuefeng.com/wiki/896043488029600">Git 系列教程<i class="fa fa-external-link"></i></span> 是不错的 Git 学习资料。如果读者朋友有哪些其它的可提升工作效率的 Git 命令或应用技巧也请不吝赐教。</p>
 
     </div>
 
@@ -317,19 +451,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\51299274.html" rel="bookmark">Linux Perf性能优化工具使用说明</a></div>
+      <div class="popular-posts-title"><a href="\archives\77718b2.html" rel="bookmark">Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\8b42591c.html" rel="bookmark">Linux gcc/g++中的-I、-l、-L</a></div>
+      <div class="popular-posts-title"><a href="\archives\586b7559.html" rel="bookmark">Git版本库管理最佳实践——以创建新分支加入某个项目为例</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\f52fa610.html" rel="bookmark">Linux中使用core dump进行程序调试</a></div>
+      <div class="popular-posts-title"><a href="\archives\f390ae43.html" rel="bookmark">git的cherry-pick命令</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\ffbee3f1.html" rel="bookmark">Not able to execute a .sh file: /bin/bash^M: bad interpreter</a></div>
+      <div class="popular-posts-title"><a href="\archives\ba569070.html" rel="bookmark">gitignore与gitkeep的作用</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\31e5f0fe.html" rel="bookmark">Linux中使用sed命令进行字符串查找和替换</a></div>
+      <div class="popular-posts-title"><a href="\archives\296a9967.html" rel="bookmark">在腾讯云上搭建个人Git服务器</a></div>
     </li>
   </ul>
 
@@ -362,7 +496,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.shipengx.com/archives/c5106d85.html" title="Linux中的ld-so与ld-linux-so">https://blog.shipengx.com/archives/c5106d85.html</a>
+    <a href="https://blog.shipengx.com/archives/4511dcad.html" title="工作中一些简单的 Git 应用实践">https://blog.shipengx.com/archives/4511dcad.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -374,7 +508,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
           </div>
 
         
@@ -383,13 +517,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/archives/ba569070.html" rel="prev" title="gitignore与gitkeep的作用">
-      <i class="fa fa-chevron-left"></i> gitignore与gitkeep的作用
+    <a href="/archives/38fe8b1f.html" rel="prev" title="深度学习中的一些常见基本概念（一）">
+      <i class="fa fa-chevron-left"></i> 深度学习中的一些常见基本概念（一）
     </a></div>
-      <div class="post-nav-item">
-    <a href="/archives/8b42591c.html" rel="next" title="Linux gcc/g++中的-I、-l、-L">
-      Linux gcc/g++中的-I、-l、-L <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -450,7 +581,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-结论"><span class="nav-text">1 结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-参考"><span class="nav-text">2 参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用命令"><span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#alias-别名"><span class="nav-text">alias 别名</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支"><span class="nav-text">配置 Ubuntu 终端默认显示所在 Git 仓库的当前分支</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

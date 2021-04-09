@@ -1,6 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>工作中一些简单的 Git 应用实践</title>
+    <url>/archives/4511dcad.html</url>
+    <content><![CDATA[<h1 id="前言" class="heading-control"><a href="#前言" class="headerlink" title="前言"></a>前言<a class="heading-anchor" href="#前言" aria-hidden="true"></a></h1><p>最近笔者在整理项目开发文档，深知代码版本管理的重要性，而 Git 作为代码版本管理的扛把子工具深受广大猿类喜爱。本篇文章旨在记录笔者日常开发工作中一些常用的 Git 应用实践。</p>
+<h1 id="常用命令" class="heading-control"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令<a class="heading-anchor" href="#常用命令" aria-hidden="true"></a></h1><p>下面是笔者常用的一些 Git 命令：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>git add —all</td>
+<td>将当前工作区（working directory）修改添加到暂存区（stage），只有添加到暂存区的修改才能被提交（commit）</td>
+</tr>
+<tr>
+<td>git checkout branch_name</td>
+<td>切换到名为 branch_name 分支</td>
+</tr>
+<tr>
+<td>git checkout -b branch_name</td>
+<td>创建名为 branch_name 的新分支</td>
+</tr>
+<tr>
+<td>git checkout commit_id</td>
+<td>切换到 id 为 commit_id 对应的提交</td>
+</tr>
+<tr>
+<td>git checkout tag_number</td>
+<td>切换到 tag 号 为 tag_number 对应的提交</td>
+</tr>
+<tr>
+<td>git commit -m “comment”</td>
+<td>向本地仓库提交修改，comment 代表本次提交的注释内容</td>
+</tr>
+<tr>
+<td>git push</td>
+<td>向远程仓库推送更新本地提交</td>
+</tr>
+<tr>
+<td>git push —tags</td>
+<td>向远程仓库推送本地仓库的所有 tag 信息</td>
+</tr>
+<tr>
+<td>git stash</td>
+<td>将工作区与暂存区中的修改临时保存到 git 栈（需要时可以恢复），并将工作区与暂存区恢复至上一次提交的状态</td>
+</tr>
+<tr>
+<td>git stash save -u “message”</td>
+<td>将工作区与暂存区中的修改以及未被追踪的修改（-u）临时保存到 git 栈（需要时可以恢复），并将工作区与暂存区恢复至上一次提交的状态，message 表示此次操作的备注信息</td>
+</tr>
+<tr>
+<td>git stash list</td>
+<td>列举当前 git 栈中所有被临时保存的修改，每一次临时修改都对应唯一的 stash_id，从 0 开始，依次往后追加</td>
+</tr>
+<tr>
+<td>git stash pop</td>
+<td>将 git 栈栈顶（即最新的）的临时修改弹出并恢复至当前分支</td>
+</tr>
+<tr>
+<td>git stash apply stash@{stash_id}</td>
+<td>将 git 栈中 stash_id 对应的临时修改恢复至当前分支，但不会删除 git 栈中的对应内容</td>
+</tr>
+<tr>
+<td>git stash drop stash@{stash_id}</td>
+<td>将 git 栈中 stash_id 对应的临时修改删除</td>
+</tr>
+<tr>
+<td>git stash clear</td>
+<td>删除 git 栈中所有的临时修改</td>
+</tr>
+<tr>
+<td>git tag tag_number</td>
+<td>为最新提交打上名为 tag_number 的 tag 号</td>
+</tr>
+<tr>
+<td>git tag tag_number commit_id</td>
+<td>为 id 为 commit_id 对应的提交打上名为 tag_number 的 tag 号</td>
+</tr>
+<tr>
+<td>git tag -d tag_number</td>
+<td>删除本地仓库名为 tag_number 的 tag 号</td>
+</tr>
+<tr>
+<td>git push origin :refs/tags/tag_number</td>
+<td>删除远程仓库名为 tag_number 的 tag 号</td>
+</tr>
+<tr>
+<td>git reset —hard HEAD</td>
+<td>丢弃工作区与暂存区中的修改（未被跟踪的修改需要先添加至暂存区），并恢复至最新提交的状态</td>
+</tr>
+<tr>
+<td>git reset —hard commit_id</td>
+<td>丢弃工作区与暂存区中的修改（未被跟踪的修改需要先添加至暂存区），并恢复至 id 为 commit_id 对应的提交的状态</td>
+</tr>
+<tr>
+<td>git branch -a</td>
+<td>查看本地及远程的所有分支</td>
+</tr>
+<tr>
+<td>git branch -D branch_name</td>
+<td>删除本地仓库名为 branch_name 的分支</td>
+</tr>
+<tr>
+<td>git push origin —delete branch_name</td>
+<td>删除远程仓库仓库名为 branch_name 的分支</td>
+</tr>
+<tr>
+<td>git log</td>
+<td>查看提交日志</td>
+</tr>
+<tr>
+<td>git status</td>
+<td>查看工作树状态，分别列举工作区和暂存区中的修改</td>
+</tr>
+<tr>
+<td>git config —list</td>
+<td>查看本地仓库的 git 配置</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>善用每一个命令的 <code>--help</code> 选项可以帮助你快速地了解该命令。</p>
+<h1 id="alias-别名" class="heading-control"><a href="#alias-别名" class="headerlink" title="alias 别名"></a>alias 别名<a class="heading-anchor" href="#alias-别名" aria-hidden="true"></a></h1><p>为常用命令设置 alias 别名可提升工作效率，具体设置在 <code>~/.gitconfig</code> 文件中，下面是笔者常用的一些 git alias 别名：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[alias]</span><br><span class="line">	co &#x3D; checkout</span><br><span class="line">	st &#x3D; status</span><br><span class="line">	br &#x3D; branch</span><br><span class="line">	ci &#x3D; commit</span><br><span class="line">	lg &#x3D; log --color --graph --pretty&#x3D;format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#39; --abbrev-commit</span><br><span class="line">	go &#x3D; reset --hard</span><br></pre></td></tr></table></figure>
+<p>其中，<code>lg</code> 别名可以很好地美化提交历史显示。</p>
+<h1 id="配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支" class="heading-control"><a href="#配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支" class="headerlink" title="配置 Ubuntu 终端默认显示所在 Git 仓库的当前分支"></a>配置 Ubuntu 终端默认显示所在 Git 仓库的当前分支<a class="heading-anchor" href="#配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支" aria-hidden="true"></a></h1><p>Ubuntu 环境中，在一个 Git 仓库下打开终端无法显示当前所处分支，很不方便，可以按照如下步骤进行配置解决该问题：</p>
+<ol>
+<li><p>在终端中打开 bash shell 的配置文件 <code>.bashrc</code>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在文件末尾添加如下 shell 代码：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># These shell commands block are for the purpose of displaying the</span></span><br><span class="line"><span class="comment"># current branch name of the current repository.</span></span><br><span class="line">find_git_branch ()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">local</span> dir=. head</span><br><span class="line">  until [ <span class="string">"<span class="variable">$dir</span>"</span> -ef / ]; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [ -f <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span> ]; <span class="keyword">then</span></span><br><span class="line">      head=$(&lt; <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span>)</span><br><span class="line">      <span class="keyword">if</span> [[ <span class="variable">$head</span> = ref:\ refs/heads/* ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*<span class="variable">$&#123;head#*/*/&#125;</span>)"</span></span><br><span class="line">      <span class="keyword">elif</span> [[ <span class="variable">$head</span> != <span class="string">''</span> ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*(detached))"</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        git_branch=<span class="string">"(*(unknow))"</span></span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">      <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    dir=<span class="string">"../<span class="variable">$dir</span>"</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">  git_branch=<span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line">PROMPT_COMMAND=<span class="string">"find_git_branch; <span class="variable">$PROMPT_COMMAND</span>"</span></span><br><span class="line"><span class="built_in">export</span> PS1=<span class="string">"\[\e]0;\u@\h: \w\a\]<span class="variable">$&#123;debian_chroot:+($debian_chroot)&#125;</span>\[\033[01;32m\]   \u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]\$git_branch\[\033   [0m\] \$ "</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使更改立即生效：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>作者发表在独立博客的几篇 <a href="https://blog.shipengx.com/tags/Git/">Git 系列小文章</a> 可提供一些其它有益参考，此外，廖雪峰的 <span class="exturl" data-url="aHR0cHM6Ly93d3cubGlhb3h1ZWZlbmcuY29tL3dpa2kvODk2MDQzNDg4MDI5NjAw" title="https://www.liaoxuefeng.com/wiki/896043488029600">Git 系列教程<i class="fa fa-external-link"></i></span> 是不错的 Git 学习资料。如果读者朋友有哪些其它的可提升工作效率的 Git 命令或应用技巧也请不吝赐教。</p>
+]]></content>
+      <categories>
+        <category>效率</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>深度学习中的一些常见基本概念（一）</title>
     <url>/archives/38fe8b1f.html</url>
     <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>感知（Perception）系统是整个自动驾驶系统的第一环，也是至关重要的一环，其性能好坏从根本上决定了自动驾驶系统的能力边界。感知系统的传感器输入主要包括：</p>
@@ -19,9 +170,13 @@
 </ul>
 <p>感知系统的上述输出给到下游模块，才能继续实施自车的决策（Decision）和横纵向规控（Planning and Control，PNC）等后续一系列动作。从感知系统的传感器原始输入到“初步”的结果输出这一阶段正是深度学习（Deep Learning，DL）的应用范畴，这里之所以强调“初步”，是因为到最终的感知结果输出前，往往还伴随着后处理（Post Process）步骤，这里我把它一并归到了感知层中，或者也可以放到感知层后面的融合（Fusion）层。</p>
 <p>最近正在看深度学习的一些内容，老规矩，先从宏观上把控一些常见的基础概念。</p>
-<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><h2 id="1-1-计算机视觉中的几大任务" class="heading-control"><a href="#1-1-计算机视觉中的几大任务" class="headerlink" title="1.1 计算机视觉中的几大任务"></a>1.1 计算机视觉中的几大任务<a class="heading-anchor" href="#1-1-计算机视觉中的几大任务" aria-hidden="true"></a></h2><h3 id="1-1-1-图像分类" class="heading-control"><a href="#1-1-1-图像分类" class="headerlink" title="1.1.1 图像分类"></a>1.1.1 图像分类<a class="heading-anchor" href="#1-1-1-图像分类" aria-hidden="true"></a></h3><h3 id="1-1-2-目标检测" class="heading-control"><a href="#1-1-2-目标检测" class="headerlink" title="1.1.2 目标检测"></a>1.1.2 目标检测<a class="heading-anchor" href="#1-1-2-目标检测" aria-hidden="true"></a></h3><h3 id="1-1-3-语义分割" class="heading-control"><a href="#1-1-3-语义分割" class="headerlink" title="1.1.3 语义分割"></a>1.1.3 语义分割<a class="heading-anchor" href="#1-1-3-语义分割" aria-hidden="true"></a></h3><p>Semantic Segmentation</p>
-<h3 id="1-1-4-实例分割" class="heading-control"><a href="#1-1-4-实例分割" class="headerlink" title="1.1.4 实例分割"></a>1.1.4 实例分割<a class="heading-anchor" href="#1-1-4-实例分割" aria-hidden="true"></a></h3><p>Instance Segmentation</p>
-<h3 id="1-1-5-全景分割" class="heading-control"><a href="#1-1-5-全景分割" class="headerlink" title="1.1.5 全景分割"></a>1.1.5 全景分割<a class="heading-anchor" href="#1-1-5-全景分割" aria-hidden="true"></a></h3><h2 id="1-2-Backbone" class="heading-control"><a href="#1-2-Backbone" class="headerlink" title="1.2 Backbone"></a>1.2 Backbone<a class="heading-anchor" href="#1-2-Backbone" aria-hidden="true"></a></h2><p>主干网络，又称骨干网络，用于前端特征提取生成特征图（feature map），特征图用作后面其它网络的输入。Backbone 网络是整个模型的基础组成部分，如 AlexNet、VGGNet、ResNet、GoogleNet、MobileNet、Darknet 等都是常见的 Backbone 网络（某些语境下，Darknet 指的可能是同名同作者的深度学习框架）。</p>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><h2 id="1-1-计算机视觉图像理解中的三大任务" class="heading-control"><a href="#1-1-计算机视觉图像理解中的三大任务" class="headerlink" title="1.1 计算机视觉图像理解中的三大任务"></a>1.1 计算机视觉图像理解中的三大任务<a class="heading-anchor" href="#1-1-计算机视觉图像理解中的三大任务" aria-hidden="true"></a></h2><h3 id="1-1-1-图像分类" class="heading-control"><a href="#1-1-1-图像分类" class="headerlink" title="1.1.1 图像分类"></a>1.1.1 图像分类<a class="heading-anchor" href="#1-1-1-图像分类" aria-hidden="true"></a></h3><p>Image Classification</p>
+<h3 id="1-1-2-目标检测" class="heading-control"><a href="#1-1-2-目标检测" class="headerlink" title="1.1.2 目标检测"></a>1.1.2 目标检测<a class="heading-anchor" href="#1-1-2-目标检测" aria-hidden="true"></a></h3><p>Object Detection</p>
+<h3 id="1-1-3-图像分割" class="heading-control"><a href="#1-1-3-图像分割" class="headerlink" title="1.1.3 图像分割"></a>1.1.3 图像分割<a class="heading-anchor" href="#1-1-3-图像分割" aria-hidden="true"></a></h3><p>普通分割</p>
+<p>语义分割 Semantic Segmentation</p>
+<p>实例分割 Instance Segmentation</p>
+<p>全景分割</p>
+<h2 id="1-2-Backbone" class="heading-control"><a href="#1-2-Backbone" class="headerlink" title="1.2 Backbone"></a>1.2 Backbone<a class="heading-anchor" href="#1-2-Backbone" aria-hidden="true"></a></h2><p>主干网络，又称骨干网络，用于前端特征提取生成特征图（feature map），特征图用作后面其它网络的输入。Backbone 网络是整个模型的基础组成部分，如 AlexNet、VGGNet、ResNet、GoogleNet、MobileNet、Darknet 等都是常见的 Backbone 网络（某些语境下，Darknet 指的可能是同名同作者的深度学习框架）。</p>
 <h2 id="1-3-Head" class="heading-control"><a href="#1-3-Head" class="headerlink" title="1.3 Head"></a>1.3 Head<a class="heading-anchor" href="#1-3-Head" aria-hidden="true"></a></h2><p>检测头，又称 Detection Head，连接在 Backbone 网络之后的网络层。Head 获取 Backbone 输出的特征图，并利用这些特征执行特定的任务，如图像分类、目标检测（分类 + 定位）等，SSD、YOLO、Mask R-CNN 等都是常见的 Head 网络。</p>
 <h2 id="1-4-Neck" class="heading-control"><a href="#1-4-Neck" class="headerlink" title="1.4 Neck"></a>1.4 Neck<a class="heading-anchor" href="#1-4-Neck" aria-hidden="true"></a></h2><p>位于 Backbone 和 Head 之间，用于更好地融合/提取 Backbone 输出的特征，并交由 Head 去执行接下来的任务，如 FPN 便是经典的 Neck 网络。</p>
 <h2 id="1-5-Detector" class="heading-control"><a href="#1-5-Detector" class="headerlink" title="1.5 Detector"></a>1.5 Detector<a class="heading-anchor" href="#1-5-Detector" aria-hidden="true"></a></h2><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
