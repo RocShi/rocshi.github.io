@@ -232,17 +232,17 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install pyperclip</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>tkinter</code></p>
-<p>对于 windows 系统，自 Python 3.1 起，<code>tkinter</code> 默认包含于 Python 发行版。对于 ubuntu系统，需要执行下述命令安装 <code>tkinter</code>。</p>
+<p>对于 windows 系统，自 Python 3.1 起，<code>tkinter</code> 默认包含于 Python 发行版。对于 ubuntu 系统，需要执行下述命令安装 <code>tkinter</code>。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install python3-tk</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>xclip</code></p>
-<p>对于 ubuntu 系统，在使用本工具前需要先安装 <code>xclip</code>。 </p>
+<p>对于 ubuntu 系统，在使用本工具前需要先安装 <code>xclip</code>。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install xclip</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h1 id="3-用法" class="heading-control"><a href="#3-用法" class="headerlink" title="3 用法"></a>3 用法<a class="heading-anchor" href="#3-用法" aria-hidden="true"></a></h1><h2 id="3-1-运行工具" class="heading-control"><a href="#3-1-运行工具" class="headerlink" title="3.1 运行工具"></a>3.1 运行工具<a class="heading-anchor" href="#3-1-运行工具" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python img2base64.py</span><br></pre></td></tr></table></figure>
 <h2 id="3-2-单一图片转换" class="heading-control"><a href="#3-2-单一图片转换" class="headerlink" title="3.2 单一图片转换"></a>3.2 单一图片转换<a class="heading-anchor" href="#3-2-单一图片转换" aria-hidden="true"></a></h2><ul>
-<li>首先点击<code>Select single image</code>按钮选择目标图片，然后点击<code>Convert &amp; Copy</code>按钮转换图片，转换得到的base64字符串会自动复制到剪贴板。</li>
+<li>首先点击<code>Select single image</code>按钮选择目标图片，然后点击<code>Convert &amp; Copy</code>按钮转换图片，转换得到的 base64 字符串会自动复制到剪贴板。</li>
 </ul>
 <h2 id="3-3-多图片转换" class="heading-control"><a href="#3-3-多图片转换" class="headerlink" title="3.3 多图片转换"></a>3.3 多图片转换<a class="heading-anchor" href="#3-3-多图片转换" aria-hidden="true"></a></h2><ul>
 <li>首先点击<code>Select several images</code>按钮选择目标图片的存放路径，然后点击<code>Convert &amp; Export</code>按钮选择存放转换结果的路径，每张图片会被转换到各自对应的文件。</li>
@@ -252,6 +252,7 @@
 <hr>
 ]]></content>
       <categories>
+        <category>编码</category>
         <category>Python</category>
         <category>随笔</category>
       </categories>
@@ -1582,8 +1583,8 @@ K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>自动驾驶</tag>
         <tag>卡尔曼滤波</tag>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -1975,8 +1976,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
       <tags>
         <tag>数学</tag>
         <tag>滤波</tag>
-        <tag>贝叶斯滤波</tag>
         <tag>自动驾驶</tag>
+        <tag>贝叶斯滤波</tag>
       </tags>
   </entry>
   <entry>
