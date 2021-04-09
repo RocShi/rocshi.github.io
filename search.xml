@@ -119,6 +119,10 @@
 <td>查看工作树状态，分别列举工作区和暂存区中的修改</td>
 </tr>
 <tr>
+<td><code>git diff</code></td>
+<td>详细展现工作树与上次提交间的变更</td>
+</tr>
+<tr>
 <td><code>git config --list</code></td>
 <td>查看本地仓库的 git 配置</td>
 </tr>
