@@ -15,111 +15,111 @@
 </thead>
 <tbody>
 <tr>
-<td>git add —all</td>
+<td><code>git add --all</code></td>
 <td>将当前工作区（working directory）修改添加到暂存区（stage），只有添加到暂存区的修改才能被提交（commit）</td>
 </tr>
 <tr>
-<td>git checkout branch_name</td>
+<td><code>git checkout branch_name</code></td>
 <td>切换到名为 branch_name 分支</td>
 </tr>
 <tr>
-<td>git checkout -b branch_name</td>
+<td><code>git checkout -b branch_name</code></td>
 <td>创建名为 branch_name 的新分支</td>
 </tr>
 <tr>
-<td>git checkout commit_id</td>
+<td><code>git checkout commit_id</code></td>
 <td>切换到 id 为 commit_id 对应的提交</td>
 </tr>
 <tr>
-<td>git checkout tag_number</td>
+<td><code>git checkout tag_number</code></td>
 <td>切换到 tag 号 为 tag_number 对应的提交</td>
 </tr>
 <tr>
-<td>git commit -m “comment”</td>
+<td><code>git commit -m &quot;comment&quot;</code></td>
 <td>向本地仓库提交修改，comment 代表本次提交的注释内容</td>
 </tr>
 <tr>
-<td>git push</td>
+<td><code>git push</code></td>
 <td>向远程仓库推送更新本地提交</td>
 </tr>
 <tr>
-<td>git push —tags</td>
+<td><code>git push --tags</code></td>
 <td>向远程仓库推送本地仓库的所有 tag 信息</td>
 </tr>
 <tr>
-<td>git stash</td>
+<td><code>git stash</code></td>
 <td>将工作区与暂存区中的修改临时保存到 git 栈（需要时可以恢复），并将工作区与暂存区恢复至上一次提交的状态</td>
 </tr>
 <tr>
-<td>git stash save -u “message”</td>
+<td><code>git stash save -u &quot;message&quot;</code></td>
 <td>将工作区与暂存区中的修改以及未被追踪的修改（-u）临时保存到 git 栈（需要时可以恢复），并将工作区与暂存区恢复至上一次提交的状态，message 表示此次操作的备注信息</td>
 </tr>
 <tr>
-<td>git stash list</td>
+<td><code>git stash list</code></td>
 <td>列举当前 git 栈中所有被临时保存的修改，每一次临时修改都对应唯一的 stash_id，从 0 开始，依次往后追加</td>
 </tr>
 <tr>
-<td>git stash pop</td>
+<td><code>git stash pop</code></td>
 <td>将 git 栈栈顶（即最新的）的临时修改弹出并恢复至当前分支</td>
 </tr>
 <tr>
-<td>git stash apply stash@{stash_id}</td>
+<td><code>git stash apply stash@{stash_id}</code></td>
 <td>将 git 栈中 stash_id 对应的临时修改恢复至当前分支，但不会删除 git 栈中的对应内容</td>
 </tr>
 <tr>
-<td>git stash drop stash@{stash_id}</td>
+<td><code>git stash drop stash@{stash_id}</code></td>
 <td>将 git 栈中 stash_id 对应的临时修改删除</td>
 </tr>
 <tr>
-<td>git stash clear</td>
+<td><code>git stash clear</code></td>
 <td>删除 git 栈中所有的临时修改</td>
 </tr>
 <tr>
-<td>git tag tag_number</td>
+<td><code>git tag tag_number</code></td>
 <td>为最新提交打上名为 tag_number 的 tag 号</td>
 </tr>
 <tr>
-<td>git tag tag_number commit_id</td>
+<td><code>git tag tag_number commit_id</code></td>
 <td>为 id 为 commit_id 对应的提交打上名为 tag_number 的 tag 号</td>
 </tr>
 <tr>
-<td>git tag -d tag_number</td>
+<td><code>git tag -d tag_number</code></td>
 <td>删除本地仓库名为 tag_number 的 tag 号</td>
 </tr>
 <tr>
-<td>git push origin :refs/tags/tag_number</td>
+<td><code>git push origin :refs/tags/tag_number</code></td>
 <td>删除远程仓库名为 tag_number 的 tag 号</td>
 </tr>
 <tr>
-<td>git reset —hard HEAD</td>
+<td><code>git reset --hard HEAD</code></td>
 <td>丢弃工作区与暂存区中的修改（未被跟踪的修改需要先添加至暂存区），并恢复至最新提交的状态</td>
 </tr>
 <tr>
-<td>git reset —hard commit_id</td>
+<td><code>git reset --hard commit_id</code></td>
 <td>丢弃工作区与暂存区中的修改（未被跟踪的修改需要先添加至暂存区），并恢复至 id 为 commit_id 对应的提交的状态</td>
 </tr>
 <tr>
-<td>git branch -a</td>
+<td><code>git branch -a</code></td>
 <td>查看本地及远程的所有分支</td>
 </tr>
 <tr>
-<td>git branch -D branch_name</td>
+<td><code>git branch -D branch_name</code></td>
 <td>删除本地仓库名为 branch_name 的分支</td>
 </tr>
 <tr>
-<td>git push origin —delete branch_name</td>
+<td><code>git push origin --delete branch_name</code></td>
 <td>删除远程仓库仓库名为 branch_name 的分支</td>
 </tr>
 <tr>
-<td>git log</td>
+<td><code>git log</code></td>
 <td>查看提交日志</td>
 </tr>
 <tr>
-<td>git status</td>
+<td><code>git status</code></td>
 <td>查看工作树状态，分别列举工作区和暂存区中的修改</td>
 </tr>
 <tr>
-<td>git config —list</td>
+<td><code>git config --list</code></td>
 <td>查看本地仓库的 git 配置</td>
 </tr>
 </tbody>
