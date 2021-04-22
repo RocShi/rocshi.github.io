@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #505b3d;
+  background: #c6421b;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2656,7 +2656,8 @@ hr {
   margin-left: 7px;
 }
 .heading-anchor:before {
-  content: '#';
+  font-family: 'FontAwesome';
+  content: '\f0c1';
 }
 .heading-control:hover .heading-anchor {
   display: inline-block;
