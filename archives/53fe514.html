@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-23T04:26:26.413Z">
+<meta property="article:modified_time" content="2021-05-01T03:25:50.699Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -159,12 +159,12 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">36</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">38</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">64</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">65</span></a>
 
   </li>
         <li class="menu-item menu-item-books">
@@ -261,7 +261,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 12:26:26" itemprop="dateModified" datetime="2020-07-23T12:26:26+08:00">2020-07-23</time>
+                <time title="修改时间：2021-05-01 11:25:50" itemprop="dateModified" datetime="2021-05-01T11:25:50+08:00">2021-05-01</time>
               </span>
 
           <br>
@@ -326,11 +326,11 @@
 </li>
 <li><p><strong>成员函数通过一个名为<code>this</code>的额外的隐式参数来访问调用它的那个对象。</strong>当我们调用一个成员函数时，用请求该函数的对象地址初始化<code>this</code>。例如，如果调用</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">total.isbn()</span><br></pre></td></tr></table></figure>
-<p>则编译器负责把total的地址传递给isbn的隐式形参<code>this</code>，可以等价地认为编译器将该调用重写成了如下的形式：</p>
+<p>则编译器负责把 total 的地址传递给 isbn 的隐式形参<code>this</code>，可以等价地认为编译器将该调用重写成了如下的形式：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码，用于说明调用成员函数的实际执行过程</span></span><br><span class="line">Sales_data::isbn(&amp;total)</span><br></pre></td></tr></table></figure>
-<p>在成员函数内部，我们可以直接使用调用该函数的对象的成员，而无须通过成员访问运算符来做到这一点，因为<code>this</code>所指的正是这个对象。任何对类成员的直接访问都被看作<code>this</code>的隐式引用，也就是说，当isbn使用bookNo时，它隐式地使用<code>this</code>指向的成员，就像我们书写了<code>this-&gt;bookNo</code>一样。</p>
+<p>在成员函数内部，我们可以直接使用调用该函数的对象的成员，而无须通过成员访问运算符来做到这一点，因为<code>this</code>所指的正是这个对象。任何对类成员的直接访问都被看作<code>this</code>的隐式引用，也就是说，当 isbn 使用 bookNo 时，它隐式地使用<code>this</code>指向的成员，就像我们书写了<code>this-&gt;bookNo</code>一样。</p>
 </li>
-<li><p>任何自定义名为<code>this</code>的参数或变量的行为都是非法的。我们可以在成员函数体内部使用<code>this</code>，因此尽管没有必要，但我们还是能把isbn定义成如下的形式：</p>
+<li><p>任何自定义名为<code>this</code>的参数或变量的行为都是非法的。我们可以在成员函数体内部使用<code>this</code>，因此尽管没有必要，但我们还是能把 isbn 定义成如下的形式：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">string</span> <span class="title">isbn</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>-&gt;bookNo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>因为<code>this</code>的目的总是指向“这个”对象，所以<strong><code>this</code>是一个常量指针，我们不允许改变<code>this</code>中保存的地址</strong>。</p>
 </li>
@@ -352,7 +352,7 @@
 </li>
 <li><p>如果函数在概念上属于类但是不定义在类中，则它一般应与类声明（而非定义）在同一个头文件内。在这种方式下，用户使用接口的任何部分都只需要引入一个文件。</p>
 </li>
-<li><p><strong>IO类属于不能被拷贝的类型，因此我们只能通过引用来传递它们，而且读取和写入的操作会改变流的内容。</strong></p>
+<li><p><strong>IO 类属于不能被拷贝的类型，因此我们只能通过引用来传递它们，而且读取和写入的操作会改变流的内容。</strong></p>
 </li>
 <li><p>默认情况下，拷贝类的对象其实拷贝的是对象的数据成员。</p>
 </li>
@@ -364,23 +364,11 @@
 </li>
 <li><p>类通过一个特殊的构造函数来控制默认初始化过程，这个函数叫做<strong>默认构造函数</strong>（default constructor）。<strong>默认构造函数无须任何实参。如果我们的类没有显式地定义构造函数，那么编译器就会为我们隐式地定义一个默认构造函数。</strong></p>
 </li>
-<li><p>编译器创建的构造函数又被称为<strong>合成的默认构造函数</strong>（synthesized default constructor）。对于大多数类来说，这个合成的默认构造函数将按照如下规则初始化类的数据成员：</p>
-<ul>
-<li>如果存在<strong>类内的初始值</strong>，用它来初始化成员；</li>
-<li>否则，默认初始化该成员。<br><br></li>
-</ul>
+<li><p>编译器创建的构造函数又被称为<strong>合成的默认构造函数</strong>（synthesized default constructor）。对于大多数类来说，这个合成的默认构造函数将按照如下规则初始化类的数据成员：<br>_ 如果存在<strong>类内的初始值</strong>，用它来初始化成员；<br>_ 否则，默认初始化该成员。<br><br></p>
 </li>
-<li><p><strong>对于一个普通的类来说，必须定义它自己的默认构造函数</strong>，原因有三：</p>
-<ul>
-<li><strong>编译器只有在发现类不包含任何构造函数的情况下才会替我们生成一个默认的构造函数。</strong>一旦我们定义了一些其他的构造函数，那么除非我们再定义一个默认的构造函数，否则类将没有默认构造函数。这条规则的依据是，如果一个类在某种情况下需要控制对象初始化，那么该类很可能在所有情况下都需要控制；</li>
-<li>对于某些类来说，合成的默认构造函数可能执行错误的操作。如果定义在块中的内置类型或复合类型（比如数组和指针）的对象被默认初始化，则它们的值将是未定义的。该准则同样适用于默认初始化的内置类型成员。因此，<strong>含有内置类型或复合类型成员的类应该在类的内部初始化这些成员，或者定义一个自己的默认构造函数。否则，用户在创建类的对象时就可能得到未定义的值。</strong><blockquote>
-<p>WARNING：如果类包含有内置类型或者复合类型的成员，则只有当这些成员全都被赋予了类内的初始值时，这个类才适合于使用合成的默认构造函数。</p>
-</blockquote>
+<li><p><strong>对于一个普通的类来说，必须定义它自己的默认构造函数</strong>，原因有三：<br>_ <strong>编译器只有在发现类不包含任何构造函数的情况下才会替我们生成一个默认的构造函数。</strong>一旦我们定义了一些其他的构造函数，那么除非我们再定义一个默认的构造函数，否则类将没有默认构造函数。这条规则的依据是，如果一个类在某种情况下需要控制对象初始化，那么该类很可能在所有情况下都需要控制；<br>_ 对于某些类来说，合成的默认构造函数可能执行错误的操作。如果定义在块中的内置类型或复合类型（比如数组和指针）的对象被默认初始化，则它们的值将是未定义的。该准则同样适用于默认初始化的内置类型成员。因此，<strong>含有内置类型或复合类型成员的类应该在类的内部初始化这些成员，或者定义一个自己的默认构造函数。否则，用户在创建类的对象时就可能得到未定义的值。</strong> &gt; WARNING：如果类包含有内置类型或者复合类型的成员，则只有当这些成员全都被赋予了类内的初始值时，这个类才适合于使用合成的默认构造函数。 * 有的时候编译器不能为某些类合成默认的构造函数。例如，如果类中包含一个其他类类型的成员且这个成员的类型没有默认构造函数，那么编译器将无法初始化该成员。对于这样的类来说，我们必须自定义默认构造函数，否则该类将没有可用的默认构造函数。<br><br></p>
 </li>
-<li>有的时候编译器不能为某些类合成默认的构造函数。例如，如果类中包含一个其他类类型的成员且这个成员的类型没有默认构造函数，那么编译器将无法初始化该成员。对于这样的类来说，我们必须自定义默认构造函数，否则该类将没有可用的默认构造函数。<br><br></li>
-</ul>
-</li>
-<li><p>在C++11新标准中，如果我们需要默认的行为，那么可以通过在参数列表后面写上<strong><code>= default</code></strong>来要求编译器生成构造函数。其中，<code>= default</code>既可以和声明一起出现在类的内部，也可以作为定义出现在类的外部。和其他函数一样，<strong>如果<code>= default</code>在类的内部，则默认构造函数是内联的；如果它在类的外部，则该成员默认情况下不是内联的</strong>。</p>
+<li><p>在 C++11 新标准中，如果我们需要默认的行为，那么可以通过在参数列表后面写上<strong><code>= default</code></strong>来要求编译器生成构造函数。其中，<code>= default</code>既可以和声明一起出现在类的内部，也可以作为定义出现在类的外部。和其他函数一样，<strong>如果<code>= default</code>在类的内部，则默认构造函数是内联的；如果它在类的外部，则该成员默认情况下不是内联的</strong>。</p>
 </li>
 <li><blockquote>
 <p>WARNING：如果你的编译器不支持类内初始值，那么你的默认构造函数就应该使用构造函数初始值列表来初始化类的每个成员。</p>
@@ -399,17 +387,13 @@
 </li>
 <li><p>尽管编译器能替我们合成拷贝、赋值和销毁的操作，但是必须要清楚的一点是，对于某些类来说合成的版本无法正常工作。特别是，当类需要分配类对象之外的资源时，合成的版本常常会失效。不过值得注意的是，<strong>很多需要动态内存的类能（而且应该）使用<code>vector</code>对象或者<code>string</code>对象管理必要的存储空间。使用<code>vector</code>或者<code>string</code>的类能避免分配和释放内存带来的复杂性</strong>。进一步讲，如果类包含<code>vector</code>或者<code>string</code>成员，则其拷贝、赋值和销毁的合成版本能够正常工作。当我们对含有<code>vector</code>成员的对象执行拷贝或者赋值操作时，<code>vector</code>类会设法拷贝或者赋值成员中的元素。当这样的对象被销毁时，将销毁<code>vector</code>对象，也就是依次销毁<code>vector</code>中的每一个元素。这一点与<code>string</code>是非常类似的。</p>
 </li>
-<li><p>在C++语言中，我们使用<strong>访问说明符</strong>（access specifiers）加强类的封装性：</p>
-<ul>
-<li>定义在<code>public</code>说明符之后的成员在整个程序内可被访问，<code>public</code>成员定义类的接口；</li>
-<li>定义在<code>private</code>说明符之后的成员可以被类的成员函数访问，但是不能被使用该类的代码访问，<code>private</code>部分封装了（即隐藏了）类的实现细节。<br><br></li>
-</ul>
+<li><p>在 C++语言中，我们使用<strong>访问说明符</strong>（access specifiers）加强类的封装性：<br>_ 定义在<code>public</code>说明符之后的成员在整个程序内可被访问，<code>public</code>成员定义类的接口；<br>_ 定义在<code>private</code>说明符之后的成员可以被类的成员函数访问，但是不能被使用该类的代码访问，<code>private</code>部分封装了（即隐藏了）类的实现细节。<br><br></p>
 </li>
-<li><p>一个类可以包含0个或多个访问说明符，而且对于某个访问说明符能出现多少次也没有严格限定。<strong>每个访问说明符指定了接下来的成员的访问级别，其有效范围直到出现下一个访问说明符或者到达类的结尾处为止。</strong></p>
+<li><p>一个类可以包含 0 个或多个访问说明符，而且对于某个访问说明符能出现多少次也没有严格限定。<strong>每个访问说明符指定了接下来的成员的访问级别，其有效范围直到出现下一个访问说明符或者到达类的结尾处为止。</strong></p>
 </li>
 <li><p>类可以在它的第一个访问说明符之前定义成员，对这种成员的访问权限依赖于类定义的方式。<strong>如果我们使用<code>struct</code>关键字，则定义在第一个访问说明符之前的成员是<code>public</code>的：相反，如果我们使用<code>class</code>关键字，则这些成员是<code>private</code>的。</strong>出于统一编程风格的考虑，当我们希望定义的类的所有成员是<code>public</code>的时，使用<code>struct</code>；反之，如果希望成员是<code>private</code>的，使用<code>class</code>。</p>
 <blockquote>
-<p>WARNING：使用class和struct定义类唯一的区别就是默认的访问权限。</p>
+<p>WARNING：使用 class 和 struct 定义类唯一的区别就是默认的访问权限。</p>
 </blockquote>
 </li>
 <li><p>类可以允许其他类或者函数访问它的非公有成员，方法是令其他类或者函数成为它的<strong>友元</strong>（friend）。如果类想把一个函数作为它的友元，只需要增加一条以<code>friend</code>关键字开始的函数声明语句即可。</p>
@@ -438,34 +422,34 @@
 <li><p><strong>返回引用的函数是左值的，意味着这些函数返回的是对象本身而非对象的副本。</strong>（成员函数返回调用成员函数的对象本身似乎很有用——博主注）</p>
 </li>
 <li><blockquote>
-<p>一个const成员函数如果以引用的形式返回*this，那么它的返回类型将是常量引用。</p>
+<p>一个 const 成员函数如果以引用的形式返回*this，那么它的返回类型将是常量引用。</p>
 </blockquote>
 </li>
 <li><p>通过区分成员函数是否是<code>const</code>的，我们可以对其进行重载。<strong>因为非常量版本的函数对于常量对象是不可用的，所以我们只能在一个常量对象上调用<code>const</code>成员函数。</strong>另一方面，虽然可以在非常量对象上调用常量版本或非常量版本，但显然此时非常量版本是一个更好的匹配。</p>
 </li>
 <li><p>普通成员函数调用常成员函数时，<code>this</code>指针将临时隐式地从指向非常量的指针转换成指向常量的指针。</p>
 </li>
-<li><p>在实践中，设计良好的C++代码常常包含大量小函数，通过调用这些函数，可以完成一组其他函数的“实际”工作。</p>
+<li><p>在实践中，设计良好的 C++代码常常包含大量小函数，通过调用这些函数，可以完成一组其他函数的“实际”工作。</p>
 </li>
 <li><p>即使两个类的成员列表完全一致，它们也是不同的类型。对于一个类来说，它的成员和其他任何类（或者任何其他作用域）的成员都不是一回事儿。</p>
 </li>
 <li><p>我们可以把类名作为类型的名字使用，从而直接指向类类型。或者，我们也可以把类名跟在关键字<code>class</code>或<code>struct</code>后面：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Sales_data iteml;        <span class="comment">// 默认初始化sales_data类型的对象</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sales_data</span> <span class="title">item1</span>;</span>  <span class="comment">// 一条等价的声明</span></span><br></pre></td></tr></table></figure>
-<p>上面这两种使用类类型的方式是等价的，其中第二种方式从C语言继承而来，并且在C++语言中也是合法的。</p>
+<p>上面这两种使用类类型的方式是等价的，其中第二种方式从 C 语言继承而来，并且在 C++语言中也是合法的。</p>
 </li>
 <li><p>我们也能仅仅声明类而暂时不定义它：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Screen</span>;</span>  <span class="comment">// Screen类的声明</span></span><br></pre></td></tr></table></figure>
-<p>这种声明有时被称作<strong>前向声明</strong>（forward declaration），它向程序中引入了名字Screen并且指明Screen是一种类类型。对于类型Screen来说，在它声明之后定义之前是一个<strong>不完全类型</strong>（incomplete type），<strong>不完全类型只能在非常有限的情景下使用：可以定义指向这种类型的指针或引用，也可以声明（但是不能定义）以不完全类型作为参数或者返回类型的函数</strong>。</p>
+<p>这种声明有时被称作<strong>前向声明</strong>（forward declaration），它向程序中引入了名字 Screen 并且指明 Screen 是一种类类型。对于类型 Screen 来说，在它声明之后定义之前是一个<strong>不完全类型</strong>（incomplete type），<strong>不完全类型只能在非常有限的情景下使用：可以定义指向这种类型的指针或引用，也可以声明（但是不能定义）以不完全类型作为参数或者返回类型的函数</strong>。</p>
 </li>
 <li><p><strong>一个类的成员类型不能是该类自己。然而，一旦一个类的名字出现后，它就被认为是声明过了（但尚未定义），因此类允许包含指向它自身类型的引用或指针</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Link</span> <span class="title">screen</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Screen window;</span><br><span class="line">    Link_screen *next;</span><br><span class="line">    Link_screen *prev;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Link</span> <span class="title">screen</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Screen window;</span><br><span class="line">    Link_screen *next;</span><br><span class="line">    Link_screen *prev;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>定义一对类X和Y，其中X包含一个指向Y的指针，而Y包含一个类型为X的对象：</p>
+<li><p>定义一对类 X 和 Y，其中 X 包含一个指向 Y 的指针，而 Y 包含一个类型为 X 的对象：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Y</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Y *py;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Y</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    X x;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>如果一个类指定了友元类，则友元类的成员函数可以访问此类包括非公有成员在内的所有成员。</strong></p>
 </li>
-<li><p>必须要注意的一点是，<strong>友元关系不存在传递性</strong>。（不能由“A是B的朋友，B是C的朋友”这一事实推导出“A是C的朋友”——博主注）</p>
+<li><p>必须要注意的一点是，<strong>友元关系不存在传递性</strong>。（不能由“A 是 B 的朋友，B 是 C 的朋友”这一事实推导出“A 是 C 的朋友”——博主注）</p>
 <blockquote>
 <p>每个类负责控制自己的友元类或友元函数。</p>
 </blockquote>
@@ -497,11 +481,11 @@
 </li>
 <li><p><strong>这种两阶段的处理方式只适用于成员函数中使用的名字。声明中使用的名字，包括返回类型或者参数列表中使用的名字，都必须在使用前确保可见。如果某个成员的声明使用了类中尚未出现的名字，则编译器将会在定义该类的作用域中继续查找。</strong>例如：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">double</span> Money;</span><br><span class="line"><span class="built_in">string</span> bal;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Money <span class="title">balance</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> bal; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Money bal;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>当编译器看到balance函数的声明语句时，它将在Account类的范围内寻找对Money的声明。编译器只考虑Account中在使用Money前出现的声明，因为没找到匹配的成员，所以编译器会接着到Account的外层作用域中查找。在这个例子中，编译器会找到Money的typedef语句，该类型被用作balance函数的返回类型以及数据成员bal的类型。另一方面，<strong>balance函数体在整个类可见后才被处理，因此，该函数的return语句返回名为bal的成员，而非外层作用域的string对象</strong>。</p>
+<p>当编译器看到 balance 函数的声明语句时，它将在 Account 类的范围内寻找对 Money 的声明。编译器只考虑 Account 中在使用 Money 前出现的声明，因为没找到匹配的成员，所以编译器会接着到 Account 的外层作用域中查找。在这个例子中，编译器会找到 Money 的 typedef 语句，该类型被用作 balance 函数的返回类型以及数据成员 bal 的类型。另一方面，<strong>balance 函数体在整个类可见后才被处理，因此，该函数的 return 语句返回名为 bal 的成员，而非外层作用域的 string 对象</strong>。</p>
 </li>
 <li><p>一般来说，内层作用域可以重新定义外层作用域中的名字，即使该名字已经在内层作用域中使用过。然而<strong>在类中，如果成员使用了外层作用域中的某个名字，而该名字代表一种类型，则类不能在之后重新定义该名字</strong>：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">double</span> Money;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Money <span class="title">balance</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> bal; &#125;  <span class="comment">// 使用外层作用城的Money</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">double</span> Money;  <span class="comment">// 错误：不能重新定义Money</span></span><br><span class="line">    Money bal;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>需要特别注意的是，<strong>即使Account中定义的Money类型与外层作用域一致，上述代码仍然是错误的</strong>。<br>尽管重新定义类型名字是一种错误的行为，但是编译器并不为此负责。一些编译器仍将顺利通过这样的代码，而忽略代码有错的事实。</p>
+<p>需要特别注意的是，<strong>即使 Account 中定义的 Money 类型与外层作用域一致，上述代码仍然是错误的</strong>。<br>尽管重新定义类型名字是一种错误的行为，但是编译器并不为此负责。一些编译器仍将顺利通过这样的代码，而忽略代码有错的事实。</p>
 <blockquote>
 <p>Tip：类型名的定义通常出现在类的开始处，这样就能确保所有使用该类型的成员都出现在类名的定义之后。</p>
 </blockquote>
@@ -514,7 +498,7 @@
 </ul>
 <p>一般来说，不建议使用其他成员的名字作为某个成员函数的参数。</p>
 <blockquote>
-<p>尽管类的成员可能被隐蔽，但我们仍然可以通过加上类的名字或显式地使用this指针来强制访问成员。</p>
+<p>尽管类的成员可能被隐蔽，但我们仍然可以通过加上类的名字或显式地使用 this 指针来强制访问成员。</p>
 </blockquote>
 </li>
 <li><p><strong>如果编译器在函数和类的作用域中都没有找到名字，它将接着在外围的作用域中查找。</strong>如果我们需要的是外层作用域中的名字，可以显式地通过作用域运算符来进行请求。</p>
@@ -527,7 +511,7 @@
 </li>
 <li><p><strong>随着构造函数体一开始执行，初始化就完成了。我们初始化<code>const</code>或者引用类型的数据成员的唯一机会就是通过构造函数初始值。</strong></p>
 <blockquote>
-<p>如果成员是const、引用，或者属于某种未提供默认构造函数的类类型，我们必须通过构造函数初始值列表为这些成员提供初值。</p>
+<p>如果成员是 const、引用，或者属于某种未提供默认构造函数的类类型，我们必须通过构造函数初始值列表为这些成员提供初值。</p>
 </blockquote>
 </li>
 <li><p><strong>建议：使用构造函数初始值。</strong>在很多类中，初始化和赋值的区别事关底层效率问题：前者直接初始化数据成员，后者则先初始化再赋值。除了效率问题外更重要的是，一些数据成员必须被初始化。建议读者养成使用构造函数初始值的习惯，这样能避免某些意想不到的编译错误，特别是遇到有的类含有需要构造函数初始值的成员时。</p>
@@ -555,7 +539,7 @@
 <ul>
 <li>在数组初始化的过程中如果我们提供的初始值数量少于数组的大小时；</li>
 <li>当我们不使用初始值定义一个局部静态变量时；</li>
-<li>当我们通过书写形如T()的表达式显式地请求值初始化时，其中T是类型名（<code>vector</code>的一个构造函数只接受一个实参用于说明<code>vector</code>大小，它就是使用一个这种形式的实参来对它的元素初始化器进行值初始化）。</li>
+<li>当我们通过书写形如 T()的表达式显式地请求值初始化时，其中 T 是类型名（<code>vector</code>的一个构造函数只接受一个实参用于说明<code>vector</code>大小，它就是使用一个这种形式的实参来对它的元素初始化器进行值初始化）。</li>
 </ul>
 <p>类必须包含一个默认构造函数以便在上述情况下使用，其中的大多数情况非常容易判断。不那么明显的一种情况是类的某些数据成员缺少默认构造函数。</p>
 <blockquote>
@@ -571,47 +555,30 @@
 </li>
 <li><p><strong>编译器只会自动地执行一步类型转换。</strong>例如，因为下面的代码隐式地使用了两种转换规则，所以它是错误的：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误：需要用户定义的两种转换：</span></span><br><span class="line"><span class="comment">//（1）把“9-999-99999-9”转换成string</span></span><br><span class="line"><span class="comment">//（2）再把这个（临时的）string转换成sales_data.</span></span><br><span class="line">item.combine(<span class="string">"9-999-99999-9"</span>);</span><br></pre></td></tr></table></figure>
-<p>如果我们想完成上述调用，可以显式地把字符串转换成<code>string</code>或者sales_data对象：</p>
+<p>如果我们想完成上述调用，可以显式地把字符串转换成<code>string</code>或者 sales_data 对象：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正确：显式地转换成string，隐式地转换成Sales_data：</span></span><br><span class="line">item.combine(<span class="built_in">string</span>(<span class="string">"9-999-99999-9"</span>));</span><br><span class="line"><span class="comment">// 正确：隐式地转换成string，显式地转换成sales_data</span></span><br><span class="line">item.combine(Sales_data(<span class="string">"9-999-99999-9"</span>));</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在要求隐式转换的程序上下文中，我们可以通过将构造函数声明为<code>explicit</code>加以阻止：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sales_data</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Sales_data() = <span class="keyword">default</span>;</span><br><span class="line">    Sales_data(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;S, <span class="keyword">unsigned</span> n, <span class="keyword">double</span> p):</span><br><span class="line">               bookNo(s), units_sold(n), revenue(p * n) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Sales_data</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;s)</span>: <span class="title">bookNo</span><span class="params">(s)</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Sales_data</span><span class="params">(<span class="built_in">std</span>::istream&amp;)</span></span>;</span><br><span class="line"><span class="comment">// 其他成员与之前的版本一致</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>此时，没有任何构造函数能用于隐式地创建Sales_data对象，之前的两种用法都无法通过编译：</p>
+<p>此时，没有任何构造函数能用于隐式地创建 Sales_data 对象，之前的两种用法都无法通过编译：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">item.combine(null_book);  <span class="comment">// 错误：string 构造函数是explicit的</span></span><br><span class="line">item.combine(<span class="built_in">cin</span>);        <span class="comment">// 错误：istream构造函数是explicit的</span></span><br></pre></td></tr></table></figure>
 <p><strong>关键字<code>explicit</code>只对一个实参的构造函数有效。需要多个实参的构造函数不能用于执行隐式转换，所以无须将这些构造函数指定为<code>explicit</code>的。只能在类内声明构造函数时使用<code>explicit</code>关键字，在类外部定义时不应重复。</strong></p>
 </li>
 <li><p>发生隐式转换的一种情况是当我们执行拷贝形式的初始化时（使用=。此时，我们只能使用直接初始化而不能使用<code>explicit</code>构造函数。</p>
 <blockquote>
-<p>当我们用explicit关键字声明构造函数时，它将只能以直接初始化的形式使用。而且，编译器将不会在自动转换过程中使用该构造函数。</p>
+<p>当我们用 explicit 关键字声明构造函数时，它将只能以直接初始化的形式使用。而且，编译器将不会在自动转换过程中使用该构造函数。</p>
 </blockquote>
 </li>
 <li><p>尽管编译器不会将<code>explicit</code>的构造函数用于隐式转换过程，但是我们可以使用这样的构造函数显式地强制进行转换：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正确：实参是一个显式构造的Sales_data对象</span></span><br><span class="line">item.combine(Sales_data(null__book));</span><br><span class="line"><span class="comment">// 正确：static_cast可以使用explicit的构造函数</span></span><br><span class="line">item.combine(<span class="keyword">static</span> cast&lt;Sales_data&gt;(<span class="built_in">cin</span>));</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>聚合类</strong>（aggregate class）使得用户可以直接访问其成员，并且具有特殊的初始化语法形式。当一个类满足如下条件时，我们说它是聚合的：</p>
-<ul>
-<li>所有成员都是<code>public</code>的；</li>
-<li>没有定义任何构造函数；</li>
-<li>没有类内初始值；</li>
-<li>没有基类，也没有<code>virtual</code>函数。<br><br></li>
-</ul>
+<li><p><strong>聚合类</strong>（aggregate class）使得用户可以直接访问其成员，并且具有特殊的初始化语法形式。当一个类满足如下条件时，我们说它是聚合的：<br>_ 所有成员都是<code>public</code>的；<br>_ 没有定义任何构造函数；<br>_ 没有类内初始值；<br>_ 没有基类，也没有<code>virtual</code>函数。<br><br></p>
 </li>
 <li><p>可以使用一个花括号括起来的成员初始值列表来初始化聚合类的数据成员。初始值的顺序必须与声明的顺序一致，也就是说，第一个成员的初始值要放在第一个，然后是第二个，以此类推。与初始化数组元素的规则一样，如果初始值列表中的元素个数少于类的成员数量，则靠后的成员被值初始化。初始值列表的元素个数绝对不能超过类的成员数量。</p>
 </li>
-<li><p>值得注意的是，显式地初始化类的对象的成员存在三个明显的缺点：</p>
-<ul>
-<li>要求类的所有成员都是<code>public</code>的；</li>
-<li>将正确初始化每个对象的每个成员的重任交给了类的用户（而非类的作者）。因为用户很容易忘掉某个初始值，或者提供一个不恰当的初始值，所以这样的初始化过程冗长乏味且容易出错；</li>
-<li>添加或删除一个成员之后，所有的初始化语句都需要更新。<br><br></li>
-</ul>
+<li><p>值得注意的是，显式地初始化类的对象的成员存在三个明显的缺点：<br>_ 要求类的所有成员都是<code>public</code>的；<br>_ 将正确初始化每个对象的每个成员的重任交给了类的用户（而非类的作者）。因为用户很容易忘掉某个初始值，或者提供一个不恰当的初始值，所以这样的初始化过程冗长乏味且容易出错； * 添加或删除一个成员之后，所有的初始化语句都需要更新。<br><br></p>
 </li>
-<li><p><code>constexpr</code>函数的参数和返回值必须是字面值类型。除了算术类型、引用和指针外，某些类也是字面值类型。和其他类不同，字面值类型的类可能含有<code>constexpr</code>函数成员。这样的成员必须符合<code>constexpr</code>函数的所有要求，它们是隐式<code>const</code>的。数据成员都是字面值类型的聚合类是字面值常量类。如果一个类不是聚合类，但它符合下述要求，则它也是一个字面值常量类：</p>
-<ul>
-<li>数据成员都必须是字面值类型；</li>
-<li>类必须至少含有一个<code>constexpr</code>构造函数；</li>
-<li>如果一个数据成员含有类内初始值，则内置类型成员的初始值必须是一条常量表达式；或者如果成员属于某种类类型，则初始值必须使用成员自己的<code>constexpr</code>构造函数；</li>
-<li>类必须使用析构函数的默认定义，该成员负责销毁类的对象。<br><br></li>
-</ul>
+<li><p><code>constexpr</code>函数的参数和返回值必须是字面值类型。除了算术类型、引用和指针外，某些类也是字面值类型。和其他类不同，字面值类型的类可能含有<code>constexpr</code>函数成员。这样的成员必须符合<code>constexpr</code>函数的所有要求，它们是隐式<code>const</code>的。数据成员都是字面值类型的聚合类是字面值常量类。如果一个类不是聚合类，但它符合下述要求，则它也是一个字面值常量类：<br>_ 数据成员都必须是字面值类型；<br>_ 类必须至少含有一个<code>constexpr</code>构造函数；<br>_ 如果一个数据成员含有类内初始值，则内置类型成员的初始值必须是一条常量表达式；或者如果成员属于某种类类型，则初始值必须使用成员自己的<code>constexpr</code>构造函数；<br>_ 类必须使用析构函数的默认定义，该成员负责销毁类的对象。<br><br></p>
 </li>
 <li><p><strong>尽管构造函数不能是<code>const</code>的，但是字面值常量类的构造函数可以是<code>constexpr</code>函数。</strong>事实上，必须至少提供一个<code>constexpr</code>构造函数。</p>
 </li>
@@ -634,7 +601,7 @@
 <li><p>通常情况下，类的静态成员不应该在类的内部初始化。然而，我们<strong>可以为静态成员提供<code>const</code>整数类型的类内初始值，不过要求静态成员必须是字面值常量类型的<code>constexpr</code>。初始值必须是常量表达式</strong>，因为这些成员本身就是常量表达式，所以它们能用在所有适合于常量表达式的地方。例如，我们<strong>可以用一个初始化了的静态数据成员指定数组成员的维度</strong>。</p>
 </li>
 <li><p>如果某个静态成员的应用场景仅限于编译器可以替换它的值的情况，则一个初始化的<code>const</code>或<code>constexpr static</code>不需要分别定义。相反，如果我们将它用于值不能替换的场景中，则该成员必须有一条定义语句。<strong>如果在类的内部提供了一个初始值，则成员的定义不能再指定一个初始值了</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个不带初始值的静态成员的定义</span></span><br><span class="line"><span class="keyword">const</span> expr <span class="keyword">int</span> Account::period; <span class="comment">// 初始值在类的定义内提供</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个不带初始值的静态成员的定义</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="keyword">int</span> Account::period; <span class="comment">// 初始值在类的定义内提供</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>最佳实践：即使一个常量静态数据成员在类内部被初始化了，通常情况下也应该在类的外部定义一下该成员。</p>
 </blockquote>
@@ -685,16 +652,16 @@
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
+      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
+      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
     </li>
   </ul>
 
@@ -833,7 +800,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -846,7 +813,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">38</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
