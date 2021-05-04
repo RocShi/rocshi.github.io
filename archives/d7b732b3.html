@@ -52,27 +52,24 @@
   };
 </script>
 
-  <meta name="description" content="无人车中的高精地图。">
+  <meta name="description" content="TODO">
 <meta property="og:type" content="article">
-<meta property="og:title" content="（十）看不见的“传感器”高精度地图">
-<meta property="og:url" content="https://blog.shipengx.com/archives/4da6b2e.html">
+<meta property="og:title" content="浅谈多传感器信息融合的先决条件——时空同步与运动补偿">
+<meta property="og:url" content="https://blog.shipengx.com/archives/d7b732b3.html">
 <meta property="og:site_name" content="朝花夕拾">
-<meta property="og:description" content="无人车中的高精地图。">
+<meta property="og:description" content="TODO">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2020/07/05/ltBXN6fHiMC4x1U.jpg">
-<meta property="og:image" content="https://i.loli.net/2020/07/05/u7PRnwCx9HcK56G.jpg">
-<meta property="og:image" content="https://i.loli.net/2020/07/05/3TrusBP5JanXZxO.jpg">
-<meta property="og:image" content="https://i.loli.net/2020/07/05/T3jfgZiQ4Nq9bth.jpg">
-<meta property="og:image" content="https://i.loli.net/2020/07/05/mSKwdugyA8QBk36.jpg">
-<meta property="og:image" content="https://i.loli.net/2020/07/05/GMXq8er4Z1mFhUB.jpg">
-<meta property="article:published_time" content="2018-09-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-23T04:22:20.241Z">
+<meta property="og:image" content="https://i.loli.net/2021/04/24/ckUEn68trdAJjBy.jpg">
+<meta property="article:published_time" content="2021-04-25T02:47:26.000Z">
+<meta property="article:modified_time" content="2021-05-04T07:36:08.570Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
+<meta property="article:tag" content="时空同步">
+<meta property="article:tag" content="运动补偿">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2020/07/05/ltBXN6fHiMC4x1U.jpg">
+<meta name="twitter:image" content="https://i.loli.net/2021/04/24/ckUEn68trdAJjBy.jpg">
 
-<link rel="canonical" href="https://blog.shipengx.com/archives/4da6b2e.html">
+<link rel="canonical" href="https://blog.shipengx.com/archives/d7b732b3.html">
 
 
 <script id="page-configurations">
@@ -88,7 +85,7 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
-  <title>（十）看不见的“传感器”高精度地图 | 朝花夕拾</title>
+  <title>浅谈多传感器信息融合的先决条件——时空同步与运动补偿 | 朝花夕拾</title>
   
 
 
@@ -237,7 +234,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/4da6b2e.html">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/d7b732b3.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -250,7 +247,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          （十）看不见的“传感器”高精度地图
+          浅谈多传感器信息融合的先决条件——时空同步与运动补偿
         </h2>
 
         <div class="post-meta">
@@ -260,14 +257,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-09-08 00:00:00" itemprop="dateCreated datePublished" datetime="2018-09-08T00:00:00+08:00">2018-09-08</time>
+              <time title="创建时间：2021-04-25 10:47:26" itemprop="dateCreated datePublished" datetime="2021-04-25T10:47:26+08:00">2021-04-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 12:22:20" itemprop="dateModified" datetime="2020-07-23T12:22:20+08:00">2020-07-23</time>
+                <time title="修改时间：2021-05-04 15:36:08" itemprop="dateModified" datetime="2021-05-04T15:36:08+08:00">2021-05-04</time>
               </span>
 
           <br>
@@ -283,8 +280,8 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/%E6%97%A0%E4%BA%BA%E9%A9%BE%E9%A9%B6%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/" itemprop="url" rel="index">
-                    <span itemprop="name">无人驾驶技术入门</span>
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/%E5%A4%9A%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BF%A1%E6%81%AF%E8%9E%8D%E5%90%88/" itemprop="url" rel="index">
+                    <span itemprop="name">多传感器信息融合</span>
                   </a>
                 </span>
             </span>
@@ -298,13 +295,13 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/archives/4da6b2e.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/archives/4da6b2e.html" itemprop="commentCount"></span>
+    <a title="valine" href="/archives/d7b732b3.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/d7b732b3.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-            <div class="post-description">无人车中的高精地图。</div>
+            <div class="post-description">TODO</div>
 
         </div>
       </header>
@@ -315,28 +312,65 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <blockquote>
-<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNzg4NTU3Mw==" title="https://zhuanlan.zhihu.com/p/37885573">这里<i class="fa fa-external-link"></i></span>。</p>
-</blockquote>
-<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>高精度电子地图也称为高分辨率地图（High Definition Map，<strong>HD Map</strong>），是一种专门用于无人驾驶的地图技术。与传统导航地图不同的是，高精度地图除了能提供道路（Road）级别的导航信息外，还能提供车道（Lane）级别的导航信息，高精度地图所提供信息的丰富度和精度远远高于传统导航地图。高精度地图能够为无人驾驶提供的内容包括：</p>
-<p><strong>(1) 车道级道路信息</strong><br>传统导航地图只能提供道路级（Road）导航信息，如下图所示，道路R1连接着R2，R2同时连接着R3和R4。而高精度地图能够提供车道级（Lane）导航信息，这种导航信息能够精确到车道的连接关系，如下图所示，Lane1连着Lane4，Lane4连着Lane8，Lane3连着Lane6和Lane7，Lane7连着Lane10。</p>
-<p><img data-src="https://i.loli.net/2020/07/05/ltBXN6fHiMC4x1U.jpg" alt="高精地图道路拓扑关系示意图"></p>
-<p>车道级别的道路信息能够解决在路口转弯时，无人车不知道需要转多大的角度和保持多高车速的问题。如下图右侧绿色虚线即为高精度地图为无人车提供的虚拟车道线中心，只要提前变道到正确车道，并沿着虚拟车道线所在的车道行驶，即可顺利通过路口。</p>
-<p><img data-src="https://i.loli.net/2020/07/05/u7PRnwCx9HcK56G.jpg" alt="十字路口处的高精地图道路拓扑关系示意图"></p>
-<p><strong>(2) 道路先验信息</strong><br>先验信息是指某些可以预先采集且短时间内不会改变的信息。仅依靠传感器的信息很难感知：车辆现在是处在高速公路上，还是处在普通城市道路上；无限速牌的路段，车速最高可以开多快；前方道路的曲率；所处路段的GPS信号强弱等。这些都是传感器遇到性能瓶颈时，无法实时得到的信息，而这些信息却都是客观存在的，且短时间内不会随外部事物的变化而变化，因此可以对这些信息预先进行采集，并作为先验信息传给无人车做决策。如下图所示为高精度地图可以为无人车提供的某些先验信息，包括<strong>道路曲率</strong>、<strong>航向</strong>、<strong>坡度</strong>和<strong>横坡角</strong>，这些信息对于无人车的安全性和舒适性都至关重要。</p>
-<p><img data-src="https://i.loli.net/2020/07/05/3TrusBP5JanXZxO.jpg" alt="高精地图所能提供的一些关键先验信息"></p>
-<p><strong>(3) 感兴趣点</strong><br>交通场景中能成为感兴趣点（Point of Interest，<strong>POI</strong>）的目标有很多，比如：用中心点和多个外包络点描述的交通标志牌、地面标志、灯杆、红绿灯、收费站等；用一系列连续点所组成的链状信息描述的路沿、护栏、隧道、龙门架、桥等。高精度地图精确记录了这些POI的经纬度和高度，只要给定无人车的精确位置（经纬高），即可将各个POI相对于自车的位置计算出来。将这些POI信息的相对位置逆向投影到车载前视图像上，如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/07/05/T3jfgZiQ4Nq9bth.jpg" alt="高精地图所能提供的POI信息"></p>
-<p>下图从要素、系统、用途方面更为清晰地囊括了传统地图和高精度地图的侧重点：</p>
-<p><img data-src="https://i.loli.net/2020/07/05/mSKwdugyA8QBk36.jpg" alt="高精地图与传统导航地图的侧重点差异"></p>
-<p>高精度地图只是一个静态的数据，在实际使用时，不可能一开始就将全国的地图导入到系统中，这样不仅费时，而且会占用系统很多资源。高精度地图的供应商（图商）除了提供高精度地图外，还会提供一个叫做“地图引擎”的软件，由其负责整个高精度地图的资源调度，无人车只需告诉“地图引擎”当前的大致位置及目的地，“地图引擎”便会将这个过程中所要用到的高精度地图数据发布出来，供无人车使用，数据流如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/07/05/GMXq8er4Z1mFhUB.jpg" alt="高精地图数据流"></p>
-<p>高精度地图的应用需要配合高精度的定位。高精度定位，至少包含无人车当前的位置和航向角。位置是指无人车GPS天线安装位置所在的经度、纬度、高度；航向角，是指无人车车头的朝向与正北方向的夹角。</p>
-<p>无人车的定位算法通常采用<strong>粒子滤波</strong>的方法，需要经过多个计算周期后，定位结果才会收敛，进而提供一个相对稳定的定位结果。高精地图所面临的挑战：<strong>地图众包</strong>与国内政策。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNzg4NTU3Mw==" title="https://zhuanlan.zhihu.com/p/37885573">无人驾驶技术入门（十）| 看不见的“传感器”高精度地图<i class="fa fa-external-link"></i></span></li>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p>XMind 脑图</p>
+<h1 id="0-引言" class="heading-control"><a href="#0-引言" class="headerlink" title="0 引言"></a>0 引言<a class="heading-anchor" href="#0-引言" aria-hidden="true"></a></h1><p>自动驾驶多传感器信息融合本质是要综合处理多个信息源，来对车辆自身位姿或外部环境状态作出尽量准确的评估。每个信息源都来自特定的传感器，如相机（Camera）、毫米波（Radar）、激光（Lidar）、超声波（Ultrasonic）、全球导航卫星系统（Global Navigation Satellite System，GNSS）、惯性测量单元（Inertial Measurement Unit，IMU）等，不同传感器间往往有着巨大的差异，主要体现在以下几方面：</p>
+<ul>
+<li>传感原理：可见光、非可见光、电磁波、声波、惯性原理</li>
+<li>时间特性描述：时间基准</li>
+<li>空间特性描述：坐标系</li>
+<li>采样触发时刻：有先有后</li>
+<li>采样频率：有快有慢</li>
+<li>感知处理时间与传输时延：有长有短</li>
+</ul>
+<p>融合层在拿到来自不同信源的感知层信息后，若不针对上述差异进行预处理，将无法实施有效的融合动作。</p>
+<p>试想一下，假如我们要融合来自传感器 A 的感知结果 InfoA 和来自传感器 B 的感知结果 InfoB，当前时刻我们得到了两者的值，但 InfoA 表征的是对于传感器 A 而言 100ms 前的物理事件，并采用笛卡尔坐标系描述，而 InfoB 表征的是对于传感器 B 而言 200ms 前的物理事件，并采用极坐标系描述。显然，我们无法直接融合 InfoA 和 InfoB 以得到可供下游使用的统一的融合结果。</p>
+<p>为应对上述问题，时空同步与运动补偿是有效且必不可少的步骤，本文将就此进行展开。</p>
+<h1 id="1-时空同步" class="heading-control"><a href="#1-时空同步" class="headerlink" title="1 时空同步"></a>1 时空同步<a class="heading-anchor" href="#1-时空同步" aria-hidden="true"></a></h1><h2 id="1-1-时间同步" class="heading-control"><a href="#1-1-时间同步" class="headerlink" title="1.1 时间同步"></a>1.1 时间同步<a class="heading-anchor" href="#1-1-时间同步" aria-hidden="true"></a></h2><p>我们在提及传感器时间同步时谈论的是三个层面的意思：</p>
+<ul>
+<li>统一时间基准</li>
+<li>对齐各传感器的量测结果时间戳</li>
+<li>同步各传感器的采样触发时刻与采样节拍</li>
+</ul>
+<h3 id="1-1-1-统一时间基准" class="heading-control"><a href="#1-1-1-统一时间基准" class="headerlink" title="1.1.1 统一时间基准"></a>1.1.1 统一时间基准<a class="heading-anchor" href="#1-1-1-统一时间基准" aria-hidden="true"></a></h3><p>大前提，硬件系统层面需要解决</p>
+<p><strong>(1) 软件同步方法</strong></p>
+<p>网络时间协议（Network Time Protocol，NTP）</p>
+<p><strong>(2) 硬件同步方法</strong></p>
+<p>GNSS 授时</p>
+<p>全球导航卫星系统（Global Navigation Satellite System，GNSS） 晶振</p>
+<p>精准时间协议（Precise Time Protocol，PTP）与广义精准时间协议（Geneal Precise Time Protocol，gPTP）</p>
+<h3 id="1-1-2-对齐各传感器的量测结果时间戳" class="heading-control"><a href="#1-1-2-对齐各传感器的量测结果时间戳" class="headerlink" title="1.1.2 对齐各传感器的量测结果时间戳"></a>1.1.2 对齐各传感器的量测结果时间戳<a class="heading-anchor" href="#1-1-2-对齐各传感器的量测结果时间戳" aria-hidden="true"></a></h3><p>查找最新的那一帧</p>
+<p>最小二乘</p>
+<p>内插外推，线性插值，三次样条插值</p>
+<p>后融合，软件层面需要解决</p>
+<p>如果需要通过量测/量测关联生成伪量测，这才是必须的步骤</p>
+<h3 id="1-1-3-同步各传感器的采样触发时刻与采样节拍" class="heading-control"><a href="#1-1-3-同步各传感器的采样触发时刻与采样节拍" class="headerlink" title="1.1.3 同步各传感器的采样触发时刻与采样节拍"></a>1.1.3 同步各传感器的采样触发时刻与采样节拍<a class="heading-anchor" href="#1-1-3-同步各传感器的采样触发时刻与采样节拍" aria-hidden="true"></a></h3><p>前融合，硬件系统层面需要解决</p>
+<p>业界实践——PonyAI 的时间同步方案</p>
+<p><img data-src="https://i.loli.net/2021/04/24/ckUEn68trdAJjBy.jpg" alt="PonyAI 的时间同步方案"></p>
+<p>上图所示，传感器的时间同步，从 GNSS 定位信息开始能够提供一个比较准确的时间信息。到 navigation box 中后，我们会对它的信息进行解析，提供 PPS 信号，提供每秒的时钟，再加上 GPRMS 的定位和时间信息，给到雷达和 central computing。</p>
+<p>雷达在做扫描的时候，它会将扫描的信息和时间戳提供给 central computing，之后 central computing 会将信息传输给 PSPU，PSPU 会根据触发角和时间戳信息来触发相机的曝光。</p>
+<p>相机曝光后，PSPU 会将时间添加进每一帧的数据上，central computing 还会通过 PTP 将时间信息传送给雷达。</p>
+<p>这样雷达和相机的时间就可以对的上。这样就可以做到传感器系统的所有数据的时间戳信息是一致的</p>
+<p>二，Nbox: 我们会集成 4G，Switch, LiDARs 和 GNSS/IMU，我们会把这些所有的子模块的供电，数据，集成起来 ，走线也会少很多；</p>
+<p>三，PSPU: 集成所有相机的供电，控制，时间同步以及图像数据的接受和后处理；</p>
+<h2 id="1-2-空间同步" class="heading-control"><a href="#1-2-空间同步" class="headerlink" title="1.2 空间同步"></a>1.2 空间同步<a class="heading-anchor" href="#1-2-空间同步" aria-hidden="true"></a></h2><p>传感器外参标定</p>
+<p>坐标系</p>
+<p>变换到相同的坐标系下</p>
+<h1 id="2-运动补偿" class="heading-control"><a href="#2-运动补偿" class="headerlink" title="2 运动补偿"></a>2 运动补偿<a class="heading-anchor" href="#2-运动补偿" aria-hidden="true"></a></h1><p>获取能尽量反应当前时刻目标真实状态的量测信息</p>
+<p>处理延时</p>
+<p>传输延时</p>
+<p>坐标系变换</p>
+<h2 id="2-1-补偿自车运动" class="heading-control"><a href="#2-1-补偿自车运动" class="headerlink" title="2.1 补偿自车运动"></a>2.1 补偿自车运动<a class="heading-anchor" href="#2-1-补偿自车运动" aria-hidden="true"></a></h2><h2 id="2-2-补偿目标运动" class="heading-control"><a href="#2-2-补偿目标运动" class="headerlink" title="2.2 补偿目标运动"></a>2.2 补偿目标运动<a class="heading-anchor" href="#2-2-补偿目标运动" aria-hidden="true"></a></h2><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8yOTc5NzcwNjU/dXRtX3NvdXJjZT13ZWNoYXRfc2Vzc2lvbg==" title="https://zhuanlan.zhihu.com/p/297977065?utm_source=wechat_session">一刻钟读懂 gPTP<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9jbG91ZC50ZW5jZW50LmNvbS9kZXZlbG9wZXIvYXJ0aWNsZS8xNjEzMzAz" title="https://cloud.tencent.com/developer/article/1613303">AVB 简介—第二篇：gPTP 简介<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tL3MvaVlXVl9UVzBtdmplNlF3QzlmWlhldw==" title="https://mp.weixin.qq.com/s/iYWV_TW0mvje6QwC9fZXew">自动驾驶多传感器感知的探索<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xNDY3Mzk5OTg=" title="https://zhuanlan.zhihu.com/p/146739998">Pony Tech | 自动驾驶中的传感器系统<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tL3Mvcm02SG9TT3lFNzJBakJxbVFYb2FWdw==" title="https://mp.weixin.qq.com/s/rm6HoSOyE72AjBqmQXoaVw">一文详解自动驾驶系统的时空同步问题<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zNTg3OTQ5My9hcnRpY2xlL2RldGFpbHMvMTEyMjM0MDU4" title="https://blog.csdn.net/weixin_35879493/article/details/112234058">ptp 精准时间协议_智能驾驶数据融合中的精确时间同步<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppbmtpbmcwMS9hcnRpY2xlL2RldGFpbHMvMTEyNTI0Njc5" title="https://blog.csdn.net/jinking01/article/details/112524679">多源传感器融合时的时间对齐或者时间同步问题<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYxNjg1OTM=" title="https://zhuanlan.zhihu.com/p/326168593">多传感器融合中的时间硬同步 1-论文阅读<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMzU2MzM2NDA=" title="https://zhuanlan.zhihu.com/p/335633640">多传感器融合中的时间同步 2-论文阅读<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9jZG1kLmNua2kuY29tLmNuL0FydGljbGUvQ0RNRC0xMDUxMS0xMDE5MjA0MTQ4Lmh0bQ==" title="https://cdmd.cnki.com.cn/Article/CDMD-10511-1019204148.htm">自动驾驶中多传感器集成同步控制器设计与实现<i class="fa fa-external-link"></i></span></li>
 </ol>
-<hr>
 
     </div>
 
@@ -392,7 +426,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.shipengx.com/archives/4da6b2e.html" title="（十）看不见的“传感器”高精度地图">https://blog.shipengx.com/archives/4da6b2e.html</a>
+    <a href="https://blog.shipengx.com/archives/d7b732b3.html" title="浅谈多传感器信息融合的先决条件——时空同步与运动补偿">https://blog.shipengx.com/archives/d7b732b3.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -405,6 +439,8 @@
           
           <div class="post-tags">
               <a href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag"><i class="fa fa-tag"></i> 自动驾驶</a>
+              <a href="/tags/%E6%97%B6%E7%A9%BA%E5%90%8C%E6%AD%A5/" rel="tag"><i class="fa fa-tag"></i> 时空同步</a>
+              <a href="/tags/%E8%BF%90%E5%8A%A8%E8%A1%A5%E5%81%BF/" rel="tag"><i class="fa fa-tag"></i> 运动补偿</a>
           </div>
 
         
@@ -413,13 +449,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/archives/fde458ab.html" rel="prev" title="（九）与生俱来的VCU信号">
-      <i class="fa fa-chevron-left"></i> （九）与生俱来的VCU信号
+    <a href="/archives/c6c7f3af.html" rel="prev" title="【OJ】表示数字">
+      <i class="fa fa-chevron-left"></i> 【OJ】表示数字
     </a></div>
-      <div class="post-nav-item">
-    <a href="/archives/78513fbc.html" rel="next" title="（十一）无人驾驶中的CAN消息解析">
-      （十一）无人驾驶中的CAN消息解析 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -480,7 +513,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-正文"><span class="nav-text">1 正文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-参考"><span class="nav-text">2 参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-引言"><span class="nav-text">0 引言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-时空同步"><span class="nav-text">1 时空同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-时间同步"><span class="nav-text">1.1 时间同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-统一时间基准"><span class="nav-text">1.1.1 统一时间基准</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-对齐各传感器的量测结果时间戳"><span class="nav-text">1.1.2 对齐各传感器的量测结果时间戳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-同步各传感器的采样触发时刻与采样节拍"><span class="nav-text">1.1.3 同步各传感器的采样触发时刻与采样节拍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-空间同步"><span class="nav-text">1.2 空间同步</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-运动补偿"><span class="nav-text">2 运动补偿</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-补偿自车运动"><span class="nav-text">2.1 补偿自车运动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-补偿目标运动"><span class="nav-text">2.2 补偿目标运动</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
