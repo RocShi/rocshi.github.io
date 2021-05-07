@@ -641,13 +641,6 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/Matplotlib/</loc>
-    <lastmod>2021-05-07</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.shipengx.com/tags/%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/</loc>
     <lastmod>2021-05-07</lastmod>
     <changefreq>daily</changefreq>
@@ -698,6 +691,13 @@
   
   <url>
     <loc>https://blog.shipengx.com/tags/%E5%A4%9A%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BF%A1%E6%81%AF%E8%9E%8D%E5%90%88/</loc>
+    <lastmod>2021-05-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shipengx.com/tags/Matplotlib/</loc>
     <lastmod>2021-05-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -762,13 +762,6 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/%E6%95%88%E7%8E%87/Git/</loc>
-    <lastmod>2021-05-07</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.shipengx.com/categories/%E7%BC%96%E7%A0%81/Python/</loc>
     <lastmod>2021-05-07</lastmod>
     <changefreq>daily</changefreq>
@@ -777,6 +770,13 @@
   
   <url>
     <loc>https://blog.shipengx.com/categories/%E7%BC%96%E7%A0%81/C-C/%E9%9A%8F%E7%AC%94/</loc>
+    <lastmod>2021-05-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shipengx.com/categories/%E6%95%88%E7%8E%87/Git/</loc>
     <lastmod>2021-05-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
