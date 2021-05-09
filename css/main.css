@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #cff006;
+  background: #ff957d;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3081,7 +3081,7 @@ blockquote {
 .menu .menu-item a:hover,
 .menu .menu-item span.exturl:hover {
   background: #ddd;
-  font-weight: bold;
+  font-weight: bold !important;
   background-color: #4f94cd;
   color: #fff !important;
 }
