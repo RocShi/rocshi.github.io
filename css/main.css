@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #fae7f5;
+  background: #42ffff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3074,7 +3074,7 @@ blockquote {
 .brand:hover .logo-line-after i {
   background: #4f94cd !important;
 }
-.menu .menu-item .menu-item-gitbook a {
+.menu .menu-item a {
   font-weight: bold;
 }
 .menu-item-active a,
@@ -3084,6 +3084,9 @@ blockquote {
   font-weight: bold;
   background-color: #4f94cd;
   color: #fff !important;
+}
+.menu-item-gitbook {
+  font-weight: bold;
 }
 .menu .menu-item .badge {
   display: none !important;
