@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #6bfffc;
+  background: #fae7f5;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3074,20 +3074,19 @@ blockquote {
 .brand:hover .logo-line-after i {
   background: #4f94cd !important;
 }
-.menu .menu-item a {
-  font-weight: bold !important;
+.menu .menu-item .menu-item-gitbook a {
+  font-weight: bold;
 }
 .menu-item-active a,
 .menu .menu-item a:hover,
 .menu .menu-item span.exturl:hover {
   background: #ddd;
-  font-weight: bold !important;
+  font-weight: bold;
   background-color: #4f94cd;
   color: #fff !important;
 }
 .menu .menu-item .badge {
   display: none !important;
-  font-weight: bold !important;
 }
 .github-corner svg {
   position: fixed !important;
