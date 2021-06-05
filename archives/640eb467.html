@@ -60,7 +60,7 @@
 <meta property="og:description" content="本文章旨在记录学习《Effective C++》过程中一些书摘及学习笔记。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-05T06:00:41.000Z">
-<meta property="article:modified_time" content="2021-06-05T06:05:57.267Z">
+<meta property="article:modified_time" content="2021-06-05T07:04:11.194Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="Effective C++">
@@ -82,7 +82,7 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
-  <title>《Effective C++》（第三版）书摘与学习笔记 | 朝花夕拾</title><meta name="robots" content="noindex">
+  <title>《Effective C++》（第三版）书摘与学习笔记 | 朝花夕拾</title>
   
 
 
@@ -154,17 +154,17 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">20</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">35</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">36</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">64</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">65</span></a>
 
   </li>
         <li class="menu-item menu-item-books">
@@ -265,7 +265,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-06-05 14:00:41 / 修改时间：14:05:57" itemprop="dateCreated datePublished" datetime="2021-06-05T14:00:41+08:00">2021-06-05</time>
+              <time title="创建时间：2021-06-05 14:00:41 / 修改时间：15:04:11" itemprop="dateCreated datePublished" datetime="2021-06-05T14:00:41+08:00">2021-06-05</time>
             </span>
 
           <br>
@@ -319,7 +319,35 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <!-- flag of hidden posts -->
+        <h1 id="0-导读" class="heading-control"><a href="#0-导读" class="headerlink" title="0 导读"></a>0 导读<a class="heading-anchor" href="#0-导读" aria-hidden="true"></a></h1><ol>
+<li>定义式是编译器为此对象分配内存的地点。</li>
+<li>所谓 <code>default</code> 构造函数，即<strong>缺省构造函数</strong>，是一个可被调用而不带任何实参的构造函数，这样的构造函数要不没有参数，要不就是每个参数都有缺省值。</li>
+<li><p><code>explicit</code> 可以阻止类的构造函数被用来执行隐式类型转换（implicit type conversions），但被 <code>explicit</code> 关键字修饰的构造函数仍可被用来进行显示类型转换（explicit type conversions）。例如下面这个例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">B</span><span class="params">(<span class="keyword">int</span> x = <span class="number">0</span>, <span class="keyword">bool</span> b = <span class="literal">true</span>)</span></span>; <span class="comment">// default 构造函数</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">(B bObject)</span></span>; <span class="comment">// 函数接受一个类型为 B 的对象</span></span><br><span class="line"></span><br><span class="line">doSomething(<span class="number">28</span>);    <span class="comment">// 错误，28 不能被隐式转换为 B 类型的对象</span></span><br><span class="line">doSomething(B(<span class="number">28</span>)); <span class="comment">// 正确，使用 B 的构造函数将 28 显示转换为一个 B 类型的对象</span></span><br></pre></td></tr></table></figure>
+<p>被声明为 <code>explicit</code> 的构造函数禁止编译器执行非预期（往往也不被期望）的类型转换，构造函数应尽量使用 <code>explicit</code> 进行修饰，除非你真的希望允许构造函数被用于隐式类型转换。</p>
+</li>
+<li><p><strong>拷贝构造函数</strong>被用来“以同类型对象初始化自我对象”，拷贝赋值操作符（即 <code>=</code>）被用来“从另一个同型对象中拷贝其值到自我对象”。观察下面的示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Widget();                             <span class="comment">// default 构造函数</span></span><br><span class="line">    Widget(<span class="keyword">const</span> Widget &amp;rhs);            <span class="comment">// 拷贝构造函数</span></span><br><span class="line">    Widget &amp;<span class="keyword">operator</span>=(<span class="keyword">const</span> Widget &amp;rhs); <span class="comment">// 拷贝赋值运算符</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w1</span><span class="params">()</span></span>;   <span class="comment">// 调用 default 构造函数</span></span><br><span class="line"><span class="function">Widget <span class="title">w2</span><span class="params">(w1)</span></span>; <span class="comment">// 调用拷贝构造函数</span></span><br><span class="line">w1 = w2;       <span class="comment">// 调用拷贝赋值运算符</span></span><br></pre></td></tr></table></figure>
+<p><code>=</code> 也可以用来调用拷贝构造函数，例如下面的语句中，<code>w3</code> 是新定义的对象，此时会调用 <code>Widget</code> 的拷贝构造函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Widget w3 = w2;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以<strong>传值</strong>的形式向函数中传递用户自定义类型是个不好的习惯，因为函数内部会创建匿名对象，造成资源消耗，通常情况下应该是<strong>传引用</strong>，如果传入参数不会被改变，引用还应指定为 <code>const</code> 的。</p>
+</li>
+<li><p>对 <code>null</code> 指针解引用会造成<strong>未定义行为</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="number">0</span>;  <span class="comment">// p 是个 null 指针</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *p;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>char</code> 数组：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> name[] = <span class="string">"Darla"</span>;  <span class="comment">// name 是个 char 数组，大小为 6（字符串常量末尾还有有个结束符）</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="1-让自己习惯-C" class="heading-control"><a href="#1-让自己习惯-C" class="headerlink" title="1 让自己习惯 C++"></a>1 让自己习惯 C++<a class="heading-anchor" href="#1-让自己习惯-C" aria-hidden="true"></a></h1><h2 id="条款-01-视-C-为一个语言联邦" class="heading-control"><a href="#条款-01-视-C-为一个语言联邦" class="headerlink" title="条款 01: 视 C++ 为一个语言联邦"></a>条款 01: 视 C++ 为一个语言联邦<a class="heading-anchor" href="#条款-01-视-C-为一个语言联邦" aria-hidden="true"></a></h2><p>C++ 核心就是以下四点：</p>
+<ul>
+<li><strong>C</strong></li>
+<li><strong>面向对象</strong></li>
+<li><strong>模板</strong></li>
+<li><strong>STL</strong></li>
+</ul>
+
     </div>
 
     
@@ -332,16 +360,16 @@
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\f6bc4afa.html" rel="bookmark">C++ Primer - 第8章 IO库</a></div>
+      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
   </ul>
 
@@ -394,6 +422,13 @@
 
 
         
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/ef26ff66.html" rel="prev" title="【LeetCode】341. 扁平化嵌套列表迭代器">
+      <i class="fa fa-chevron-left"></i> 【LeetCode】341. 扁平化嵌套列表迭代器
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
     
   </article>
@@ -453,6 +488,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-导读"><span class="nav-text">0 导读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-让自己习惯-C"><span class="nav-text">1 让自己习惯 C++</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-01-视-C-为一个语言联邦"><span class="nav-text">条款 01: 视 C++ 为一个语言联邦</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -470,20 +506,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
