@@ -2,13 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.shipengx.com/archives/640eb467.html</loc>
-    
-    <lastmod>2021-06-05</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.shipengx.com/archives/ef26ff66.html</loc>
     
     <lastmod>2021-05-08</lastmod>
@@ -536,13 +529,6 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/VS-Code/</loc>
-    <lastmod>2021-06-05</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.shipengx.com/tags/%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/</loc>
     <lastmod>2021-06-05</lastmod>
     <changefreq>daily</changefreq>
@@ -557,7 +543,7 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/Effective-C/</loc>
+    <loc>https://blog.shipengx.com/tags/VS-Code/</loc>
     <lastmod>2021-06-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -578,14 +564,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/LeetCode/</loc>
+    <loc>https://blog.shipengx.com/tags/OJ/</loc>
     <lastmod>2021-06-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/OJ/</loc>
+    <loc>https://blog.shipengx.com/tags/LeetCode/</loc>
     <lastmod>2021-06-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -762,14 +748,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/Linux/</loc>
+    <loc>https://blog.shipengx.com/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AC-Primer%E3%80%8B/</loc>
     <lastmod>2021-06-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AC-Primer%E3%80%8B/</loc>
+    <loc>https://blog.shipengx.com/categories/Linux/</loc>
     <lastmod>2021-06-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -791,13 +777,6 @@
   
   <url>
     <loc>https://blog.shipengx.com/categories/%E6%95%88%E7%8E%87/Git/</loc>
-    <lastmod>2021-06-05</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AEffective-C-%E3%80%8B/</loc>
     <lastmod>2021-06-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
