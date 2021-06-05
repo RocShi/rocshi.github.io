@@ -61,7 +61,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/04/24/ckUEn68trdAJjBy.jpg">
 <meta property="article:published_time" content="2021-04-25T02:47:26.000Z">
-<meta property="article:modified_time" content="2021-05-04T09:12:59.761Z">
+<meta property="article:modified_time" content="2021-06-02T07:47:35.811Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta property="article:tag" content="时空同步">
@@ -157,17 +157,17 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">20</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">35</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">36</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">64</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">65</span></a>
 
   </li>
         <li class="menu-item menu-item-books">
@@ -274,7 +274,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-04 17:12:59" itemprop="dateModified" datetime="2021-05-04T17:12:59+08:00">2021-05-04</time>
+                <time title="修改时间：2021-06-02 15:47:35" itemprop="dateModified" datetime="2021-06-02T15:47:35+08:00">2021-06-02</time>
               </span>
 
           <br>
@@ -332,25 +332,26 @@
 <li>采样频率：有快有慢</li>
 <li>感知处理时间与传输时延：有长有短</li>
 </ul>
-<p>融合层在拿到来自不同信源的感知层信息后，若不针对上述差异进行预处理，将无法实施有效的融合动作。</p>
+<p>融合层在拿到来自不同信息源的感知层信息后，若不针对上述差异进行预处理，将无法实施有效的融合动作。</p>
 <p>试想一下，假如我们要融合来自传感器 A 的感知结果 InfoA 和来自传感器 B 的感知结果 InfoB，当前时刻我们得到了两者的值，但 InfoA 表征的是对于传感器 A 而言 100ms 前的物理事件，并采用笛卡尔坐标系描述，而 InfoB 表征的是对于传感器 B 而言 200ms 前的物理事件，并采用极坐标系描述。显然，我们无法直接融合 InfoA 和 InfoB 以得到可供下游使用的统一的融合结果。</p>
-<p>为应对上述问题，时空同步与运动补偿是有效且必不可少的步骤，本文将就此进行展开。</p>
+<p>为应对上述问题，时空同步（又称时空配准）与运动补偿是有效且必不可少的步骤，本文将就此进行展开。</p>
 <h1 id="1-时空同步" class="heading-control"><a href="#1-时空同步" class="headerlink" title="1 时空同步"></a>1 时空同步<a class="heading-anchor" href="#1-时空同步" aria-hidden="true"></a></h1><h2 id="1-1-时间同步" class="heading-control"><a href="#1-1-时间同步" class="headerlink" title="1.1 时间同步"></a>1.1 时间同步<a class="heading-anchor" href="#1-1-时间同步" aria-hidden="true"></a></h2><p>我们在提及传感器时间同步时谈论的是三个层面的意思：</p>
 <ul>
 <li>统一时间基准</li>
 <li>对齐各传感器的量测结果时间戳</li>
 <li>同步各传感器的采样触发时刻与采样节拍</li>
 </ul>
+<p>时间戳对齐、运动补偿、卡尔曼预测步三者看起来似乎很像</p>
 <h3 id="1-1-1-统一时间基准" class="heading-control"><a href="#1-1-1-统一时间基准" class="headerlink" title="1.1.1 统一时间基准"></a>1.1.1 统一时间基准<a class="heading-anchor" href="#1-1-1-统一时间基准" aria-hidden="true"></a></h3><p>大前提，硬件系统层面需要解决</p>
 <p><strong>(1) 软件同步方法</strong></p>
 <p>网络时间协议（Network Time Protocol，NTP）</p>
 <p><strong>(2) 硬件同步方法</strong></p>
 <p>GNSS 授时</p>
-<p>全球导航卫星系统（Global Navigation Satellite System，GNSS） 晶振</p>
+<p>全球导航卫星系统（Global Navigation Satell ite System，GNSS） 晶振</p>
 <p>精准时间协议（Precise Time Protocol，PTP）与广义精准时间协议（Geneal Precise Time Protocol，gPTP）</p>
 <h3 id="1-1-2-对齐各传感器的量测结果时间戳" class="heading-control"><a href="#1-1-2-对齐各传感器的量测结果时间戳" class="headerlink" title="1.1.2 对齐各传感器的量测结果时间戳"></a>1.1.2 对齐各传感器的量测结果时间戳<a class="heading-anchor" href="#1-1-2-对齐各传感器的量测结果时间戳" aria-hidden="true"></a></h3><p>查找最新的那一帧</p>
-<p>最小二乘</p>
-<p>内插外推，线性插值，三次样条插值</p>
+<p>最小二乘拟合（Blair W D, Rice T R, Alouani A T, Xia P. Asynchronous data fusion for target tracking with a multitasking radar and optical sensor. In: Proceedings of the 1991 SPIE Conference on Acquisition, Tracking and Pointing V. Orlando, FL, USA,1991.234~245）</p>
+<p>内插外推（王宝树，李芳社.基于数据融合技术的多目标跟踪算法研究.西安电子科技大学学报，1998，25（3）：269~272），线性插值，三次样条插值，拉格朗日三点插值</p>
 <p>后融合，软件层面需要解决</p>
 <p>如果需要通过量测/量测关联生成伪量测，这才是必须的步骤</p>
 <h3 id="1-1-3-同步各传感器的采样触发时刻与采样节拍" class="heading-control"><a href="#1-1-3-同步各传感器的采样触发时刻与采样节拍" class="headerlink" title="1.1.3 同步各传感器的采样触发时刻与采样节拍"></a>1.1.3 同步各传感器的采样触发时刻与采样节拍<a class="heading-anchor" href="#1-1-3-同步各传感器的采样触发时刻与采样节拍" aria-hidden="true"></a></h3><p>前融合，硬件系统层面需要解决</p>
@@ -394,10 +395,10 @@
       <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
+      <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
+      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\cfd8b171.html" rel="bookmark">从贝叶斯滤波到无迹卡尔曼滤波</a></div>
@@ -534,20 +535,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
