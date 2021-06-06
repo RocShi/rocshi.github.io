@@ -564,14 +564,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/LeetCode/</loc>
+    <loc>https://blog.shipengx.com/tags/OJ/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/OJ/</loc>
+    <loc>https://blog.shipengx.com/tags/LeetCode/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -634,6 +634,13 @@
   </url>
   
   <url>
+    <loc>https://blog.shipengx.com/tags/Matplotlib/</loc>
+    <lastmod>2021-06-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.shipengx.com/tags/%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
@@ -642,13 +649,6 @@
   
   <url>
     <loc>https://blog.shipengx.com/tags/make/</loc>
-    <lastmod>2021-06-06</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/tags/Matplotlib/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -683,20 +683,6 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/CI/</loc>
-    <lastmod>2021-06-06</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</loc>
-    <lastmod>2021-06-06</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.shipengx.com/tags/%E5%A4%9A%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BF%A1%E6%81%AF%E8%9E%8D%E5%90%88/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
@@ -712,6 +698,20 @@
   
   <url>
     <loc>https://blog.shipengx.com/tags/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%9B%B2%E7%BA%BF%E6%8B%9F%E5%90%88/</loc>
+    <lastmod>2021-06-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shipengx.com/tags/CI/</loc>
+    <lastmod>2021-06-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shipengx.com/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -776,14 +776,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/%E6%95%88%E7%8E%87/Git/</loc>
+    <loc>https://blog.shipengx.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</loc>
+    <loc>https://blog.shipengx.com/categories/%E6%95%88%E7%8E%87/Git/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -811,14 +811,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/%E6%95%88%E7%8E%87/CI/</loc>
+    <loc>https://blog.shipengx.com/categories/%E7%BC%96%E7%A0%81/Python/%E9%9A%8F%E7%AC%94/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/%E7%BC%96%E7%A0%81/Python/%E9%9A%8F%E7%AC%94/</loc>
+    <loc>https://blog.shipengx.com/categories/%E6%95%88%E7%8E%87/CI/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
