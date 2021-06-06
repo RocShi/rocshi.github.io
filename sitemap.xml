@@ -529,6 +529,13 @@
   </url>
   
   <url>
+    <loc>https://blog.shipengx.com/tags/VS-Code/</loc>
+    <lastmod>2021-06-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.shipengx.com/tags/%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
@@ -537,13 +544,6 @@
   
   <url>
     <loc>https://blog.shipengx.com/tags/Ubuntu/</loc>
-    <lastmod>2021-06-06</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/tags/VS-Code/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -564,14 +564,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/OJ/</loc>
+    <loc>https://blog.shipengx.com/tags/LeetCode/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/LeetCode/</loc>
+    <loc>https://blog.shipengx.com/tags/OJ/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -641,14 +641,7 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/Hexo/</loc>
-    <lastmod>2021-06-06</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/tags/Blog/</loc>
+    <loc>https://blog.shipengx.com/tags/Matplotlib/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -662,7 +655,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/Matplotlib/</loc>
+    <loc>https://blog.shipengx.com/tags/Hexo/</loc>
+    <lastmod>2021-06-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shipengx.com/tags/Blog/</loc>
     <lastmod>2021-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
