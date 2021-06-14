@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-14T07:54:25.000Z">
-<meta property="article:modified_time" content="2021-06-14T11:18:05.573Z">
+<meta property="article:modified_time" content="2021-06-14T12:06:50.141Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -265,7 +265,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-06-14 15:54:25 / 修改时间：19:18:05" itemprop="dateCreated datePublished" datetime="2021-06-14T15:54:25+08:00">2021-06-14</time>
+              <time title="创建时间：2021-06-14 15:54:25 / 修改时间：20:06:50" itemprop="dateCreated datePublished" datetime="2021-06-14T15:54:25+08:00">2021-06-14</time>
             </span>
 
           <br>
@@ -456,6 +456,27 @@
 <li><p>当我们初始化或赋值一个类类型的对象时，实际上是在调用某个函数。当执行初始化时，我们调用构造函数；而当执行赋值操作时，我们调用赋值运算符。这些成员通常都包含一个参数，该参数的类型是类类型的 <code>const</code> 版本的引用。</p>
 </li>
 <li><p>当我们给基类的构造函数传递一个派生类对象时，实际运行的构造函数是基类中定义的那个，显然该构造函数只能处理基类自己的成员。类似的，如果我们将一个派生类对象赋值给一个基类对象，则实际运行的赋值运算符也是基类中定义的那个，该运算符同样只能处理基类自己的成员。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Bulk_quote bulk;  <span class="comment">// 派生类对象</span></span><br><span class="line"><span class="function">Quote <span class="title">item</span><span class="params">(bulk)</span></span>; <span class="comment">// 使用 Quote::Quote(const Quote&amp;) 构造函数</span></span><br><span class="line">item = bulk;      <span class="comment">// 调用 Quote::operator=(const Quotes)</span></span><br></pre></td></tr></table></figure>
+<p>当构造 <code>item</code> 时，运行 <code>Quote</code> 的拷贝构造函数。该函数只能处理 <code>bookNo</code> 和 <code>price</code> 两个成员，它负责拷贝 <code>bulk</code> 中 <code>Quote</code> 部分的成员，同时忽略掉 <code>bulk</code> 中 <code>Bulk_quote</code> 部分的成员。类似的，对于将 <code>bulk</code> 赋值给 <code>item</code> 的操作来说，只有 <code>bulk</code> 中 <code>Quote</code> 部分的成员被赋值给 <code>item</code>，其余部分被<strong>切掉</strong>（sliced down）了。</p>
+<blockquote>
+<p>WARNING：当我们用一个派生类对象为一个基类对象初始化或赋值时，只有该派生类对象中的基类部分会被拷贝、移动或赋值，它的派生类部分将被忽略掉。</p>
+</blockquote>
+</li>
+<li><p>要想理解在具有继承关系的类之间发生的类型转换，有三点非常重要：</p>
+<ul>
+<li>从派生类向基类的类型转换只对指针或引用类型有效</li>
+<li>基类向派生类不存在隐式类型转换</li>
+<li>和任何其他成员一样，派生类向基类的类型转换也可能会由于访问受限而变得不可行</li>
+</ul>
+<p>尽管自动类型转换只对指针或引用类型有效，但是继承体系中的大多数类仍然（显式或隐式地）定义了拷贝控制成员。因此，我们通常能够将一个派生类对象拷贝、移动或赋值给一个基类对象。不过需要注意的是，这种操作只处理派生类对象的基类部分。</p>
+</li>
+</ol>
+<h1 id="15-3-虚函数" class="heading-control"><a href="#15-3-虚函数" class="headerlink" title="15.3 虚函数"></a>15.3 虚函数<a class="heading-anchor" href="#15-3-虚函数" aria-hidden="true"></a></h1><ol>
+<li><p>当我们使用基类的引用或指针调用一个虚成员函数时会执行动态绑定。因为我们直到运行时才能知道到底调用了哪个版本的虚函数，所以所有虚函数都必须有定义。通常情况下，如果我们不使用某个函数，则无须为该函数提供定义。但是我们必须为每一个虚函数都提供定义，而不管它是否被用到了，这是因为连编译器也无法确定到底会使用哪个虚函数。（纯虚函数是个例外）</p>
+</li>
+<li><p>当某个虚函数通过指针或引用调用时，编译器产生的代码直到运行时才能确定应该调用哪个版本的函数。被调用的函数是与绑定到指针或引用上的对象的动态类型相匹配的那一个。</p>
+</li>
+<li><p><strong>动态绑定只有当我们通过指针或引用调用虚函数时才会发生。</strong></p>
 </li>
 </ol>
 
@@ -471,16 +492,16 @@
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
+      <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
     </li>
   </ul>
 
@@ -599,7 +620,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#15-1-OOP：概述"><span class="nav-text">15.1 OOP：概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-2-定义基类和派生类"><span class="nav-text">15.2 定义基类和派生类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-1-定义基类"><span class="nav-text">15.2.1 定义基类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-2-定义派生类"><span class="nav-text">15.2.2 定义派生类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-3-类型转换与继承"><span class="nav-text">15.2.3 类型转换与继承</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#15-1-OOP：概述"><span class="nav-text">15.1 OOP：概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-2-定义基类和派生类"><span class="nav-text">15.2 定义基类和派生类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-1-定义基类"><span class="nav-text">15.2.1 定义基类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-2-定义派生类"><span class="nav-text">15.2.2 定义派生类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-3-类型转换与继承"><span class="nav-text">15.2.3 类型转换与继承</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-3-虚函数"><span class="nav-text">15.3 虚函数</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
