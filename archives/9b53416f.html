@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-14T07:54:25.000Z">
-<meta property="article:modified_time" content="2021-06-14T08:31:05.872Z">
+<meta property="article:modified_time" content="2021-06-14T10:32:39.441Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -265,7 +265,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-06-14 15:54:25 / 修改时间：16:31:05" itemprop="dateCreated datePublished" datetime="2021-06-14T15:54:25+08:00">2021-06-14</time>
+              <time title="创建时间：2021-06-14 15:54:25 / 修改时间：18:32:39" itemprop="dateCreated datePublished" datetime="2021-06-14T15:54:25+08:00">2021-06-14</time>
             </span>
 
           <br>
@@ -341,7 +341,7 @@
 </ol>
 <h1 id="15-2-定义基类和派生类" class="heading-control"><a href="#15-2-定义基类和派生类" class="headerlink" title="15.2 定义基类和派生类"></a>15.2 定义基类和派生类<a class="heading-anchor" href="#15-2-定义基类和派生类" aria-hidden="true"></a></h1><h2 id="15-2-1-定义基类" class="heading-control"><a href="#15-2-1-定义基类" class="headerlink" title="15.2.1 定义基类"></a>15.2.1 定义基类<a class="heading-anchor" href="#15-2-1-定义基类" aria-hidden="true"></a></h2><ol>
 <li><blockquote>
-<p>基类通常都应该定义一个虚析构函数，即使该函数不执行任何实际操作也是如此。</p>
+<p>Note：基类通常都应该定义一个虚析构函数，即使该函数不执行任何实际操作也是如此。</p>
 </blockquote>
 </li>
 <li><p>派生类可以继承其基类的成员，然而当遇到如 <code>net_price</code> 这样与类型相关的操作时，派生类必须对其重新定义。换句话说，派生类需要对这些操作提供自己的新定义以<strong>覆盖</strong>（<code>override</code>）从基类继承而来的旧定义。</p>
@@ -360,7 +360,47 @@
 <li><p>派生类可以继承定义在基类中的成员，但是派生类的成员函数不一定有权访问从基类继承而来的成员。和其他使用基类的代码一样，派生类能访问公有成员，而不能访问私有成员。不过在某些时候基类中还有这样一种成员，基类希望它的派生类有权访问该成员，同时禁止其他用户访问。我们用受保护的（<code>protected</code>）访问运算符说明这样的成员。</p>
 </li>
 </ol>
-<h2 id="15-2-2-定义派生类" class="heading-control"><a href="#15-2-2-定义派生类" class="headerlink" title="15.2.2 定义派生类"></a>15.2.2 定义派生类<a class="heading-anchor" href="#15-2-2-定义派生类" aria-hidden="true"></a></h2>
+<h2 id="15-2-2-定义派生类" class="heading-control"><a href="#15-2-2-定义派生类" class="headerlink" title="15.2.2 定义派生类"></a>15.2.2 定义派生类<a class="heading-anchor" href="#15-2-2-定义派生类" aria-hidden="true"></a></h2><ol>
+<li><p>派生类必须通过使用<strong>类派生列表</strong>（class derivation list）明确指出它是从哪个（哪些）基类继承而来的。类派生列表的形式是：首先是一个冒号，后面紧跟以逗号分隔的基类列表，其中每个基类前面可以有以下三种访问说明符中的一个：<code>public</code>、<code>protected</code> 或者 <code>private</code>。</p>
+</li>
+<li><p>派生类必须将其继承而来的成员函数中需要覆盖的那些重新声明。</p>
+</li>
+<li><p>如果一个派生是公有的，则基类的公有成员也是派生类接口的组成部分。此外，我们<strong>能将公有派生类型的对象绑定到基类的引用或指针上</strong>。</p>
+<blockquote>
+<p>之我见：为什么强调公有派生？因为如果是保护派生或私有派生，那么即使将派生对象绑定到基类引用或指针上，派生对象内部的所有内容对外部都将不可见。</p>
+</blockquote>
+</li>
+<li><p>大多数类都只继承自一个类，这种形式的继承被称作“单继承”。</p>
+</li>
+<li><p>派生类经常（但不总是）覆盖它继承的虚函数。如果派生类没有覆盖其基类中的某个虚函数，则该虚函数的行为类似于其他的普通成员，派生类会直接继承其在基类中的版本。</p>
+</li>
+<li><p>派生类可以在它覆盖的函数前使用 <code>virtual</code> 关键字，但不是非得这么做。C++11 新标准允许派生类显式地注明它使用某个成员函数覆盖了它继承的虚函数。具体做法是在形参列表后面、或者在 <code>const</code> 成员函数的 <code>const</code> 关键字后面、或者在<strong>引用成员函数</strong>的<strong>引用限定符</strong>后面添加一个关键字 <code>override</code>。</p>
+</li>
+<li><p>一个派生类对象包含多个组成部分：</p>
+<ul>
+<li>一个含有派生类自己定义的（非静态）成员的子对象</li>
+<li>一个与该派生类继承的基类对应的子对象，如果有多个基类，那么这样的子对象也有多个<br><br></li>
+</ul>
+<p>C++ 标准并没有明确规定派生类的对象在内存中如何分布，因此，在一个对象中，继承自基类的部分和派生类自定义的部分不一定是连续存储的。</p>
+</li>
+<li><p>因为在派生类对象中含有与其基类对应的组成部分，所以我们<strong>能把派生类的对象当成基类对象来使用，而且我们也能将基类的指针或引用绑定到派生类对象中的基类部分上</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Quote item;       <span class="comment">// 基类对象</span></span><br><span class="line">Bulk_quote bulk;  <span class="comment">// 派生类对象</span></span><br><span class="line">Quote *p = &amp;item; <span class="comment">// p 指向 Quote 对象</span></span><br><span class="line">p = &amp;bulk;        <span class="comment">// p 指向 bulk 的 Quote 部分</span></span><br><span class="line">Quote &amp;r = bulk;  <span class="comment">// r 绑定到 bulk 的 Quote 部分</span></span><br></pre></td></tr></table></figure>
+<p>这种转换通常称为<strong>派生类到基类的</strong>（derived-to-base）类型转换。和其他类型转换一样，<strong>编译器会隐式地执行派生类到基类的转换</strong>。这种隐式特性意味着我们可以把派生类对象或者派生类对象的引用用在需要基类引用的地方：同样的，我们也可以把派生类对象的指针用在需要基类指针的地方。</p>
+<blockquote>
+<p>Note：在派生类对象中含有与其基类对应的组成部分，这一事实是继承的关键所在。</p>
+</blockquote>
+</li>
+<li><p>尽管在派生类对象中含有从基类继承而来的成员，但是派生类并不能直接初始化这些成员。和其他创建了基类对象的代码一样，派生类也必须使用基类的构造函数来初始化它的基类部分。</p>
+</li>
+<li><p>派生类对象的基类部分与派生类对象自己的数据成员都是在构造函数的初始化阶段执行初始化操作的。类似于我们初始化成员的过程，<strong>派生类构造函数同样是通过构造函数初始化列表来将实参传递给基类构造函数的</strong>。</p>
+</li>
+<li><p><strong>除非我们特别指出，否则派生类对象的基类部分会像数据成员一样执行默认初始化。</strong> 如果想使用其他的基类构造函数，我们需要以类名加圆括号内的实参列表的形式为构造函数提供初始值。这些实参将帮助编译器决定到底应该选用哪个构造函数来初始化派生类对象的基类部分。</p>
+<blockquote>
+<p>Note：首先初始化基类的部分，然后按照声明的顺序依次初始化派生类的成员。</p>
+</blockquote>
+</li>
+</ol>
+
     </div>
 
     
@@ -373,16 +413,16 @@
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
+      <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
     </li>
   </ul>
 
