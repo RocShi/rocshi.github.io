@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-14T07:54:25.000Z">
-<meta property="article:modified_time" content="2021-06-14T10:53:32.085Z">
+<meta property="article:modified_time" content="2021-06-14T11:12:52.681Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -265,7 +265,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-06-14 15:54:25 / 修改时间：18:53:32" itemprop="dateCreated datePublished" datetime="2021-06-14T15:54:25+08:00">2021-06-14</time>
+              <time title="创建时间：2021-06-14 15:54:25 / 修改时间：19:12:52" itemprop="dateCreated datePublished" datetime="2021-06-14T15:54:25+08:00">2021-06-14</time>
             </span>
 
           <br>
@@ -325,7 +325,7 @@
 <li><p>在 C++ 语言中，基类将类型相关的函数与派生类不做改变直接继承的函数区分对待。对于某些函数，基类希望它的派生类各自定义适合自身的版本，此时基类就将这些函数声明成<strong>虚函数</strong>（virtual function）。</p>
 </li>
 <li><p>派生类必须通过使用<strong>类派生列表</strong>（class derivation list）明确指出它是从哪个（哪些）基类继承而来的。类派生列表的形式是：<strong>首先是一个冒号，后面紧跟以逗号分隔的基类列表，其中每个基类前面可以有访问说明符</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_quote</span> :</span> <span class="keyword">public</span> Quote <span class="comment">// Bulk quote 继承了 Quote</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">net_price</span><span class="params">(<span class="built_in">std</span>::size t)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_quote</span> :</span> <span class="keyword">public</span> Quote <span class="comment">// Bulk_quote 继承了 Quote</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">net_price</span><span class="params">(<span class="built_in">std</span>::size t)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>派生类必须在其内部对所有重新定义的虚函数进行声明。</strong> 派生类可以在这样的函数之前加上 <code>virtua1</code> 关键字，但是并不是非得这么做。C++11 新标准允许派生类显式地注明它将使用哪个成员函数改写基类的虚函数，具体措施是在该函数的形参列表之后增加一个 <code>override</code> 关键字。</p>
 </li>
@@ -423,6 +423,35 @@
 </blockquote>
 </li>
 </ol>
+<h2 id="15-2-3-类型转换与继承" class="heading-control"><a href="#15-2-3-类型转换与继承" class="headerlink" title="15.2.3 类型转换与继承"></a>15.2.3 类型转换与继承<a class="heading-anchor" href="#15-2-3-类型转换与继承" aria-hidden="true"></a></h2><ol>
+<li><blockquote>
+<p>WARNING：理解基类和派生类之间的类型转换是理解 C++ 语言面向对象编程的关键所在。</p>
+</blockquote>
+</li>
+<li><p>通常情况下，如果我们想把引用或指针绑定到一个对象上，则引用或指针的类型应与对象的类型一致，或者对象的类型含有一个可接受的 <code>const</code> 类型转换规则。存在继承关系的类是一个重要的例外：我们<strong>可以将基类的指针或引用绑定到派生类对象上</strong>。例如，我们可以用 <code>Quote&amp;</code> 指向一个 <code>Bulk_quote</code> 对象，也可以把一个 <code>Bulk_quote</code> 对象的地址赋给一个 <code>Quote*</code>。</p>
+</li>
+<li><p>可以将基类的指针或引用绑定到派生类对象上有一层极为重要的含义：当使用基类的引用（或指针）时，实际上我们并不清楚该引用（或指针）所绑定对象的真实类型。该对象可能是基类的对象，也可能是派生类的对象。</p>
+</li>
+<li><blockquote>
+<p>Note：和内置指针一样，智能指针类也支持派生类向基类的类型转换，这意味着我们可以将一个派生类对象的指针存储在一个基类的智能指针内。</p>
+</blockquote>
+</li>
+<li><p>当我们使用存在继承关系的类型时，必须将一个变量或其他表达式的静态类型（static type）与该表达式表示对象的动态类型（dynamic type）区分开来。<strong>表达式的静态类型在编译时总是已知的，它是变量声明时的类型或表达式生成的类型；动态类型则是变量或表达式表示的内存中的对象的类型。动态类型直到运行时才可知。</strong></p>
+</li>
+<li><p>如果表达式既不是引用也不是指针，则它的动态类型永远与静态类型一致。</p>
+<blockquote>
+<p>Note：基类的指针或引用的静态类型可能与其动态类型不一致。</p>
+</blockquote>
+</li>
+<li><p><strong>不存在从基类向派生类的隐式类型转换。</strong> 之所以存在派生类向基类的类型转换是因为每个派生类对象都包含一个基类部分，而基类的引用或指针可以绑定到该基类部分上。一个基类的对象既可以以独立的形式存在，也可以作为派生类对象的一部分存在。如果基类对象不是派生类对象的一部分，则它只含有基类定义的成员，而不含有派生类定义的成员。</p>
+<p>因为一个基类的对象可能是派生类对象的一部分，也可能不是，所以不存在从基类向派生类的自动类型转换：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Quote base;</span><br><span class="line">Bulk_quote *bulkP = &amp;base;  <span class="comment">// 错误：不能将基类转换成派生类</span></span><br><span class="line">Bulk_quote &amp;bulkRef = base; <span class="comment">// 错误：不能将基类转换成派生类</span></span><br></pre></td></tr></table></figure>
+<p>如果上述赋值是合法的，则我们有可能会使用 <code>bulkP</code> 或 <code>bulkRef</code> 访问 <code>base</code> 中本不存在的成员。</p>
+<p>除此之外还有一种情况显得有点特别，即使一个基类指针或引用绑定在一个派生类对象上，我们也不能执行从基类向派生类的转换：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Bulk quote bulk;</span><br><span class="line">Quote *itemP = &amp;bulk;      <span class="comment">// 正确：动态类型是 Bulk_quote</span></span><br><span class="line">Bulk_quote *bulkP = itemP; <span class="comment">// 错误：不能将基类转换成派生类</span></span><br></pre></td></tr></table></figure>
+<p>编译器在编译时无法确定某个特定的转换在运行时是否安全，这是因为编译器只能通过检查指针或引用的静态类型来推断该转换是否合法。如果在基类中含有一个或多个虚函数，我们可以使用 <code>dynamic_cast</code> 请求一个类型转换，该转换的安全检查将在运行时执行。同样，如果我们已知某个基类向派生类的转换是安全的，则我们可以使用 <code>static_cast</code>来强制覆盖掉编译器的检查工作。</p>
+</li>
+</ol>
 
     </div>
 
@@ -433,19 +462,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
+      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
   </ul>
 
@@ -564,7 +593,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#15-1-OOP：概述"><span class="nav-text">15.1 OOP：概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-2-定义基类和派生类"><span class="nav-text">15.2 定义基类和派生类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-1-定义基类"><span class="nav-text">15.2.1 定义基类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-2-定义派生类"><span class="nav-text">15.2.2 定义派生类</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#15-1-OOP：概述"><span class="nav-text">15.1 OOP：概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-2-定义基类和派生类"><span class="nav-text">15.2 定义基类和派生类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-1-定义基类"><span class="nav-text">15.2.1 定义基类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-2-定义派生类"><span class="nav-text">15.2.2 定义派生类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-3-类型转换与继承"><span class="nav-text">15.2.3 类型转换与继承</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
