@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-14T07:54:25.000Z">
-<meta property="article:modified_time" content="2021-06-14T13:16:00.684Z">
+<meta property="article:modified_time" content="2021-06-14T15:00:04.134Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -265,7 +265,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-06-14 15:54:25 / 修改时间：21:16:00" itemprop="dateCreated datePublished" datetime="2021-06-14T15:54:25+08:00">2021-06-14</time>
+              <time title="创建时间：2021-06-14 15:54:25 / 修改时间：23:00:04" itemprop="dateCreated datePublished" datetime="2021-06-14T15:54:25+08:00">2021-06-14</time>
             </span>
 
           <br>
@@ -335,7 +335,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// basic 的类型是 Quote；bulk 的类型是 Bulk_quote</span></span><br><span class="line">print_total(<span class="built_in">cout</span>, basic, <span class="number">20</span>); <span class="comment">// 调用 Quote 的 net_price</span></span><br><span class="line">print_total(<span class="built_in">cout</span>, bulk, <span class="number">20</span>);  <span class="comment">// 调用 Bulk_quote 的 net_price</span></span><br></pre></td></tr></table></figure>
 <p>函数的运行版本由实参决定，即在运行时选择函数的版本，所以动态绑定有时又被称为<strong>运行时绑定</strong>（run-time binding）。</p>
 <blockquote>
-<p>Note：在 C++语言中，当我们使用基类的引用（或指针）调用一个虚函数时将发生动态绑定。</p>
+<p>Note：在 C++ 语言中，当我们使用基类的引用（或指针）调用一个虚函数时将发生动态绑定。</p>
 </blockquote>
 </li>
 </ol>
@@ -419,7 +419,7 @@
 </li>
 <li><p><strong>C++11 新标准提供了一种防止继承发生的方法，即在类名后跟一个关键字 <code>final</code>。</strong></p>
 <blockquote>
-<p>之我见：当于给类做了“绝育手术”，被 final 修饰的类“后继无类”。</p>
+<p>之我见：当于给类做了“绝育手术”，被 <code>final</code> 修饰的类“后继无类”。</p>
 </blockquote>
 </li>
 </ol>
@@ -502,7 +502,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D2</span> :</span> B</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 从 B 继承 f2() 和 f3()，覆盖 f1(int)</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fl</span><span class="params">(<span class="keyword">int</span>)</span> <span class="keyword">const</span> <span class="keyword">final</span></span>; <span class="comment">// 不允许后续的其他类覆盖 f1(int)</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D3</span> :</span> D2</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">f2</span><span class="params">()</span></span>;          <span class="comment">// 正确：覆盖从间接基类 B 继承而来的 f2</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">f1</span><span class="params">(<span class="keyword">int</span>)</span> <span class="keyword">const</span></span>; <span class="comment">// 错误：D2 已经将 f1 声明成 final</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p><code>final</code> 和 <code>override</code> 说明符出现在形参列表（包括任何 <code>const</code> 或引用修饰符）以及尾置返回类型之后。</p>
 <blockquote>
-<p>之我见：override 描述的是对上的关系，final 描述的是对下的关系。</p>
+<p>之我见：<code>override</code> 描述的是对上的关系，final 描述的是对下的关系。</p>
 </blockquote>
 </li>
 <li><p>和其他函数一样，<strong>虚函数也可以拥有默认实参</strong>。<strong>如果某次函数调用使用了默认实参，则该实参值由本次调用的静态类型决定。</strong></p>
@@ -524,7 +524,42 @@
 </li>
 </ol>
 <h1 id="15-4-抽象基类" class="heading-control"><a href="#15-4-抽象基类" class="headerlink" title="15.4 抽象基类"></a>15.4 抽象基类<a class="heading-anchor" href="#15-4-抽象基类" aria-hidden="true"></a></h1><ol>
-<li>一个<strong>纯虚</strong>（pure virtual）函数无须定义。我们通过在函数体的位置（即在声明语句的分号之前）书写 <code>=0</code> 就可以将一个虚函数说明为纯虚函数。其中，<strong><code>=0</code> 只能出现在类内部的虚函数声明语句处</strong>。</li>
+<li><p>一个<strong>纯虚</strong>（pure virtual）函数无须定义。我们通过在函数体的位置（即在声明语句的分号之前）书写 <code>=0</code> 就可以将一个虚函数说明为纯虚函数。其中，<strong><code>=0</code> 只能出现在类内部的虚函数声明语句处</strong>。也可以为纯虚函数提供定义，不过函数体必须定义在类的外部。也就是说，我们不能在类的内部为一个 <code>=0</code> 的函数提供函数体。</p>
+</li>
+<li><p>含有（或者未经覆盖直接继承）纯虚函数的类是<strong>抽象基类</strong>（abstract base class）。抽象基类负责定义接口，而后续的其他类可以覆盖该接口。<strong>我们不能（直接）创建一个抽象基类的对象。</strong></p>
+</li>
+<li><p><strong>抽象基类的派生类必须给出自己的接口实现，否则它们仍将是抽象基类。</strong></p>
+</li>
+<li><p>派生类的构造函数只初始化它的直接基类。</p>
+</li>
+</ol>
+<h1 id="15-5-访问控制与继承" class="heading-control"><a href="#15-5-访问控制与继承" class="headerlink" title="15.5 访问控制与继承"></a>15.5 访问控制与继承<a class="heading-anchor" href="#15-5-访问控制与继承" aria-hidden="true"></a></h1><ol>
+<li><p>一个类使用 <code>protected</code> 关键字来声明那些它希望与派生类分享但是不想被其他公共访问使用的成员。<code>protected</code> 说明符可以看做是 <code>public</code> 和 <code>private</code> 中和后的产物：</p>
+<ul>
+<li>和私有成员类似，受保护的成员对于类的用户来说是不可访问的</li>
+<li>和公有成员类似，<strong>受保护的成员对于派生类的成员和友元来说是可访问的</strong></li>
+<li>派生类的成员或友元只能通过派生类对象来访问基类的受保护成员。派生类对于一个基类对象中的受保护成员没有任何访问特权<br><br></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">int</span> prot_mem; <span class="comment">// protected 成员</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sneaky</span> :</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">clobber</span><span class="params">(Sneaky &amp;)</span></span>; <span class="comment">// 能访问 Sneaky::prot mem</span></span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">clobber</span><span class="params">(Base &amp;)</span></span>;   <span class="comment">// 不能访问 Base::prot mem</span></span><br><span class="line">    <span class="keyword">int</span> j;                         <span class="comment">// j 默认是 private</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 正确：c1obber 能访问 Sneaky 对象的 private 和 protected 成员</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clobber</span><span class="params">(Sneaky &amp;s)</span> </span>&#123; s.j = s.prot_mem = <span class="number">0</span>; &#125;</span><br><span class="line"><span class="comment">// 错误：clobber 不能访问 Base 的 protected 成员</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clobber</span><span class="params">(Base &amp;b)</span> </span>&#123; b.prot_mem = <span class="number">0</span>; &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>派生类的成员和友元只能访问派生类对象中的基类部分的受保护成员；对于普通的基类对象中的成员不具有特殊的访问权限。</strong></p>
+<blockquote>
+<p>某个类的友元（包括友元类和友元函数）有权访问这个类的私有和受保护成员。</p>
+</blockquote>
+</li>
+<li><p>某个类对其继承而来的成员的访问权限受到两个因素影响：</p>
+<ul>
+<li>一是在基类中该成员的访问说明符</li>
+<li>二是在派生类的派生列表中的访问说明符<br><br></li>
+</ul>
+<p><strong>派生访问说明符对于派生类的成员（及友元）能否访问其直接基类的成员没什么影响。</strong> 对基类成员的访问权限只与基类中的访问说明符有关。<strong>派生访问说明符的目的是控制派生类用户（包括派生类的派生类在内）对于基类成员的访问权限。</strong></p>
+<blockquote>
+<p>之我见：派生类对基类成员的访问权限只取决于基类中该成员的访问说明符；派生访问说明符只决定了派生类中继承自基类的成员的受访问权限，该权限为：</p>
+<script type="math/tex; mode=display">
+high(基类成员访问说明符, 派生访问说明符)</script><p>例如，基类成员访问说明符为 <code>protected</code>，派生访问说明符为 <code>private</code>，则派生类可以访问继承而来的基类受保护成员，但这些继承而来的基类受保护成员在派生类中的受访问权限为：</p>
+<script type="math/tex; mode=display">
+high(protected, private) = private</script><p>因此派生类实例及派生类的派生类都无权访问。</p>
+</blockquote>
+</li>
 </ol>
 
     </div>
@@ -536,19 +571,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第1章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
+      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
   </ul>
 
@@ -667,7 +702,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#15-1-OOP：概述"><span class="nav-text">15.1 OOP：概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-2-定义基类和派生类"><span class="nav-text">15.2 定义基类和派生类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-1-定义基类"><span class="nav-text">15.2.1 定义基类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-2-定义派生类"><span class="nav-text">15.2.2 定义派生类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-3-类型转换与继承"><span class="nav-text">15.2.3 类型转换与继承</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-3-虚函数"><span class="nav-text">15.3 虚函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-4-抽象基类"><span class="nav-text">15.4 抽象基类</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#15-1-OOP：概述"><span class="nav-text">15.1 OOP：概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-2-定义基类和派生类"><span class="nav-text">15.2 定义基类和派生类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-1-定义基类"><span class="nav-text">15.2.1 定义基类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-2-定义派生类"><span class="nav-text">15.2.2 定义派生类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-3-类型转换与继承"><span class="nav-text">15.2.3 类型转换与继承</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-3-虚函数"><span class="nav-text">15.3 虚函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-4-抽象基类"><span class="nav-text">15.4 抽象基类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-5-访问控制与继承"><span class="nav-text">15.5 访问控制与继承</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -817,6 +852,56 @@
   
 
   
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
