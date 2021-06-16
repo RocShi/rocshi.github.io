@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-14T07:54:25.000Z">
-<meta property="article:modified_time" content="2021-06-16T01:45:58.950Z">
+<meta property="article:modified_time" content="2021-06-16T01:52:24.098Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -271,7 +271,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-16 09:45:58" itemprop="dateModified" datetime="2021-06-16T09:45:58+08:00">2021-06-16</time>
+                <time title="修改时间：2021-06-16 09:52:24" itemprop="dateModified" datetime="2021-06-16T09:52:24+08:00">2021-06-16</time>
               </span>
 
           <br>
@@ -678,7 +678,11 @@
 <li>编译器将不会合成一个删除掉的移动操作。当我们使用 <code>=default</code> 请求一个移动操作时，如果基类中的对应操作是删除的或不可访问的，那么派生类中该函数将是被删除的，原因是派生类对象的基类部分不可移动。同样，如果基类的析构函数是删除的或不可访问的，则派生类的移动构造函数也将是被删除的<br><br></li>
 </ul>
 </li>
-<li></li>
+<li><p>大多数基类都会定义一个虚析构函数。因此在默认情况下，基类通常不含有合成的移动操作，而且在它的派生类中也没有合成的移动操作。</p>
+<p>因为基类缺少移动操作会阻止派生类拥有自己的合成移动操作，所以当我们确实需要执行移动操作时应该首先在基类中进行定义。我们的 <code>Quote</code> 可以使用合成的版本，不过前提是 <code>Quote</code> 必须显式地定义这些成员。一旦 <code>Quote</code> 定义了自己的移动操作，那么它必须同时显式地定义拷贝操作：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quote</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Quote() = <span class="keyword">default</span>;                         <span class="comment">// 对成员依次进行默认初始化</span></span><br><span class="line">    Quote(<span class="keyword">const</span> Quote &amp;) = <span class="keyword">default</span>;            <span class="comment">// 对成员依次拷贝</span></span><br><span class="line">    Quote(Quote &amp;&amp;) = <span class="keyword">default</span>;                 <span class="comment">// 对成员依次拷贝</span></span><br><span class="line">    Quote &amp;<span class="keyword">operator</span>=(<span class="keyword">const</span> Quote &amp;) = <span class="keyword">default</span>; <span class="comment">// 拷贝赋值</span></span><br><span class="line">    Quote &amp;<span class="keyword">operator</span>=(Quote &amp;&amp;) = <span class="keyword">default</span>;      <span class="comment">// 移动赋值</span></span><br><span class="line">    <span class="keyword">virtual</span> ~Quote() = <span class="keyword">default</span>;</span><br><span class="line">    <span class="comment">//其他成员与之前的版本一致</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>除非 <code>Quote</code> 的派生类中含有排斥移动的成员，否则它将自动获得合成的移动操作。</p>
+</li>
 </ol>
 <h2 id="15-7-3-派生类的拷贝控制成员" class="heading-control"><a href="#15-7-3-派生类的拷贝控制成员" class="headerlink" title="15.7.3 派生类的拷贝控制成员"></a>15.7.3 派生类的拷贝控制成员<a class="heading-anchor" href="#15-7-3-派生类的拷贝控制成员" aria-hidden="true"></a></h2><h2 id="15-7-4-继承的构造函数" class="heading-control"><a href="#15-7-4-继承的构造函数" class="headerlink" title="15.7.4 继承的构造函数"></a>15.7.4 继承的构造函数<a class="heading-anchor" href="#15-7-4-继承的构造函数" aria-hidden="true"></a></h2>
     </div>
@@ -696,13 +700,13 @@
       <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\fb22e988.html" rel="bookmark">C++ Primer - 第6章 函数</a></div>
+      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f6bc4afa.html" rel="bookmark">C++ Primer - 第8章 IO库</a></div>
     </li>
   </ul>
 
