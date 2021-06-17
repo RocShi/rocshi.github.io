@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-14T07:54:25.000Z">
-<meta property="article:modified_time" content="2021-06-16T04:01:42.512Z">
+<meta property="article:modified_time" content="2021-06-17T09:48:03.182Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -271,7 +271,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-16 12:01:42" itemprop="dateModified" datetime="2021-06-16T12:01:42+08:00">2021-06-16</time>
+                <time title="修改时间：2021-06-17 17:48:03" itemprop="dateModified" datetime="2021-06-17T17:48:03+08:00">2021-06-17</time>
               </span>
 
           <br>
@@ -727,7 +727,40 @@
 </ul>
 </li>
 </ol>
-<h1 id="15-8-容器与继承" class="heading-control"><a href="#15-8-容器与继承" class="headerlink" title="15.8 容器与继承"></a>15.8 容器与继承<a class="heading-anchor" href="#15-8-容器与继承" aria-hidden="true"></a></h1>
+<h1 id="15-8-容器与继承" class="heading-control"><a href="#15-8-容器与继承" class="headerlink" title="15.8 容器与继承"></a>15.8 容器与继承<a class="heading-anchor" href="#15-8-容器与继承" aria-hidden="true"></a></h1><ol>
+<li><blockquote>
+<p>WARNING：当派生类对象被赋值给基类对象时，其中的派生类部分将被“切掉”，因此容器和存在继承关系的类型无法兼容。</p>
+</blockquote>
+</li>
+<li><p>当我们希望在容器中存放具有继承关系的对象时，我们实际上存放的通常是基类的指针（更好的选择是智能指针。和往常一样，这些指针所指对象的动态类型可能是基类类型，也可能是派生类类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">shared_ptr</span>&lt;Quote&gt;&gt; basket;</span><br><span class="line">basket.push_back(make_shared&lt;Quote&gt;(<span class="string">"0-201-82470-1"</span>, <span class="number">50</span>));</span><br><span class="line">basket.push_back(make_shared&lt;Bulk_quote&gt;(<span class="string">"0-201-54848-8"</span>, <span class="number">50</span>, <span class="number">10</span>, <span class="number">.25</span>));</span><br><span class="line"><span class="comment">// 调用 Quote 定义的版本；打印 562.5，即在 15*&amp;50 中扣除掉折扣金额</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; basket.back()-&gt;net_price(<span class="number">15</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>正如我们可以将一个派生类的普通指针转换成基类指针一样，我们也<strong>能把一个派生类的智能指针转换成基类的智能指针</strong>。</p>
+</li>
+</ol>
+<h2 id="15-8-1-编写-Basket-类" class="heading-control"><a href="#15-8-1-编写-Basket-类" class="headerlink" title="15.8.1 编写 Basket 类"></a>15.8.1 编写 Basket 类<a class="heading-anchor" href="#15-8-1-编写-Basket-类" aria-hidden="true"></a></h2><ol>
+<li><p>对于容器的 <code>upper_bound</code> 函数来说，它返回的是容器的一个迭代器，该迭代器指向容器中所有与 <code>upper_bound</code> 输入值相等的元素中最后一个元素的下一位置。</p>
+</li>
+<li><p>如果父类虚函数返回的是内建数据类型，那么派生类虚函数的返回类型要与父类严格一致；如果父类虚函数返回的是某个父类（可以是自身也可以是其它的类，这里我们称之为 <code>Base</code>）的指针或引用，那么派生类虚函数的返回类型可以是 <code>Base</code> 类的派生类的指针或引用。（博主注）</p>
+</li>
+</ol>
+<h1 id="15-9-文本查询程序再探" class="heading-control"><a href="#15-9-文本查询程序再探" class="headerlink" title="15.9 文本查询程序再探"></a>15.9 文本查询程序再探<a class="heading-anchor" href="#15-9-文本查询程序再探" aria-hidden="true"></a></h1><h2 id="15-9-1-面向对象的解决方案" class="heading-control"><a href="#15-9-1-面向对象的解决方案" class="headerlink" title="15.9.1 面向对象的解决方案"></a>15.9.1 面向对象的解决方案<a class="heading-anchor" href="#15-9-1-面向对象的解决方案" aria-hidden="true"></a></h2><ol>
+<li><p>当我们令一个类公有地继承另一个类时，派生类应当反映与基类的“是一种（IsA）”关系。在设计良好的类体系当中，公有派生类的对象应该可以用在任何需要基类对象的地方。</p>
+<p>类型之间的另一种常见关系是“有一个（HasA）”关系，具有这种关系的类暗含成员的意思。</p>
+</li>
+</ol>
+<h1 id="小结" class="heading-control"><a href="#小结" class="headerlink" title="小结"></a>小结<a class="heading-anchor" href="#小结" aria-hidden="true"></a></h1><ol>
+<li><p>动态绑定使得我们可以忽略类型之间的差异，其机理是<strong>在运行时根据对象的动态类型来选择运行函数的哪个版本</strong>。</p>
+</li>
+<li><p><strong>在 C++ 语言中，动态绑定只作用于虚函数，并且需要通过指针或引用调用。</strong></p>
+</li>
+<li><p><strong>在派生类对象中包含有与它的每个基类对应的子对象。</strong>因为所有派生类对象都含有基类部分，所以我们能将派生类的引用或指针转换为一个可访问的基类引用或指针。</p>
+</li>
+<li><p><strong>当执行派生类的构造、拷贝、移动和赋值操作时，首先构造、拷贝、移动和赋值其中的基类部分，然后才轮到派生类部分。析构函数的执行顺序则正好相反，首先销毁派生类，接下来执行基类子对象的析构函数。</strong></p>
+</li>
+<li><p><strong>基类通常都应该定义一个虚析构函数</strong>，即使基类根本不需要析构函数也最好这么做。<strong>将基类的析构函数定义成虚函数的原因是为了确保当我们删除一个基类指针，而该指针实际指向一个派生类对象时，程序也能正确运行</strong>（防止内存泄漏——博主注）。</p>
+</li>
+</ol>
+<h1 id="术语表" class="heading-control"><a href="#术语表" class="headerlink" title="术语表"></a>术语表<a class="heading-anchor" href="#术语表" aria-hidden="true"></a></h1>
     </div>
 
     
@@ -868,7 +901,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#15-1-OOP：概述"><span class="nav-text">15.1 OOP：概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-2-定义基类和派生类"><span class="nav-text">15.2 定义基类和派生类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-1-定义基类"><span class="nav-text">15.2.1 定义基类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-2-定义派生类"><span class="nav-text">15.2.2 定义派生类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-3-类型转换与继承"><span class="nav-text">15.2.3 类型转换与继承</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-3-虚函数"><span class="nav-text">15.3 虚函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-4-抽象基类"><span class="nav-text">15.4 抽象基类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-5-访问控制与继承"><span class="nav-text">15.5 访问控制与继承</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-6-继承中的类作用域"><span class="nav-text">15.6 继承中的类作用域</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-7-构造函数与拷贝控制"><span class="nav-text">15.7 构造函数与拷贝控制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#15-7-1-虚析构函数"><span class="nav-text">15.7.1 虚析构函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-7-2-合成拷贝控制与继承"><span class="nav-text">15.7.2 合成拷贝控制与继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-7-3-派生类的拷贝控制成员"><span class="nav-text">15.7.3 派生类的拷贝控制成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-7-4-继承的构造函数"><span class="nav-text">15.7.4 继承的构造函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-8-容器与继承"><span class="nav-text">15.8 容器与继承</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#15-1-OOP：概述"><span class="nav-text">15.1 OOP：概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-2-定义基类和派生类"><span class="nav-text">15.2 定义基类和派生类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-1-定义基类"><span class="nav-text">15.2.1 定义基类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-2-定义派生类"><span class="nav-text">15.2.2 定义派生类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-2-3-类型转换与继承"><span class="nav-text">15.2.3 类型转换与继承</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-3-虚函数"><span class="nav-text">15.3 虚函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-4-抽象基类"><span class="nav-text">15.4 抽象基类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-5-访问控制与继承"><span class="nav-text">15.5 访问控制与继承</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-6-继承中的类作用域"><span class="nav-text">15.6 继承中的类作用域</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-7-构造函数与拷贝控制"><span class="nav-text">15.7 构造函数与拷贝控制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#15-7-1-虚析构函数"><span class="nav-text">15.7.1 虚析构函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-7-2-合成拷贝控制与继承"><span class="nav-text">15.7.2 合成拷贝控制与继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-7-3-派生类的拷贝控制成员"><span class="nav-text">15.7.3 派生类的拷贝控制成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-7-4-继承的构造函数"><span class="nav-text">15.7.4 继承的构造函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-8-容器与继承"><span class="nav-text">15.8 容器与继承</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#15-8-1-编写-Basket-类"><span class="nav-text">15.8.1 编写 Basket 类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-9-文本查询程序再探"><span class="nav-text">15.9 文本查询程序再探</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#15-9-1-面向对象的解决方案"><span class="nav-text">15.9.1 面向对象的解决方案</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#术语表"><span class="nav-text">术语表</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
