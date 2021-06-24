@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-12T16:13:57.000Z">
-<meta property="article:modified_time" content="2021-06-24T08:18:41.717Z">
+<meta property="article:modified_time" content="2021-06-24T08:21:13.577Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -271,7 +271,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-24 16:18:41" itemprop="dateModified" datetime="2021-06-24T16:18:41+08:00">2021-06-24</time>
+                <time title="修改时间：2021-06-24 16:21:13" itemprop="dateModified" datetime="2021-06-24T16:21:13+08:00">2021-06-24</time>
               </span>
 
           <br>
@@ -367,7 +367,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>, val = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val)</span><br><span class="line">    sum += val;</span><br></pre></td></tr></table></figure>
 <p>该代码片段的数据读取操作是在 <code>while</code> 的循环条件中完成的，<code>while</code> 循环条件的求值就是执行表达式：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val</span><br></pre></td></tr></table></figure>
-<p>此表达式从标准输入读取下一个数，保在在 value 中。输入运算符返回其左侧运算对象，在本例中是 <code>std::cin</code>。因此，此循环条件实际上检测的是 <code>std::cin</code>。当使用一个 <code>istream</code> 对象作为条件时，其效果是检测流的状态。如果流是有效的，即流未遇到错误，那么检测成功。当遇到文件结束符（end-of-file），或遇到一个无效输入时（例如读入的值不是一个整数），<code>istream</code> 对象的状态会变为无效。处于无效状态的 <code>istream</code> 对象会使条件变为假。因此，上述代码片段中，<code>while</code> 循环会一直执行直至遇到文件结束符（或输入错误）（最简单的方法是完成数字的输入后随便输入一个符号然后回车———博主注）。</p>
+<p>此表达式从标准输入读取下一个数，保存在 val 中。输入运算符返回其左侧运算对象，在本例中是 <code>std::cin</code>。因此，此循环条件实际上检测的是 <code>std::cin</code>。当使用一个 <code>istream</code> 对象作为条件时，其效果是检测流的状态。如果流是有效的，即流未遇到错误，那么检测成功。当遇到文件结束符（end-of-file），或遇到一个无效输入时（例如读入的值不是一个整数），<code>istream</code> 对象的状态会变为无效。处于无效状态的 <code>istream</code> 对象会使条件变为假。因此，上述代码片段中，<code>while</code> 循环会一直执行直至遇到文件结束符（或输入错误）（最简单的方法是完成数字的输入后随便输入一个符号然后回车———博主注）。</p>
 </li>
 <li><p>将如下代码片段编译为可执行程序：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>, val = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val)</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"haha"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"The number you input is "</span> &lt;&lt; val &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    sum += val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"The sum of numbers you input is "</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
@@ -410,19 +410,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第 2 章 变量和基本类型</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第15章 面向对象程序设计</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第5章 语句</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第2章 变量和基本类型</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第4章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\73015543.html" rel="bookmark">C++ Primer - 第3章 字符串、向量和数组</a></div>
+      <div class="popular-posts-title"><a href="\archives\f6bc4afa.html" rel="bookmark">C++ Primer - 第8章 IO库</a></div>
     </li>
   </ul>
 
@@ -481,8 +481,8 @@
       <i class="fa fa-chevron-left"></i> 将Hexo搭建的博客站点从GitHub Pages迁移到腾讯云VPS
     </a></div>
       <div class="post-nav-item">
-    <a href="/archives/e005f4cb.html" rel="next" title="C++ Primer - 第2章 变量和基本类型">
-      C++ Primer - 第2章 变量和基本类型 <i class="fa fa-chevron-right"></i>
+    <a href="/archives/e005f4cb.html" rel="next" title="C++ Primer - 第 2 章 变量和基本类型">
+      C++ Primer - 第 2 章 变量和基本类型 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
