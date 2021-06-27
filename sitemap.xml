@@ -515,6 +515,13 @@
   </url>
   
   <url>
+    <loc>https://blog.shipengx.com/tags/VS-Code/</loc>
+    <lastmod>2021-06-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.shipengx.com/tags/Linux/</loc>
     <lastmod>2021-06-27</lastmod>
     <changefreq>daily</changefreq>
@@ -523,13 +530,6 @@
   
   <url>
     <loc>https://blog.shipengx.com/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</loc>
-    <lastmod>2021-06-27</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/tags/VS-Code/</loc>
     <lastmod>2021-06-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -578,14 +578,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/LeetCode/</loc>
+    <loc>https://blog.shipengx.com/tags/OJ/</loc>
     <lastmod>2021-06-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/OJ/</loc>
+    <loc>https://blog.shipengx.com/tags/LeetCode/</loc>
     <lastmod>2021-06-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -620,7 +620,7 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/</loc>
+    <loc>https://blog.shipengx.com/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2/</loc>
     <lastmod>2021-06-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -641,7 +641,7 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2/</loc>
+    <loc>https://blog.shipengx.com/tags/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/</loc>
     <lastmod>2021-06-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -683,14 +683,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/VPS/</loc>
+    <loc>https://blog.shipengx.com/tags/%E5%AF%BC%E8%88%AA%E5%AE%9A%E4%BD%8D/</loc>
     <lastmod>2021-06-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/%E5%AF%BC%E8%88%AA%E5%AE%9A%E4%BD%8D/</loc>
+    <loc>https://blog.shipengx.com/tags/VPS/</loc>
     <lastmod>2021-06-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -769,14 +769,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/Linux/</loc>
+    <loc>https://blog.shipengx.com/categories/%E7%BC%96%E7%A0%81/C-C/%E9%9A%8F%E7%AC%94/</loc>
     <lastmod>2021-06-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/%E7%BC%96%E7%A0%81/C-C/%E9%9A%8F%E7%AC%94/</loc>
+    <loc>https://blog.shipengx.com/categories/Linux/</loc>
     <lastmod>2021-06-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
