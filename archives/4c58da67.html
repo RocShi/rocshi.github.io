@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-26T08:20:25.000Z">
-<meta property="article:modified_time" content="2021-06-26T04:25:22.632Z">
+<meta property="article:modified_time" content="2021-06-27T12:13:44.529Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -271,7 +271,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-26 12:25:22" itemprop="dateModified" datetime="2021-06-26T12:25:22+08:00">2021-06-26</time>
+                <time title="修改时间：2021-06-27 20:13:44" itemprop="dateModified" datetime="2021-06-27T20:13:44+08:00">2021-06-27</time>
               </span>
 
           <br>
@@ -329,7 +329,7 @@
 <li><p>所有顺序容器都提供了快速顺序访问元素的能力。但是，这些容器在以下方面都有不同的性能折中：</p>
 <ul>
 <li>向容器添加或从容器中删除元素的代价</li>
-<li>非顺序访问容器中元素的代价</li>
+<li>非顺序访问容器中元素的代价<br><br></li>
 </ul>
 <table>
  <thead>
@@ -360,7 +360,7 @@
  </tr>
  <tr>
      <td>string</td>
-     <td>与vector相似的容器，但专门用于保存字符。随机访问快。在尾部插入/删除速度快</td>
+     <td>与 vector 相似的容器，但专门用于保存字符。随机访问快。在尾部插入/删除速度快</td>
  </tr>
  </tbody>
  </table>
@@ -373,8 +373,186 @@
 <p>最佳实践：如果你不确定应该使用哪种容器，那么可以在程序中只使用 vector 和 list 公共的操作：使用迭代器，不使用下标操作，避免随机访问。这样，在必要时选择使用 vector 或 list 都很方便。</p>
 </blockquote>
 </li>
+<li><blockquote>
+<p>Tip：通常，使用 <code>vector</code> 是最好的选择。</p>
+</blockquote>
+</li>
+<li><p>如果程序只有在读取输入时才需要在容器中间位置插入元素，随后需要随机访问元素，则</p>
+<ul>
+<li>首先，确定是否真的需要在容器中间位置添加元素。当处理输入数据时，通常可以很容易地向 <code>vector</code> 追加数据，然后再调用标准库的 <code>sort</code> 函数来重排容器中的元素，从而避免在中间位置添加元素。</li>
+<li>如果必须在中间位置插入元素，考虑在输入阶段使用 <code>1ist</code>，一旦输入完成，将 <code>list</code> 中的内容拷贝到一个 <code>vector</code> 中。</li>
+</ul>
+</li>
 </ol>
-<h1 id="9-2-容器库概览" class="heading-control"><a href="#9-2-容器库概览" class="headerlink" title="9.2 容器库概览"></a>9.2 容器库概览<a class="heading-anchor" href="#9-2-容器库概览" aria-hidden="true"></a></h1><h2 id="9-2-1-迭代器" class="heading-control"><a href="#9-2-1-迭代器" class="headerlink" title="9.2.1 迭代器"></a>9.2.1 迭代器<a class="heading-anchor" href="#9-2-1-迭代器" aria-hidden="true"></a></h2><h2 id="9-2-2-容器类型成员" class="heading-control"><a href="#9-2-2-容器类型成员" class="headerlink" title="9.2.2 容器类型成员"></a>9.2.2 容器类型成员<a class="heading-anchor" href="#9-2-2-容器类型成员" aria-hidden="true"></a></h2><h2 id="9-2-3-begin-和-end-成员" class="heading-control"><a href="#9-2-3-begin-和-end-成员" class="headerlink" title="9.2.3 begin 和 end 成员"></a>9.2.3 begin 和 end 成员<a class="heading-anchor" href="#9-2-3-begin-和-end-成员" aria-hidden="true"></a></h2><h2 id="9-2-4-容器定义和初始化" class="heading-control"><a href="#9-2-4-容器定义和初始化" class="headerlink" title="9.2.4 容器定义和初始化"></a>9.2.4 容器定义和初始化<a class="heading-anchor" href="#9-2-4-容器定义和初始化" aria-hidden="true"></a></h2><h2 id="9-2-5-赋值和-swap" class="heading-control"><a href="#9-2-5-赋值和-swap" class="headerlink" title="9.2.5 赋值和 swap"></a>9.2.5 赋值和 swap<a class="heading-anchor" href="#9-2-5-赋值和-swap" aria-hidden="true"></a></h2><h2 id="9-2-6-容器大小操作" class="heading-control"><a href="#9-2-6-容器大小操作" class="headerlink" title="9.2.6 容器大小操作"></a>9.2.6 容器大小操作<a class="heading-anchor" href="#9-2-6-容器大小操作" aria-hidden="true"></a></h2><h2 id="9-2-7-关系运算符" class="heading-control"><a href="#9-2-7-关系运算符" class="headerlink" title="9.2.7 关系运算符"></a>9.2.7 关系运算符<a class="heading-anchor" href="#9-2-7-关系运算符" aria-hidden="true"></a></h2><h1 id="9-3-顺序容器操作" class="heading-control"><a href="#9-3-顺序容器操作" class="headerlink" title="9.3 顺序容器操作"></a>9.3 顺序容器操作<a class="heading-anchor" href="#9-3-顺序容器操作" aria-hidden="true"></a></h1><h2 id="9-3-1-向顺序容器添加元素" class="heading-control"><a href="#9-3-1-向顺序容器添加元素" class="headerlink" title="9.3.1 向顺序容器添加元素"></a>9.3.1 向顺序容器添加元素<a class="heading-anchor" href="#9-3-1-向顺序容器添加元素" aria-hidden="true"></a></h2><h2 id="9-3-2-访问元素" class="heading-control"><a href="#9-3-2-访问元素" class="headerlink" title="9.3.2 访问元素"></a>9.3.2 访问元素<a class="heading-anchor" href="#9-3-2-访问元素" aria-hidden="true"></a></h2><h2 id="9-3-3-删除元素" class="heading-control"><a href="#9-3-3-删除元素" class="headerlink" title="9.3.3 删除元素"></a>9.3.3 删除元素<a class="heading-anchor" href="#9-3-3-删除元素" aria-hidden="true"></a></h2><h2 id="9-3-4-特殊的-forward-list-操作" class="heading-control"><a href="#9-3-4-特殊的-forward-list-操作" class="headerlink" title="9.3.4 特殊的 forward_list 操作"></a>9.3.4 特殊的 forward_list 操作<a class="heading-anchor" href="#9-3-4-特殊的-forward-list-操作" aria-hidden="true"></a></h2><h2 id="9-3-5-改变容器大小" class="heading-control"><a href="#9-3-5-改变容器大小" class="headerlink" title="9.3.5 改变容器大小"></a>9.3.5 改变容器大小<a class="heading-anchor" href="#9-3-5-改变容器大小" aria-hidden="true"></a></h2><h2 id="9-3-6-容器操作可能使迭代器失效" class="heading-control"><a href="#9-3-6-容器操作可能使迭代器失效" class="headerlink" title="9.3.6 容器操作可能使迭代器失效"></a>9.3.6 容器操作可能使迭代器失效<a class="heading-anchor" href="#9-3-6-容器操作可能使迭代器失效" aria-hidden="true"></a></h2><h1 id="9-4-vector-对象是如何增长的" class="heading-control"><a href="#9-4-vector-对象是如何增长的" class="headerlink" title="9.4 vector 对象是如何增长的"></a>9.4 vector 对象是如何增长的<a class="heading-anchor" href="#9-4-vector-对象是如何增长的" aria-hidden="true"></a></h1><h1 id="9-5-额外的-string-操作" class="heading-control"><a href="#9-5-额外的-string-操作" class="headerlink" title="9.5 额外的 string 操作"></a>9.5 额外的 string 操作<a class="heading-anchor" href="#9-5-额外的-string-操作" aria-hidden="true"></a></h1><h2 id="9-5-1-构造-string-的其他方法" class="heading-control"><a href="#9-5-1-构造-string-的其他方法" class="headerlink" title="9.5.1 构造 string 的其他方法"></a>9.5.1 构造 string 的其他方法<a class="heading-anchor" href="#9-5-1-构造-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-2-改变-string-的其他方法" class="heading-control"><a href="#9-5-2-改变-string-的其他方法" class="headerlink" title="9.5.2 改变 string 的其他方法"></a>9.5.2 改变 string 的其他方法<a class="heading-anchor" href="#9-5-2-改变-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-3-string-搜索操作" class="heading-control"><a href="#9-5-3-string-搜索操作" class="headerlink" title="9.5.3 string 搜索操作"></a>9.5.3 string 搜索操作<a class="heading-anchor" href="#9-5-3-string-搜索操作" aria-hidden="true"></a></h2><h2 id="9-5-4-compare-函数" class="heading-control"><a href="#9-5-4-compare-函数" class="headerlink" title="9.5.4 compare 函数"></a>9.5.4 compare 函数<a class="heading-anchor" href="#9-5-4-compare-函数" aria-hidden="true"></a></h2><h2 id="9-5-5-数值转换" class="heading-control"><a href="#9-5-5-数值转换" class="headerlink" title="9.5.5 数值转换"></a>9.5.5 数值转换<a class="heading-anchor" href="#9-5-5-数值转换" aria-hidden="true"></a></h2><h1 id="9-6-容器适配器" class="heading-control"><a href="#9-6-容器适配器" class="headerlink" title="9.6 容器适配器"></a>9.6 容器适配器<a class="heading-anchor" href="#9-6-容器适配器" aria-hidden="true"></a></h1><hr>
+<h1 id="9-2-容器库概览" class="heading-control"><a href="#9-2-容器库概览" class="headerlink" title="9.2 容器库概览"></a>9.2 容器库概览<a class="heading-anchor" href="#9-2-容器库概览" aria-hidden="true"></a></h1><ol>
+<li><p>容器均定义为模板类，必须提供额外信息来生成特定的容器类型。</p>
+</li>
+<li><blockquote>
+<p>Note：较旧的编译器可能需要在两个尖括号之间键入空格，例如，<code>vector&lt;vector&lt;string&gt; &gt;</code>。</p>
+</blockquote>
+</li>
+<li><p>顺序容器构造函数的一个版本接受容器大小参数，它使用了元素类型的默认构造函数。但某些类没有默认构造函数。我们可以定义一个保存这种类型对象的容器，但我们在构造这种容器时不能只传递给它一个元素数目参数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假定 noDefault 是一个没有默认构造函数的类型</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;noDefault&gt; <span class="title">v1</span><span class="params">(<span class="number">10</span>, init)</span></span>; <span class="comment">// 正确：提供了元素初始化器</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;noDefault&gt; <span class="title">v2</span><span class="params">(<span class="number">10</span>)</span></span>;       <span class="comment">// 错误：必须提供一个元素初始化器</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>常用容器操作：<br><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-fymr{border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="2">容器操作</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-fymr" colspan="2">类型别名</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">iterator</td>
+    <td class="tg-0pky">此容器类型的迭代器类型</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">const_iterator</td>
+    <td class="tg-0pky">可以读取元素，但不能修改元素的迭代器类型</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">size_type</td>
+    <td class="tg-0pky">无符号整数类型，足够保存此种容器类型最大可能容器的大小</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">difference_type</td>
+    <td class="tg-0pky">带符号整数类型，足够保存两个迭代器之间的距离</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">value_type</td>
+    <td class="tg-0pky">元素类型</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">reference</td>
+    <td class="tg-0pky">元素的左值类型；与 value_type&amp; 含义相同</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">const_reference</td>
+    <td class="tg-0pky">元素的 const 左值类型（即，const value_type&amp;）</td>
+  </tr>
+  <tr>
+    <td class="tg-fymr" colspan="2">构造函数</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">C c;</td>
+    <td class="tg-0pky">默认构造函数，构造空容器</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">C c1(c2);</td>
+    <td class="tg-0pky">构造 c2 的拷贝 c1</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">C c(b, e);</td>
+    <td class="tg-0pky">构造 c，将迭代器 b 和 e 指定的范围内的元素拷贝到 c（array 不支持）</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">C c{a, b, c...};</td>
+    <td class="tg-0pky">列表初始化 c</td>
+  </tr>
+  <tr>
+    <td class="tg-fymr" colspan="2">赋值与 swap</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c1 = c2</td>
+    <td class="tg-0pky">将 c1 中的元素替换为 c2 中元素</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c1 = {a, b, c...}</td>
+    <td class="tg-0pky">将 c1 中的元素替换为列表中元素（不适用于 array）</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">a.swap(b)</td>
+    <td class="tg-0pky">交换 a 和 b 的元素</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">swap(a,b)</td>
+    <td class="tg-0pky">与 a.swap(b) 等价</td>
+  </tr>
+  <tr>
+    <td class="tg-fymr" colspan="2">大小</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.size()</td>
+    <td class="tg-0pky">c 中元素的数目（不支持 forward_list）</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.max_size()</td>
+    <td class="tg-0pky">c 可保存的最大元素数目</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.empty()</td>
+    <td class="tg-0pky">若 c 中存储了元素，返回 false，否则返回 true</td>
+  </tr>
+  <tr>
+    <td class="tg-fymr" colspan="2">添加/删除元素（不适用于 array）<br>注：在不同容器中，这些操作的接口都不同</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.insert(args)</td>
+    <td class="tg-0pky">将 args 中的元素拷贝进 c</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.emplace(inits)</td>
+    <td class="tg-0pky">使用 inits 构造 c 中的一个元素</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.erase(args)</td>
+    <td class="tg-0pky">删除 args 指定的元素</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.clear()</td>
+    <td class="tg-0pky">删除 c 中的所有元素，返回 void</td>
+  </tr>
+  <tr>
+    <td class="tg-fymr" colspan="2">关系运算符</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">==, !=</td>
+    <td class="tg-0pky">所有容器都支持相等（不等）运算符</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">&lt;, &lt;=, &gt;, &gt;=</td>
+    <td class="tg-0pky">关系运算符（无序关联容器不支持）</td>
+  </tr>
+  <tr>
+    <td class="tg-fymr" colspan="2">获取迭代器</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.begin(), c.end()</td>
+    <td class="tg-0pky">返回指向 c 的首元素和尾元素之后位置的迭代器</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.cbegin(), c.cend()</td>
+    <td class="tg-0pky">返回 const_iterator</td>
+  </tr>
+  <tr>
+    <td class="tg-fymr" colspan="2">反向容器的额外成员（不支持 forward_list）</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">reverse_iterator</td>
+    <td class="tg-0pky">按逆序寻址元素的迭代器</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">const_reverse_iterator</td>
+    <td class="tg-0pky">不能修改元素的逆序迭代器</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.rbegin(), c.rend()</td>
+    <td class="tg-0pky">返回指向 c 的尾元素和首元素之前位置的迭代器</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.crbegin(), c.crend()</td>
+    <td class="tg-0pky">返回 const_reverse_iterator</td>
+  </tr>
+</tbody>
+</table>
+
+</li>
+</ol>
+<h2 id="9-2-1-迭代器" class="heading-control"><a href="#9-2-1-迭代器" class="headerlink" title="9.2.1 迭代器"></a>9.2.1 迭代器<a class="heading-anchor" href="#9-2-1-迭代器" aria-hidden="true"></a></h2><h2 id="9-2-2-容器类型成员" class="heading-control"><a href="#9-2-2-容器类型成员" class="headerlink" title="9.2.2 容器类型成员"></a>9.2.2 容器类型成员<a class="heading-anchor" href="#9-2-2-容器类型成员" aria-hidden="true"></a></h2><h2 id="9-2-3-begin-和-end-成员" class="heading-control"><a href="#9-2-3-begin-和-end-成员" class="headerlink" title="9.2.3 begin 和 end 成员"></a>9.2.3 begin 和 end 成员<a class="heading-anchor" href="#9-2-3-begin-和-end-成员" aria-hidden="true"></a></h2><h2 id="9-2-4-容器定义和初始化" class="heading-control"><a href="#9-2-4-容器定义和初始化" class="headerlink" title="9.2.4 容器定义和初始化"></a>9.2.4 容器定义和初始化<a class="heading-anchor" href="#9-2-4-容器定义和初始化" aria-hidden="true"></a></h2><h2 id="9-2-5-赋值和-swap" class="heading-control"><a href="#9-2-5-赋值和-swap" class="headerlink" title="9.2.5 赋值和 swap"></a>9.2.5 赋值和 swap<a class="heading-anchor" href="#9-2-5-赋值和-swap" aria-hidden="true"></a></h2><h2 id="9-2-6-容器大小操作" class="heading-control"><a href="#9-2-6-容器大小操作" class="headerlink" title="9.2.6 容器大小操作"></a>9.2.6 容器大小操作<a class="heading-anchor" href="#9-2-6-容器大小操作" aria-hidden="true"></a></h2><h2 id="9-2-7-关系运算符" class="heading-control"><a href="#9-2-7-关系运算符" class="headerlink" title="9.2.7 关系运算符"></a>9.2.7 关系运算符<a class="heading-anchor" href="#9-2-7-关系运算符" aria-hidden="true"></a></h2><h1 id="9-3-顺序容器操作" class="heading-control"><a href="#9-3-顺序容器操作" class="headerlink" title="9.3 顺序容器操作"></a>9.3 顺序容器操作<a class="heading-anchor" href="#9-3-顺序容器操作" aria-hidden="true"></a></h1><h2 id="9-3-1-向顺序容器添加元素" class="heading-control"><a href="#9-3-1-向顺序容器添加元素" class="headerlink" title="9.3.1 向顺序容器添加元素"></a>9.3.1 向顺序容器添加元素<a class="heading-anchor" href="#9-3-1-向顺序容器添加元素" aria-hidden="true"></a></h2><h2 id="9-3-2-访问元素" class="heading-control"><a href="#9-3-2-访问元素" class="headerlink" title="9.3.2 访问元素"></a>9.3.2 访问元素<a class="heading-anchor" href="#9-3-2-访问元素" aria-hidden="true"></a></h2><h2 id="9-3-3-删除元素" class="heading-control"><a href="#9-3-3-删除元素" class="headerlink" title="9.3.3 删除元素"></a>9.3.3 删除元素<a class="heading-anchor" href="#9-3-3-删除元素" aria-hidden="true"></a></h2><h2 id="9-3-4-特殊的-forward-list-操作" class="heading-control"><a href="#9-3-4-特殊的-forward-list-操作" class="headerlink" title="9.3.4 特殊的 forward_list 操作"></a>9.3.4 特殊的 forward_list 操作<a class="heading-anchor" href="#9-3-4-特殊的-forward-list-操作" aria-hidden="true"></a></h2><h2 id="9-3-5-改变容器大小" class="heading-control"><a href="#9-3-5-改变容器大小" class="headerlink" title="9.3.5 改变容器大小"></a>9.3.5 改变容器大小<a class="heading-anchor" href="#9-3-5-改变容器大小" aria-hidden="true"></a></h2><h2 id="9-3-6-容器操作可能使迭代器失效" class="heading-control"><a href="#9-3-6-容器操作可能使迭代器失效" class="headerlink" title="9.3.6 容器操作可能使迭代器失效"></a>9.3.6 容器操作可能使迭代器失效<a class="heading-anchor" href="#9-3-6-容器操作可能使迭代器失效" aria-hidden="true"></a></h2><h1 id="9-4-vector-对象是如何增长的" class="heading-control"><a href="#9-4-vector-对象是如何增长的" class="headerlink" title="9.4 vector 对象是如何增长的"></a>9.4 vector 对象是如何增长的<a class="heading-anchor" href="#9-4-vector-对象是如何增长的" aria-hidden="true"></a></h1><h1 id="9-5-额外的-string-操作" class="heading-control"><a href="#9-5-额外的-string-操作" class="headerlink" title="9.5 额外的 string 操作"></a>9.5 额外的 string 操作<a class="heading-anchor" href="#9-5-额外的-string-操作" aria-hidden="true"></a></h1><h2 id="9-5-1-构造-string-的其他方法" class="heading-control"><a href="#9-5-1-构造-string-的其他方法" class="headerlink" title="9.5.1 构造 string 的其他方法"></a>9.5.1 构造 string 的其他方法<a class="heading-anchor" href="#9-5-1-构造-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-2-改变-string-的其他方法" class="heading-control"><a href="#9-5-2-改变-string-的其他方法" class="headerlink" title="9.5.2 改变 string 的其他方法"></a>9.5.2 改变 string 的其他方法<a class="heading-anchor" href="#9-5-2-改变-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-3-string-搜索操作" class="heading-control"><a href="#9-5-3-string-搜索操作" class="headerlink" title="9.5.3 string 搜索操作"></a>9.5.3 string 搜索操作<a class="heading-anchor" href="#9-5-3-string-搜索操作" aria-hidden="true"></a></h2><h2 id="9-5-4-compare-函数" class="heading-control"><a href="#9-5-4-compare-函数" class="headerlink" title="9.5.4 compare 函数"></a>9.5.4 compare 函数<a class="heading-anchor" href="#9-5-4-compare-函数" aria-hidden="true"></a></h2><h2 id="9-5-5-数值转换" class="heading-control"><a href="#9-5-5-数值转换" class="headerlink" title="9.5.5 数值转换"></a>9.5.5 数值转换<a class="heading-anchor" href="#9-5-5-数值转换" aria-hidden="true"></a></h2><h1 id="9-6-容器适配器" class="heading-control"><a href="#9-6-容器适配器" class="headerlink" title="9.6 容器适配器"></a>9.6 容器适配器<a class="heading-anchor" href="#9-6-容器适配器" aria-hidden="true"></a></h1><hr>
 
     </div>
 
@@ -388,16 +566,16 @@
       <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第 2 章 变量和基本类型</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第 5 章 语句</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\f6bc4afa.html" rel="bookmark">C++ Primer - 第 8 章 IO 库</a></div>
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第 2 章 变量和基本类型</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第 4 章 表达式</a></div>
     </li>
   </ul>
 
