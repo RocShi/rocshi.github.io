@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-26T08:20:25.000Z">
-<meta property="article:modified_time" content="2021-06-29T12:49:36.269Z">
+<meta property="article:modified_time" content="2021-06-29T13:47:50.108Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -271,7 +271,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 20:49:36" itemprop="dateModified" datetime="2021-06-29T20:49:36+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 21:47:50" itemprop="dateModified" datetime="2021-06-29T21:47:50+08:00">2021-06-29</time>
               </span>
 
           <br>
@@ -640,10 +640,52 @@
 </li>
 <li><p>在新标准中，我们可以对一个容器进行<strong>列表初始化</strong>。</p>
 </li>
-<li><p>除了与关联容器相同的构造函数外，顺序容器（<code>array</code> 除外）还提供另一个构造函数，它接受一个容器大小和一个（可选的）元素初始值。如果我们不提供元素初始值，则标准库会创建一个值初始化器</p>
+<li><p>除了与关联容器相同的构造函数外，顺序容器（<code>array</code> 除外）还提供另一个构造函数，它接受一个容器大小和一个（可选的）元素初始值。如果我们不提供元素初始值，则标准库会创建一个值初始化器。如果元素类型是内置类型或者是具有默认构造函数的类类型，可以只为构造函数提供一个容器大小参数。<strong>如果元素类型没有默认构造函数，除了大小参数外，还必须指定一个显式的元素初始值。</strong></p>
+<blockquote>
+<p>Note：只有顺序容器的构造函数才接受大小参数，关联容器并不支持。</p>
+</blockquote>
+</li>
+<li><p>与内置数组一样，标准库 <code>array</code> 的大小也是类型的一部分。当定义一个 <code>array</code> 时，除了指定元素类型，还要指定容器大小。<code>array</code> 大小固定的特性也影响了它所定义的构造函数的行为。与其他容器不同，<strong>一个默认构造的 <code>array</code> 是非空的：它包含了与其大小一样多的元素。这些元素都被默认初始化</strong>。</p>
+</li>
+<li><p>如果我们对 <code>array</code> 进行列表初始化，初始值的数目必须等于或小于 <code>array</code> 的大小。如果初始值数目小于 <code>array</code> 的大小，则它们被用来初始化 <code>array</code> 中靠前的元素，所有剩余元素都会进行值初始化（对 <code>array</code> 的列表赋值也是如此——博主注）。在这两种情况下，如果元素类型是一个类类型，那么该类必须有一个默认构造函数，以使值初始化能够进行：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">array</span>&lt;<span class="keyword">int</span>, 10&gt; ia1;                                  <span class="comment">// 10 个默认初始化的 int</span></span><br><span class="line"><span class="built_in">array</span>&lt;<span class="keyword">int</span>, 10&gt; ia2 = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;; <span class="comment">// 列表初始化</span></span><br><span class="line"><span class="built_in">array</span>&lt;<span class="keyword">int</span>, 10&gt; ia3 = &#123;<span class="number">42</span>&#125;;                           <span class="comment">// ia3[0] 为42，剩余元素为 0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>虽然我们不能对内置数组类型进行拷贝或对象赋值操作，但 <code>array</code> 并无此限制：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> digs[<span class="number">10</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> cpy[<span class="number">10</span>] = digs; <span class="comment">// 错误：内置数组不支持拷贝或赋值</span></span><br><span class="line"><span class="built_in">array</span>&lt;<span class="keyword">int</span>, 10&gt; digits = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line"><span class="built_in">array</span>&lt;<span class="keyword">int</span>, 10&gt; copy = digits; <span class="comment">// 正确：只要数组类型匹配即合法</span></span><br></pre></td></tr></table></figure>
+<p>与其他容器一样，<code>array</code> 也要求初始值的类型必须与要创建的容器类型相同。此外，<code>array</code> 还要求元素类型和大小也都一样，因为大小是 <code>array</code> 类型的一部分。</p>
 </li>
 </ol>
-<h2 id="9-2-5-赋值和-swap" class="heading-control"><a href="#9-2-5-赋值和-swap" class="headerlink" title="9.2.5 赋值和 swap"></a>9.2.5 赋值和 swap<a class="heading-anchor" href="#9-2-5-赋值和-swap" aria-hidden="true"></a></h2><h2 id="9-2-6-容器大小操作" class="heading-control"><a href="#9-2-6-容器大小操作" class="headerlink" title="9.2.6 容器大小操作"></a>9.2.6 容器大小操作<a class="heading-anchor" href="#9-2-6-容器大小操作" aria-hidden="true"></a></h2><h2 id="9-2-7-关系运算符" class="heading-control"><a href="#9-2-7-关系运算符" class="headerlink" title="9.2.7 关系运算符"></a>9.2.7 关系运算符<a class="heading-anchor" href="#9-2-7-关系运算符" aria-hidden="true"></a></h2><h1 id="9-3-顺序容器操作" class="heading-control"><a href="#9-3-顺序容器操作" class="headerlink" title="9.3 顺序容器操作"></a>9.3 顺序容器操作<a class="heading-anchor" href="#9-3-顺序容器操作" aria-hidden="true"></a></h1><h2 id="9-3-1-向顺序容器添加元素" class="heading-control"><a href="#9-3-1-向顺序容器添加元素" class="headerlink" title="9.3.1 向顺序容器添加元素"></a>9.3.1 向顺序容器添加元素<a class="heading-anchor" href="#9-3-1-向顺序容器添加元素" aria-hidden="true"></a></h2><h2 id="9-3-2-访问元素" class="heading-control"><a href="#9-3-2-访问元素" class="headerlink" title="9.3.2 访问元素"></a>9.3.2 访问元素<a class="heading-anchor" href="#9-3-2-访问元素" aria-hidden="true"></a></h2><h2 id="9-3-3-删除元素" class="heading-control"><a href="#9-3-3-删除元素" class="headerlink" title="9.3.3 删除元素"></a>9.3.3 删除元素<a class="heading-anchor" href="#9-3-3-删除元素" aria-hidden="true"></a></h2><h2 id="9-3-4-特殊的-forward-list-操作" class="heading-control"><a href="#9-3-4-特殊的-forward-list-操作" class="headerlink" title="9.3.4 特殊的 forward_list 操作"></a>9.3.4 特殊的 forward_list 操作<a class="heading-anchor" href="#9-3-4-特殊的-forward-list-操作" aria-hidden="true"></a></h2><h2 id="9-3-5-改变容器大小" class="heading-control"><a href="#9-3-5-改变容器大小" class="headerlink" title="9.3.5 改变容器大小"></a>9.3.5 改变容器大小<a class="heading-anchor" href="#9-3-5-改变容器大小" aria-hidden="true"></a></h2><h2 id="9-3-6-容器操作可能使迭代器失效" class="heading-control"><a href="#9-3-6-容器操作可能使迭代器失效" class="headerlink" title="9.3.6 容器操作可能使迭代器失效"></a>9.3.6 容器操作可能使迭代器失效<a class="heading-anchor" href="#9-3-6-容器操作可能使迭代器失效" aria-hidden="true"></a></h2><h1 id="9-4-vector-对象是如何增长的" class="heading-control"><a href="#9-4-vector-对象是如何增长的" class="headerlink" title="9.4 vector 对象是如何增长的"></a>9.4 vector 对象是如何增长的<a class="heading-anchor" href="#9-4-vector-对象是如何增长的" aria-hidden="true"></a></h1><h1 id="9-5-额外的-string-操作" class="heading-control"><a href="#9-5-额外的-string-操作" class="headerlink" title="9.5 额外的 string 操作"></a>9.5 额外的 string 操作<a class="heading-anchor" href="#9-5-额外的-string-操作" aria-hidden="true"></a></h1><h2 id="9-5-1-构造-string-的其他方法" class="heading-control"><a href="#9-5-1-构造-string-的其他方法" class="headerlink" title="9.5.1 构造 string 的其他方法"></a>9.5.1 构造 string 的其他方法<a class="heading-anchor" href="#9-5-1-构造-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-2-改变-string-的其他方法" class="heading-control"><a href="#9-5-2-改变-string-的其他方法" class="headerlink" title="9.5.2 改变 string 的其他方法"></a>9.5.2 改变 string 的其他方法<a class="heading-anchor" href="#9-5-2-改变-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-3-string-搜索操作" class="heading-control"><a href="#9-5-3-string-搜索操作" class="headerlink" title="9.5.3 string 搜索操作"></a>9.5.3 string 搜索操作<a class="heading-anchor" href="#9-5-3-string-搜索操作" aria-hidden="true"></a></h2><h2 id="9-5-4-compare-函数" class="heading-control"><a href="#9-5-4-compare-函数" class="headerlink" title="9.5.4 compare 函数"></a>9.5.4 compare 函数<a class="heading-anchor" href="#9-5-4-compare-函数" aria-hidden="true"></a></h2><h2 id="9-5-5-数值转换" class="heading-control"><a href="#9-5-5-数值转换" class="headerlink" title="9.5.5 数值转换"></a>9.5.5 数值转换<a class="heading-anchor" href="#9-5-5-数值转换" aria-hidden="true"></a></h2><h1 id="9-6-容器适配器" class="heading-control"><a href="#9-6-容器适配器" class="headerlink" title="9.6 容器适配器"></a>9.6 容器适配器<a class="heading-anchor" href="#9-6-容器适配器" aria-hidden="true"></a></h1><hr>
+<h2 id="9-2-5-赋值和-swap" class="heading-control"><a href="#9-2-5-赋值和-swap" class="headerlink" title="9.2.5 赋值和 swap"></a>9.2.5 赋值和 swap<a class="heading-anchor" href="#9-2-5-赋值和-swap" aria-hidden="true"></a></h2><ol>
+<li><p>与赋值相关的运算符可用于所有容器。赋值运算符将其左边容器中的全部元素替换为右边容器中元素的拷贝。与内置数组不同，标准库 <code>array</code> 类型允许赋值。赋值号左右两边的运算对象必须具有相同的类型。由于右边运算对象的大小可能与左边运算对象的大小不同，因此 <code>array</code> 类型不支持 <code>assign</code>，关联容器同样不支持：</p>
+<p><style type="text/css"><br>.tg {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-amwm" colspan="2">容器的 assign 操作</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">seq.assign(b, e)</td>
+    <td class="tg-0lax">将 seq 中的元素替换为迭代器 b 和 e 所表示的范围中的元素。迭代器 b 和 e 不能指向 seq 中的元素</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">seq.assign(il)</td>
+    <td class="tg-0lax">将 seq 中的元素替换为初始化列表 il 中的元素</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">seq.assign(n, t)</td>
+    <td class="tg-0lax">将 seq 中的元素替换为 n 个值为 t 的元素</td>
+  </tr>
+</tbody>
+</table>
+
+<blockquote>
+</blockquote>
+</li>
+</ol>
+<h2 id="9-2-6-容器大小操作" class="heading-control"><a href="#9-2-6-容器大小操作" class="headerlink" title="9.2.6 容器大小操作"></a>9.2.6 容器大小操作<a class="heading-anchor" href="#9-2-6-容器大小操作" aria-hidden="true"></a></h2><h2 id="9-2-7-关系运算符" class="heading-control"><a href="#9-2-7-关系运算符" class="headerlink" title="9.2.7 关系运算符"></a>9.2.7 关系运算符<a class="heading-anchor" href="#9-2-7-关系运算符" aria-hidden="true"></a></h2><h1 id="9-3-顺序容器操作" class="heading-control"><a href="#9-3-顺序容器操作" class="headerlink" title="9.3 顺序容器操作"></a>9.3 顺序容器操作<a class="heading-anchor" href="#9-3-顺序容器操作" aria-hidden="true"></a></h1><h2 id="9-3-1-向顺序容器添加元素" class="heading-control"><a href="#9-3-1-向顺序容器添加元素" class="headerlink" title="9.3.1 向顺序容器添加元素"></a>9.3.1 向顺序容器添加元素<a class="heading-anchor" href="#9-3-1-向顺序容器添加元素" aria-hidden="true"></a></h2><h2 id="9-3-2-访问元素" class="heading-control"><a href="#9-3-2-访问元素" class="headerlink" title="9.3.2 访问元素"></a>9.3.2 访问元素<a class="heading-anchor" href="#9-3-2-访问元素" aria-hidden="true"></a></h2><h2 id="9-3-3-删除元素" class="heading-control"><a href="#9-3-3-删除元素" class="headerlink" title="9.3.3 删除元素"></a>9.3.3 删除元素<a class="heading-anchor" href="#9-3-3-删除元素" aria-hidden="true"></a></h2><h2 id="9-3-4-特殊的-forward-list-操作" class="heading-control"><a href="#9-3-4-特殊的-forward-list-操作" class="headerlink" title="9.3.4 特殊的 forward_list 操作"></a>9.3.4 特殊的 forward_list 操作<a class="heading-anchor" href="#9-3-4-特殊的-forward-list-操作" aria-hidden="true"></a></h2><h2 id="9-3-5-改变容器大小" class="heading-control"><a href="#9-3-5-改变容器大小" class="headerlink" title="9.3.5 改变容器大小"></a>9.3.5 改变容器大小<a class="heading-anchor" href="#9-3-5-改变容器大小" aria-hidden="true"></a></h2><h2 id="9-3-6-容器操作可能使迭代器失效" class="heading-control"><a href="#9-3-6-容器操作可能使迭代器失效" class="headerlink" title="9.3.6 容器操作可能使迭代器失效"></a>9.3.6 容器操作可能使迭代器失效<a class="heading-anchor" href="#9-3-6-容器操作可能使迭代器失效" aria-hidden="true"></a></h2><h1 id="9-4-vector-对象是如何增长的" class="heading-control"><a href="#9-4-vector-对象是如何增长的" class="headerlink" title="9.4 vector 对象是如何增长的"></a>9.4 vector 对象是如何增长的<a class="heading-anchor" href="#9-4-vector-对象是如何增长的" aria-hidden="true"></a></h1><h1 id="9-5-额外的-string-操作" class="heading-control"><a href="#9-5-额外的-string-操作" class="headerlink" title="9.5 额外的 string 操作"></a>9.5 额外的 string 操作<a class="heading-anchor" href="#9-5-额外的-string-操作" aria-hidden="true"></a></h1><h2 id="9-5-1-构造-string-的其他方法" class="heading-control"><a href="#9-5-1-构造-string-的其他方法" class="headerlink" title="9.5.1 构造 string 的其他方法"></a>9.5.1 构造 string 的其他方法<a class="heading-anchor" href="#9-5-1-构造-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-2-改变-string-的其他方法" class="heading-control"><a href="#9-5-2-改变-string-的其他方法" class="headerlink" title="9.5.2 改变 string 的其他方法"></a>9.5.2 改变 string 的其他方法<a class="heading-anchor" href="#9-5-2-改变-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-3-string-搜索操作" class="heading-control"><a href="#9-5-3-string-搜索操作" class="headerlink" title="9.5.3 string 搜索操作"></a>9.5.3 string 搜索操作<a class="heading-anchor" href="#9-5-3-string-搜索操作" aria-hidden="true"></a></h2><h2 id="9-5-4-compare-函数" class="heading-control"><a href="#9-5-4-compare-函数" class="headerlink" title="9.5.4 compare 函数"></a>9.5.4 compare 函数<a class="heading-anchor" href="#9-5-4-compare-函数" aria-hidden="true"></a></h2><h2 id="9-5-5-数值转换" class="heading-control"><a href="#9-5-5-数值转换" class="headerlink" title="9.5.5 数值转换"></a>9.5.5 数值转换<a class="heading-anchor" href="#9-5-5-数值转换" aria-hidden="true"></a></h2><h1 id="9-6-容器适配器" class="heading-control"><a href="#9-6-容器适配器" class="headerlink" title="9.6 容器适配器"></a>9.6 容器适配器<a class="heading-anchor" href="#9-6-容器适配器" aria-hidden="true"></a></h1><hr>
 
     </div>
 
@@ -657,16 +699,16 @@
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第 5 章 语句</a></div>
+      <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第 2 章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第 4 章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第 2 章 变量和基本类型</a></div>
+      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第 5 章 语句</a></div>
     </li>
   </ul>
 
