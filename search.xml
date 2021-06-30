@@ -1774,145 +1774,6 @@
       </tags>
   </entry>
   <entry>
-    <title>C++ Primer - 第 8 章 IO 库</title>
-    <url>/archives/f6bc4afa.html</url>
-    <content><![CDATA[<ol>
-<li><p>继承机制使我们可以声明一个特定的类继承自另一个类。我们通常可以将一个派生类（继承类）对象当作其基类（所继承的类）对象来使用。类型 <code>ifstream</code> 和 <code>istringstream</code> 都继承自 <code>istream</code>。因此，我们可以像使用 <code>istream</code> 对象一样来使用 <code>ifstream</code> 和 <code>istringstream</code> 对象。也就是说，我们是如何使用 <code>cin</code> 的，就可以同样地使用这些类型的对象。例如，<strong>可以对一个 <code>ifstream</code> 或 <code>istringstream</code> 对象调用 <code>getline</code>，也可以使用 <code>&gt;&gt;</code> 从一个 <code>ifstream</code> 或 <code>istringstream</code> 对象中读取数据</strong>。类似的，类型 <code>ofstream</code> 和 <code>ostringstream</code> 都继承自 <code>ostream</code>。因此，我们是如何使用 <code>cout</code> 的，就可以同样地使用这些类型的对象。</p>
-</li>
-<li><p>不能拷贝或对 IO 对象赋值。<strong>由于不能拷贝 IO 对象，因此我们也不能将形参或返回类型设置为流类型。进行 IO 操作的函数通常以引用方式传递和返回流。读写一个 IO 对象会改变其状态，因此传递和返回的引用不能是 <code>const</code> 的。</strong></p>
-</li>
-<li><p>一个流一旦发生错误，其上后续的 IO 操作都会失败。只有当一个流处于无错状态时，我们才可以从它读取数据，向它写入数据。由于流可能处于错误状态，因此代码通常应该在使用一个流之前检查它是否处于良好状态。确定一个流对象的状态的最简单的方法是将它当作一个条件来使用：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; word)</span><br><span class="line">    <span class="comment">// ok：读操作成功.....</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>操作 <code>good</code> 在所有错误位均未置位的情况下返回 true，而 <code>bad</code>、<code>fail</code> 和 <code>eof</code> 则在对应错误位被置位时返回 true。此外，在 <code>badbit</code> 被置位时，<code>fail</code> 也会返回 true。这意味着，<strong>使用 <code>good</code> 或 <code>fail</code> 是确定流的总体状态的正确方法。实际上，我们将流当作条件使用的代码就等价于<code>!fail()</code></strong>。</p>
-</li>
-<li><p>每个输出流都管理一个缓冲区，用来保存程序读写的数据。导致缓冲刷新（即，数据真正写到输出设备或文件）的原因有很多：</p>
-<ul>
-<li>程序正常结束，作为 <code>main</code> 函数的 <code>return</code> 操作的一部分，缓冲刷新被执行。</li>
-<li>缓冲区满时，需要刷新缓冲，而后新的数据才能继续写入缓冲区。</li>
-<li>可以使用操纵符如 <code>endl</code> 来显式刷新缓冲区。</li>
-<li>在每个输出操作之后，可以用操纵符 <code>unitbuf</code> 设置流的内部状态，来清空缓冲区。默认情况下，对 <code>cerr</code> 是设置 <code>unitbuf</code> 的，因此写到 <code>cerr</code> 的内容都是立即刷新的。</li>
-<li>一个输出流可能被关联到另一个流。在这种情况下，当读写被关联的流时，关联到的流的缓冲区会被刷新。例如，<strong>默认情况下，<code>cin</code> 和 <code>cerr</code> 都关联到 <code>cout</code>。因此，读 <code>cin</code> 或写 <code>cerr</code> 都会导致 <code>cout</code> 的缓冲区被刷新</strong>。<br><br></li>
-</ul>
-</li>
-<li><p>操纵符 <code>endl</code>，它完成换行并刷新缓冲区的工作。IO 库中还有两个类似的操纵符：<code>flush</code> 和 <code>ends</code>。<code>flush</code> 刷新缓冲区，但不输出任何额外的字符；<code>ends</code> 向缓冲区插入一个空字符，然后刷新缓冲区。</p>
-</li>
-<li><p>如果想在每次输出操作后都刷新缓冲区，我们可以使用 <code>unitbuf</code> 操纵符。它告诉流在接下来的每次写操作之后都进行一次 <code>flush</code> 操作。而 <code>nounitbuf</code> 操纵符则重置流，使其恢复使用正常的系统管理的缓冲区刷新机制：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cout</span> &lt;&lt; unitbuf;  <span class="comment">// 所有输出操作后都会立即刷新缓冲区</span></span><br><span class="line"><span class="comment">// 任何输出都立即刷新，无缓冲</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; nounitbuf;  <span class="comment">// 回到正常的缓冲方式</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>如果程序异常终止，输出缓冲区是不会被刷新的。当一个程序崩溃后，它所输出的数据很可能停留在输出缓冲区中等待打印。</p>
-</blockquote>
-</li>
-<li><p><strong>当一个输入流被关联到一个输出流时，任何试图从输入流读取数据的操作都会先刷新关联的输出流。</strong> 既可以将一个 <code>istream</code> 对象关联到另一个 <code>ostream</code>，也可以将一个 <code>ostream</code> 关联到另一个 <code>ostream</code>。每个流同时最多关联到一个流，但多个流可以同时关联到同一个 <code>ostream</code>。</p>
-</li>
-<li><p>头文件 <code>fstream</code> 定义了三个类型来支持文件 IO：<code>ifstream</code> 从一个给定文件读取数据，<code>ofstream</code> 向一个给定文件写入数据，以及 <code>fstream</code> 可以读写给定文件。</p>
-</li>
-<li><p>创建文件流对象时，我们可以提供文件名（可选的）。如果提供了一个文件名，则 <code>open</code> 会自动被调用。在新 C++ 标准中，文件名既可以是库类型 <code>string</code> 对象，也可以是 C 风格字符数组。</p>
-</li>
-<li><p>在要求使用基类型对象的地方，我们可以用继承类型的对象来替代。这意味着，接受一个 <code>iostream</code> 类型引用（或指针）参数的函数，可以用一个对应的 <code>fstream</code>（或 <code>sstream</code>）类型来调用。也就是说，如果有一个函数接受一个 <code>ostream&amp;</code> 参数，我们在调用这个函数时，可以传递给它一个 <code>ofstream</code> 对象，对 <code>istream&amp;</code> 和 <code>ifstream</code> 也是类似的。</p>
-</li>
-<li><p>如果我们定义了一个空文件流对象，可以随后调用 <code>open</code> 来将它与文件关联起来。如果调用 <code>open</code> 失败，<code>failbit</code> 会被置位。因为调用 <code>open</code> 可能失败，进行 <code>oppen</code> 是否成功的检测通常是一个好习惯。一旦一个文件流已经打开，它就保持与对应文件的关联。实际上，<strong>对一个已经打开的文件流调用 <code>open</code> 会失败，并会导致 <code>failbit</code> 被置位。随后的试图使用文件流的操作都会失败</strong>。为了将文件流关联到另外一个文件，必须首先关闭已经关联的文件。一旦文件成功关闭，我们可以打开新的文件。</p>
-</li>
-<li><p>当一个 <code>fstream</code> 对象离开其作用域时，与之关联的文件会自动关闭。</p>
-</li>
-<li><p>编写函数，以读模式打开一个文件，将其内容读入到一个 <code>string</code> 的 <code>vector</code> 中，将每一行作为一个独立的元素存于 <code>vector</code> 中，将每个单词作为一个独立的元素存储在另一个 <code>vector</code> 中。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">ifstream <span class="title">input</span><span class="params">(<span class="string">"license.txt"</span>)</span></span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; vs_line, vs_word;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (input)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (getline(input, s))</span><br><span class="line">            vs_line.push_back(s);</span><br><span class="line"></span><br><span class="line">        input.clear();  <span class="comment">// 复位输入文件流状态为 true（输入文件流遇到文件尾状态会被置为 false）</span></span><br><span class="line">        input.seekg(<span class="number">0</span>); <span class="comment">// 返回输入文件流首位置</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (input &gt;&gt; s)</span><br><span class="line">            vs_word.push_back(s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cerr</span> &lt;&lt; <span class="string">"Wrong input file stream."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Output by line: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = vs_line.begin(); iter != vs_line.end(); ++iter)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *iter &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Output by word: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = vs_word.begin(); iter != vs_word.end(); ++iter)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *iter &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>每个流都有一个关联的<strong>文件模式</strong>（file mode）。如下表所示：</p>
-<table>
-<thead>
-<tr>
-    <th colspan="2"><center>文件模式</center></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-    <td>in</td>
-    <td>以读方式打开</td>
-</tr>
-<tr>
-    <td>out</td>
-    <td>以写方式打开</td>
-</tr>
-<tr>
-    <td>app</td>
-    <td>每次写操作均定位到文件末尾</td>
-</tr>
-<tr>
-    <td>ate</td>
-    <td>打开文件后立即定位到文件末尾</td>
-</tr>
-<tr>
-    <td>trunc</td>
-    <td>截断文件</td>
-</tr>
-<tr>
-    <td>binary</td>
-    <td>以二进制方式进行 IO</td>
-</tr>
-</tbody>
-</table>
-
-<p>无论用哪种方式打开文件，我们都可以指定文件模式，调用 <code>open</code> 打开文件时可以，用一个文件名初始化流来隐式打开文件时也可以。指定文件模式有如下限制：</p>
-<ul>
-<li>只可以对 <code>ofstream</code> 或 <code>fstream</code> 对象设定 <code>out</code> 模式。</li>
-<li>只可以对 <code>ifstream</code> 或 <code>fstream</code> 对象设定 <code>in</code> 模式。</li>
-<li>只有当 <code>out</code> 也被设定时才可设定 <code>trunc</code> 模式。</li>
-<li>只要 <code>trunc</code> 没被设定，就可以设定 <code>app</code> 模式。在 <code>app</code> 模式下，即使没有显式指定 <code>out</code> 模式，文件也总是以输出方式被打开。</li>
-<li>默认情况下，即使我们没有指定 <code>trunc</code>，以 <code>out</code> 模式打开的文件也会被截断。为了保留以 <code>out</code> 模式打开的文件的内容，我们必须同时指定 <code>app</code> 模式，这样只会将数据追加写到文件末尾；或者同时指定 <code>in</code> 模式，即打开文件同时进行读写操作。</li>
-<li><code>ate</code> 和 <code>binary</code> 模式可用于任何类型的文件流对象，且可以与其他任何文件模式组合使用。<br><br></li>
-</ul>
-<p>每个文件流类型都定义了一个默认的文件模式，当我们未指定文件模式时，就使用此默认模式。与 <code>ifstream</code> 关联的文件默认以 <code>in</code> 模式打开；与 <code>ofstream</code> 关联的文件默认以 <code>out</code> 模式打开；与 <code>fstream</code> 关联的文件默认以 <code>in</code> 和 <code>out</code> 模式打开。</p>
-</li>
-<li><p>默认情况下，当我们打开一个 <code>ofstream</code> 时，文件的内容会被丢弃。阻止一个 <code>ofstream</code> 清空给定文件内容的方法是同时指定 <code>app</code> 模式：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在这几条语句中，file1 都被截断</span></span><br><span class="line"><span class="function">ofstream <span class="title">out</span><span class="params">(<span class="string">"file1"</span>)</span></span>;  <span class="comment">// 隐含以输出模式打开文件并截断文件</span></span><br><span class="line"><span class="function">ofstream <span class="title">out2</span><span class="params">(<span class="string">"file1"</span>, ofstream::out)</span></span>;  <span class="comment">// 隐含地截断文件</span></span><br><span class="line"><span class="function">ofstream <span class="title">out3</span><span class="params">(<span class="string">"file1"</span>, ofstream::out | ofstream::trunc)</span></span>;</span><br><span class="line"><span class="comment">// 为了保留文件内容，我们必须显式指定 app 模式</span></span><br><span class="line"><span class="function">ofstream <span class="title">app</span><span class="params">(<span class="string">"file2"</span>, ofstream::app)</span></span>;  <span class="comment">// 隐含为输出模式</span></span><br><span class="line"><span class="function">ofstream <span class="title">app2</span><span class="params">(<span class="string">"file2"</span>, ofstream::out | ofstream::app)</span></span>;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>WARNING：保留被 ofstream 打开的文件中已有数据的唯一方法是显式指定 app 或 in 模式。</p>
-</blockquote>
-</li>
-<li><p><code>sstream</code> 头文件定义了三个类型来支持内存 IO，这些类型可以向 <code>string</code> 写入数据，从 <code>string</code> 读取数据，就像 <code>string</code> 是一个 IO 流一样。<code>istringstream</code> 从 <code>string</code> 读取数据，<code>ostringstream</code> 向 <code>string</code> 写入数据，而头文件 <code>stringstream</code> 既可从 <code>string</code> 读数据也可向 <code>string</code> 写数据。<code>stringstream</code> 特有的一些操作如下表所示：</p>
-<table>
-<thead>
-<tr>
-    <th colspan="2"><center>stringstream特有的操作</center></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-    <td>sstream strm;</td>
-    <td>strm 是一个未绑定的 stringstream 对象。sstream 是头文件 sstream 中定义的一个类型</td>
-</tr>
-<tr>
-    <td>sstream strm(s);</td>
-    <td>strm 是一个 sstream 对象，保存 strings 的一个拷贝。此构造函数是 explicit 的</td>
-</tr>
-<tr>
-    <td>strm.str()</td>
-    <td>返回 strm 所保存的 string 的拷贝</td>
-</tr>
-<tr>
-    <td>strm.str(s)</td>
-    <td>将 string s 拷贝到 strm 中，返回 void</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li><p>每个 IO 对象都维护一组条件状态，用来指出此对象上是否可以进行 IO 操作。如果遇到了错误——例如<strong>在输入流上遇到了文件末尾，则对象的状态变为失效，所有后续输入操作都不能执行，直至错误被纠正</strong>。标准库提供了一组函数，用来设置和检测这些状态。</p>
-</li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>编码</category>
-        <category>C/C++</category>
-        <category>《C++ Primer》</category>
-      </categories>
-      <tags>
-        <tag>C/C++</tag>
-        <tag>C++ Primer</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>C++ Primer - 第 7 章 类</title>
     <url>/archives/53fe514.html</url>
     <content><![CDATA[<ol>
@@ -2734,6 +2595,12 @@
 </li>
 <li><p>在一个 <code>vector</code> 或 <code>string</code> 的尾部之外的任何位置，或是一个 <code>deque</code> 的首尾之外的任何位置添加元素，都需要移动元素。而且，<strong>向一个 <code>vector</code> 或 <code>string</code> 添加元素可能引起整个对象存储空间的重新分配。重新分配一个对象的存储空间需要分配新的内存，并将元素从旧的空间移动到新的空间中</strong>。</p>
 </li>
+<li><p>对 <code>push_back</code> 的调用在 container 尾部创建了一个新的元素，将 container 的 <code>size</code> 增大了 1。</p>
+</li>
+<li><blockquote>
+<p><strong>关键概念：容器元素是拷贝</strong>。当我们用一个对象来初始化容器时，或将一个对象插入到容器中时，实际上放入到容器中的是对象值的一个拷贝，而不是对象本身。</p>
+</blockquote>
+</li>
 </ol>
 <h2 id="9-3-2-访问元素" class="heading-control"><a href="#9-3-2-访问元素" class="headerlink" title="9.3.2 访问元素"></a>9.3.2 访问元素<a class="heading-anchor" href="#9-3-2-访问元素" aria-hidden="true"></a></h2><h2 id="9-3-3-删除元素" class="heading-control"><a href="#9-3-3-删除元素" class="headerlink" title="9.3.3 删除元素"></a>9.3.3 删除元素<a class="heading-anchor" href="#9-3-3-删除元素" aria-hidden="true"></a></h2><h2 id="9-3-4-特殊的-forward-list-操作" class="heading-control"><a href="#9-3-4-特殊的-forward-list-操作" class="headerlink" title="9.3.4 特殊的 forward_list 操作"></a>9.3.4 特殊的 forward_list 操作<a class="heading-anchor" href="#9-3-4-特殊的-forward-list-操作" aria-hidden="true"></a></h2><h2 id="9-3-5-改变容器大小" class="heading-control"><a href="#9-3-5-改变容器大小" class="headerlink" title="9.3.5 改变容器大小"></a>9.3.5 改变容器大小<a class="heading-anchor" href="#9-3-5-改变容器大小" aria-hidden="true"></a></h2><h2 id="9-3-6-容器操作可能使迭代器失效" class="heading-control"><a href="#9-3-6-容器操作可能使迭代器失效" class="headerlink" title="9.3.6 容器操作可能使迭代器失效"></a>9.3.6 容器操作可能使迭代器失效<a class="heading-anchor" href="#9-3-6-容器操作可能使迭代器失效" aria-hidden="true"></a></h2><h1 id="9-4-vector-对象是如何增长的" class="heading-control"><a href="#9-4-vector-对象是如何增长的" class="headerlink" title="9.4 vector 对象是如何增长的"></a>9.4 vector 对象是如何增长的<a class="heading-anchor" href="#9-4-vector-对象是如何增长的" aria-hidden="true"></a></h1><h1 id="9-5-额外的-string-操作" class="heading-control"><a href="#9-5-额外的-string-操作" class="headerlink" title="9.5 额外的 string 操作"></a>9.5 额外的 string 操作<a class="heading-anchor" href="#9-5-额外的-string-操作" aria-hidden="true"></a></h1><h2 id="9-5-1-构造-string-的其他方法" class="heading-control"><a href="#9-5-1-构造-string-的其他方法" class="headerlink" title="9.5.1 构造 string 的其他方法"></a>9.5.1 构造 string 的其他方法<a class="heading-anchor" href="#9-5-1-构造-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-2-改变-string-的其他方法" class="heading-control"><a href="#9-5-2-改变-string-的其他方法" class="headerlink" title="9.5.2 改变 string 的其他方法"></a>9.5.2 改变 string 的其他方法<a class="heading-anchor" href="#9-5-2-改变-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-3-string-搜索操作" class="heading-control"><a href="#9-5-3-string-搜索操作" class="headerlink" title="9.5.3 string 搜索操作"></a>9.5.3 string 搜索操作<a class="heading-anchor" href="#9-5-3-string-搜索操作" aria-hidden="true"></a></h2><h2 id="9-5-4-compare-函数" class="heading-control"><a href="#9-5-4-compare-函数" class="headerlink" title="9.5.4 compare 函数"></a>9.5.4 compare 函数<a class="heading-anchor" href="#9-5-4-compare-函数" aria-hidden="true"></a></h2><h2 id="9-5-5-数值转换" class="heading-control"><a href="#9-5-5-数值转换" class="headerlink" title="9.5.5 数值转换"></a>9.5.5 数值转换<a class="heading-anchor" href="#9-5-5-数值转换" aria-hidden="true"></a></h2><h1 id="9-6-容器适配器" class="heading-control"><a href="#9-6-容器适配器" class="headerlink" title="9.6 容器适配器"></a>9.6 容器适配器<a class="heading-anchor" href="#9-6-容器适配器" aria-hidden="true"></a></h1><hr>
 ]]></content>
@@ -2775,36 +2642,142 @@
       </tags>
   </entry>
   <entry>
-    <title>Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</title>
-    <url>/archives/77718b2.html</url>
-    <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
-<p>在本地同步追踪某个远程仓库的某一分支（以develop分支为例）。</p>
-</blockquote>
-<h1 id="2-问题" class="heading-control"><a href="#2-问题" class="headerlink" title="2 问题"></a>2 问题<a class="heading-anchor" href="#2-问题" aria-hidden="true"></a></h1><p>起初先进行了如下操作：</p>
+    <title>C++ Primer - 第 8 章 IO 库</title>
+    <url>/archives/f6bc4afa.html</url>
+    <content><![CDATA[<ol>
+<li><p>继承机制使我们可以声明一个特定的类继承自另一个类。我们通常可以将一个派生类（继承类）对象当作其基类（所继承的类）对象来使用。类型 <code>ifstream</code> 和 <code>istringstream</code> 都继承自 <code>istream</code>。因此，我们可以像使用 <code>istream</code> 对象一样来使用 <code>ifstream</code> 和 <code>istringstream</code> 对象。也就是说，我们是如何使用 <code>cin</code> 的，就可以同样地使用这些类型的对象。例如，<strong>可以对一个 <code>ifstream</code> 或 <code>istringstream</code> 对象调用 <code>getline</code>，也可以使用 <code>&gt;&gt;</code> 从一个 <code>ifstream</code> 或 <code>istringstream</code> 对象中读取数据</strong>。类似的，类型 <code>ofstream</code> 和 <code>ostringstream</code> 都继承自 <code>ostream</code>。因此，我们是如何使用 <code>cout</code> 的，就可以同样地使用这些类型的对象。</p>
+</li>
+<li><p>不能拷贝或对 IO 对象赋值。<strong>由于不能拷贝 IO 对象，因此我们也不能将形参或返回类型设置为流类型。进行 IO 操作的函数通常以引用方式传递和返回流。读写一个 IO 对象会改变其状态，因此传递和返回的引用不能是 <code>const</code> 的。</strong></p>
+</li>
+<li><p>一个流一旦发生错误，其上后续的 IO 操作都会失败。只有当一个流处于无错状态时，我们才可以从它读取数据，向它写入数据。由于流可能处于错误状态，因此代码通常应该在使用一个流之前检查它是否处于良好状态。确定一个流对象的状态的最简单的方法是将它当作一个条件来使用：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; word)</span><br><span class="line">    <span class="comment">// ok：读操作成功.....</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>操作 <code>good</code> 在所有错误位均未置位的情况下返回 true，而 <code>bad</code>、<code>fail</code> 和 <code>eof</code> 则在对应错误位被置位时返回 true。此外，在 <code>badbit</code> 被置位时，<code>fail</code> 也会返回 true。这意味着，<strong>使用 <code>good</code> 或 <code>fail</code> 是确定流的总体状态的正确方法。实际上，我们将流当作条件使用的代码就等价于<code>!fail()</code></strong>。</p>
+</li>
+<li><p>每个输出流都管理一个缓冲区，用来保存程序读写的数据。导致缓冲刷新（即，数据真正写到输出设备或文件）的原因有很多：</p>
 <ul>
-<li>创建一个文件夹，初始化为git仓库：<code>git init</code></li>
-<li>进行用户基本信息配置：<code>git config</code></li>
-<li>创建本地仓库的develop分支：<code>git checkout -b</code></li>
-<li>关联远程仓库git地址：<code>git remote add</code></li>
+<li>程序正常结束，作为 <code>main</code> 函数的 <code>return</code> 操作的一部分，缓冲刷新被执行。</li>
+<li>缓冲区满时，需要刷新缓冲，而后新的数据才能继续写入缓冲区。</li>
+<li>可以使用操纵符如 <code>endl</code> 来显式刷新缓冲区。</li>
+<li>在每个输出操作之后，可以用操纵符 <code>unitbuf</code> 设置流的内部状态，来清空缓冲区。默认情况下，对 <code>cerr</code> 是设置 <code>unitbuf</code> 的，因此写到 <code>cerr</code> 的内容都是立即刷新的。</li>
+<li>一个输出流可能被关联到另一个流。在这种情况下，当读写被关联的流时，关联到的流的缓冲区会被刷新。例如，<strong>默认情况下，<code>cin</code> 和 <code>cerr</code> 都关联到 <code>cout</code>。因此，读 <code>cin</code> 或写 <code>cerr</code> 都会导致 <code>cout</code> 的缓冲区被刷新</strong>。<br><br></li>
 </ul>
-<p>接下来，尝试通过<code>git branch --set-upstream-to</code>将本地仓库develop分支与远程仓库develop分支进行关联时报错：develop分支不存在。使用<code>git branch -r</code>发现远程仓库分支为空，其实使用<code>git branch -a</code>可以发现根本看不到任何分支。</p>
-<h1 id="3-解决" class="heading-control"><a href="#3-解决" class="headerlink" title="3 解决"></a>3 解决<a class="heading-anchor" href="#3-解决" aria-hidden="true"></a></h1><p>因为仅仅是关联了远程仓库，本地仓库并未获取远程仓库的修改（包括分支信息），所以本地看不到远程仓库的分支，也就无法进行分支关联操作。以<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">参考1<i class="fa fa-external-link"></i></span>中的建议，在将本地仓库分支与远程仓库分支进行关联前，可先通过<code>git fetch origin</code>命令拉取远程仓库的修改，这样便可获取远程仓库分支信息，但还无法看到本地分支。最佳实践是使用<code>git pull origin develop</code>命令（前提是你必须知道想要将远程仓库的哪个分支并入本地分支），便可看到远程仓库的develop分支和本地仓库的develop分支（当前分支），进而可进行分支关联操作。</p>
-<h1 id="4-结论" class="heading-control"><a href="#4-结论" class="headerlink" title="4 结论"></a>4 结论<a class="heading-anchor" href="#4-结论" aria-hidden="true"></a></h1><p>总结一下最佳实践：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git checkout -b local_branch</span><br><span class="line">git remote add origin repo_addr</span><br><span class="line">git pull origin repo_branch</span><br><span class="line">git branch --<span class="built_in">set</span>-upstream-to=origin/repo_branch local_branch</span><br><span class="line">git fetch --all</span><br></pre></td></tr></table></figure>
-<p>当然，直接使用<code>git clone</code>也是可以的（<strong>这才应该算是最佳实践！</strong>）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch</span><br></pre></td></tr></table></figure>
-<p><code>git checkout target_repo_branch</code>将自动在本地创建一个名为target_repo_branch的分支，并将其与远程仓库中的target_repo_branch分支进行关联。执行完<code>git clone</code>后，默认在本地仓库创建的是master分支，并将其与远程仓库的master分支进行关联，但通常情况下，maser分支仅用于版本释放，我们并不会直接向mater分支推送修改，而是在其它分支（如develop分支）完成开发与调试后，再通过<code>git merge</code>将分支上的工作并入master分支。</p>
-<h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">Git branch -r 无法获取远程分支，ui可以看见分支但是git 命令无法查看解决方案<i class="fa fa-external-link"></i></span></li>
+</li>
+<li><p>操纵符 <code>endl</code>，它完成换行并刷新缓冲区的工作。IO 库中还有两个类似的操纵符：<code>flush</code> 和 <code>ends</code>。<code>flush</code> 刷新缓冲区，但不输出任何额外的字符；<code>ends</code> 向缓冲区插入一个空字符，然后刷新缓冲区。</p>
+</li>
+<li><p>如果想在每次输出操作后都刷新缓冲区，我们可以使用 <code>unitbuf</code> 操纵符。它告诉流在接下来的每次写操作之后都进行一次 <code>flush</code> 操作。而 <code>nounitbuf</code> 操纵符则重置流，使其恢复使用正常的系统管理的缓冲区刷新机制：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cout</span> &lt;&lt; unitbuf;  <span class="comment">// 所有输出操作后都会立即刷新缓冲区</span></span><br><span class="line"><span class="comment">// 任何输出都立即刷新，无缓冲</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; nounitbuf;  <span class="comment">// 回到正常的缓冲方式</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果程序异常终止，输出缓冲区是不会被刷新的。当一个程序崩溃后，它所输出的数据很可能停留在输出缓冲区中等待打印。</p>
+</blockquote>
+</li>
+<li><p><strong>当一个输入流被关联到一个输出流时，任何试图从输入流读取数据的操作都会先刷新关联的输出流。</strong> 既可以将一个 <code>istream</code> 对象关联到另一个 <code>ostream</code>，也可以将一个 <code>ostream</code> 关联到另一个 <code>ostream</code>。每个流同时最多关联到一个流，但多个流可以同时关联到同一个 <code>ostream</code>。</p>
+</li>
+<li><p>头文件 <code>fstream</code> 定义了三个类型来支持文件 IO：<code>ifstream</code> 从一个给定文件读取数据，<code>ofstream</code> 向一个给定文件写入数据，以及 <code>fstream</code> 可以读写给定文件。</p>
+</li>
+<li><p>创建文件流对象时，我们可以提供文件名（可选的）。如果提供了一个文件名，则 <code>open</code> 会自动被调用。在新 C++ 标准中，文件名既可以是库类型 <code>string</code> 对象，也可以是 C 风格字符数组。</p>
+</li>
+<li><p>在要求使用基类型对象的地方，我们可以用继承类型的对象来替代。这意味着，接受一个 <code>iostream</code> 类型引用（或指针）参数的函数，可以用一个对应的 <code>fstream</code>（或 <code>sstream</code>）类型来调用。也就是说，如果有一个函数接受一个 <code>ostream&amp;</code> 参数，我们在调用这个函数时，可以传递给它一个 <code>ofstream</code> 对象，对 <code>istream&amp;</code> 和 <code>ifstream</code> 也是类似的。</p>
+</li>
+<li><p>如果我们定义了一个空文件流对象，可以随后调用 <code>open</code> 来将它与文件关联起来。如果调用 <code>open</code> 失败，<code>failbit</code> 会被置位。因为调用 <code>open</code> 可能失败，进行 <code>oppen</code> 是否成功的检测通常是一个好习惯。一旦一个文件流已经打开，它就保持与对应文件的关联。实际上，<strong>对一个已经打开的文件流调用 <code>open</code> 会失败，并会导致 <code>failbit</code> 被置位。随后的试图使用文件流的操作都会失败</strong>。为了将文件流关联到另外一个文件，必须首先关闭已经关联的文件。一旦文件成功关闭，我们可以打开新的文件。</p>
+</li>
+<li><p>当一个 <code>fstream</code> 对象离开其作用域时，与之关联的文件会自动关闭。</p>
+</li>
+<li><p>编写函数，以读模式打开一个文件，将其内容读入到一个 <code>string</code> 的 <code>vector</code> 中，将每一行作为一个独立的元素存于 <code>vector</code> 中，将每个单词作为一个独立的元素存储在另一个 <code>vector</code> 中。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">ifstream <span class="title">input</span><span class="params">(<span class="string">"license.txt"</span>)</span></span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; vs_line, vs_word;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (input)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (getline(input, s))</span><br><span class="line">            vs_line.push_back(s);</span><br><span class="line"></span><br><span class="line">        input.clear();  <span class="comment">// 复位输入文件流状态为 true（输入文件流遇到文件尾状态会被置为 false）</span></span><br><span class="line">        input.seekg(<span class="number">0</span>); <span class="comment">// 返回输入文件流首位置</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (input &gt;&gt; s)</span><br><span class="line">            vs_word.push_back(s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cerr</span> &lt;&lt; <span class="string">"Wrong input file stream."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Output by line: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = vs_line.begin(); iter != vs_line.end(); ++iter)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *iter &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Output by word: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = vs_word.begin(); iter != vs_word.end(); ++iter)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *iter &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>每个流都有一个关联的<strong>文件模式</strong>（file mode）。如下表所示：</p>
+<table>
+<thead>
+<tr>
+    <th colspan="2"><center>文件模式</center></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td>in</td>
+    <td>以读方式打开</td>
+</tr>
+<tr>
+    <td>out</td>
+    <td>以写方式打开</td>
+</tr>
+<tr>
+    <td>app</td>
+    <td>每次写操作均定位到文件末尾</td>
+</tr>
+<tr>
+    <td>ate</td>
+    <td>打开文件后立即定位到文件末尾</td>
+</tr>
+<tr>
+    <td>trunc</td>
+    <td>截断文件</td>
+</tr>
+<tr>
+    <td>binary</td>
+    <td>以二进制方式进行 IO</td>
+</tr>
+</tbody>
+</table>
+
+<p>无论用哪种方式打开文件，我们都可以指定文件模式，调用 <code>open</code> 打开文件时可以，用一个文件名初始化流来隐式打开文件时也可以。指定文件模式有如下限制：</p>
+<ul>
+<li>只可以对 <code>ofstream</code> 或 <code>fstream</code> 对象设定 <code>out</code> 模式。</li>
+<li>只可以对 <code>ifstream</code> 或 <code>fstream</code> 对象设定 <code>in</code> 模式。</li>
+<li>只有当 <code>out</code> 也被设定时才可设定 <code>trunc</code> 模式。</li>
+<li>只要 <code>trunc</code> 没被设定，就可以设定 <code>app</code> 模式。在 <code>app</code> 模式下，即使没有显式指定 <code>out</code> 模式，文件也总是以输出方式被打开。</li>
+<li>默认情况下，即使我们没有指定 <code>trunc</code>，以 <code>out</code> 模式打开的文件也会被截断。为了保留以 <code>out</code> 模式打开的文件的内容，我们必须同时指定 <code>app</code> 模式，这样只会将数据追加写到文件末尾；或者同时指定 <code>in</code> 模式，即打开文件同时进行读写操作。</li>
+<li><code>ate</code> 和 <code>binary</code> 模式可用于任何类型的文件流对象，且可以与其他任何文件模式组合使用。<br><br></li>
+</ul>
+<p>每个文件流类型都定义了一个默认的文件模式，当我们未指定文件模式时，就使用此默认模式。与 <code>ifstream</code> 关联的文件默认以 <code>in</code> 模式打开；与 <code>ofstream</code> 关联的文件默认以 <code>out</code> 模式打开；与 <code>fstream</code> 关联的文件默认以 <code>in</code> 和 <code>out</code> 模式打开。</p>
+</li>
+<li><p>默认情况下，当我们打开一个 <code>ofstream</code> 时，文件的内容会被丢弃。阻止一个 <code>ofstream</code> 清空给定文件内容的方法是同时指定 <code>app</code> 模式：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在这几条语句中，file1 都被截断</span></span><br><span class="line"><span class="function">ofstream <span class="title">out</span><span class="params">(<span class="string">"file1"</span>)</span></span>;  <span class="comment">// 隐含以输出模式打开文件并截断文件</span></span><br><span class="line"><span class="function">ofstream <span class="title">out2</span><span class="params">(<span class="string">"file1"</span>, ofstream::out)</span></span>;  <span class="comment">// 隐含地截断文件</span></span><br><span class="line"><span class="function">ofstream <span class="title">out3</span><span class="params">(<span class="string">"file1"</span>, ofstream::out | ofstream::trunc)</span></span>;</span><br><span class="line"><span class="comment">// 为了保留文件内容，我们必须显式指定 app 模式</span></span><br><span class="line"><span class="function">ofstream <span class="title">app</span><span class="params">(<span class="string">"file2"</span>, ofstream::app)</span></span>;  <span class="comment">// 隐含为输出模式</span></span><br><span class="line"><span class="function">ofstream <span class="title">app2</span><span class="params">(<span class="string">"file2"</span>, ofstream::out | ofstream::app)</span></span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>WARNING：保留被 ofstream 打开的文件中已有数据的唯一方法是显式指定 app 或 in 模式。</p>
+</blockquote>
+</li>
+<li><p><code>sstream</code> 头文件定义了三个类型来支持内存 IO，这些类型可以向 <code>string</code> 写入数据，从 <code>string</code> 读取数据，就像 <code>string</code> 是一个 IO 流一样。<code>istringstream</code> 从 <code>string</code> 读取数据，<code>ostringstream</code> 向 <code>string</code> 写入数据，而头文件 <code>stringstream</code> 既可从 <code>string</code> 读数据也可向 <code>string</code> 写数据。<code>stringstream</code> 特有的一些操作如下表所示：</p>
+<table>
+<thead>
+<tr>
+    <th colspan="2"><center>stringstream特有的操作</center></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td>sstream strm;</td>
+    <td>strm 是一个未绑定的 stringstream 对象。sstream 是头文件 sstream 中定义的一个类型</td>
+</tr>
+<tr>
+    <td>sstream strm(s);</td>
+    <td>strm 是一个 sstream 对象，保存 strings 的一个拷贝。此构造函数是 explicit 的</td>
+</tr>
+<tr>
+    <td>strm.str()</td>
+    <td>返回 strm 所保存的 string 的拷贝</td>
+</tr>
+<tr>
+    <td>strm.str(s)</td>
+    <td>将 string s 拷贝到 strm 中，返回 void</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>每个 IO 对象都维护一组条件状态，用来指出此对象上是否可以进行 IO 操作。如果遇到了错误——例如<strong>在输入流上遇到了文件末尾，则对象的状态变为失效，所有后续输入操作都不能执行，直至错误被纠正</strong>。标准库提供了一组函数，用来设置和检测这些状态。</p>
+</li>
 </ol>
 <hr>
 ]]></content>
       <categories>
-        <category>效率</category>
-        <category>Git</category>
+        <category>编码</category>
+        <category>C/C++</category>
+        <category>《C++ Primer》</category>
       </categories>
       <tags>
-        <tag>Git</tag>
+        <tag>C/C++</tag>
+        <tag>C++ Primer</tag>
       </tags>
   </entry>
   <entry>
@@ -2858,6 +2831,39 @@
       </tags>
   </entry>
   <entry>
+    <title>Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</title>
+    <url>/archives/77718b2.html</url>
+    <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
+<p>在本地同步追踪某个远程仓库的某一分支（以develop分支为例）。</p>
+</blockquote>
+<h1 id="2-问题" class="heading-control"><a href="#2-问题" class="headerlink" title="2 问题"></a>2 问题<a class="heading-anchor" href="#2-问题" aria-hidden="true"></a></h1><p>起初先进行了如下操作：</p>
+<ul>
+<li>创建一个文件夹，初始化为git仓库：<code>git init</code></li>
+<li>进行用户基本信息配置：<code>git config</code></li>
+<li>创建本地仓库的develop分支：<code>git checkout -b</code></li>
+<li>关联远程仓库git地址：<code>git remote add</code></li>
+</ul>
+<p>接下来，尝试通过<code>git branch --set-upstream-to</code>将本地仓库develop分支与远程仓库develop分支进行关联时报错：develop分支不存在。使用<code>git branch -r</code>发现远程仓库分支为空，其实使用<code>git branch -a</code>可以发现根本看不到任何分支。</p>
+<h1 id="3-解决" class="heading-control"><a href="#3-解决" class="headerlink" title="3 解决"></a>3 解决<a class="heading-anchor" href="#3-解决" aria-hidden="true"></a></h1><p>因为仅仅是关联了远程仓库，本地仓库并未获取远程仓库的修改（包括分支信息），所以本地看不到远程仓库的分支，也就无法进行分支关联操作。以<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">参考1<i class="fa fa-external-link"></i></span>中的建议，在将本地仓库分支与远程仓库分支进行关联前，可先通过<code>git fetch origin</code>命令拉取远程仓库的修改，这样便可获取远程仓库分支信息，但还无法看到本地分支。最佳实践是使用<code>git pull origin develop</code>命令（前提是你必须知道想要将远程仓库的哪个分支并入本地分支），便可看到远程仓库的develop分支和本地仓库的develop分支（当前分支），进而可进行分支关联操作。</p>
+<h1 id="4-结论" class="heading-control"><a href="#4-结论" class="headerlink" title="4 结论"></a>4 结论<a class="heading-anchor" href="#4-结论" aria-hidden="true"></a></h1><p>总结一下最佳实践：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git checkout -b local_branch</span><br><span class="line">git remote add origin repo_addr</span><br><span class="line">git pull origin repo_branch</span><br><span class="line">git branch --<span class="built_in">set</span>-upstream-to=origin/repo_branch local_branch</span><br><span class="line">git fetch --all</span><br></pre></td></tr></table></figure>
+<p>当然，直接使用<code>git clone</code>也是可以的（<strong>这才应该算是最佳实践！</strong>）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch</span><br></pre></td></tr></table></figure>
+<p><code>git checkout target_repo_branch</code>将自动在本地创建一个名为target_repo_branch的分支，并将其与远程仓库中的target_repo_branch分支进行关联。执行完<code>git clone</code>后，默认在本地仓库创建的是master分支，并将其与远程仓库的master分支进行关联，但通常情况下，maser分支仅用于版本释放，我们并不会直接向mater分支推送修改，而是在其它分支（如develop分支）完成开发与调试后，再通过<code>git merge</code>将分支上的工作并入master分支。</p>
+<h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">Git branch -r 无法获取远程分支，ui可以看见分支但是git 命令无法查看解决方案<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>效率</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux 下使用 vscode 调试 C++ 程序的一般步骤</title>
     <url>/archives/f27f966b.html</url>
     <content><![CDATA[<blockquote>
@@ -2903,6 +2909,47 @@
       <tags>
         <tag>C/C++</tag>
         <tag>VS Code</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux中使用core dump进行程序调试</title>
+    <url>/archives/f52fa610.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><ul>
+<li>在ubuntu 14.04系统中临时编译了LaneViewer（项目中基于QGLViewer编写的一个GUI界面），但在ubuntu 14.04系统中无法正常运行，启动后闪退，想到了使用<code>core dump</code>文件进行调试，定位问题所在；</li>
+<li>项目中所负责的某模块在iECU中运行时会出现<code>defunct</code>（挂掉）问题，想到了使用<code>core dump</code>文件进行调试，定位问题所在。</li>
+</ul>
+<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
+<li>临时开启<code>core dump</code>，取消core文件大小限制（仅对当前终端有效）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br></pre></td></tr></table></figure></li>
+<li>运行目标程序，若非正常退出，会在程序所在目录下生成对应core文件</li>
+<li>使用<code>gdb</code>调试core文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gdb .&#x2F;LaneViewer core</span><br></pre></td></tr></table></figure></li>
+<li>进入<code>gdb</code>调试界面后，输入<code>r</code>并回车，可使程序运行至断点位置，输入<code>bt</code>并回车，可显示程序运行时的调用堆栈，<code>bt</code>代表<code>backtrace</code>。</li>
+</ol>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuaXRleWUuY29tL2Jsb2cvdmFxZXRlYXJ0LTEwMTMzOTc=" title="https://www.iteye.com/blog/vaqeteart-1013397">利用Core Dump调试程序<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux中的ld-so与ld-linux-so</title>
+    <url>/archives/c5106d85.html</url>
+    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>动态链接器/加载器，<code>ld.so</code>和 <code>ld-linux.so*</code>查找并加载程序运行时所需要的共享对象（共享库），然后准备好程序并运行它，Linux二进制文件需要在运行时进行动态链接，除非在程序编译期间为ld（GNU链接器）指定了<code>-static</code>选项。<code>ld.so</code>程序处理a.out二进制格式（一种年代久远的二进制格式），<code>ld-linux.so*</code>（于libc5而言是/lib/ld-linux.so.1，于glibc2而言是/lib/ld-linux.so.2）处理更加现代的ELF二进制格式。两个程序具有相同的行为，使用相同的支持文件和程序（ldd、ldconfig和/etc/ld.so.conf）。<strong>ld.so与ld-linux.so是相似的，于程序运行期间起作用</strong>。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cDovL21hbjcub3JnL2xpbnV4L21hbi1wYWdlcy9tYW44L2xkLWxpbnV4LnNvLjguaHRtbA==" title="http://man7.org/linux/man-pages/man8/ld-linux.so.8.html">ld.so, ld-linux.so - dynamic linker/loader<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2954,28 +3001,22 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux中使用core dump进行程序调试</title>
-    <url>/archives/f52fa610.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><ul>
-<li>在ubuntu 14.04系统中临时编译了LaneViewer（项目中基于QGLViewer编写的一个GUI界面），但在ubuntu 14.04系统中无法正常运行，启动后闪退，想到了使用<code>core dump</code>文件进行调试，定位问题所在；</li>
-<li>项目中所负责的某模块在iECU中运行时会出现<code>defunct</code>（挂掉）问题，想到了使用<code>core dump</code>文件进行调试，定位问题所在。</li>
-</ul>
-<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
-<li>临时开启<code>core dump</code>，取消core文件大小限制（仅对当前终端有效）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br></pre></td></tr></table></figure></li>
-<li>运行目标程序，若非正常退出，会在程序所在目录下生成对应core文件</li>
-<li>使用<code>gdb</code>调试core文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gdb .&#x2F;LaneViewer core</span><br></pre></td></tr></table></figure></li>
-<li>进入<code>gdb</code>调试界面后，输入<code>r</code>并回车，可使程序运行至断点位置，输入<code>bt</code>并回车，可显示程序运行时的调用堆栈，<code>bt</code>代表<code>backtrace</code>。</li>
-</ol>
+    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
+    <url>/archives/43b2dca3.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuaXRleWUuY29tL2Jsb2cvdmFxZXRlYXJ0LTEwMTMzOTc=" title="https://www.iteye.com/blog/vaqeteart-1013397">利用Core Dump调试程序<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
       <categories>
-        <category>Linux</category>
+        <category>编码</category>
+        <category>Python</category>
+        <category>随笔</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -3013,46 +3054,11 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux中的ld-so与ld-linux-so</title>
-    <url>/archives/c5106d85.html</url>
-    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>动态链接器/加载器，<code>ld.so</code>和 <code>ld-linux.so*</code>查找并加载程序运行时所需要的共享对象（共享库），然后准备好程序并运行它，Linux二进制文件需要在运行时进行动态链接，除非在程序编译期间为ld（GNU链接器）指定了<code>-static</code>选项。<code>ld.so</code>程序处理a.out二进制格式（一种年代久远的二进制格式），<code>ld-linux.so*</code>（于libc5而言是/lib/ld-linux.so.1，于glibc2而言是/lib/ld-linux.so.2）处理更加现代的ELF二进制格式。两个程序具有相同的行为，使用相同的支持文件和程序（ldd、ldconfig和/etc/ld.so.conf）。<strong>ld.so与ld-linux.so是相似的，于程序运行期间起作用</strong>。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL21hbjcub3JnL2xpbnV4L21hbi1wYWdlcy9tYW44L2xkLWxpbnV4LnNvLjguaHRtbA==" title="http://man7.org/linux/man-pages/man8/ld-linux.so.8.html">ld.so, ld-linux.so - dynamic linker/loader<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python字典数据结构的item()函数</title>
     <url>/archives/b11e5b5a.html</url>
     <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在学习Robot Framework自动化测试框架测试库编写过程中，了解到了字典的<code>item()</code>函数，通过调用此函数，会返回一个列表，列表中包含的是可遍历的(键, 值) 元组数组。如在vscode中运行下面的Python代码片段：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>, <span class="string">'key3'</span>: <span class="string">'value3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(key, value)</span><br></pre></td></tr></table></figure><br>会得到下面的输出：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key1 value1</span><br><span class="line">key2 value2</span><br><span class="line">key3 value3</span><br></pre></td></tr></table></figure></p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cDovL3d3dy5ydW5vb2IuY29tL3B5dGhvbi9hdHQtZGljdGlvbmFyeS1pdGVtcy5odG1s" title="http://www.runoob.com/python/att-dictionary-items.html">Python 字典(Dictionary) items()方法<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>编码</category>
-        <category>Python</category>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
-    <url>/archives/43b2dca3.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
-<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -3167,38 +3173,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Shell中美元符$与数字及其它各种符号组合的含义</title>
-    <url>/archives/55ffbd22.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$0</span></span><br></pre></td></tr></table></figure>
-<p>脚本本身的文件名；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$n</span></span><br></pre></td></tr></table></figure>
-<p>传递给脚本或函数的参数。n 是一个数字，表示第几个参数，取值范围为1~9。例如，第一个参数是<code>$1</code>，第二个参数是<code>$2</code>；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$*</span><br></pre></td></tr></table></figure>
-<p>以一个单字符串显示传给脚本或函数的所有参数，<code>$1 $2 $3 … $n</code>；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$@</span></span><br></pre></td></tr></table></figure>
-<p>传给脚本的所有参数列表，<code>$1</code> <code>$2</code> <code>$3</code> … <code>$n</code>；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$#</span></span><br></pre></td></tr></table></figure>
-<p>传给脚本或函数的参数个数；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$$</span><br></pre></td></tr></table></figure>
-<p>当前Shell进程ID。对于Shell脚本，就是这些脚本所在的进程ID；</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$?</span><br></pre></td></tr></table></figure>
-<p>上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly96aGlkYW8uYmFpZHUuY29tL3F1ZXN0aW9uLzc1ODEyMjgxNjUwMjA1MjY4NC5odG1s" title="https://zhidao.baidu.com/question/758122816502052684.html">linux shell 中的“$1”代表什么？<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vc3BsZW5kaWQvcC8xMTIxMTQzMC5odG1s" title="https://www.cnblogs.com/splendid/p/11211430.html">shell中的$0 $n $# $* $@ $? $$<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC91LzM5OTcxODIvYmxvZy8zMDcxNDYw" title="https://my.oschina.net/u/3997182/blog/3071460">linux中$#,$0,$1,$2,$@,$*,$$,$?的含义<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Shell</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Shell中设置文字输出的颜色及字体格式</title>
     <url>/archives/a1691b48.html</url>
     <content><![CDATA[<h1 id="1-描述" class="heading-control"><a href="#1-描述" class="headerlink" title="1 描述"></a>1 描述<a class="heading-anchor" href="#1-描述" aria-hidden="true"></a></h1><p>在shell脚本中，有时会定制特殊格式的字符串用以强调一些信息，例如以下字符串：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gbError=<span class="string">"\033[1;31m[ERROR]\033[0m"</span></span><br><span class="line">gbWarning=<span class="string">"\033[1;33m[WARNING]\033[0m"</span></span><br><span class="line">gbInfo=<span class="string">"\033[1;32m[INFO]\033[0m"</span></span><br><span class="line">gbGood=<span class="string">"\033[1;32m[GOOD]\033[0m"</span></span><br><span class="line">gbCancel=<span class="string">"\033[1;4;35mCTRL + C\033[0m"</span></span><br></pre></td></tr></table></figure></p>
@@ -3236,25 +3210,35 @@
       </tags>
   </entry>
   <entry>
-    <title>gitignore与gitkeep的作用</title>
-    <url>/archives/ba569070.html</url>
-    <content><![CDATA[<h1 id="1-gitignore" class="heading-control"><a href="#1-gitignore" class="headerlink" title="1 .gitignore"></a>1 .gitignore<a class="heading-anchor" href="#1-gitignore" aria-hidden="true"></a></h1><p>.gitignore用于指定版本库中的某些文件或目录将被git系统忽略，例如，个人在腾讯云的git服务器上维护某工程时，.gitignore中的内容如下所示，用以忽略工程根目录下的build目录以及所有包目录内的一些并不参与编译的目录：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;build</span><br><span class="line">**&#x2F;0000_Common</span><br><span class="line">**&#x2F;0600_Toolkit</span><br><span class="line">**&#x2F;0900_System&#x2F;01_core</span><br><span class="line">**&#x2F;0900_System&#x2F;03_flashing</span><br><span class="line">**&#x2F;0900_System&#x2F;04_model</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>其中的“**”可以匹配工程目录内的多级目录，参考<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDI=" title="https://blog.csdn.net/ljb_wh/article/details/51083402">这里<i class="fa fa-external-link"></i></span>。</p>
-</blockquote>
-<h1 id="2-gitkeep" class="heading-control"><a href="#2-gitkeep" class="headerlink" title="2 .gitkeep"></a>2 .gitkeep<a class="heading-anchor" href="#2-gitkeep" aria-hidden="true"></a></h1><p>git系统并不会追踪版本库中的空目录，通过在空目录中创建一个.gitkeep文件即可让git系统对这个空目录进行追踪，.gitkeep实则是一个占位符，并没有其它特性，通俗点讲，.fu*k可以实现和.gitkeep相同的功能。</p>
-<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDI=" title="https://blog.csdn.net/ljb_wh/article/details/51083402">TIPS：.gitignore 忽略多层文件夹用 **<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxODE5MTAzMD91dG1fc291cmNlPXRhZy1uZXdlc3Q=" title="https://segmentfault.com/a/1190000018191030?utm_source=tag-newest">.gitkeep 是什么? .gitignore 和. gitkeep 之间的区别<i class="fa fa-external-link"></i></span></li>
+    <title>Shell中美元符$与数字及其它各种符号组合的含义</title>
+    <url>/archives/55ffbd22.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$0</span></span><br></pre></td></tr></table></figure>
+<p>脚本本身的文件名；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$n</span></span><br></pre></td></tr></table></figure>
+<p>传递给脚本或函数的参数。n 是一个数字，表示第几个参数，取值范围为1~9。例如，第一个参数是<code>$1</code>，第二个参数是<code>$2</code>；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$*</span><br></pre></td></tr></table></figure>
+<p>以一个单字符串显示传给脚本或函数的所有参数，<code>$1 $2 $3 … $n</code>；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$@</span></span><br></pre></td></tr></table></figure>
+<p>传给脚本的所有参数列表，<code>$1</code> <code>$2</code> <code>$3</code> … <code>$n</code>；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$#</span></span><br></pre></td></tr></table></figure>
+<p>传给脚本或函数的参数个数；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>当前Shell进程ID。对于Shell脚本，就是这些脚本所在的进程ID；</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$?</span><br></pre></td></tr></table></figure>
+<p>上个命令的退出状态（0表示没有错误，其它任何值表明有错误）或函数的返回值。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aGlkYW8uYmFpZHUuY29tL3F1ZXN0aW9uLzc1ODEyMjgxNjUwMjA1MjY4NC5odG1s" title="https://zhidao.baidu.com/question/758122816502052684.html">linux shell 中的“$1”代表什么？<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vc3BsZW5kaWQvcC8xMTIxMTQzMC5odG1s" title="https://www.cnblogs.com/splendid/p/11211430.html">shell中的$0 $n $# $* $@ $? $$<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC91LzM5OTcxODIvYmxvZy8zMDcxNDYw" title="https://my.oschina.net/u/3997182/blog/3071460">linux中$#,$0,$1,$2,$@,$*,$$,$?的含义<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
       <categories>
-        <category>效率</category>
-        <category>Git</category>
+        <category>Linux</category>
       </categories>
       <tags>
-        <tag>Git</tag>
+        <tag>Linux</tag>
+        <tag>Shell</tag>
       </tags>
   </entry>
   <entry>
@@ -3296,6 +3280,28 @@
         <tag>Linux</tag>
         <tag>系统安装</tag>
         <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gitignore与gitkeep的作用</title>
+    <url>/archives/ba569070.html</url>
+    <content><![CDATA[<h1 id="1-gitignore" class="heading-control"><a href="#1-gitignore" class="headerlink" title="1 .gitignore"></a>1 .gitignore<a class="heading-anchor" href="#1-gitignore" aria-hidden="true"></a></h1><p>.gitignore用于指定版本库中的某些文件或目录将被git系统忽略，例如，个人在腾讯云的git服务器上维护某工程时，.gitignore中的内容如下所示，用以忽略工程根目录下的build目录以及所有包目录内的一些并不参与编译的目录：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;build</span><br><span class="line">**&#x2F;0000_Common</span><br><span class="line">**&#x2F;0600_Toolkit</span><br><span class="line">**&#x2F;0900_System&#x2F;01_core</span><br><span class="line">**&#x2F;0900_System&#x2F;03_flashing</span><br><span class="line">**&#x2F;0900_System&#x2F;04_model</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>其中的“**”可以匹配工程目录内的多级目录，参考<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDI=" title="https://blog.csdn.net/ljb_wh/article/details/51083402">这里<i class="fa fa-external-link"></i></span>。</p>
+</blockquote>
+<h1 id="2-gitkeep" class="heading-control"><a href="#2-gitkeep" class="headerlink" title="2 .gitkeep"></a>2 .gitkeep<a class="heading-anchor" href="#2-gitkeep" aria-hidden="true"></a></h1><p>git系统并不会追踪版本库中的空目录，通过在空目录中创建一个.gitkeep文件即可让git系统对这个空目录进行追踪，.gitkeep实则是一个占位符，并没有其它特性，通俗点讲，.fu*k可以实现和.gitkeep相同的功能。</p>
+<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDI=" title="https://blog.csdn.net/ljb_wh/article/details/51083402">TIPS：.gitignore 忽略多层文件夹用 **<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxODE5MTAzMD91dG1fc291cmNlPXRhZy1uZXdlc3Q=" title="https://segmentfault.com/a/1190000018191030?utm_source=tag-newest">.gitkeep 是什么? .gitignore 和. gitkeep 之间的区别<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>效率</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
@@ -3376,6 +3382,51 @@
       </tags>
   </entry>
   <entry>
+    <title>【OJ】表示数字</title>
+    <url>/archives/c6c7f3af.html</url>
+    <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>一道新势力 OEM 机试题（非本人），实则为牛客网上的一道<span class="exturl" data-url="aHR0cHM6Ly93d3cubm93Y29kZXIuY29tL3ByYWN0aWNlLzYzNzA2MmRmNTE2NzRkZThiYTQ2NGU3OTJkMWEwYWM2P3RwSWQ9MzcmYW1wO3RhZ3M9JmFtcDt0aXRsZT0mYW1wO2RpZmZjdWx0eT0wJmFtcDtqdWRnZVN0YXR1cz0wJmFtcDt0YWI9YW5zd2VyS2V5" title="https://www.nowcoder.com/practice/637062df51674de8ba464e792d1a0ac6?tpId=37&amp;tags=&amp;title=&amp;diffculty=0&amp;judgeStatus=0&amp;tab=answerKey">华为校招机试题<i class="fa fa-external-link"></i></span>，这里记录下个人解法与牛客网上的最佳解法。</p>
+<h1 id="1-题目描述" class="heading-control"><a href="#1-题目描述" class="headerlink" title="1 题目描述"></a>1 题目描述<a class="heading-anchor" href="#1-题目描述" aria-hidden="true"></a></h1><p>将一个字符中所有的整数前后加上符号“*”，其他字符保持不变。连续的数字视为一个整数。注意：本题有多组样例输入。</p>
+<p><strong>输入描述:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入一个字符串</span><br></pre></td></tr></table></figure>
+<p><strong>输出描述:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">字符中所有出现的数字前后加上符号“*”，其他字符保持不变</span><br></pre></td></tr></table></figure>
+<p><strong>示例 1</strong></p>
+<p>输入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Jkdi234klowe90a3</span><br><span class="line">5151</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Jkdi*234*klowe*90*a*3*</span><br><span class="line">*5151*</span><br></pre></td></tr></table></figure>
+<h1 id="2-求解" class="heading-control"><a href="#2-求解" class="headerlink" title="2 求解"></a>2 求解<a class="heading-anchor" href="#2-求解" aria-hidden="true"></a></h1><h2 id="2-1-我的解法" class="heading-control"><a href="#2-1-我的解法" class="headerlink" title="2.1 我的解法"></a>2.1 我的解法<a class="heading-anchor" href="#2-1-我的解法" aria-hidden="true"></a></h2><p><strong>函数声明</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _SOLUTION_HPP_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _SOLUTION_HPP_</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">string</span> <span class="title">GenNewStr</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> &amp;<span class="built_in">string</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p><strong>函数实现</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"solution.hpp"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">string</span> <span class="title">GenNewStr</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> &amp;<span class="built_in">string</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> result = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">bool</span> flag_found_number = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = <span class="built_in">string</span>.begin(); iter != <span class="built_in">string</span>.end(); ++iter)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// process the head of number</span></span><br><span class="line">        <span class="keyword">if</span> (!flag_found_number &amp;&amp; ((*iter &gt;= <span class="string">'0'</span>) &amp;&amp; (*iter &lt;= <span class="string">'9'</span>)))</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="string">"*"</span>;</span><br><span class="line">            flag_found_number = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// process the trail of number</span></span><br><span class="line">        <span class="keyword">if</span> (flag_found_number &amp;&amp; ((*iter &lt; <span class="string">'0'</span>) || (*iter &gt; <span class="string">'9'</span>)))</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="string">"*"</span>;</span><br><span class="line">            flag_found_number = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        result += *iter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// process the end of input</span></span><br><span class="line">    <span class="keyword">if</span> (flag_found_number)</span><br><span class="line">    &#123;</span><br><span class="line">        result += <span class="string">"*"</span>;</span><br><span class="line">        flag_found_number = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>主函数</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"solution.hpp"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> input;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; input)</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; GenNewStr(input) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>测试结果</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;XP_Code.exe</span><br><span class="line">asdad83kasd</span><br><span class="line">asdad*83*kasd</span><br><span class="line">1</span><br><span class="line">*1*</span><br><span class="line">902934</span><br><span class="line">*902934*</span><br><span class="line">sdfiw8</span><br><span class="line">sdfiw*8*</span><br><span class="line">123ksdf9384js823jd8</span><br><span class="line">*123*ksdf*9384*js*823*jd*8*</span><br></pre></td></tr></table></figure>
+<p>提交到牛客上，运行时间 8ms，占用内存 612KB。</p>
+<h2 id="2-2-最佳解法" class="heading-control"><a href="#2-2-最佳解法" class="headerlink" title="2.2 最佳解法"></a>2.2 最佳解法<a class="heading-anchor" href="#2-2-最佳解法" aria-hidden="true"></a></h2><p>截止至 2021 年 4 月 20 日，牛客上排名第一的 C++ 实现，运行时间 1ms，占用内存 372KB。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; s)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (s[i] &gt;= <span class="string">'0'</span> &amp;&amp; s[i] &lt;= <span class="string">'9'</span> &amp;&amp; (i == <span class="number">0</span> || s[i - <span class="number">1</span>] &lt; <span class="string">'0'</span> || s[i - <span class="number">1</span>] &gt; <span class="string">'9'</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                s = s.substr(<span class="number">0</span>, i) + <span class="string">"*"</span> + s.substr(i);</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (s[i] &gt;= <span class="string">'0'</span> &amp;&amp; s[i] &lt;= <span class="string">'9'</span> &amp;&amp; (i + <span class="number">1</span> == s.length() || s[i + <span class="number">1</span>] &lt; <span class="string">'0'</span> || s[i + <span class="number">1</span>] &gt; <span class="string">'9'</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                s = s.substr(<span class="number">0</span>, i + <span class="number">1</span>) + <span class="string">"*"</span> + s.substr(i + <span class="number">1</span>);</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现比较巧妙，通过 <code>string</code> 的 <code>substr</code> 方法进行字符串拼接，避免了 2.1 方法中遍历字符串的每个字符时都需要进行的“累加字符”操作，因此耗时更少。<code>substr</code> 中的参数是需要注意的点。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubm93Y29kZXIuY29tL3ByYWN0aWNlLzYzNzA2MmRmNTE2NzRkZThiYTQ2NGU3OTJkMWEwYWM2P3RwSWQ9MzcmYW1wO3RhZ3M9JmFtcDt0aXRsZT0mYW1wO2RpZmZjdWx0eT0wJmFtcDtqdWRnZVN0YXR1cz0wJmFtcDt0YWI9YW5zd2VyS2V5" title="https://www.nowcoder.com/practice/637062df51674de8ba464e792d1a0ac6?tpId=37&amp;tags=&amp;title=&amp;diffculty=0&amp;judgeStatus=0&amp;tab=answerKey">表示数字<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5jcGx1c3BsdXMuY29tL3JlZmVyZW5jZS9zdHJpbmcvc3RyaW5nL3N1YnN0ci8=" title="http://www.cplusplus.com/reference/string/string/substr/">std::string::substr<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdWNodW8vYXJ0aWNsZS9kZXRhaWxzLzU0NTk5ODQw" title="https://blog.csdn.net/liuchuo/article/details/54599840">【C++】C++中 substr 的用法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20veHp4bC9wLzcyNDM0OTAuaHRtbA==" title="https://www.cnblogs.com/xzxl/p/7243490.html">C++中 substr 函数的用法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3F1ZXN0aW9uLzMxMDAwNzc4Nw==" title="https://www.zhihu.com/question/310007787">C++ string 类型结尾会像 C 一样添加\0 吗？<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxOTMwNDk5L2FydGljbGUvZGV0YWlscy84MDM3NDMxMA==" title="https://blog.csdn.net/qq_31930499/article/details/80374310">C++ string 是否以‘\0’结尾 讨论<i class="fa fa-external-link"></i></span></li>
+</ol>
+]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+        <category>练习</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>数据结构与算法</tag>
+        <tag>OJ</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>一款图片文件转 Base64 编码的 Python GUI 工具</title>
     <url>/archives/5c20384a.html</url>
     <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>最近整理文件的时候找到了之前写的一个用于将图像转换为 base64 字符串的 Python GUI 小工具。写这个工具的初衷是当时刚刚接触 markdown，有时需要往 markdown 文件中嵌入一些图片，而向 markdown 中嵌入图片通常有以下三种方式：</p>
@@ -3426,51 +3477,6 @@
         <tag>Python</tag>
         <tag>工具开发</tag>
         <tag>图像编码</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【OJ】表示数字</title>
-    <url>/archives/c6c7f3af.html</url>
-    <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>一道新势力 OEM 机试题（非本人），实则为牛客网上的一道<span class="exturl" data-url="aHR0cHM6Ly93d3cubm93Y29kZXIuY29tL3ByYWN0aWNlLzYzNzA2MmRmNTE2NzRkZThiYTQ2NGU3OTJkMWEwYWM2P3RwSWQ9MzcmYW1wO3RhZ3M9JmFtcDt0aXRsZT0mYW1wO2RpZmZjdWx0eT0wJmFtcDtqdWRnZVN0YXR1cz0wJmFtcDt0YWI9YW5zd2VyS2V5" title="https://www.nowcoder.com/practice/637062df51674de8ba464e792d1a0ac6?tpId=37&amp;tags=&amp;title=&amp;diffculty=0&amp;judgeStatus=0&amp;tab=answerKey">华为校招机试题<i class="fa fa-external-link"></i></span>，这里记录下个人解法与牛客网上的最佳解法。</p>
-<h1 id="1-题目描述" class="heading-control"><a href="#1-题目描述" class="headerlink" title="1 题目描述"></a>1 题目描述<a class="heading-anchor" href="#1-题目描述" aria-hidden="true"></a></h1><p>将一个字符中所有的整数前后加上符号“*”，其他字符保持不变。连续的数字视为一个整数。注意：本题有多组样例输入。</p>
-<p><strong>输入描述:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入一个字符串</span><br></pre></td></tr></table></figure>
-<p><strong>输出描述:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">字符中所有出现的数字前后加上符号“*”，其他字符保持不变</span><br></pre></td></tr></table></figure>
-<p><strong>示例 1</strong></p>
-<p>输入</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Jkdi234klowe90a3</span><br><span class="line">5151</span><br></pre></td></tr></table></figure>
-<p>输出</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Jkdi*234*klowe*90*a*3*</span><br><span class="line">*5151*</span><br></pre></td></tr></table></figure>
-<h1 id="2-求解" class="heading-control"><a href="#2-求解" class="headerlink" title="2 求解"></a>2 求解<a class="heading-anchor" href="#2-求解" aria-hidden="true"></a></h1><h2 id="2-1-我的解法" class="heading-control"><a href="#2-1-我的解法" class="headerlink" title="2.1 我的解法"></a>2.1 我的解法<a class="heading-anchor" href="#2-1-我的解法" aria-hidden="true"></a></h2><p><strong>函数声明</strong></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _SOLUTION_HPP_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _SOLUTION_HPP_</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">string</span> <span class="title">GenNewStr</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> &amp;<span class="built_in">string</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-<p><strong>函数实现</strong></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"solution.hpp"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">string</span> <span class="title">GenNewStr</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> &amp;<span class="built_in">string</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> result = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">bool</span> flag_found_number = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = <span class="built_in">string</span>.begin(); iter != <span class="built_in">string</span>.end(); ++iter)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// process the head of number</span></span><br><span class="line">        <span class="keyword">if</span> (!flag_found_number &amp;&amp; ((*iter &gt;= <span class="string">'0'</span>) &amp;&amp; (*iter &lt;= <span class="string">'9'</span>)))</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="string">"*"</span>;</span><br><span class="line">            flag_found_number = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// process the trail of number</span></span><br><span class="line">        <span class="keyword">if</span> (flag_found_number &amp;&amp; ((*iter &lt; <span class="string">'0'</span>) || (*iter &gt; <span class="string">'9'</span>)))</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="string">"*"</span>;</span><br><span class="line">            flag_found_number = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        result += *iter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// process the end of input</span></span><br><span class="line">    <span class="keyword">if</span> (flag_found_number)</span><br><span class="line">    &#123;</span><br><span class="line">        result += <span class="string">"*"</span>;</span><br><span class="line">        flag_found_number = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>主函数</strong></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"solution.hpp"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> input;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; input)</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; GenNewStr(input) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>测试结果</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;XP_Code.exe</span><br><span class="line">asdad83kasd</span><br><span class="line">asdad*83*kasd</span><br><span class="line">1</span><br><span class="line">*1*</span><br><span class="line">902934</span><br><span class="line">*902934*</span><br><span class="line">sdfiw8</span><br><span class="line">sdfiw*8*</span><br><span class="line">123ksdf9384js823jd8</span><br><span class="line">*123*ksdf*9384*js*823*jd*8*</span><br></pre></td></tr></table></figure>
-<p>提交到牛客上，运行时间 8ms，占用内存 612KB。</p>
-<h2 id="2-2-最佳解法" class="heading-control"><a href="#2-2-最佳解法" class="headerlink" title="2.2 最佳解法"></a>2.2 最佳解法<a class="heading-anchor" href="#2-2-最佳解法" aria-hidden="true"></a></h2><p>截止至 2021 年 4 月 20 日，牛客上排名第一的 C++ 实现，运行时间 1ms，占用内存 372KB。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; s)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (s[i] &gt;= <span class="string">'0'</span> &amp;&amp; s[i] &lt;= <span class="string">'9'</span> &amp;&amp; (i == <span class="number">0</span> || s[i - <span class="number">1</span>] &lt; <span class="string">'0'</span> || s[i - <span class="number">1</span>] &gt; <span class="string">'9'</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                s = s.substr(<span class="number">0</span>, i) + <span class="string">"*"</span> + s.substr(i);</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (s[i] &gt;= <span class="string">'0'</span> &amp;&amp; s[i] &lt;= <span class="string">'9'</span> &amp;&amp; (i + <span class="number">1</span> == s.length() || s[i + <span class="number">1</span>] &lt; <span class="string">'0'</span> || s[i + <span class="number">1</span>] &gt; <span class="string">'9'</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                s = s.substr(<span class="number">0</span>, i + <span class="number">1</span>) + <span class="string">"*"</span> + s.substr(i + <span class="number">1</span>);</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>实现比较巧妙，通过 <code>string</code> 的 <code>substr</code> 方法进行字符串拼接，避免了 2.1 方法中遍历字符串的每个字符时都需要进行的“累加字符”操作，因此耗时更少。<code>substr</code> 中的参数是需要注意的点。</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubm93Y29kZXIuY29tL3ByYWN0aWNlLzYzNzA2MmRmNTE2NzRkZThiYTQ2NGU3OTJkMWEwYWM2P3RwSWQ9MzcmYW1wO3RhZ3M9JmFtcDt0aXRsZT0mYW1wO2RpZmZjdWx0eT0wJmFtcDtqdWRnZVN0YXR1cz0wJmFtcDt0YWI9YW5zd2VyS2V5" title="https://www.nowcoder.com/practice/637062df51674de8ba464e792d1a0ac6?tpId=37&amp;tags=&amp;title=&amp;diffculty=0&amp;judgeStatus=0&amp;tab=answerKey">表示数字<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5jcGx1c3BsdXMuY29tL3JlZmVyZW5jZS9zdHJpbmcvc3RyaW5nL3N1YnN0ci8=" title="http://www.cplusplus.com/reference/string/string/substr/">std::string::substr<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdWNodW8vYXJ0aWNsZS9kZXRhaWxzLzU0NTk5ODQw" title="https://blog.csdn.net/liuchuo/article/details/54599840">【C++】C++中 substr 的用法<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20veHp4bC9wLzcyNDM0OTAuaHRtbA==" title="https://www.cnblogs.com/xzxl/p/7243490.html">C++中 substr 函数的用法<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3F1ZXN0aW9uLzMxMDAwNzc4Nw==" title="https://www.zhihu.com/question/310007787">C++ string 类型结尾会像 C 一样添加\0 吗？<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxOTMwNDk5L2FydGljbGUvZGV0YWlscy84MDM3NDMxMA==" title="https://blog.csdn.net/qq_31930499/article/details/80374310">C++ string 是否以‘\0’结尾 讨论<i class="fa fa-external-link"></i></span></li>
-</ol>
-]]></content>
-      <categories>
-        <category>数据结构与算法</category>
-        <category>练习</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-        <tag>数据结构与算法</tag>
-        <tag>OJ</tag>
       </tags>
   </entry>
   <entry>
@@ -4670,57 +4676,6 @@ R =
       </tags>
   </entry>
   <entry>
-    <title>关于make、makefile、cmake、cmakelist、qmake等的区别</title>
-    <url>/archives/e3f2e7f0.html</url>
-    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>首先，开发人员根据项目目录结构编写cmakelist文件；然后，cmake根据编写的cmakelist文件生成makefile文件；最后，make根据生成的makefile文件对代码进行预处理、编译、汇编、链接等操作，生成可执行文件或共享库。流程如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/02/03/EasPfXOzWQdV4A9.png" alt="cmake工作流"></p>
-<p>qmake——与cmake同等地位的工具。<br>综上，<strong>重点是cmakelist文件的编写</strong>。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC94dW54dW4vYmxvZy84Njc4MQ==" title="https://my.oschina.net/xunxun/blog/86781">CMake与Make<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FpeWFuZ2hvbmcvYXJ0aWNsZS9kZXRhaWxzLzg2NTAxNzIw" title="https://blog.csdn.net/Aiyanghong/article/details/86501720">make、makefile、cmake之间的区别与联系<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYW5nX3hpbnhpbmcvYXJ0aWNsZS9kZXRhaWxzLzcyODI3NjY0" title="https://blog.csdn.net/jiang_xinxing/article/details/72827664">编译过程，make,makefile,cmake,qmake,cmakelist总结<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vY2oyMDE0L3AvNjExMTYzNC5odG1s" title="https://www.cnblogs.com/cj2014/p/6111634.html">make makefile cmake qmake都是什么，有什么区别<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>编译</category>
-        <category>make</category>
-      </categories>
-      <tags>
-        <tag>make</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用Python + Matplotlib绘制双柱状图</title>
-    <url>/archives/208a7c66.html</url>
-    <content><![CDATA[<p><img data-src="https://i.loli.net/2020/05/03/yHbgphKYvA6l8sa.png" alt="demo"></p>
-<blockquote>
-<p>在实际工作中，发现上游软件组件（SWC）发送的Mobileye前向视觉数据存在丢帧情况，需要对丢帧情况进行统计量化，想到的方法是将实车录得的LCM log文件进行x86离线回放，x86应用程序中通过easylogging++打印关键信息（是否是一帧数据报文，以及数据报文中是否存在部分信息丢失）的Flag到日志文件中，通过统计日志文件中关键信息对应的Flag数量，计算数据丢帧率并绘制双柱状图。</p>
-</blockquote>
-<h1 id="环境依赖" class="heading-control"><a href="#环境依赖" class="headerlink" title="环境依赖"></a>环境依赖<a class="heading-anchor" href="#环境依赖" aria-hidden="true"></a></h1><ul>
-<li>windows 7, 8, 10</li>
-<li>Python 3+</li>
-</ul>
-<p>Linux系统理论上也是可行的，但博主在Ubuntu上安装相关的Python依赖时遇到了问题，未作进一步的探究。</p>
-<h1 id="Python依赖" class="heading-control"><a href="#Python依赖" class="headerlink" title="Python依赖"></a>Python依赖<a class="heading-anchor" href="#Python依赖" aria-hidden="true"></a></h1><p>通过<code>pip</code>包管理工具安装<code>numpy</code> <code>matplotlib</code> 这两个库依赖：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install numpy</span><br><span class="line">pip install matplotlib</span><br></pre></td></tr></table></figure><br>若安装过程因网络问题很难成功，可尝试更换至国内镜像源进行安装，如使用清华镜像源：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple numpy</span><br><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple matplotlib</span><br></pre></td></tr></table></figure></p>
-<h1 id="代码实现" class="heading-control"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现<a class="heading-anchor" href="#代码实现" aria-hidden="true"></a></h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib <span class="keyword">as</span> mpl</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GroupedBarChart</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.path_current = os.path.dirname(__file__)</span><br><span class="line">        print(self.path_current)</span><br><span class="line">        self.path_logs = [</span><br><span class="line">            (self.path_current + <span class="string">"/"</span> + i)</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> os.listdir(self.path_current)</span><br><span class="line">            <span class="keyword">if</span> (os.path.isfile(os.path.join(self.path_current, i))</span><br><span class="line">                <span class="keyword">and</span> i.endswith(<span class="string">'.txt'</span>))</span><br><span class="line">        ]</span><br><span class="line">        self.num_frames_total = <span class="number">0</span></span><br><span class="line">        self.num_frames_lost = <span class="number">0</span></span><br><span class="line">        self.list_valid_log_name = []</span><br><span class="line">        self.list_frame_lost_percent = []</span><br><span class="line">        self.list_frame_normal_percent = []</span><br><span class="line">        <span class="comment"># 字体设置，若不将'family'设置为中文相关字体，则无法正常显示中文</span></span><br><span class="line">        self.font = &#123;</span><br><span class="line">            <span class="string">'family'</span>: <span class="string">'Microsoft YaHei'</span>,</span><br><span class="line">            <span class="string">'style'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span></span><br><span class="line">        &#125;</span><br><span class="line">        self.title = <span class="string">'标题'</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Parse</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> path_log <span class="keyword">in</span> self.path_logs:</span><br><span class="line">            log_name = path_log.split(<span class="string">'/'</span>)[<span class="number">-1</span>]</span><br><span class="line">            log = open(path_log)</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> log.readlines():</span><br><span class="line">                <span class="keyword">if</span> <span class="string">'Flag_DataFrame'</span> <span class="keyword">in</span> line:</span><br><span class="line">                    self.num_frames_total += <span class="number">1</span></span><br><span class="line">                <span class="keyword">elif</span> <span class="string">'Flag_FrameLost'</span> <span class="keyword">in</span> line:</span><br><span class="line">                    self.num_frames_lost += <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> self.num_frames_total <span class="keyword">is</span> <span class="keyword">not</span> <span class="number">0</span>:</span><br><span class="line">                self.list_valid_log_name.append(log_name.split(<span class="string">'_'</span>)[<span class="number">-1</span>].split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line">                self.frame_lost_ratio = format(self.num_frames_lost / self.num_frames_total * <span class="number">100</span>, <span class="string">'.2f'</span>) <span class="keyword">if</span> self.num_frames_total <span class="keyword">is</span> <span class="keyword">not</span> <span class="number">0</span> <span class="keyword">else</span> <span class="string">'#NA'</span></span><br><span class="line">                self.list_frame_lost_percent.append(float(self.frame_lost_ratio))</span><br><span class="line">                self.list_frame_normal_percent.append(<span class="number">100</span> - float(self.frame_lost_ratio))</span><br><span class="line"></span><br><span class="line">            print(<span class="string">'\nlog file: &#123;&#125;'</span>.format(log_name))</span><br><span class="line">            print(<span class="string">'--------------------------------------------------------'</span>)</span><br><span class="line">            print(<span class="string">'num_frames_total: &#123;&#125;'</span>.format(self.num_frames_total))</span><br><span class="line">            print(<span class="string">' num_frames_lost: &#123;&#125;'</span>.format(self.num_frames_lost))</span><br><span class="line">            print(<span class="string">'frame_lost_ratio: &#123;&#125;%'</span>.format(self.frame_lost_ratio))</span><br><span class="line">            print(<span class="string">'--------------------------------------------------------\n'</span>)</span><br><span class="line"></span><br><span class="line">            self.num_frames_total = <span class="number">0</span></span><br><span class="line">            self.num_frames_lost = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">PlotSet</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> len(self.list_valid_log_name) <span class="keyword">is</span> <span class="keyword">not</span> <span class="number">0</span>:</span><br><span class="line">            ind = np.arange(len(self.list_valid_log_name))</span><br><span class="line">            <span class="comment"># bar的宽度</span></span><br><span class="line">            width = <span class="number">0.35</span></span><br><span class="line">            self.fig, self.ax = plt.subplots()</span><br><span class="line">            <span class="comment"># bar1</span></span><br><span class="line">            self.rects_frame_lost = self.ax.bar(</span><br><span class="line">                ind - width / <span class="number">2</span>,</span><br><span class="line">                self.list_frame_lost_percent,</span><br><span class="line">                width,</span><br><span class="line">                color=<span class="string">"tomato"</span>,</span><br><span class="line">                label=<span class="string">"label1"</span>)</span><br><span class="line">            <span class="comment"># bar2</span></span><br><span class="line">            self.rects_frame_normal = self.ax.bar(</span><br><span class="line">                ind + width / <span class="number">2</span>,</span><br><span class="line">                self.list_frame_normal_percent,</span><br><span class="line">                width,</span><br><span class="line">                color=<span class="string">"steelblue"</span>,</span><br><span class="line">                label=<span class="string">"label2"</span>)</span><br><span class="line">            <span class="comment"># 设置纵坐标标签</span></span><br><span class="line">            self.ax.set_ylabel(<span class="string">'百分比 (%)'</span>, fontdict=self.font)</span><br><span class="line">            <span class="comment"># 设置坐标轴刻度大小</span></span><br><span class="line">            plt.tick_params(labelsize=<span class="number">18</span>)</span><br><span class="line">            <span class="comment"># 设置标题</span></span><br><span class="line">            self.ax.set_title(self.title, fontdict=self.font)</span><br><span class="line">            <span class="comment"># 设置横坐标刻度</span></span><br><span class="line">            self.ax.set_xticks(ind)</span><br><span class="line">            <span class="comment"># 设置横坐标刻度标签</span></span><br><span class="line">            self.ax.set_xticklabels(self.list_valid_log_name, fontdict=self.font)</span><br><span class="line">            <span class="comment"># 设置图例：位置，字体</span></span><br><span class="line">            self.ax.legend(loc=<span class="string">'upper left'</span>, prop=self.font)</span><br><span class="line">            print(<span class="string">'average_frame_lost_ratio: &#123;&#125;%'</span>.format(round(np.mean(self.list_frame_lost_percent), <span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">AutoLabel</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        为每一个bar打上标注</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">for</span> rects <span class="keyword">in</span> (self.rects_frame_lost, self.rects_frame_normal):</span><br><span class="line">            <span class="keyword">for</span> rect <span class="keyword">in</span> rects:</span><br><span class="line">                height = rect.get_height()</span><br><span class="line">                self.ax.text(</span><br><span class="line">                    rect.get_x() + rect.get_width() / <span class="number">2.</span>,</span><br><span class="line">                    height + <span class="number">1</span>,</span><br><span class="line">                    <span class="string">'%.2f'</span> % height,</span><br><span class="line">                    ha=<span class="string">'center'</span>,</span><br><span class="line">                    va=<span class="string">'bottom'</span>,</span><br><span class="line">                    fontsize=<span class="number">12</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    obj = GroupedBarChart()</span><br><span class="line">    obj.Parse()</span><br><span class="line">    obj.PlotSet()</span><br><span class="line">    obj.AutoLabel()</span><br><span class="line"></span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-<p>运行上述Python代码，弹出Figure窗口，适当调整格式，调整并保存统计结果，如文首所示。点击<a href="/download/DEMO_GroupedBarChart.zip">这里</a>下载完整的工程demo。</p>
-<h1 id="后记" class="heading-control"><a href="#后记" class="headerlink" title="后记"></a>后记<a class="heading-anchor" href="#后记" aria-hidden="true"></a></h1><p>本文中使用matplotlib绘制双柱状图的demo具体结合了博主工作中的应用场景，更简洁纯粹的代码示例请查看matplotlib官网上的样例<span class="exturl" data-url="aHR0cHM6Ly9tYXRwbG90bGliLm9yZy9nYWxsZXJ5L2xpbmVzX2JhcnNfYW5kX21hcmtlcnMvYmFyY2hhcnQuaHRtbCNncm91cGVkLWJhci1jaGFydC13aXRoLWxhYmVscw==" title="https://matplotlib.org/gallery/lines_bars_and_markers/barchart.html#grouped-bar-chart-with-labels">Grouped bar chart with labels<i class="fa fa-external-link"></i></span>，官网上还给出了matplotlib所有绘图的<span class="exturl" data-url="aHR0cHM6Ly9tYXRwbG90bGliLm9yZy9nYWxsZXJ5L2luZGV4Lmh0bWw=" title="https://matplotlib.org/gallery/index.html">example<i class="fa fa-external-link"></i></span>以及详细的<span class="exturl" data-url="aHR0cHM6Ly9tYXRwbG90bGliLm9yZy90dXRvcmlhbHMvaW5kZXguaHRtbA==" title="https://matplotlib.org/tutorials/index.html">tutorial<i class="fa fa-external-link"></i></span>。</p>
-<p>本文中bar的颜色分别是番茄红<code>tomato</code>和钢铁蓝<code>steelblue</code>，更多的颜色示例可以到<span class="exturl" data-url="aHR0cHM6Ly90b29sLm9zY2hpbmEubmV0L2NvbW1vbnM/dHlwZT0z" title="https://tool.oschina.net/commons?type=3">这里<i class="fa fa-external-link"></i></span>选择。</p>
-<hr>
-]]></content>
-      <categories>
-        <category>编码</category>
-        <category>Python</category>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>Matplotlib</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>使用Hexo + GitHub Pages搭建个人博客站点</title>
     <url>/archives/208e6058.html</url>
     <content><![CDATA[<h1 id="1-环境安装" class="heading-control"><a href="#1-环境安装" class="headerlink" title="1 环境安装"></a>1 环境安装<a class="heading-anchor" href="#1-环境安装" aria-hidden="true"></a></h1><h2 id="1-1-Node-js" class="heading-control"><a href="#1-1-Node-js" class="headerlink" title="1.1 Node.js"></a>1.1 Node.js<a class="heading-anchor" href="#1-1-Node-js" aria-hidden="true"></a></h2><p>Windows 平台直接到<span class="exturl" data-url="aHR0cHM6Ly9ub2RlanMub3JnL2VuLw==" title="https://nodejs.org/en/">Node.js 官网<i class="fa fa-external-link"></i></span>下载安装包进行安装（本文中所使用版本为 v12.14.1，为避免出现版本兼容性问题，请直接安装<span class="exturl" data-url="aHR0cHM6Ly9ub2RlanMub3JnL2Rvd25sb2FkL3JlbGVhc2UvdjEyLjE0LjEv" title="https://nodejs.org/download/release/v12.14.1/">该版本<i class="fa fa-external-link"></i></span>）；Linux 平台未实操，请自行查询相关方法，也很简单。</p>
@@ -4955,6 +4910,74 @@ R =
       </tags>
   </entry>
   <entry>
+    <title>基于Hexo的个人博客站点高级自定义设置——使用NexT主题</title>
+    <url>/archives/31218470.html</url>
+    <content><![CDATA[<blockquote>
+<p>在此前的两篇文章<a href="https://blog.shipengx.com/archives/208e6058.html">《使用Hexo + GitHub Pages搭建个人博客站点》</a>和<a href="https://blog.shipengx.com/archives/3955f5ec.html">《将Hexo搭建的博客站点从GitHub Pages迁移到腾讯云VPS》</a>中，我们分别讲述了如何通过Hexo + NexT主题搭建炫酷的个人博客站点，并通过将站点由GitHub Pages迁移至腾讯云VPS来提升访问速度。本文以此为基础，通过对CSS样式的深度定制，实现了Hexo NexT主题Mist风格视觉感受的提升，最终呈现出你所看到的样子。</p>
+</blockquote>
+<p>对CSS样式的自定义依赖hexo/source/_data/styles.styl文件，需要开启hexo/themes/next/_config.xml中<code>custom_file_path</code>的相关选项，默认是注释掉的<br><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">custom_file_path:</span></span><br><span class="line">  <span class="attr">style:</span> <span class="string">source/_data/styles.styl</span></span><br></pre></td></tr></table></figure><br>styles.styl中的CSS样式编辑用到了一些前端知识，点击<a href="/download/styles.zip">这里</a>下载我的styles.styl文件，要善用浏览器的<code>F12</code>快捷键进行调试才能达到理想效果，遇到不懂的样式通过网络获取相关知识。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>建站</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Blog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于make、makefile、cmake、cmakelist、qmake等的区别</title>
+    <url>/archives/e3f2e7f0.html</url>
+    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>首先，开发人员根据项目目录结构编写cmakelist文件；然后，cmake根据编写的cmakelist文件生成makefile文件；最后，make根据生成的makefile文件对代码进行预处理、编译、汇编、链接等操作，生成可执行文件或共享库。流程如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/02/03/EasPfXOzWQdV4A9.png" alt="cmake工作流"></p>
+<p>qmake——与cmake同等地位的工具。<br>综上，<strong>重点是cmakelist文件的编写</strong>。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC94dW54dW4vYmxvZy84Njc4MQ==" title="https://my.oschina.net/xunxun/blog/86781">CMake与Make<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FpeWFuZ2hvbmcvYXJ0aWNsZS9kZXRhaWxzLzg2NTAxNzIw" title="https://blog.csdn.net/Aiyanghong/article/details/86501720">make、makefile、cmake之间的区别与联系<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYW5nX3hpbnhpbmcvYXJ0aWNsZS9kZXRhaWxzLzcyODI3NjY0" title="https://blog.csdn.net/jiang_xinxing/article/details/72827664">编译过程，make,makefile,cmake,qmake,cmakelist总结<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vY2oyMDE0L3AvNjExMTYzNC5odG1s" title="https://www.cnblogs.com/cj2014/p/6111634.html">make makefile cmake qmake都是什么，有什么区别<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>编译</category>
+        <category>make</category>
+      </categories>
+      <tags>
+        <tag>make</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用Python + Matplotlib绘制双柱状图</title>
+    <url>/archives/208a7c66.html</url>
+    <content><![CDATA[<p><img data-src="https://i.loli.net/2020/05/03/yHbgphKYvA6l8sa.png" alt="demo"></p>
+<blockquote>
+<p>在实际工作中，发现上游软件组件（SWC）发送的Mobileye前向视觉数据存在丢帧情况，需要对丢帧情况进行统计量化，想到的方法是将实车录得的LCM log文件进行x86离线回放，x86应用程序中通过easylogging++打印关键信息（是否是一帧数据报文，以及数据报文中是否存在部分信息丢失）的Flag到日志文件中，通过统计日志文件中关键信息对应的Flag数量，计算数据丢帧率并绘制双柱状图。</p>
+</blockquote>
+<h1 id="环境依赖" class="heading-control"><a href="#环境依赖" class="headerlink" title="环境依赖"></a>环境依赖<a class="heading-anchor" href="#环境依赖" aria-hidden="true"></a></h1><ul>
+<li>windows 7, 8, 10</li>
+<li>Python 3+</li>
+</ul>
+<p>Linux系统理论上也是可行的，但博主在Ubuntu上安装相关的Python依赖时遇到了问题，未作进一步的探究。</p>
+<h1 id="Python依赖" class="heading-control"><a href="#Python依赖" class="headerlink" title="Python依赖"></a>Python依赖<a class="heading-anchor" href="#Python依赖" aria-hidden="true"></a></h1><p>通过<code>pip</code>包管理工具安装<code>numpy</code> <code>matplotlib</code> 这两个库依赖：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install numpy</span><br><span class="line">pip install matplotlib</span><br></pre></td></tr></table></figure><br>若安装过程因网络问题很难成功，可尝试更换至国内镜像源进行安装，如使用清华镜像源：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple numpy</span><br><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple matplotlib</span><br></pre></td></tr></table></figure></p>
+<h1 id="代码实现" class="heading-control"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现<a class="heading-anchor" href="#代码实现" aria-hidden="true"></a></h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib <span class="keyword">as</span> mpl</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GroupedBarChart</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.path_current = os.path.dirname(__file__)</span><br><span class="line">        print(self.path_current)</span><br><span class="line">        self.path_logs = [</span><br><span class="line">            (self.path_current + <span class="string">"/"</span> + i)</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> os.listdir(self.path_current)</span><br><span class="line">            <span class="keyword">if</span> (os.path.isfile(os.path.join(self.path_current, i))</span><br><span class="line">                <span class="keyword">and</span> i.endswith(<span class="string">'.txt'</span>))</span><br><span class="line">        ]</span><br><span class="line">        self.num_frames_total = <span class="number">0</span></span><br><span class="line">        self.num_frames_lost = <span class="number">0</span></span><br><span class="line">        self.list_valid_log_name = []</span><br><span class="line">        self.list_frame_lost_percent = []</span><br><span class="line">        self.list_frame_normal_percent = []</span><br><span class="line">        <span class="comment"># 字体设置，若不将'family'设置为中文相关字体，则无法正常显示中文</span></span><br><span class="line">        self.font = &#123;</span><br><span class="line">            <span class="string">'family'</span>: <span class="string">'Microsoft YaHei'</span>,</span><br><span class="line">            <span class="string">'style'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span></span><br><span class="line">        &#125;</span><br><span class="line">        self.title = <span class="string">'标题'</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Parse</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> path_log <span class="keyword">in</span> self.path_logs:</span><br><span class="line">            log_name = path_log.split(<span class="string">'/'</span>)[<span class="number">-1</span>]</span><br><span class="line">            log = open(path_log)</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> log.readlines():</span><br><span class="line">                <span class="keyword">if</span> <span class="string">'Flag_DataFrame'</span> <span class="keyword">in</span> line:</span><br><span class="line">                    self.num_frames_total += <span class="number">1</span></span><br><span class="line">                <span class="keyword">elif</span> <span class="string">'Flag_FrameLost'</span> <span class="keyword">in</span> line:</span><br><span class="line">                    self.num_frames_lost += <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> self.num_frames_total <span class="keyword">is</span> <span class="keyword">not</span> <span class="number">0</span>:</span><br><span class="line">                self.list_valid_log_name.append(log_name.split(<span class="string">'_'</span>)[<span class="number">-1</span>].split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line">                self.frame_lost_ratio = format(self.num_frames_lost / self.num_frames_total * <span class="number">100</span>, <span class="string">'.2f'</span>) <span class="keyword">if</span> self.num_frames_total <span class="keyword">is</span> <span class="keyword">not</span> <span class="number">0</span> <span class="keyword">else</span> <span class="string">'#NA'</span></span><br><span class="line">                self.list_frame_lost_percent.append(float(self.frame_lost_ratio))</span><br><span class="line">                self.list_frame_normal_percent.append(<span class="number">100</span> - float(self.frame_lost_ratio))</span><br><span class="line"></span><br><span class="line">            print(<span class="string">'\nlog file: &#123;&#125;'</span>.format(log_name))</span><br><span class="line">            print(<span class="string">'--------------------------------------------------------'</span>)</span><br><span class="line">            print(<span class="string">'num_frames_total: &#123;&#125;'</span>.format(self.num_frames_total))</span><br><span class="line">            print(<span class="string">' num_frames_lost: &#123;&#125;'</span>.format(self.num_frames_lost))</span><br><span class="line">            print(<span class="string">'frame_lost_ratio: &#123;&#125;%'</span>.format(self.frame_lost_ratio))</span><br><span class="line">            print(<span class="string">'--------------------------------------------------------\n'</span>)</span><br><span class="line"></span><br><span class="line">            self.num_frames_total = <span class="number">0</span></span><br><span class="line">            self.num_frames_lost = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">PlotSet</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> len(self.list_valid_log_name) <span class="keyword">is</span> <span class="keyword">not</span> <span class="number">0</span>:</span><br><span class="line">            ind = np.arange(len(self.list_valid_log_name))</span><br><span class="line">            <span class="comment"># bar的宽度</span></span><br><span class="line">            width = <span class="number">0.35</span></span><br><span class="line">            self.fig, self.ax = plt.subplots()</span><br><span class="line">            <span class="comment"># bar1</span></span><br><span class="line">            self.rects_frame_lost = self.ax.bar(</span><br><span class="line">                ind - width / <span class="number">2</span>,</span><br><span class="line">                self.list_frame_lost_percent,</span><br><span class="line">                width,</span><br><span class="line">                color=<span class="string">"tomato"</span>,</span><br><span class="line">                label=<span class="string">"label1"</span>)</span><br><span class="line">            <span class="comment"># bar2</span></span><br><span class="line">            self.rects_frame_normal = self.ax.bar(</span><br><span class="line">                ind + width / <span class="number">2</span>,</span><br><span class="line">                self.list_frame_normal_percent,</span><br><span class="line">                width,</span><br><span class="line">                color=<span class="string">"steelblue"</span>,</span><br><span class="line">                label=<span class="string">"label2"</span>)</span><br><span class="line">            <span class="comment"># 设置纵坐标标签</span></span><br><span class="line">            self.ax.set_ylabel(<span class="string">'百分比 (%)'</span>, fontdict=self.font)</span><br><span class="line">            <span class="comment"># 设置坐标轴刻度大小</span></span><br><span class="line">            plt.tick_params(labelsize=<span class="number">18</span>)</span><br><span class="line">            <span class="comment"># 设置标题</span></span><br><span class="line">            self.ax.set_title(self.title, fontdict=self.font)</span><br><span class="line">            <span class="comment"># 设置横坐标刻度</span></span><br><span class="line">            self.ax.set_xticks(ind)</span><br><span class="line">            <span class="comment"># 设置横坐标刻度标签</span></span><br><span class="line">            self.ax.set_xticklabels(self.list_valid_log_name, fontdict=self.font)</span><br><span class="line">            <span class="comment"># 设置图例：位置，字体</span></span><br><span class="line">            self.ax.legend(loc=<span class="string">'upper left'</span>, prop=self.font)</span><br><span class="line">            print(<span class="string">'average_frame_lost_ratio: &#123;&#125;%'</span>.format(round(np.mean(self.list_frame_lost_percent), <span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">AutoLabel</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        为每一个bar打上标注</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">for</span> rects <span class="keyword">in</span> (self.rects_frame_lost, self.rects_frame_normal):</span><br><span class="line">            <span class="keyword">for</span> rect <span class="keyword">in</span> rects:</span><br><span class="line">                height = rect.get_height()</span><br><span class="line">                self.ax.text(</span><br><span class="line">                    rect.get_x() + rect.get_width() / <span class="number">2.</span>,</span><br><span class="line">                    height + <span class="number">1</span>,</span><br><span class="line">                    <span class="string">'%.2f'</span> % height,</span><br><span class="line">                    ha=<span class="string">'center'</span>,</span><br><span class="line">                    va=<span class="string">'bottom'</span>,</span><br><span class="line">                    fontsize=<span class="number">12</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    obj = GroupedBarChart()</span><br><span class="line">    obj.Parse()</span><br><span class="line">    obj.PlotSet()</span><br><span class="line">    obj.AutoLabel()</span><br><span class="line"></span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>运行上述Python代码，弹出Figure窗口，适当调整格式，调整并保存统计结果，如文首所示。点击<a href="/download/DEMO_GroupedBarChart.zip">这里</a>下载完整的工程demo。</p>
+<h1 id="后记" class="heading-control"><a href="#后记" class="headerlink" title="后记"></a>后记<a class="heading-anchor" href="#后记" aria-hidden="true"></a></h1><p>本文中使用matplotlib绘制双柱状图的demo具体结合了博主工作中的应用场景，更简洁纯粹的代码示例请查看matplotlib官网上的样例<span class="exturl" data-url="aHR0cHM6Ly9tYXRwbG90bGliLm9yZy9nYWxsZXJ5L2xpbmVzX2JhcnNfYW5kX21hcmtlcnMvYmFyY2hhcnQuaHRtbCNncm91cGVkLWJhci1jaGFydC13aXRoLWxhYmVscw==" title="https://matplotlib.org/gallery/lines_bars_and_markers/barchart.html#grouped-bar-chart-with-labels">Grouped bar chart with labels<i class="fa fa-external-link"></i></span>，官网上还给出了matplotlib所有绘图的<span class="exturl" data-url="aHR0cHM6Ly9tYXRwbG90bGliLm9yZy9nYWxsZXJ5L2luZGV4Lmh0bWw=" title="https://matplotlib.org/gallery/index.html">example<i class="fa fa-external-link"></i></span>以及详细的<span class="exturl" data-url="aHR0cHM6Ly9tYXRwbG90bGliLm9yZy90dXRvcmlhbHMvaW5kZXguaHRtbA==" title="https://matplotlib.org/tutorials/index.html">tutorial<i class="fa fa-external-link"></i></span>。</p>
+<p>本文中bar的颜色分别是番茄红<code>tomato</code>和钢铁蓝<code>steelblue</code>，更多的颜色示例可以到<span class="exturl" data-url="aHR0cHM6Ly90b29sLm9zY2hpbmEubmV0L2NvbW1vbnM/dHlwZT0z" title="https://tool.oschina.net/commons?type=3">这里<i class="fa fa-external-link"></i></span>选择。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>编码</category>
+        <category>Python</category>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>Matplotlib</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>在腾讯云上搭建个人Git服务器</title>
     <url>/archives/296a9967.html</url>
     <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
@@ -4996,23 +5019,6 @@ R =
       </tags>
   </entry>
   <entry>
-    <title>基于Hexo的个人博客站点高级自定义设置——使用NexT主题</title>
-    <url>/archives/31218470.html</url>
-    <content><![CDATA[<blockquote>
-<p>在此前的两篇文章<a href="https://blog.shipengx.com/archives/208e6058.html">《使用Hexo + GitHub Pages搭建个人博客站点》</a>和<a href="https://blog.shipengx.com/archives/3955f5ec.html">《将Hexo搭建的博客站点从GitHub Pages迁移到腾讯云VPS》</a>中，我们分别讲述了如何通过Hexo + NexT主题搭建炫酷的个人博客站点，并通过将站点由GitHub Pages迁移至腾讯云VPS来提升访问速度。本文以此为基础，通过对CSS样式的深度定制，实现了Hexo NexT主题Mist风格视觉感受的提升，最终呈现出你所看到的样子。</p>
-</blockquote>
-<p>对CSS样式的自定义依赖hexo/source/_data/styles.styl文件，需要开启hexo/themes/next/_config.xml中<code>custom_file_path</code>的相关选项，默认是注释掉的<br><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">custom_file_path:</span></span><br><span class="line">  <span class="attr">style:</span> <span class="string">source/_data/styles.styl</span></span><br></pre></td></tr></table></figure><br>styles.styl中的CSS样式编辑用到了一些前端知识，点击<a href="/download/styles.zip">这里</a>下载我的styles.styl文件，要善用浏览器的<code>F12</code>快捷键进行调试才能达到理想效果，遇到不懂的样式通过网络获取相关知识。</p>
-<hr>
-]]></content>
-      <categories>
-        <category>建站</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>Blog</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>如何检出git仓库中最新的tag号</title>
     <url>/archives/732ab93b.html</url>
     <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
@@ -5030,47 +5036,6 @@ R =
       </categories>
       <tags>
         <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安装第三方python库过程中的egg-info与dist-info文件夹</title>
-    <url>/archives/42095346.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在安装第三方python库过程中，在site-packages目录中与安装结果同时生成的后缀名为egg-info或dist-info的文件夹：<br>用应用程序安装生成egg-info文件夹，用whl或tar安装生成dist-info文件夹。</p>
-<hr>
-]]></content>
-      <categories>
-        <category>编码</category>
-        <category>Python</category>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>导航定位领域里的一些基本概念</title>
-    <url>/archives/8ddff8f2.html</url>
-    <content><![CDATA[<h1 id="正文" class="heading-control"><a href="#正文" class="headerlink" title="正文"></a>正文<a class="heading-anchor" href="#正文" aria-hidden="true"></a></h1><p><strong>GPS</strong><br>Global Positioning System，全球定位系统，美国，可获取定位信息和速度信息，测量结果受树木、隧道、建筑物等环境信息影响。</p>
-<p><strong>INS</strong><br>Inertial Navigation System，惯性导航系统，可获取三轴加速度和三轴角速度信息，测量结果受陀螺漂移和车辆振动等的影响。</p>
-<p><strong>IMU</strong><br>Inertial Measurement Unit，惯性测量单元，INS 里的传感元件，平衡车经常使用的 MPU6050/9050 就属于很常用的 IMU 元件。</p>
-<p><strong>GNSS</strong><br>Global Navigation Satellite System，全球导航卫星系统，我国的北斗，美国的 GPS，欧洲的 Galileo，俄罗斯的 Glonass，都属于 GNSS 的具体实现。</p>
-<p><strong>组合导航定位</strong><br>使用 GNSS/INS 的组合导航定位技术。GNSS 测量结果准确，但更新周期长；INS 更新频率高，瞬时结果精确，但存在累积误差。GNSS/INS 组合导航定位则综合了两者的优点：GNSS 长时间范围内的准确性和 INS 的高频特性。</p>
-<p><strong>RTK</strong><br>Real Time Kinematic，实时动态，载波相位差分技术，是实时处理两个测量站载波相位观测量的差分方法，将基准站采集的载波相位发给用户接收机，进行求差解算坐标。分为单参考站 RTK 测量和网络 RTK 测量。</p>
-<p>MathWorks 官网上也有很清晰的描述：<span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0aHdvcmtzLmNvbS9jb250ZW50L2RhbS9tYXRod29ya3MvZmFjdC1zaGVldC9zZW5zb3ItZnVzaW9uLWNoZWF0LXNoZWV0LXF1aWNrLXN0YXJ0LWd1aWRlLnBkZg==" title="https://www.mathworks.com/content/dam/mathworks/fact-sheet/sensor-fusion-cheat-sheet-quick-start-guide.pdf">Sensor Fusion and Tracking Toolbox™ 快速入门指南<i class="fa fa-external-link"></i></span></p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0tZSkw4ODgvYXJ0aWNsZS9kZXRhaWxzLzgwNjIzMzUz" title="https://blog.csdn.net/KYJL888/article/details/80623353">【自动驾驶】RTK（高精度的 GPS 测量）<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9iYWlqaWFoYW8uYmFpZHUuY29tL3M/aWQ9MTYwMzEzNjc1MzA5Mjg3Nzg0OCZhbXA7d2ZyPXNwaWRlciZhbXA7Zm9yPXBj" title="https://baijiahao.baidu.com/s?id=1603136753092877848&amp;wfr=spider&amp;for=pc">GPS RTK 测量定位原理<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0aHdvcmtzLmNvbS9jb250ZW50L2RhbS9tYXRod29ya3MvZmFjdC1zaGVldC9zZW5zb3ItZnVzaW9uLWNoZWF0LXNoZWV0LXF1aWNrLXN0YXJ0LWd1aWRlLnBkZg==" title="https://www.mathworks.com/content/dam/mathworks/fact-sheet/sensor-fusion-cheat-sheet-quick-start-guide.pdf">Sensor Fusion and Tracking Toolbox™ 快速入门指南<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>自动驾驶</category>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>自动驾驶</tag>
-        <tag>导航定位</tag>
       </tags>
   </entry>
   <entry>
@@ -5154,158 +5119,72 @@ R =
       </tags>
   </entry>
   <entry>
-    <title>工作中一些简单的 Git 应用实践</title>
-    <url>/archives/4511dcad.html</url>
-    <content><![CDATA[<h1 id="前言" class="heading-control"><a href="#前言" class="headerlink" title="前言"></a>前言<a class="heading-anchor" href="#前言" aria-hidden="true"></a></h1><p>最近笔者在整理项目开发文档，深知代码版本管理的重要性，而 Git 作为代码版本管理的扛把子工具深受广大猿类喜爱。本篇文章旨在记录笔者日常开发工作中一些常用的 Git 应用实践。</p>
-<h1 id="常用命令" class="heading-control"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令<a class="heading-anchor" href="#常用命令" aria-hidden="true"></a></h1><p>下面是笔者常用的一些 Git 命令：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>git add --all</code></td>
-<td>将当前工作区（working directory）修改添加到暂存区（stage），只有添加到暂存区的修改才能被提交（commit）</td>
-</tr>
-<tr>
-<td><code>git checkout branch_name</code></td>
-<td>切换到名为 branch_name 分支</td>
-</tr>
-<tr>
-<td><code>git checkout -b branch_name</code></td>
-<td>创建名为 branch_name 的新分支</td>
-</tr>
-<tr>
-<td><code>git checkout commit_id</code></td>
-<td>切换到 id 为 commit_id 对应的提交</td>
-</tr>
-<tr>
-<td><code>git checkout tag_number</code></td>
-<td>切换到 tag 号 为 tag_number 对应的提交</td>
-</tr>
-<tr>
-<td><code>git commit -m &quot;comment&quot;</code></td>
-<td>向本地仓库提交修改，comment 代表本次提交的注释内容</td>
-</tr>
-<tr>
-<td><code>git push</code></td>
-<td>向远程仓库推送更新本地提交</td>
-</tr>
-<tr>
-<td><code>git push --tags</code></td>
-<td>向远程仓库推送本地仓库的所有 tag 信息</td>
-</tr>
-<tr>
-<td><code>git stash</code></td>
-<td>将工作区与暂存区中的修改临时保存到 git 栈（需要时可以恢复），并将工作区与暂存区恢复至上一次提交的状态</td>
-</tr>
-<tr>
-<td><code>git stash save -u &quot;message&quot;</code></td>
-<td>将工作区与暂存区中的修改以及未被追踪的修改（-u）临时保存到 git 栈（需要时可以恢复），并将工作区与暂存区恢复至上一次提交的状态，message 表示此次操作的备注信息</td>
-</tr>
-<tr>
-<td><code>git stash list</code></td>
-<td>列举当前 git 栈中所有被临时保存的修改，每一次临时修改都对应唯一的 stash_id，从 0 开始，依次往后追加</td>
-</tr>
-<tr>
-<td><code>git stash pop</code></td>
-<td>将 git 栈栈顶（即最新的）的临时修改弹出并恢复至当前分支</td>
-</tr>
-<tr>
-<td><code>git stash apply stash@{stash_id}</code></td>
-<td>将 git 栈中 stash_id 对应的临时修改恢复至当前分支，但不会删除 git 栈中的对应内容</td>
-</tr>
-<tr>
-<td><code>git stash drop stash@{stash_id}</code></td>
-<td>将 git 栈中 stash_id 对应的临时修改删除</td>
-</tr>
-<tr>
-<td><code>git stash clear</code></td>
-<td>删除 git 栈中所有的临时修改</td>
-</tr>
-<tr>
-<td><code>git tag tag_number</code></td>
-<td>为最新提交打上名为 tag_number 的 tag 号</td>
-</tr>
-<tr>
-<td><code>git tag tag_number commit_id</code></td>
-<td>为 id 为 commit_id 对应的提交打上名为 tag_number 的 tag 号</td>
-</tr>
-<tr>
-<td><code>git tag -d tag_number</code></td>
-<td>删除本地仓库名为 tag_number 的 tag 号</td>
-</tr>
-<tr>
-<td><code>git push origin :refs/tags/tag_number</code></td>
-<td>删除远程仓库名为 tag_number 的 tag 号</td>
-</tr>
-<tr>
-<td><code>git reset --hard HEAD</code></td>
-<td>丢弃工作区与暂存区中的修改（未被跟踪的修改需要先添加至暂存区），并恢复至最新提交的状态</td>
-</tr>
-<tr>
-<td><code>git reset --hard commit_id</code></td>
-<td>丢弃工作区与暂存区中的修改（未被跟踪的修改需要先添加至暂存区），并恢复至 id 为 commit_id 对应的提交的状态</td>
-</tr>
-<tr>
-<td><code>git branch -a</code></td>
-<td>查看本地及远程的所有分支</td>
-</tr>
-<tr>
-<td><code>git branch -D branch_name</code></td>
-<td>删除本地仓库名为 branch_name 的分支</td>
-</tr>
-<tr>
-<td><code>git push origin --delete branch_name</code></td>
-<td>删除远程仓库仓库名为 branch_name 的分支</td>
-</tr>
-<tr>
-<td><code>git log</code></td>
-<td>查看提交日志</td>
-</tr>
-<tr>
-<td><code>git status</code></td>
-<td>查看工作树状态，分别列举工作区和暂存区中的修改</td>
-</tr>
-<tr>
-<td><code>git diff</code></td>
-<td>详细展现工作树与上次提交间的变更</td>
-</tr>
-<tr>
-<td><code>git diff branch1 branch2</code></td>
-<td>详细展现 branch2 分支相比 branch1 分支的修改</td>
-</tr>
-<tr>
-<td><code>git config --list</code></td>
-<td>查看本地仓库的 git 配置</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>善用每一个命令的 <code>--help</code> 选项可以帮助你快速地了解该命令。</p>
-<h1 id="alias-别名" class="heading-control"><a href="#alias-别名" class="headerlink" title="alias 别名"></a>alias 别名<a class="heading-anchor" href="#alias-别名" aria-hidden="true"></a></h1><p>为常用命令设置 alias 别名可提升工作效率，具体设置在 <code>~/.gitconfig</code> 文件中，下面是笔者常用的一些 git alias 别名：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[alias]</span><br><span class="line">	co &#x3D; checkout</span><br><span class="line">	st &#x3D; status</span><br><span class="line">	br &#x3D; branch</span><br><span class="line">	ci &#x3D; commit</span><br><span class="line">	lg &#x3D; log --color --graph --pretty&#x3D;format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#39; --abbrev-commit</span><br><span class="line">	go &#x3D; reset --hard</span><br></pre></td></tr></table></figure>
-<p>其中，<code>lg</code> 别名可以很好地美化提交历史显示，例如下图清晰地展示了 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0Fwb2xsb0F1dG8vYXBvbGxv" title="https://github.com/ApolloAuto/apollo">Apollo<i class="fa fa-external-link"></i></span> 本地仓库 master 分支上两周内的提交历史：</p>
-<p><img data-src="https://i.loli.net/2021/04/11/pVjudD7AQxXMeNv.png" alt="美化过的提交历史"></p>
-<h1 id="配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支" class="heading-control"><a href="#配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支" class="headerlink" title="配置 Ubuntu 终端默认显示所在 Git 仓库的当前分支"></a>配置 Ubuntu 终端默认显示所在 Git 仓库的当前分支<a class="heading-anchor" href="#配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支" aria-hidden="true"></a></h1><p>Ubuntu 环境中，在一个 Git 仓库下打开终端无法显示当前所处分支，很不方便，可以按照如下步骤进行配置解决该问题：</p>
-<p>（1）在终端中打开 bash shell 的配置文件 <code>.bashrc</code>：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure>
-<p>（2）在文件末尾添加如下 shell 代码：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># These shell commands block are for the purpose of displaying the</span></span><br><span class="line"><span class="comment"># current branch name of the current repository.</span></span><br><span class="line">find_git_branch ()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">local</span> dir=. head</span><br><span class="line">  until [ <span class="string">"<span class="variable">$dir</span>"</span> -ef / ]; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [ -f <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span> ]; <span class="keyword">then</span></span><br><span class="line">      head=$(&lt; <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span>)</span><br><span class="line">      <span class="keyword">if</span> [[ <span class="variable">$head</span> = ref:\ refs/heads/* ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*<span class="variable">$&#123;head#*/*/&#125;</span>)"</span></span><br><span class="line">      <span class="keyword">elif</span> [[ <span class="variable">$head</span> != <span class="string">''</span> ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*(detached))"</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        git_branch=<span class="string">"(*(unknow))"</span></span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">      <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    dir=<span class="string">"../<span class="variable">$dir</span>"</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">  git_branch=<span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line">PROMPT_COMMAND=<span class="string">"find_git_branch; <span class="variable">$PROMPT_COMMAND</span>"</span></span><br><span class="line"><span class="built_in">export</span> PS1=<span class="string">"\[\e]0;\u@\h: \w\a\]<span class="variable">$&#123;debian_chroot:+($debian_chroot)&#125;</span>\[\033[01;32m\]   \u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]\$git_branch\[\033   [0m\] \$ "</span></span><br></pre></td></tr></table></figure>
-<p>（3）使更改立即生效：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-<p>作者发表在独立博客的几篇 <a href="https://blog.shipengx.com/tags/Git/">Git 系列小文章</a> 可提供一些其它有益参考，此外，廖雪峰的 <span class="exturl" data-url="aHR0cHM6Ly93d3cubGlhb3h1ZWZlbmcuY29tL3dpa2kvODk2MDQzNDg4MDI5NjAw" title="https://www.liaoxuefeng.com/wiki/896043488029600">Git 系列教程<i class="fa fa-external-link"></i></span> 是不错的 Git 学习资料。如果读者朋友有哪些其它的可提升工作效率的 Git 命令或应用技巧也请不吝赐教。</p>
+    <title>安装第三方python库过程中的egg-info与dist-info文件夹</title>
+    <url>/archives/42095346.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在安装第三方python库过程中，在site-packages目录中与安装结果同时生成的后缀名为egg-info或dist-info的文件夹：<br>用应用程序安装生成egg-info文件夹，用whl或tar安装生成dist-info文件夹。</p>
+<hr>
 ]]></content>
       <categories>
-        <category>效率</category>
-        <category>Git</category>
+        <category>编码</category>
+        <category>Python</category>
+        <category>随笔</category>
       </categories>
       <tags>
-        <tag>Git</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>导航定位领域里的一些基本概念</title>
+    <url>/archives/8ddff8f2.html</url>
+    <content><![CDATA[<h1 id="正文" class="heading-control"><a href="#正文" class="headerlink" title="正文"></a>正文<a class="heading-anchor" href="#正文" aria-hidden="true"></a></h1><p><strong>GPS</strong><br>Global Positioning System，全球定位系统，美国，可获取定位信息和速度信息，测量结果受树木、隧道、建筑物等环境信息影响。</p>
+<p><strong>INS</strong><br>Inertial Navigation System，惯性导航系统，可获取三轴加速度和三轴角速度信息，测量结果受陀螺漂移和车辆振动等的影响。</p>
+<p><strong>IMU</strong><br>Inertial Measurement Unit，惯性测量单元，INS 里的传感元件，平衡车经常使用的 MPU6050/9050 就属于很常用的 IMU 元件。</p>
+<p><strong>GNSS</strong><br>Global Navigation Satellite System，全球导航卫星系统，我国的北斗，美国的 GPS，欧洲的 Galileo，俄罗斯的 Glonass，都属于 GNSS 的具体实现。</p>
+<p><strong>组合导航定位</strong><br>使用 GNSS/INS 的组合导航定位技术。GNSS 测量结果准确，但更新周期长；INS 更新频率高，瞬时结果精确，但存在累积误差。GNSS/INS 组合导航定位则综合了两者的优点：GNSS 长时间范围内的准确性和 INS 的高频特性。</p>
+<p><strong>RTK</strong><br>Real Time Kinematic，实时动态，载波相位差分技术，是实时处理两个测量站载波相位观测量的差分方法，将基准站采集的载波相位发给用户接收机，进行求差解算坐标。分为单参考站 RTK 测量和网络 RTK 测量。</p>
+<p>MathWorks 官网上也有很清晰的描述：<span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0aHdvcmtzLmNvbS9jb250ZW50L2RhbS9tYXRod29ya3MvZmFjdC1zaGVldC9zZW5zb3ItZnVzaW9uLWNoZWF0LXNoZWV0LXF1aWNrLXN0YXJ0LWd1aWRlLnBkZg==" title="https://www.mathworks.com/content/dam/mathworks/fact-sheet/sensor-fusion-cheat-sheet-quick-start-guide.pdf">Sensor Fusion and Tracking Toolbox™ 快速入门指南<i class="fa fa-external-link"></i></span></p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0tZSkw4ODgvYXJ0aWNsZS9kZXRhaWxzLzgwNjIzMzUz" title="https://blog.csdn.net/KYJL888/article/details/80623353">【自动驾驶】RTK（高精度的 GPS 测量）<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9iYWlqaWFoYW8uYmFpZHUuY29tL3M/aWQ9MTYwMzEzNjc1MzA5Mjg3Nzg0OCZhbXA7d2ZyPXNwaWRlciZhbXA7Zm9yPXBj" title="https://baijiahao.baidu.com/s?id=1603136753092877848&amp;wfr=spider&amp;for=pc">GPS RTK 测量定位原理<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0aHdvcmtzLmNvbS9jb250ZW50L2RhbS9tYXRod29ya3MvZmFjdC1zaGVldC9zZW5zb3ItZnVzaW9uLWNoZWF0LXNoZWV0LXF1aWNrLXN0YXJ0LWd1aWRlLnBkZg==" title="https://www.mathworks.com/content/dam/mathworks/fact-sheet/sensor-fusion-cheat-sheet-quick-start-guide.pdf">Sensor Fusion and Tracking Toolbox™ 快速入门指南<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>自动驾驶</category>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+        <tag>导航定位</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>工作中的一点关于C++有符号数/无符号数类型转换的思考</title>
+    <url>/archives/80d5496e.html</url>
+    <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><p>工作中需要向下游规划（Planning）模块发送视觉检测到的车道线线型与颜色数据，但软件总体使用的是旧有架构，只有<code>uint8_t</code>的线型结构没有颜色接口。</p>
+<h1 id="2-问题" class="heading-control"><a href="#2-问题" class="headerlink" title="2 问题"></a>2 问题<a class="heading-anchor" href="#2-问题" aria-hidden="true"></a></h1><p>实际上，颜色对应一个最大取值为3的枚举，线型对应一个最大取值为34的枚举，自然而然想到是使用线型接口的低六位存储线型值，使用线型接口的高两位存储颜色值，下游使用时，直接将线型接口位与<code>0x3f</code>获取真实线型值，将线型接口右移6位获取真实颜色值：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">uint8_t</span> line_type_interface = <span class="number">0b11100010</span>;</span><br><span class="line"><span class="keyword">uint8_t</span> line_type = line_type_interface &amp; <span class="number">0x3f</span>;</span><br><span class="line"><span class="keyword">uint8_t</span> line_color = line_type_interface &gt;&gt; <span class="number">6</span>;</span><br></pre></td></tr></table></figure><br>这在iECU（intelligent ECU） RTE（Run-Time Environment，AUTOSAR架构中VFB的接口实现）层上的表现是顺理成章的。</p>
+<p>问题出现在离线调试阶段。我们的调试手段是将iECU中的运行时RTE数据转换为<span class="exturl" data-url="aHR0cDovL2xjbS1wcm9qLmdpdGh1Yi5pby8=" title="http://lcm-proj.github.io/">LCM<i class="fa fa-external-link"></i></span>数据并通过LCM UDP组播的形式向外发送，通过x86的日志上位机实时接收并存储LCM UDP报文，离线调试时将存储的LCM日志文件进行回放。RTE的线型接口为<code>uint8_t</code>类型，但LCM消息中对应的线型接口被定义成了<code>int8_t</code>类型。</p>
+<p>我在为LCM消息赋值时，直接将RTE的线型接口的值赋给了LCM消息中的对应接口，这就造成了<code>uint8_t</code>向<code>int8_t</code>的隐式类型转换，我没有在意这一点，下游规划模块同样没有在意这一点，下游模块离线调试时直接将LCM日志文件中<code>int8_t</code>线型接口值做了向<code>uint8_t</code>的显式强制类型转换，然后进行了线型值和颜色值的提取操作，并且没有出过问题，直到同样需要接收相同信息的HMI（Human Machine Interface）下游模块遇到了问题：他在右移提取颜色值时出现了异常大的值。原来，HMI模块在进行颜色值的提取操作时直接将LCM日志中的接口值进行了右移操作，而<strong>LCM消息中对应的接口被定义成了<code>int8_t</code>类型，当接口取值为形如<code>0b11100010</code>的符号位为1的值时，右移操作会将空出位补1，从而造成提取的颜色数值异常</strong>。</p>
+<p>当然，像规划模块那样，先将<code>int8_t</code>值向<code>uint8_t</code>做强制类型转换，再进行右移提取操作就不会有问题了，但这引发了我的思考：<strong>从原始RTE数据到离线注入数据，发生了<code>uint8_t</code> -&gt; <code>int8_t</code> -&gt; <code>uint8_t</code>的两次类型转换，为什么没有问题？</strong>我隐约地觉得应该会有问题。HMI模块还提了一个很基础但具有迷惑性的问题：<strong>当LCM日志中接口数据为<code>0b10000000</code>时，它对应的十进制是什么<code>-0</code>吗？</strong>（答案：-128。<code>int8_t</code>的取值范围是[-128, 127]，<code>0b10000000</code>即<code>int8_t</code>的取值下限。）</p>
+<h1 id="3-知识点" class="heading-control"><a href="#3-知识点" class="headerlink" title="3 知识点"></a>3 知识点<a class="heading-anchor" href="#3-知识点" aria-hidden="true"></a></h1><ul>
+<li>在计算机系统中，数值一律用补码来表示（存储），在程序调试时，所观察到的变量的十六进制均代表变量的补码。使用补码主要原因是可以将符号位和其它位统一处理；同时，减法也可按加法来处理；</li>
+<li>两个用补码表示的数相加时，如果最高位（符号位）有进位，则进位被舍弃。<strong>正数的补码与其原码一致；负数的补码为该数绝对值求反码（原码按位取反）后整体加1</strong>；</li>
+<li><strong>所谓有符号数与无符号数间的类型转换，数据在内存中的补码表示并未发生改变，改变的是该补码在类型转换前后所对应的十进制含义，即计算机理解内存上补码数据的方式。</strong>例如，当RTE原始数据（<code>uint8_t</code>）取值为<code>0b11100010</code>时，计算机认为其代表十进制为：<script type="math/tex; mode=display">
+2^7 + 2^6 + 2^5 + 2^1 = 226</script>此时，数据在内存中的补码为<code>11100010</code>。做了向<code>int8_t</code>的类型转换后，数据在内存中的补码依然是<code>11100010</code>，但此时计算机认为其代表十进制为：  <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">-~(<span class="number">0b1100010</span> - <span class="number">1</span>) = <span class="number">-0b</span>0011110</span><br></pre></td></tr></table></figure>
+  即：<script type="math/tex; mode=display">
+  -(2^4 + 2^3 + 2^2 + 2^1) = -30</script></li>
+<li><strong>当赋给无符号类型一个超出它表示范围的值时，结果是初始值对无符号类型表示数值总数取模后的余数</strong>（《C++ Primer》），反之亦然（博主注）。注意到：<script type="math/tex; mode=display">
+226 - 2^8 = -30</script>$2^8$是<code>uint8_t</code>和<code>int8_t</code>类型数据的模。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>编码</category>
+        <category>C/C++</category>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
       </tags>
   </entry>
   <entry>
@@ -5470,31 +5349,158 @@ R =
       </tags>
   </entry>
   <entry>
-    <title>工作中的一点关于C++有符号数/无符号数类型转换的思考</title>
-    <url>/archives/80d5496e.html</url>
-    <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><p>工作中需要向下游规划（Planning）模块发送视觉检测到的车道线线型与颜色数据，但软件总体使用的是旧有架构，只有<code>uint8_t</code>的线型结构没有颜色接口。</p>
-<h1 id="2-问题" class="heading-control"><a href="#2-问题" class="headerlink" title="2 问题"></a>2 问题<a class="heading-anchor" href="#2-问题" aria-hidden="true"></a></h1><p>实际上，颜色对应一个最大取值为3的枚举，线型对应一个最大取值为34的枚举，自然而然想到是使用线型接口的低六位存储线型值，使用线型接口的高两位存储颜色值，下游使用时，直接将线型接口位与<code>0x3f</code>获取真实线型值，将线型接口右移6位获取真实颜色值：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">uint8_t</span> line_type_interface = <span class="number">0b11100010</span>;</span><br><span class="line"><span class="keyword">uint8_t</span> line_type = line_type_interface &amp; <span class="number">0x3f</span>;</span><br><span class="line"><span class="keyword">uint8_t</span> line_color = line_type_interface &gt;&gt; <span class="number">6</span>;</span><br></pre></td></tr></table></figure><br>这在iECU（intelligent ECU） RTE（Run-Time Environment，AUTOSAR架构中VFB的接口实现）层上的表现是顺理成章的。</p>
-<p>问题出现在离线调试阶段。我们的调试手段是将iECU中的运行时RTE数据转换为<span class="exturl" data-url="aHR0cDovL2xjbS1wcm9qLmdpdGh1Yi5pby8=" title="http://lcm-proj.github.io/">LCM<i class="fa fa-external-link"></i></span>数据并通过LCM UDP组播的形式向外发送，通过x86的日志上位机实时接收并存储LCM UDP报文，离线调试时将存储的LCM日志文件进行回放。RTE的线型接口为<code>uint8_t</code>类型，但LCM消息中对应的线型接口被定义成了<code>int8_t</code>类型。</p>
-<p>我在为LCM消息赋值时，直接将RTE的线型接口的值赋给了LCM消息中的对应接口，这就造成了<code>uint8_t</code>向<code>int8_t</code>的隐式类型转换，我没有在意这一点，下游规划模块同样没有在意这一点，下游模块离线调试时直接将LCM日志文件中<code>int8_t</code>线型接口值做了向<code>uint8_t</code>的显式强制类型转换，然后进行了线型值和颜色值的提取操作，并且没有出过问题，直到同样需要接收相同信息的HMI（Human Machine Interface）下游模块遇到了问题：他在右移提取颜色值时出现了异常大的值。原来，HMI模块在进行颜色值的提取操作时直接将LCM日志中的接口值进行了右移操作，而<strong>LCM消息中对应的接口被定义成了<code>int8_t</code>类型，当接口取值为形如<code>0b11100010</code>的符号位为1的值时，右移操作会将空出位补1，从而造成提取的颜色数值异常</strong>。</p>
-<p>当然，像规划模块那样，先将<code>int8_t</code>值向<code>uint8_t</code>做强制类型转换，再进行右移提取操作就不会有问题了，但这引发了我的思考：<strong>从原始RTE数据到离线注入数据，发生了<code>uint8_t</code> -&gt; <code>int8_t</code> -&gt; <code>uint8_t</code>的两次类型转换，为什么没有问题？</strong>我隐约地觉得应该会有问题。HMI模块还提了一个很基础但具有迷惑性的问题：<strong>当LCM日志中接口数据为<code>0b10000000</code>时，它对应的十进制是什么<code>-0</code>吗？</strong>（答案：-128。<code>int8_t</code>的取值范围是[-128, 127]，<code>0b10000000</code>即<code>int8_t</code>的取值下限。）</p>
-<h1 id="3-知识点" class="heading-control"><a href="#3-知识点" class="headerlink" title="3 知识点"></a>3 知识点<a class="heading-anchor" href="#3-知识点" aria-hidden="true"></a></h1><ul>
-<li>在计算机系统中，数值一律用补码来表示（存储），在程序调试时，所观察到的变量的十六进制均代表变量的补码。使用补码主要原因是可以将符号位和其它位统一处理；同时，减法也可按加法来处理；</li>
-<li>两个用补码表示的数相加时，如果最高位（符号位）有进位，则进位被舍弃。<strong>正数的补码与其原码一致；负数的补码为该数绝对值求反码（原码按位取反）后整体加1</strong>；</li>
-<li><strong>所谓有符号数与无符号数间的类型转换，数据在内存中的补码表示并未发生改变，改变的是该补码在类型转换前后所对应的十进制含义，即计算机理解内存上补码数据的方式。</strong>例如，当RTE原始数据（<code>uint8_t</code>）取值为<code>0b11100010</code>时，计算机认为其代表十进制为：<script type="math/tex; mode=display">
-2^7 + 2^6 + 2^5 + 2^1 = 226</script>此时，数据在内存中的补码为<code>11100010</code>。做了向<code>int8_t</code>的类型转换后，数据在内存中的补码依然是<code>11100010</code>，但此时计算机认为其代表十进制为：  <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">-~(<span class="number">0b1100010</span> - <span class="number">1</span>) = <span class="number">-0b</span>0011110</span><br></pre></td></tr></table></figure>
-  即：<script type="math/tex; mode=display">
-  -(2^4 + 2^3 + 2^2 + 2^1) = -30</script></li>
-<li><strong>当赋给无符号类型一个超出它表示范围的值时，结果是初始值对无符号类型表示数值总数取模后的余数</strong>（《C++ Primer》），反之亦然（博主注）。注意到：<script type="math/tex; mode=display">
-226 - 2^8 = -30</script>$2^8$是<code>uint8_t</code>和<code>int8_t</code>类型数据的模。</li>
-</ul>
+    <title>工作中一些简单的 Git 应用实践</title>
+    <url>/archives/4511dcad.html</url>
+    <content><![CDATA[<h1 id="前言" class="heading-control"><a href="#前言" class="headerlink" title="前言"></a>前言<a class="heading-anchor" href="#前言" aria-hidden="true"></a></h1><p>最近笔者在整理项目开发文档，深知代码版本管理的重要性，而 Git 作为代码版本管理的扛把子工具深受广大猿类喜爱。本篇文章旨在记录笔者日常开发工作中一些常用的 Git 应用实践。</p>
+<h1 id="常用命令" class="heading-control"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令<a class="heading-anchor" href="#常用命令" aria-hidden="true"></a></h1><p>下面是笔者常用的一些 Git 命令：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>git add --all</code></td>
+<td>将当前工作区（working directory）修改添加到暂存区（stage），只有添加到暂存区的修改才能被提交（commit）</td>
+</tr>
+<tr>
+<td><code>git checkout branch_name</code></td>
+<td>切换到名为 branch_name 分支</td>
+</tr>
+<tr>
+<td><code>git checkout -b branch_name</code></td>
+<td>创建名为 branch_name 的新分支</td>
+</tr>
+<tr>
+<td><code>git checkout commit_id</code></td>
+<td>切换到 id 为 commit_id 对应的提交</td>
+</tr>
+<tr>
+<td><code>git checkout tag_number</code></td>
+<td>切换到 tag 号 为 tag_number 对应的提交</td>
+</tr>
+<tr>
+<td><code>git commit -m &quot;comment&quot;</code></td>
+<td>向本地仓库提交修改，comment 代表本次提交的注释内容</td>
+</tr>
+<tr>
+<td><code>git push</code></td>
+<td>向远程仓库推送更新本地提交</td>
+</tr>
+<tr>
+<td><code>git push --tags</code></td>
+<td>向远程仓库推送本地仓库的所有 tag 信息</td>
+</tr>
+<tr>
+<td><code>git stash</code></td>
+<td>将工作区与暂存区中的修改临时保存到 git 栈（需要时可以恢复），并将工作区与暂存区恢复至上一次提交的状态</td>
+</tr>
+<tr>
+<td><code>git stash save -u &quot;message&quot;</code></td>
+<td>将工作区与暂存区中的修改以及未被追踪的修改（-u）临时保存到 git 栈（需要时可以恢复），并将工作区与暂存区恢复至上一次提交的状态，message 表示此次操作的备注信息</td>
+</tr>
+<tr>
+<td><code>git stash list</code></td>
+<td>列举当前 git 栈中所有被临时保存的修改，每一次临时修改都对应唯一的 stash_id，从 0 开始，依次往后追加</td>
+</tr>
+<tr>
+<td><code>git stash pop</code></td>
+<td>将 git 栈栈顶（即最新的）的临时修改弹出并恢复至当前分支</td>
+</tr>
+<tr>
+<td><code>git stash apply stash@{stash_id}</code></td>
+<td>将 git 栈中 stash_id 对应的临时修改恢复至当前分支，但不会删除 git 栈中的对应内容</td>
+</tr>
+<tr>
+<td><code>git stash drop stash@{stash_id}</code></td>
+<td>将 git 栈中 stash_id 对应的临时修改删除</td>
+</tr>
+<tr>
+<td><code>git stash clear</code></td>
+<td>删除 git 栈中所有的临时修改</td>
+</tr>
+<tr>
+<td><code>git tag tag_number</code></td>
+<td>为最新提交打上名为 tag_number 的 tag 号</td>
+</tr>
+<tr>
+<td><code>git tag tag_number commit_id</code></td>
+<td>为 id 为 commit_id 对应的提交打上名为 tag_number 的 tag 号</td>
+</tr>
+<tr>
+<td><code>git tag -d tag_number</code></td>
+<td>删除本地仓库名为 tag_number 的 tag 号</td>
+</tr>
+<tr>
+<td><code>git push origin :refs/tags/tag_number</code></td>
+<td>删除远程仓库名为 tag_number 的 tag 号</td>
+</tr>
+<tr>
+<td><code>git reset --hard HEAD</code></td>
+<td>丢弃工作区与暂存区中的修改（未被跟踪的修改需要先添加至暂存区），并恢复至最新提交的状态</td>
+</tr>
+<tr>
+<td><code>git reset --hard commit_id</code></td>
+<td>丢弃工作区与暂存区中的修改（未被跟踪的修改需要先添加至暂存区），并恢复至 id 为 commit_id 对应的提交的状态</td>
+</tr>
+<tr>
+<td><code>git branch -a</code></td>
+<td>查看本地及远程的所有分支</td>
+</tr>
+<tr>
+<td><code>git branch -D branch_name</code></td>
+<td>删除本地仓库名为 branch_name 的分支</td>
+</tr>
+<tr>
+<td><code>git push origin --delete branch_name</code></td>
+<td>删除远程仓库仓库名为 branch_name 的分支</td>
+</tr>
+<tr>
+<td><code>git log</code></td>
+<td>查看提交日志</td>
+</tr>
+<tr>
+<td><code>git status</code></td>
+<td>查看工作树状态，分别列举工作区和暂存区中的修改</td>
+</tr>
+<tr>
+<td><code>git diff</code></td>
+<td>详细展现工作树与上次提交间的变更</td>
+</tr>
+<tr>
+<td><code>git diff branch1 branch2</code></td>
+<td>详细展现 branch2 分支相比 branch1 分支的修改</td>
+</tr>
+<tr>
+<td><code>git config --list</code></td>
+<td>查看本地仓库的 git 配置</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>善用每一个命令的 <code>--help</code> 选项可以帮助你快速地了解该命令。</p>
+<h1 id="alias-别名" class="heading-control"><a href="#alias-别名" class="headerlink" title="alias 别名"></a>alias 别名<a class="heading-anchor" href="#alias-别名" aria-hidden="true"></a></h1><p>为常用命令设置 alias 别名可提升工作效率，具体设置在 <code>~/.gitconfig</code> 文件中，下面是笔者常用的一些 git alias 别名：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[alias]</span><br><span class="line">	co &#x3D; checkout</span><br><span class="line">	st &#x3D; status</span><br><span class="line">	br &#x3D; branch</span><br><span class="line">	ci &#x3D; commit</span><br><span class="line">	lg &#x3D; log --color --graph --pretty&#x3D;format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#39; --abbrev-commit</span><br><span class="line">	go &#x3D; reset --hard</span><br></pre></td></tr></table></figure>
+<p>其中，<code>lg</code> 别名可以很好地美化提交历史显示，例如下图清晰地展示了 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0Fwb2xsb0F1dG8vYXBvbGxv" title="https://github.com/ApolloAuto/apollo">Apollo<i class="fa fa-external-link"></i></span> 本地仓库 master 分支上两周内的提交历史：</p>
+<p><img data-src="https://i.loli.net/2021/04/11/pVjudD7AQxXMeNv.png" alt="美化过的提交历史"></p>
+<h1 id="配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支" class="heading-control"><a href="#配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支" class="headerlink" title="配置 Ubuntu 终端默认显示所在 Git 仓库的当前分支"></a>配置 Ubuntu 终端默认显示所在 Git 仓库的当前分支<a class="heading-anchor" href="#配置-Ubuntu-终端默认显示所在-Git-仓库的当前分支" aria-hidden="true"></a></h1><p>Ubuntu 环境中，在一个 Git 仓库下打开终端无法显示当前所处分支，很不方便，可以按照如下步骤进行配置解决该问题：</p>
+<p>（1）在终端中打开 bash shell 的配置文件 <code>.bashrc</code>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>（2）在文件末尾添加如下 shell 代码：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># These shell commands block are for the purpose of displaying the</span></span><br><span class="line"><span class="comment"># current branch name of the current repository.</span></span><br><span class="line">find_git_branch ()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">local</span> dir=. head</span><br><span class="line">  until [ <span class="string">"<span class="variable">$dir</span>"</span> -ef / ]; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [ -f <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span> ]; <span class="keyword">then</span></span><br><span class="line">      head=$(&lt; <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span>)</span><br><span class="line">      <span class="keyword">if</span> [[ <span class="variable">$head</span> = ref:\ refs/heads/* ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*<span class="variable">$&#123;head#*/*/&#125;</span>)"</span></span><br><span class="line">      <span class="keyword">elif</span> [[ <span class="variable">$head</span> != <span class="string">''</span> ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*(detached))"</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        git_branch=<span class="string">"(*(unknow))"</span></span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">      <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    dir=<span class="string">"../<span class="variable">$dir</span>"</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">  git_branch=<span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line">PROMPT_COMMAND=<span class="string">"find_git_branch; <span class="variable">$PROMPT_COMMAND</span>"</span></span><br><span class="line"><span class="built_in">export</span> PS1=<span class="string">"\[\e]0;\u@\h: \w\a\]<span class="variable">$&#123;debian_chroot:+($debian_chroot)&#125;</span>\[\033[01;32m\]   \u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]\$git_branch\[\033   [0m\] \$ "</span></span><br></pre></td></tr></table></figure>
+<p>（3）使更改立即生效：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>作者发表在独立博客的几篇 <a href="https://blog.shipengx.com/tags/Git/">Git 系列小文章</a> 可提供一些其它有益参考，此外，廖雪峰的 <span class="exturl" data-url="aHR0cHM6Ly93d3cubGlhb3h1ZWZlbmcuY29tL3dpa2kvODk2MDQzNDg4MDI5NjAw" title="https://www.liaoxuefeng.com/wiki/896043488029600">Git 系列教程<i class="fa fa-external-link"></i></span> 是不错的 Git 学习资料。如果读者朋友有哪些其它的可提升工作效率的 Git 命令或应用技巧也请不吝赐教。</p>
 ]]></content>
       <categories>
-        <category>编码</category>
-        <category>C/C++</category>
-        <category>随笔</category>
+        <category>效率</category>
+        <category>Git</category>
       </categories>
       <tags>
-        <tag>C/C++</tag>
+        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
@@ -5515,6 +5521,30 @@ R =
       <tags>
         <tag>自动驾驶</tag>
         <tag>多传感器信息融合</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>配置Ubuntu下的shell默认显示所在git仓库的当前分支</title>
+    <url>/archives/74b2417b.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>Linux环境下使用Git做某项目代码工程的版本控制时，发现在工程下打开终端后无法显示当前所处分支，很不方便，通过编辑<code>.bashrc</code>配置文件解决这个问题。</p>
+<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
+<li>在终端中打开bash shell的配置文件<code>.bashrc</code>：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure></li>
+<li>在文件末尾添加如下代码：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># These shell commands block are for the purpose of displaying the </span></span><br><span class="line"><span class="comment"># current branch name of the current repository.</span></span><br><span class="line">find_git_branch () </span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">local</span> dir=. head</span><br><span class="line">  until [ <span class="string">"<span class="variable">$dir</span>"</span> -ef / ]; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [ -f <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span> ]; <span class="keyword">then</span></span><br><span class="line">      head=$(&lt; <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span>)</span><br><span class="line">      <span class="keyword">if</span> [[ <span class="variable">$head</span> = ref:\ refs/heads/* ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*<span class="variable">$&#123;head#*/*/&#125;</span>)"</span></span><br><span class="line">      <span class="keyword">elif</span> [[ <span class="variable">$head</span> != <span class="string">''</span> ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*(detached))"</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        git_branch=<span class="string">"(*(unknow))"</span></span><br><span class="line">      <span class="keyword">fi</span>  </span><br><span class="line">      <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span>  </span><br><span class="line">    dir=<span class="string">"../<span class="variable">$dir</span>"</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">  git_branch=<span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line">PROMPT_COMMAND=<span class="string">"find_git_branch; <span class="variable">$PROMPT_COMMAND</span>"</span></span><br><span class="line"><span class="built_in">export</span> PS1=<span class="string">"\[\e]0;\u@\h: \w\a\]<span class="variable">$&#123;debian_chroot:+($debian_chroot)&#125;</span>\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]\$git_branch\[\033[0m\] \$ "</span></span><br></pre></td></tr></table></figure></li>
+<li>使更改立即生效：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI1Mjk1NDA3L2FydGljbGUvZGV0YWlscy83OTUwOTA1Ng==" title="https://blog.csdn.net/qq_25295407/article/details/79509056">linux命令行终端显示git当前所在分支<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+        <tag>Linux</tag>
+        <tag>Shell</tag>
       </tags>
   </entry>
   <entry>
@@ -5682,30 +5712,6 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
       </tags>
   </entry>
   <entry>
-    <title>配置Ubuntu下的shell默认显示所在git仓库的当前分支</title>
-    <url>/archives/74b2417b.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>Linux环境下使用Git做某项目代码工程的版本控制时，发现在工程下打开终端后无法显示当前所处分支，很不方便，通过编辑<code>.bashrc</code>配置文件解决这个问题。</p>
-<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
-<li>在终端中打开bash shell的配置文件<code>.bashrc</code>：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure></li>
-<li>在文件末尾添加如下代码：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># These shell commands block are for the purpose of displaying the </span></span><br><span class="line"><span class="comment"># current branch name of the current repository.</span></span><br><span class="line">find_git_branch () </span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">local</span> dir=. head</span><br><span class="line">  until [ <span class="string">"<span class="variable">$dir</span>"</span> -ef / ]; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [ -f <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span> ]; <span class="keyword">then</span></span><br><span class="line">      head=$(&lt; <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span>)</span><br><span class="line">      <span class="keyword">if</span> [[ <span class="variable">$head</span> = ref:\ refs/heads/* ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*<span class="variable">$&#123;head#*/*/&#125;</span>)"</span></span><br><span class="line">      <span class="keyword">elif</span> [[ <span class="variable">$head</span> != <span class="string">''</span> ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*(detached))"</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        git_branch=<span class="string">"(*(unknow))"</span></span><br><span class="line">      <span class="keyword">fi</span>  </span><br><span class="line">      <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span>  </span><br><span class="line">    dir=<span class="string">"../<span class="variable">$dir</span>"</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">  git_branch=<span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line">PROMPT_COMMAND=<span class="string">"find_git_branch; <span class="variable">$PROMPT_COMMAND</span>"</span></span><br><span class="line"><span class="built_in">export</span> PS1=<span class="string">"\[\e]0;\u@\h: \w\a\]<span class="variable">$&#123;debian_chroot:+($debian_chroot)&#125;</span>\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]\$git_branch\[\033[0m\] \$ "</span></span><br></pre></td></tr></table></figure></li>
-<li>使更改立即生效：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI1Mjk1NDA3L2FydGljbGUvZGV0YWlscy83OTUwOTA1Ng==" title="https://blog.csdn.net/qq_25295407/article/details/79509056">linux命令行终端显示git当前所在分支<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-        <tag>Linux</tag>
-        <tag>Shell</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>（七）量产必备的毫米波雷达</title>
     <url>/archives/24a03bff.html</url>
     <content><![CDATA[<blockquote>
@@ -5740,34 +5746,6 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
       </tags>
   </entry>
   <entry>
-    <title>（三）百度无人车传感器GPS深入剖析</title>
-    <url>/archives/c870f676.html</url>
-    <content><![CDATA[<blockquote>
-<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">这里<i class="fa fa-external-link"></i></span>。</p>
-</blockquote>
-<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>百度Apollo 1.0技术框架如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/03/01/XgGkhdfU2eSiKNc.jpg" alt="百度Apollo 1.0技术框架"></p>
-<p>GPS全球定位系统（Global Position System）定位原理为<strong>三角定位法（Triangulation）</strong>，如下图所示，通过测量无人车分别距三颗卫星的距离来对无人车进行唯一定位：</p>
-<p><img data-src="https://i.loli.net/2020/03/01/niauPdXFYyBHIg3.jpg" alt="三角定位法原理图"></p>
-<p>为降低天气、云层对定位的影响，引入了差分GPS的技术，原理如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/03/01/BCnQa5P9RheEbA4.jpg" alt="差分GPS技术原理图"></p>
-<p>在地面上建立基站（Base Station），基站在建立时可得到其精确的位置信息（经纬度），同时基站具有接收卫星信号的功能。当基站的GPS接收机与车载GPS接收机相距较近时（&lt;30km），可以认为两者的GPS信号通过的是同一片大气区域，即两者的信号误差基本一致。<strong>根据基站的精确位置和信号传播时间，可反推此时天气原因导致的信号传播误差，之后利用该误差便可修正车载GPS信号，从而降低云层、天气情况等对信号传输的影响。</strong>利用差分GPS技术，可使无人车定位精度由十米级别提升至米级。<strong>差分GPS技术可以解决定位的精度问题，但是无法解决遮挡和反射问题</strong>，当无人车在高楼林立的环境中行驶时，会发生信号丢失和多路径信号（Multi-Path Signal）的问题：</p>
-<p><img data-src="https://i.loli.net/2020/03/01/Rlh5aZ26CzQmuxj.jpg" alt="多路径信号问题示意图"></p>
-<p>同时，GPS定位频率不高，相当于定位实时性较差。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">无人驾驶技术入门（三）| 百度无人车传感器 GPS 深入剖析<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>自动驾驶</category>
-        <category>无人驾驶技术入门</category>
-      </categories>
-      <tags>
-        <tag>自动驾驶</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>（九）与生俱来的VCU信号</title>
     <url>/archives/fde458ab.html</url>
     <content><![CDATA[<blockquote>
@@ -5789,6 +5767,34 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
 <h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNjY1NDg3NA==" title="https://zhuanlan.zhihu.com/p/36654874">无人驾驶技术入门（九）| 与生俱来的VCU信号<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FkYW1TaGFuL2FydGljbGUvZGV0YWlscy83ODY5Njg3NA==" title="https://blog.csdn.net/AdamShan/article/details/78696874">无人驾驶汽车系统入门（五）——运动学自行车模型和动力学自行车模型<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（三）百度无人车传感器GPS深入剖析</title>
+    <url>/archives/c870f676.html</url>
+    <content><![CDATA[<blockquote>
+<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">这里<i class="fa fa-external-link"></i></span>。</p>
+</blockquote>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>百度Apollo 1.0技术框架如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/03/01/XgGkhdfU2eSiKNc.jpg" alt="百度Apollo 1.0技术框架"></p>
+<p>GPS全球定位系统（Global Position System）定位原理为<strong>三角定位法（Triangulation）</strong>，如下图所示，通过测量无人车分别距三颗卫星的距离来对无人车进行唯一定位：</p>
+<p><img data-src="https://i.loli.net/2020/03/01/niauPdXFYyBHIg3.jpg" alt="三角定位法原理图"></p>
+<p>为降低天气、云层对定位的影响，引入了差分GPS的技术，原理如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/03/01/BCnQa5P9RheEbA4.jpg" alt="差分GPS技术原理图"></p>
+<p>在地面上建立基站（Base Station），基站在建立时可得到其精确的位置信息（经纬度），同时基站具有接收卫星信号的功能。当基站的GPS接收机与车载GPS接收机相距较近时（&lt;30km），可以认为两者的GPS信号通过的是同一片大气区域，即两者的信号误差基本一致。<strong>根据基站的精确位置和信号传播时间，可反推此时天气原因导致的信号传播误差，之后利用该误差便可修正车载GPS信号，从而降低云层、天气情况等对信号传输的影响。</strong>利用差分GPS技术，可使无人车定位精度由十米级别提升至米级。<strong>差分GPS技术可以解决定位的精度问题，但是无法解决遮挡和反射问题</strong>，当无人车在高楼林立的环境中行驶时，会发生信号丢失和多路径信号（Multi-Path Signal）的问题：</p>
+<p><img data-src="https://i.loli.net/2020/03/01/Rlh5aZ26CzQmuxj.jpg" alt="多路径信号问题示意图"></p>
+<p>同时，GPS定位频率不高，相当于定位实时性较差。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">无人驾驶技术入门（三）| 百度无人车传感器 GPS 深入剖析<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -5845,41 +5851,6 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
       </tags>
   </entry>
   <entry>
-    <title>（八）被严重低估的传感器超声波雷达</title>
-    <url>/archives/1e9849c6.html</url>
-    <content><![CDATA[<blockquote>
-<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNTE3NzMxMw==" title="https://zhuanlan.zhihu.com/p/35177313">这里<i class="fa fa-external-link"></i></span>。</p>
-</blockquote>
-<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>常见的超声波雷达有两种：第一种是安装在汽车前后保险杠上的，<strong>用于测量汽车前后障碍物的倒车雷达，称为UPA</strong>，探测距离一般在15~250cm之间，单个UPA的探测范围示意图如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/07/05/LCv78AGMEp6YDaR.jpg" alt="UPA探测范围示意图"></p>
-<p>第二种是安装在汽车侧面的，<strong>用于测量侧方障碍物距离的超声波雷达，称为APA</strong>，探测距离一般在30~500cm之间，<strong>更远的探测范围使得APA相比于UPA成本更高、功率更大</strong>，单个APA的探测范围示意图如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/07/05/JR2nYKiSkQONeG1.jpg" alt="APA探测范围示意图"></p>
-<p>虽然UPA和APA的探测距离和探测形状区别很大，但是可以用相同的数学模型对二者进行描述，描述一个超声波雷达的状态需要如下四个参数，其数学模型的示意图如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/07/05/AMr1hKexkHDV2P9.jpg" alt="超声波雷达数学模型示意图"></p>
-<ul>
-<li><strong>参数α</strong>：超声波雷达的探测角，一般UPA的探测角为120°左右，APA的探测角比UPA小，大概为80°</li>
-<li><strong>参数β</strong>：超声波雷达检测宽度范围的影响因素之一，该角度一般较小，UPA的β角为20°左右，APA的β角比较特殊，为0°</li>
-<li><strong>参数R</strong>：同样是超声波雷达检测宽度范围的影响因素之一，UPA和APA的R值差别不大，均在0.6m左右</li>
-<li><strong>参数D</strong>：超声波雷达的最大量程，UPA的最大量程为2米~2.5米，APA的最大量程至少5米，目前已有超过7m的APA雷达在业内使用</li>
-</ul>
-<p>超声波雷达的特性：<br><strong>(1) 温度敏感</strong><br>由于超声波雷达的探测介质为声波，因而超声波雷达的测距结果具有温度敏感性。</p>
-<p><strong>(2) 无法精确描述障碍物位置</strong><br>超声波雷达在工作时会返回一个探测距离的值，如下图所示。处于A处和B处的障碍物会返回相同的探测距离d，在仅知道探测距离d的情况下，<strong>通过单个雷达的信息无法确定障碍物所处位置</strong>为A还是B</p>
-<p><img data-src="https://i.loli.net/2020/07/05/QBlumz9W68hSgAL.jpg" alt="单个超声波雷达无法精确描述障碍物位置"></p>
-<p>超声波雷达在自动驾驶中可以用于<strong>泊车库位检测</strong>和<strong>高速横向辅助</strong>。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNTE3NzMxMw==" title="https://zhuanlan.zhihu.com/p/35177313">无人驾驶技术入门（八）| 被严重低估的传感器超声波雷达<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>自动驾驶</category>
-        <category>无人驾驶技术入门</category>
-      </categories>
-      <tags>
-        <tag>自动驾驶</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>（六）工程师又爱又恨的激光雷达</title>
     <url>/archives/be221b74.html</url>
     <content><![CDATA[<blockquote>
@@ -5914,6 +5885,41 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
 <p>根据激光雷达的感知数据与障碍物所在车道的拓扑关系（道路连接关系）进行障碍物的轨迹预测，以此作为无人车规划（避障、换道、超车等）的判断依据。</p>
 <h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMzc5MjQ1MA==" title="https://zhuanlan.zhihu.com/p/33792450">无人驾驶技术入门（六）| 工程师又爱又恨的激光雷达<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（八）被严重低估的传感器超声波雷达</title>
+    <url>/archives/1e9849c6.html</url>
+    <content><![CDATA[<blockquote>
+<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNTE3NzMxMw==" title="https://zhuanlan.zhihu.com/p/35177313">这里<i class="fa fa-external-link"></i></span>。</p>
+</blockquote>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>常见的超声波雷达有两种：第一种是安装在汽车前后保险杠上的，<strong>用于测量汽车前后障碍物的倒车雷达，称为UPA</strong>，探测距离一般在15~250cm之间，单个UPA的探测范围示意图如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/07/05/LCv78AGMEp6YDaR.jpg" alt="UPA探测范围示意图"></p>
+<p>第二种是安装在汽车侧面的，<strong>用于测量侧方障碍物距离的超声波雷达，称为APA</strong>，探测距离一般在30~500cm之间，<strong>更远的探测范围使得APA相比于UPA成本更高、功率更大</strong>，单个APA的探测范围示意图如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/07/05/JR2nYKiSkQONeG1.jpg" alt="APA探测范围示意图"></p>
+<p>虽然UPA和APA的探测距离和探测形状区别很大，但是可以用相同的数学模型对二者进行描述，描述一个超声波雷达的状态需要如下四个参数，其数学模型的示意图如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/07/05/AMr1hKexkHDV2P9.jpg" alt="超声波雷达数学模型示意图"></p>
+<ul>
+<li><strong>参数α</strong>：超声波雷达的探测角，一般UPA的探测角为120°左右，APA的探测角比UPA小，大概为80°</li>
+<li><strong>参数β</strong>：超声波雷达检测宽度范围的影响因素之一，该角度一般较小，UPA的β角为20°左右，APA的β角比较特殊，为0°</li>
+<li><strong>参数R</strong>：同样是超声波雷达检测宽度范围的影响因素之一，UPA和APA的R值差别不大，均在0.6m左右</li>
+<li><strong>参数D</strong>：超声波雷达的最大量程，UPA的最大量程为2米~2.5米，APA的最大量程至少5米，目前已有超过7m的APA雷达在业内使用</li>
+</ul>
+<p>超声波雷达的特性：<br><strong>(1) 温度敏感</strong><br>由于超声波雷达的探测介质为声波，因而超声波雷达的测距结果具有温度敏感性。</p>
+<p><strong>(2) 无法精确描述障碍物位置</strong><br>超声波雷达在工作时会返回一个探测距离的值，如下图所示。处于A处和B处的障碍物会返回相同的探测距离d，在仅知道探测距离d的情况下，<strong>通过单个雷达的信息无法确定障碍物所处位置</strong>为A还是B</p>
+<p><img data-src="https://i.loli.net/2020/07/05/QBlumz9W68hSgAL.jpg" alt="单个超声波雷达无法精确描述障碍物位置"></p>
+<p>超声波雷达在自动驾驶中可以用于<strong>泊车库位检测</strong>和<strong>高速横向辅助</strong>。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNTE3NzMxMw==" title="https://zhuanlan.zhihu.com/p/35177313">无人驾驶技术入门（八）| 被严重低估的传感器超声波雷达<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -6168,6 +6174,32 @@ H=
       </tags>
   </entry>
   <entry>
+    <title>（十五）再识图像之高级车道线检测</title>
+    <url>/archives/a2ff34db.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（十四）初识图像之初级车道线检测</title>
+    <url>/archives/418d7d6f.html</url>
+    <content><![CDATA[<hr>
+]]></content>
+      <categories>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>（十二）无人驾驶中的坐标转换</title>
     <url>/archives/b10733db.html</url>
     <content><![CDATA[<blockquote>
@@ -6250,32 +6282,6 @@ z_1
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80MTI2MzcwMQ==" title="https://zhuanlan.zhihu.com/p/41263701">无人驾驶技术入门（十二）| 无人驾驶中的坐标转换<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
-]]></content>
-      <categories>
-        <category>自动驾驶</category>
-        <category>无人驾驶技术入门</category>
-      </categories>
-      <tags>
-        <tag>自动驾驶</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>（十五）再识图像之高级车道线检测</title>
-    <url>/archives/a2ff34db.html</url>
-    <content><![CDATA[<hr>
-]]></content>
-      <categories>
-        <category>自动驾驶</category>
-        <category>无人驾驶技术入门</category>
-      </categories>
-      <tags>
-        <tag>自动驾驶</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>（十四）初识图像之初级车道线检测</title>
-    <url>/archives/418d7d6f.html</url>
-    <content><![CDATA[<hr>
 ]]></content>
       <categories>
         <category>自动驾驶</category>
