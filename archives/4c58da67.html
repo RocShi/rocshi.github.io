@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-26T08:20:25.000Z">
-<meta property="article:modified_time" content="2021-06-30T07:40:48.083Z">
+<meta property="article:modified_time" content="2021-06-30T07:55:11.929Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -271,7 +271,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-30 15:40:48" itemprop="dateModified" datetime="2021-06-30T15:40:48+08:00">2021-06-30</time>
+                <time title="修改时间：2021-06-30 15:55:11" itemprop="dateModified" datetime="2021-06-30T15:55:11+08:00">2021-06-30</time>
               </span>
 
           <br>
@@ -779,7 +779,12 @@
 <p><strong>关键概念：容器元素是拷贝</strong>。当我们用一个对象来初始化容器时，或将一个对象插入到容器中时，实际上放入到容器中的是对象值的一个拷贝，而不是对象本身。</p>
 </blockquote>
 </li>
+<li><p>除了 <code>push_back</code>，<code>list</code>、<code>forward_list</code> 和 <code>deque</code> 容器还支持名为 <code>push_front</code> 的类似操作。<code>deque</code> 像 <code>vector</code> 一样提供了随机访问元素的能力，但它提供了 <code>vector</code> 所不支持的 <code>push_front</code>。<code>deque</code> 保证在容器首尾进行插入和删除元素的操作都只花费常数时间。与 <code>vector</code> 一样，在 <code>deque</code> 首尾之外的位置插入元素会很耗时。</p>
+</li>
+<li><p><code>insert</code> 成员提供了更一般的添加功能，它允许我们在容器中任意位置插入 0 个或多个元素。<code>vector</code>、<code>deque</code>、<code>list</code> 和 <code>string</code> 都支持 <code>insert</code> 成员。<code>forward_list</code> 提供了特殊版本的 <code>insert</code> 成员。每个 <code>insert</code> 函数都接受一个迭代器作为其第一个参数。迭代器指出了在容器中什么位置放置新元素。它可以指向容器中任何位置，包括容器尾部之后的下一个位置（意即 <code>insert</code> 的迭代器参数可以是尾后迭代器——博主注）。</p>
+</li>
 </ol>
+<p>34.</p>
 <h2 id="9-3-2-访问元素" class="heading-control"><a href="#9-3-2-访问元素" class="headerlink" title="9.3.2 访问元素"></a>9.3.2 访问元素<a class="heading-anchor" href="#9-3-2-访问元素" aria-hidden="true"></a></h2><h2 id="9-3-3-删除元素" class="heading-control"><a href="#9-3-3-删除元素" class="headerlink" title="9.3.3 删除元素"></a>9.3.3 删除元素<a class="heading-anchor" href="#9-3-3-删除元素" aria-hidden="true"></a></h2><h2 id="9-3-4-特殊的-forward-list-操作" class="heading-control"><a href="#9-3-4-特殊的-forward-list-操作" class="headerlink" title="9.3.4 特殊的 forward_list 操作"></a>9.3.4 特殊的 forward_list 操作<a class="heading-anchor" href="#9-3-4-特殊的-forward-list-操作" aria-hidden="true"></a></h2><h2 id="9-3-5-改变容器大小" class="heading-control"><a href="#9-3-5-改变容器大小" class="headerlink" title="9.3.5 改变容器大小"></a>9.3.5 改变容器大小<a class="heading-anchor" href="#9-3-5-改变容器大小" aria-hidden="true"></a></h2><h2 id="9-3-6-容器操作可能使迭代器失效" class="heading-control"><a href="#9-3-6-容器操作可能使迭代器失效" class="headerlink" title="9.3.6 容器操作可能使迭代器失效"></a>9.3.6 容器操作可能使迭代器失效<a class="heading-anchor" href="#9-3-6-容器操作可能使迭代器失效" aria-hidden="true"></a></h2><h1 id="9-4-vector-对象是如何增长的" class="heading-control"><a href="#9-4-vector-对象是如何增长的" class="headerlink" title="9.4 vector 对象是如何增长的"></a>9.4 vector 对象是如何增长的<a class="heading-anchor" href="#9-4-vector-对象是如何增长的" aria-hidden="true"></a></h1><h1 id="9-5-额外的-string-操作" class="heading-control"><a href="#9-5-额外的-string-操作" class="headerlink" title="9.5 额外的 string 操作"></a>9.5 额外的 string 操作<a class="heading-anchor" href="#9-5-额外的-string-操作" aria-hidden="true"></a></h1><h2 id="9-5-1-构造-string-的其他方法" class="heading-control"><a href="#9-5-1-构造-string-的其他方法" class="headerlink" title="9.5.1 构造 string 的其他方法"></a>9.5.1 构造 string 的其他方法<a class="heading-anchor" href="#9-5-1-构造-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-2-改变-string-的其他方法" class="heading-control"><a href="#9-5-2-改变-string-的其他方法" class="headerlink" title="9.5.2 改变 string 的其他方法"></a>9.5.2 改变 string 的其他方法<a class="heading-anchor" href="#9-5-2-改变-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-3-string-搜索操作" class="heading-control"><a href="#9-5-3-string-搜索操作" class="headerlink" title="9.5.3 string 搜索操作"></a>9.5.3 string 搜索操作<a class="heading-anchor" href="#9-5-3-string-搜索操作" aria-hidden="true"></a></h2><h2 id="9-5-4-compare-函数" class="heading-control"><a href="#9-5-4-compare-函数" class="headerlink" title="9.5.4 compare 函数"></a>9.5.4 compare 函数<a class="heading-anchor" href="#9-5-4-compare-函数" aria-hidden="true"></a></h2><h2 id="9-5-5-数值转换" class="heading-control"><a href="#9-5-5-数值转换" class="headerlink" title="9.5.5 数值转换"></a>9.5.5 数值转换<a class="heading-anchor" href="#9-5-5-数值转换" aria-hidden="true"></a></h2><h1 id="9-6-容器适配器" class="heading-control"><a href="#9-6-容器适配器" class="headerlink" title="9.6 容器适配器"></a>9.6 容器适配器<a class="heading-anchor" href="#9-6-容器适配器" aria-hidden="true"></a></h1><hr>
 
     </div>
@@ -791,19 +796,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第 5 章 语句</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第 2 章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第 4 章 表达式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第 5 章 语句</a></div>
     </li>
   </ul>
 
