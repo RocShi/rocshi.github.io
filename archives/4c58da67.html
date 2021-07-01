@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-26T08:20:25.000Z">
-<meta property="article:modified_time" content="2021-07-01T14:23:33.191Z">
+<meta property="article:modified_time" content="2021-07-01T14:36:28.686Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -271,7 +271,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-01 22:23:33" itemprop="dateModified" datetime="2021-07-01T22:23:33+08:00">2021-07-01</time>
+                <time title="修改时间：2021-07-01 22:36:28" itemprop="dateModified" datetime="2021-07-01T22:36:28+08:00">2021-07-01</time>
               </span>
 
           <br>
@@ -977,9 +977,22 @@
 </tbody>
 </table>
 
+<blockquote>
+<p>WARNING：如果 <code>resize</code> 缩小容器，则指向被删除元素的迭代器、引用和指针都会失效；对 <code>vector</code>、<code>string</code> 或 <code>deque</code> 进行 <code>resize</code> 可能导致迭代器、指针和引用失效。</p>
+</blockquote>
 </li>
 </ol>
-<h2 id="9-3-6-容器操作可能使迭代器失效" class="heading-control"><a href="#9-3-6-容器操作可能使迭代器失效" class="headerlink" title="9.3.6 容器操作可能使迭代器失效"></a>9.3.6 容器操作可能使迭代器失效<a class="heading-anchor" href="#9-3-6-容器操作可能使迭代器失效" aria-hidden="true"></a></h2><h1 id="9-4-vector-对象是如何增长的" class="heading-control"><a href="#9-4-vector-对象是如何增长的" class="headerlink" title="9.4 vector 对象是如何增长的"></a>9.4 vector 对象是如何增长的<a class="heading-anchor" href="#9-4-vector-对象是如何增长的" aria-hidden="true"></a></h1><h1 id="9-5-额外的-string-操作" class="heading-control"><a href="#9-5-额外的-string-操作" class="headerlink" title="9.5 额外的 string 操作"></a>9.5 额外的 string 操作<a class="heading-anchor" href="#9-5-额外的-string-操作" aria-hidden="true"></a></h1><h2 id="9-5-1-构造-string-的其他方法" class="heading-control"><a href="#9-5-1-构造-string-的其他方法" class="headerlink" title="9.5.1 构造 string 的其他方法"></a>9.5.1 构造 string 的其他方法<a class="heading-anchor" href="#9-5-1-构造-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-2-改变-string-的其他方法" class="heading-control"><a href="#9-5-2-改变-string-的其他方法" class="headerlink" title="9.5.2 改变 string 的其他方法"></a>9.5.2 改变 string 的其他方法<a class="heading-anchor" href="#9-5-2-改变-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-3-string-搜索操作" class="heading-control"><a href="#9-5-3-string-搜索操作" class="headerlink" title="9.5.3 string 搜索操作"></a>9.5.3 string 搜索操作<a class="heading-anchor" href="#9-5-3-string-搜索操作" aria-hidden="true"></a></h2><h2 id="9-5-4-compare-函数" class="heading-control"><a href="#9-5-4-compare-函数" class="headerlink" title="9.5.4 compare 函数"></a>9.5.4 compare 函数<a class="heading-anchor" href="#9-5-4-compare-函数" aria-hidden="true"></a></h2><h2 id="9-5-5-数值转换" class="heading-control"><a href="#9-5-5-数值转换" class="headerlink" title="9.5.5 数值转换"></a>9.5.5 数值转换<a class="heading-anchor" href="#9-5-5-数值转换" aria-hidden="true"></a></h2><h1 id="9-6-容器适配器" class="heading-control"><a href="#9-6-容器适配器" class="headerlink" title="9.6 容器适配器"></a>9.6 容器适配器<a class="heading-anchor" href="#9-6-容器适配器" aria-hidden="true"></a></h1><hr>
+<h2 id="9-3-6-容器操作可能使迭代器失效" class="heading-control"><a href="#9-3-6-容器操作可能使迭代器失效" class="headerlink" title="9.3.6 容器操作可能使迭代器失效"></a>9.3.6 容器操作可能使迭代器失效<a class="heading-anchor" href="#9-3-6-容器操作可能使迭代器失效" aria-hidden="true"></a></h2><ol>
+<li><p>向容器中添加元素和从容器中删除元素的操作可能会使指向容器元素的指针、引用或迭代器失效。</p>
+<p>在向容器添加元素后：</p>
+<ul>
+<li>如果容器是 vector 或 string，且存储空间被重新分配，则指向容器的迭代器、指针和引用都会失效。如果存储空间未重新分配，指向插入位置之前的元素的迭代器、指针和引用仍有效，但指向插入位置之后元素的迭代器、指针和引用将会失效。</li>
+<li>对于 deque，插入到除首尾位置之外的任何位置都会导致迭代器、指针和引用失效。如果在首尾位置添加元素，迭代器会失效，但指向存在的元素的引用和指针不会失效。</li>
+<li>对于 1ist 和 forward_list，指向容器的迭代器（包括尾后迭代器和首前迭代器）、指针和引用仍有效。</li>
+</ul>
+</li>
+</ol>
+<h1 id="9-4-vector-对象是如何增长的" class="heading-control"><a href="#9-4-vector-对象是如何增长的" class="headerlink" title="9.4 vector 对象是如何增长的"></a>9.4 vector 对象是如何增长的<a class="heading-anchor" href="#9-4-vector-对象是如何增长的" aria-hidden="true"></a></h1><h1 id="9-5-额外的-string-操作" class="heading-control"><a href="#9-5-额外的-string-操作" class="headerlink" title="9.5 额外的 string 操作"></a>9.5 额外的 string 操作<a class="heading-anchor" href="#9-5-额外的-string-操作" aria-hidden="true"></a></h1><h2 id="9-5-1-构造-string-的其他方法" class="heading-control"><a href="#9-5-1-构造-string-的其他方法" class="headerlink" title="9.5.1 构造 string 的其他方法"></a>9.5.1 构造 string 的其他方法<a class="heading-anchor" href="#9-5-1-构造-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-2-改变-string-的其他方法" class="heading-control"><a href="#9-5-2-改变-string-的其他方法" class="headerlink" title="9.5.2 改变 string 的其他方法"></a>9.5.2 改变 string 的其他方法<a class="heading-anchor" href="#9-5-2-改变-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-3-string-搜索操作" class="heading-control"><a href="#9-5-3-string-搜索操作" class="headerlink" title="9.5.3 string 搜索操作"></a>9.5.3 string 搜索操作<a class="heading-anchor" href="#9-5-3-string-搜索操作" aria-hidden="true"></a></h2><h2 id="9-5-4-compare-函数" class="heading-control"><a href="#9-5-4-compare-函数" class="headerlink" title="9.5.4 compare 函数"></a>9.5.4 compare 函数<a class="heading-anchor" href="#9-5-4-compare-函数" aria-hidden="true"></a></h2><h2 id="9-5-5-数值转换" class="heading-control"><a href="#9-5-5-数值转换" class="headerlink" title="9.5.5 数值转换"></a>9.5.5 数值转换<a class="heading-anchor" href="#9-5-5-数值转换" aria-hidden="true"></a></h2><h1 id="9-6-容器适配器" class="heading-control"><a href="#9-6-容器适配器" class="headerlink" title="9.6 容器适配器"></a>9.6 容器适配器<a class="heading-anchor" href="#9-6-容器适配器" aria-hidden="true"></a></h1><hr>
 
     </div>
 
@@ -993,16 +1006,16 @@
       <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第 4 章 表达式</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第 2 章 变量和基本类型</a></div>
+      <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第 4 章 表达式</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\53fe514.html" rel="bookmark">C++ Primer - 第 7 章 类</a></div>
+      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第 5 章 语句</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第 2 章 变量和基本类型</a></div>
     </li>
   </ul>
 
