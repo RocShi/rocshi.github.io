@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-26T08:20:25.000Z">
-<meta property="article:modified_time" content="2021-06-30T07:55:11.929Z">
+<meta property="article:modified_time" content="2021-07-01T08:30:16.490Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -271,7 +271,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-30 15:55:11" itemprop="dateModified" datetime="2021-06-30T15:55:11+08:00">2021-06-30</time>
+                <time title="修改时间：2021-07-01 16:30:16" itemprop="dateModified" datetime="2021-07-01T16:30:16+08:00">2021-07-01</time>
               </span>
 
           <br>
@@ -782,10 +782,69 @@
 <li><p>除了 <code>push_back</code>，<code>list</code>、<code>forward_list</code> 和 <code>deque</code> 容器还支持名为 <code>push_front</code> 的类似操作。<code>deque</code> 像 <code>vector</code> 一样提供了随机访问元素的能力，但它提供了 <code>vector</code> 所不支持的 <code>push_front</code>。<code>deque</code> 保证在容器首尾进行插入和删除元素的操作都只花费常数时间。与 <code>vector</code> 一样，在 <code>deque</code> 首尾之外的位置插入元素会很耗时。</p>
 </li>
 <li><p><code>insert</code> 成员提供了更一般的添加功能，它允许我们在容器中任意位置插入 0 个或多个元素。<code>vector</code>、<code>deque</code>、<code>list</code> 和 <code>string</code> 都支持 <code>insert</code> 成员。<code>forward_list</code> 提供了特殊版本的 <code>insert</code> 成员。每个 <code>insert</code> 函数都接受一个迭代器作为其第一个参数。迭代器指出了在容器中什么位置放置新元素。它可以指向容器中任何位置，包括容器尾部之后的下一个位置（意即 <code>insert</code> 的迭代器参数可以是尾后迭代器——博主注）。</p>
+<blockquote>
+<p>将元素插入到 <code>vector</code>、<code>deque</code> 和 <code>string</code> 中的任何位置都是合法的。然而，这样做可能很耗时。</p>
+</blockquote>
+</li>
+<li><p><code>insert</code> 函数下面的这个用法将指定数量的元素添加到指定位置之前，这些元素都按给定值初始化：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svec.insert(svec.end(), <span class="number">10</span>, <span class="string">"Anna"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接受一对迭代器或一个初始化列表的 <code>insert</code> 版本将给定范围中的元素插入到指定位置之前：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; v = &#123;<span class="string">"quasi"</span>, <span class="string">"simba"</span>, <span class="string">"frollo"</span>, <span class="string">"scar"</span>&#125;;</span><br><span class="line"><span class="comment">// 将 v 的最后两个元素添加到 slist 的开始位置</span></span><br><span class="line">slist.insert(slist.begin(), v.end() - <span class="number">2</span>, v.end());</span><br><span class="line">slist.insert(slist.end(), &#123;<span class="string">"these"</span>, <span class="string">"words"</span>, <span class="string">"will"</span>,</span><br><span class="line">                           <span class="string">"go"</span>, <span class="string">"at"</span>, <span class="string">"the"</span>, <span class="string">"end"</span>&#125;);</span><br><span class="line"><span class="comment">// 运行时错误：迭代器表示要拷贝的范围，不能指向与目的位置相同的容器</span></span><br><span class="line">slist.insert(slist.begin(), slist.begin(), slist.end());</span><br></pre></td></tr></table></figure>
+<p>如果我们传递给 <code>insert</code> 一对迭代器，它们不能指向添加元素的目标容器。</p>
+<p><strong>在新标准下，接受元素个数或范围的 <code>insert</code> 版本返回指向第一个新加入元素的迭代器。</strong>（在旧版本的标准库中，这些操作返回 <code>void</code>。）<strong>如果范围为空，不插入任何元素，<code>insert</code> 操作会将第一个参数返回。</strong></p>
+</li>
+<li><p>通过使用 <code>insert</code> 的返回值，可以在容器中一个特定位置反复插入元素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">list</span>&lt;<span class="built_in">string</span>&gt; lst;</span><br><span class="line"><span class="keyword">auto</span> iter = lst.begin();</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; word)</span><br><span class="line">    iter = lst.insert(iter, word); <span class="comment">// 等价于调用 push_front</span></span><br></pre></td></tr></table></figure>
+<p>上面的代码循环向链表头部插入数据。</p>
+</li>
+<li><p>新标准引入了三个新成员——<code>emplace_front</code>、<code>emplace</code> 和 <code>emplace_back</code>，这些操作构造而不是拷贝元素。这些操作分别对应 <code>push_front</code>、<code>insert</code> 和 <code>push_back</code>，允许我们将元素放置在容器头部、一个指定位置之前或容器尾部。</p>
+</li>
+<li><p><strong>当调用 <code>push</code> 或 <code>insert</code> 成员函数时，我们将元素类型的对象传递给它们，这些对象被拷贝到容器中。而当我们调用一个 <code>emplace</code> 成员函数时，则是将参数传递给元素类型的构造函数。<code>emplace</code> 成员使用这些参数在容器管理的内存空间中直接构造元素。</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 c 的末尾构造一个 Sales_data 对象</span></span><br><span class="line"><span class="comment">// 使用三个参数的 Sales_data 构造函数</span></span><br><span class="line">c.emplace_back(<span class="string">"978-0590353403"</span>, <span class="number">25</span>, <span class="number">15.99</span>);</span><br><span class="line"><span class="comment">// 错误：没有接受三个参数的 push_back 版本</span></span><br><span class="line">c.push_back(<span class="string">"978-0590353403"</span>, <span class="number">25</span>, <span class="number">15.99</span>);</span><br><span class="line"><span class="comment">// 正确：创建一个临时的 Sales_data 对象传递给 push_back</span></span><br><span class="line">c.<span class="function">push <span class="title">back</span><span class="params">(Sales_data(<span class="string">"978-0590353403"</span>, <span class="number">25</span>, <span class="number">15.99</span>))</span></span>;</span><br></pre></td></tr></table></figure>
+<p>其中对 <code>emplace_back</code> 的调用和第二个 <code>push_back</code> 调用都会创建新的 <code>Sales_data</code> 对象。<strong>在调用 <code>emplace_back</code> 时，会在容器管理的内存空间中直接创建对象。</strong> 而调用 <code>push_back</code> 则会创建一个局部临时对象，并将其压入容器中。<code>emplace</code> 函数的参数根据元素类型而变化，参数必须与元素类型的构造函数相匹配。（<code>emplace</code> 相关操作更加高效——博主注）</p>
+<blockquote>
+<p>Note：emplace 函数在容器中直接构造元素。传递给 emplace 函数的参数必须与元素类型的构造函数相匹配。</p>
+</blockquote>
 </li>
 </ol>
-<p>34.</p>
-<h2 id="9-3-2-访问元素" class="heading-control"><a href="#9-3-2-访问元素" class="headerlink" title="9.3.2 访问元素"></a>9.3.2 访问元素<a class="heading-anchor" href="#9-3-2-访问元素" aria-hidden="true"></a></h2><h2 id="9-3-3-删除元素" class="heading-control"><a href="#9-3-3-删除元素" class="headerlink" title="9.3.3 删除元素"></a>9.3.3 删除元素<a class="heading-anchor" href="#9-3-3-删除元素" aria-hidden="true"></a></h2><h2 id="9-3-4-特殊的-forward-list-操作" class="heading-control"><a href="#9-3-4-特殊的-forward-list-操作" class="headerlink" title="9.3.4 特殊的 forward_list 操作"></a>9.3.4 特殊的 forward_list 操作<a class="heading-anchor" href="#9-3-4-特殊的-forward-list-操作" aria-hidden="true"></a></h2><h2 id="9-3-5-改变容器大小" class="heading-control"><a href="#9-3-5-改变容器大小" class="headerlink" title="9.3.5 改变容器大小"></a>9.3.5 改变容器大小<a class="heading-anchor" href="#9-3-5-改变容器大小" aria-hidden="true"></a></h2><h2 id="9-3-6-容器操作可能使迭代器失效" class="heading-control"><a href="#9-3-6-容器操作可能使迭代器失效" class="headerlink" title="9.3.6 容器操作可能使迭代器失效"></a>9.3.6 容器操作可能使迭代器失效<a class="heading-anchor" href="#9-3-6-容器操作可能使迭代器失效" aria-hidden="true"></a></h2><h1 id="9-4-vector-对象是如何增长的" class="heading-control"><a href="#9-4-vector-对象是如何增长的" class="headerlink" title="9.4 vector 对象是如何增长的"></a>9.4 vector 对象是如何增长的<a class="heading-anchor" href="#9-4-vector-对象是如何增长的" aria-hidden="true"></a></h1><h1 id="9-5-额外的-string-操作" class="heading-control"><a href="#9-5-额外的-string-操作" class="headerlink" title="9.5 额外的 string 操作"></a>9.5 额外的 string 操作<a class="heading-anchor" href="#9-5-额外的-string-操作" aria-hidden="true"></a></h1><h2 id="9-5-1-构造-string-的其他方法" class="heading-control"><a href="#9-5-1-构造-string-的其他方法" class="headerlink" title="9.5.1 构造 string 的其他方法"></a>9.5.1 构造 string 的其他方法<a class="heading-anchor" href="#9-5-1-构造-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-2-改变-string-的其他方法" class="heading-control"><a href="#9-5-2-改变-string-的其他方法" class="headerlink" title="9.5.2 改变 string 的其他方法"></a>9.5.2 改变 string 的其他方法<a class="heading-anchor" href="#9-5-2-改变-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-3-string-搜索操作" class="heading-control"><a href="#9-5-3-string-搜索操作" class="headerlink" title="9.5.3 string 搜索操作"></a>9.5.3 string 搜索操作<a class="heading-anchor" href="#9-5-3-string-搜索操作" aria-hidden="true"></a></h2><h2 id="9-5-4-compare-函数" class="heading-control"><a href="#9-5-4-compare-函数" class="headerlink" title="9.5.4 compare 函数"></a>9.5.4 compare 函数<a class="heading-anchor" href="#9-5-4-compare-函数" aria-hidden="true"></a></h2><h2 id="9-5-5-数值转换" class="heading-control"><a href="#9-5-5-数值转换" class="headerlink" title="9.5.5 数值转换"></a>9.5.5 数值转换<a class="heading-anchor" href="#9-5-5-数值转换" aria-hidden="true"></a></h2><h1 id="9-6-容器适配器" class="heading-control"><a href="#9-6-容器适配器" class="headerlink" title="9.6 容器适配器"></a>9.6 容器适配器<a class="heading-anchor" href="#9-6-容器适配器" aria-hidden="true"></a></h1><hr>
+<h2 id="9-3-2-访问元素" class="heading-control"><a href="#9-3-2-访问元素" class="headerlink" title="9.3.2 访问元素"></a>9.3.2 访问元素<a class="heading-anchor" href="#9-3-2-访问元素" aria-hidden="true"></a></h2><ol>
+<li><p>如果容器中没有元素，访问操作的结果是未定义的。包括 <code>array</code> 在内的每个顺序容器都有一个 <code>front</code> 成员函数，而除 <code>forward_list</code> 之外的所有顺序容器都有一个 <code>back</code> 成员函数。这两个操作分别返回首元素和尾元素的引用。在解引用一个迭代器或调用 <code>front</code> 或 <code>back</code> 之前应检查容器中是否有元素存在。</p>
+</li>
+<li><p>值得注意：迭代器 <code>end</code> 指向的是容器尾元素之后的（不存在的）元素。为了获取尾元素，必须首先递减此迭代器。另一个重要之处是，在调用 <code>front</code> 和 <code>back</code>（或解引用 <code>begin</code> 和 <code>end</code> 返回的迭代器）之前，要确保容器非空。</p>
+</li>
+<li><p><code>at</code> 和下标操作只适用于 <code>string</code>、<code>vector</code>、<code>deque</code> 和 <code>array</code>。<code>back</code> 不适用于 <code>forward_list</code>。</p>
+<p><style type="text/css"><br>.tg {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="2">在顺序容器中访问元素的操作</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">c.back()</td>
+    <td class="tg-0pky">返回 c 中尾元素的引用。若 c 为空，函数行为未定义</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.front()</td>
+    <td class="tg-0pky">返回 c 中首元素的引用。若 c 为空，函数行为未定义</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c[n]</td>
+    <td class="tg-0pky">返回 c 中下标为 n 的元素的引用，n 是一个无符号整数。若 n &gt;= c.size()，则函数行为未定义</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">c.at(n)</td>
+    <td class="tg-lboi">返回下标为 n 的元素的引用。如果下标越界，则抛出 out_of_range 异常</td>
+  </tr>
+</tbody>
+</table>
+
+</li>
+</ol>
+<h2 id="9-3-3-删除元素" class="heading-control"><a href="#9-3-3-删除元素" class="headerlink" title="9.3.3 删除元素"></a>9.3.3 删除元素<a class="heading-anchor" href="#9-3-3-删除元素" aria-hidden="true"></a></h2><h2 id="9-3-4-特殊的-forward-list-操作" class="heading-control"><a href="#9-3-4-特殊的-forward-list-操作" class="headerlink" title="9.3.4 特殊的 forward_list 操作"></a>9.3.4 特殊的 forward_list 操作<a class="heading-anchor" href="#9-3-4-特殊的-forward-list-操作" aria-hidden="true"></a></h2><h2 id="9-3-5-改变容器大小" class="heading-control"><a href="#9-3-5-改变容器大小" class="headerlink" title="9.3.5 改变容器大小"></a>9.3.5 改变容器大小<a class="heading-anchor" href="#9-3-5-改变容器大小" aria-hidden="true"></a></h2><h2 id="9-3-6-容器操作可能使迭代器失效" class="heading-control"><a href="#9-3-6-容器操作可能使迭代器失效" class="headerlink" title="9.3.6 容器操作可能使迭代器失效"></a>9.3.6 容器操作可能使迭代器失效<a class="heading-anchor" href="#9-3-6-容器操作可能使迭代器失效" aria-hidden="true"></a></h2><h1 id="9-4-vector-对象是如何增长的" class="heading-control"><a href="#9-4-vector-对象是如何增长的" class="headerlink" title="9.4 vector 对象是如何增长的"></a>9.4 vector 对象是如何增长的<a class="heading-anchor" href="#9-4-vector-对象是如何增长的" aria-hidden="true"></a></h1><h1 id="9-5-额外的-string-操作" class="heading-control"><a href="#9-5-额外的-string-操作" class="headerlink" title="9.5 额外的 string 操作"></a>9.5 额外的 string 操作<a class="heading-anchor" href="#9-5-额外的-string-操作" aria-hidden="true"></a></h1><h2 id="9-5-1-构造-string-的其他方法" class="heading-control"><a href="#9-5-1-构造-string-的其他方法" class="headerlink" title="9.5.1 构造 string 的其他方法"></a>9.5.1 构造 string 的其他方法<a class="heading-anchor" href="#9-5-1-构造-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-2-改变-string-的其他方法" class="heading-control"><a href="#9-5-2-改变-string-的其他方法" class="headerlink" title="9.5.2 改变 string 的其他方法"></a>9.5.2 改变 string 的其他方法<a class="heading-anchor" href="#9-5-2-改变-string-的其他方法" aria-hidden="true"></a></h2><h2 id="9-5-3-string-搜索操作" class="heading-control"><a href="#9-5-3-string-搜索操作" class="headerlink" title="9.5.3 string 搜索操作"></a>9.5.3 string 搜索操作<a class="heading-anchor" href="#9-5-3-string-搜索操作" aria-hidden="true"></a></h2><h2 id="9-5-4-compare-函数" class="heading-control"><a href="#9-5-4-compare-函数" class="headerlink" title="9.5.4 compare 函数"></a>9.5.4 compare 函数<a class="heading-anchor" href="#9-5-4-compare-函数" aria-hidden="true"></a></h2><h2 id="9-5-5-数值转换" class="heading-control"><a href="#9-5-5-数值转换" class="headerlink" title="9.5.5 数值转换"></a>9.5.5 数值转换<a class="heading-anchor" href="#9-5-5-数值转换" aria-hidden="true"></a></h2><h1 id="9-6-容器适配器" class="heading-control"><a href="#9-6-容器适配器" class="headerlink" title="9.6 容器适配器"></a>9.6 容器适配器<a class="heading-anchor" href="#9-6-容器适配器" aria-hidden="true"></a></h1><hr>
 
     </div>
 
@@ -796,19 +855,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第 2 章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+      <div class="popular-posts-title"><a href="\archives\53fe514.html" rel="bookmark">C++ Primer - 第 7 章 类</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第 4 章 表达式</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第 5 章 语句</a></div>
     </li>
   </ul>
 
