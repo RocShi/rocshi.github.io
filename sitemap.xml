@@ -2,13 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.shipengx.com/archives/5103b2eb.html</loc>
-    
-    <lastmod>2021-07-03</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.shipengx.com/archives/4c58da67.html</loc>
     
     <lastmod>2021-07-01</lastmod>
@@ -508,6 +501,13 @@
   </url>
   
   <url>
+    <loc>https://blog.shipengx.com/tags/Git/</loc>
+    <lastmod>2021-07-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.shipengx.com/tags/Linux/</loc>
     <lastmod>2021-07-03</lastmod>
     <changefreq>daily</changefreq>
@@ -516,13 +516,6 @@
   
   <url>
     <loc>https://blog.shipengx.com/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</loc>
-    <lastmod>2021-07-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/tags/Git/</loc>
     <lastmod>2021-07-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -550,20 +543,6 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/</loc>
-    <lastmod>2021-07-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/tags/Ubuntu/</loc>
-    <lastmod>2021-07-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.shipengx.com/tags/C/</loc>
     <lastmod>2021-07-03</lastmod>
     <changefreq>daily</changefreq>
@@ -572,6 +551,13 @@
   
   <url>
     <loc>https://blog.shipengx.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2021-07-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shipengx.com/tags/OJ/</loc>
     <lastmod>2021-07-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -593,13 +579,6 @@
   
   <url>
     <loc>https://blog.shipengx.com/tags/%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A0%81/</loc>
-    <lastmod>2021-07-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/tags/OJ/</loc>
     <lastmod>2021-07-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -655,7 +634,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/Matplotlib/</loc>
+    <loc>https://blog.shipengx.com/tags/Hexo/</loc>
+    <lastmod>2021-07-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shipengx.com/tags/Blog/</loc>
     <lastmod>2021-07-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -669,14 +655,7 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/Hexo/</loc>
-    <lastmod>2021-07-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/tags/Blog/</loc>
+    <loc>https://blog.shipengx.com/tags/Matplotlib/</loc>
     <lastmod>2021-07-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -755,13 +734,6 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/Linux/</loc>
-    <lastmod>2021-07-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.shipengx.com/categories/%E6%95%88%E7%8E%87/</loc>
     <lastmod>2021-07-03</lastmod>
     <changefreq>daily</changefreq>
@@ -770,6 +742,13 @@
   
   <url>
     <loc>https://blog.shipengx.com/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AC-Primer%E3%80%8B/</loc>
+    <lastmod>2021-07-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.shipengx.com/categories/Linux/</loc>
     <lastmod>2021-07-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
