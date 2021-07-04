@@ -83,8 +83,11 @@
 <meta property="og:image" content="https://i.loli.net/2021/07/03/XKIeQWEsRTprimd.png">
 <meta property="og:image" content="https://i.loli.net/2021/07/04/3VhNjJFCgSZ5yOa.png">
 <meta property="og:image" content="https://i.loli.net/2021/07/04/K6P2OiXZtNkBMlb.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/04/HOf5jRFeAZ2SoPW.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/04/kjAGR4ywi5bcCVm.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/04/38rlyW7t4nBcFjQ.png">
 <meta property="article:published_time" content="2021-07-03T14:54:46.000Z">
-<meta property="article:modified_time" content="2021-07-04T05:55:07.224Z">
+<meta property="article:modified_time" content="2021-07-04T06:17:29.810Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="虚拟机">
@@ -297,7 +300,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-04 13:55:07" itemprop="dateModified" datetime="2021-07-04T13:55:07+08:00">2021-07-04</time>
+                <time title="修改时间：2021-07-04 14:17:29" itemprop="dateModified" datetime="2021-07-04T14:17:29+08:00">2021-07-04</time>
               </span>
 
           <br>
@@ -339,7 +342,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><h1 id="1-环境信息" class="heading-control"><a href="#1-环境信息" class="headerlink" title="1 环境信息"></a>1 环境信息<a class="heading-anchor" href="#1-环境信息" aria-hidden="true"></a></h1><h2 id="1-1-操作系统" class="heading-control"><a href="#1-1-操作系统" class="headerlink" title="1.1 操作系统"></a>1.1 操作系统<a class="heading-anchor" href="#1-1-操作系统" aria-hidden="true"></a></h2><p>Windows 10 2004 企业版</p>
+        <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>近期有在 Win 10 中使用 Ubuntu 18.04 虚拟机操作系统的需求，这本应该是个很简单的事情，起初安装了 VMware Workstation 12 Pro，使用该版本的 VMWare 安装虚拟机的过程中遇到的以下两个问题花费了较多时间：</p>
+<ul>
+<li>虚拟机中的声卡务必移除，否则启动虚拟机后必然蓝屏</li>
+<li>完成虚拟机中的 Ubuntu 安装后，主机一旦插入 U 盘、硬盘等的 USB 存储设备必然蓝屏<br><br></li>
+</ul>
+<p>通过查阅资料发现，问题原因应该是 VMware Workstation 12 Pro 和新版 Win 10 间的兼容性较差，需要使用更新的 VMware Workstation 16 Pro。</p>
+<h1 id="1-环境信息" class="heading-control"><a href="#1-环境信息" class="headerlink" title="1 环境信息"></a>1 环境信息<a class="heading-anchor" href="#1-环境信息" aria-hidden="true"></a></h1><h2 id="1-1-操作系统" class="heading-control"><a href="#1-1-操作系统" class="headerlink" title="1.1 操作系统"></a>1.1 操作系统<a class="heading-anchor" href="#1-1-操作系统" aria-hidden="true"></a></h2><p>Windows 10 2004 企业版</p>
 <h2 id="1-2-硬件配置" class="heading-control"><a href="#1-2-硬件配置" class="headerlink" title="1.2 硬件配置"></a>1.2 硬件配置<a class="heading-anchor" href="#1-2-硬件配置" aria-hidden="true"></a></h2><p><strong>CPU：</strong> Intel Core i7-8750，6 核 12 线程<br><strong>内存：</strong> 32 GB DDR4<br><strong>硬盘：</strong> 1T NVMe SSD（系统盘，软件盘） + 1T HDD（数据盘）<br><strong>显卡：</strong> Nvidia GeForce GTX 1060，6 GB 显存</p>
 <h2 id="1-3-VMWare" class="heading-control"><a href="#1-3-VMWare" class="headerlink" title="1.3 VMWare"></a>1.3 VMWare<a class="heading-anchor" href="#1-3-VMWare" aria-hidden="true"></a></h2><p>VMware Workstation 16 Pro，版本号 16.1.2 build-17966106</p>
 <h1 id="2-安装" class="heading-control"><a href="#2-安装" class="headerlink" title="2 安装"></a>2 安装<a class="heading-anchor" href="#2-安装" aria-hidden="true"></a></h1><h2 id="2-1-基本设置" class="heading-control"><a href="#2-1-基本设置" class="headerlink" title="2.1 基本设置"></a>2.1 基本设置<a class="heading-anchor" href="#2-1-基本设置" aria-hidden="true"></a></h2><p><img data-src="https://i.loli.net/2021/07/03/JYDFHuhV56Z8lwy.png" alt="自定义安装"></p>
@@ -358,6 +367,7 @@
 <p><img data-src="https://i.loli.net/2021/07/03/qjBb5mYuUrMX8Ky.png" alt="指定磁盘文件存储位置"></p>
 <h2 id="2-7-自定义硬件" class="heading-control"><a href="#2-7-自定义硬件" class="headerlink" title="2.7 自定义硬件"></a>2.7 自定义硬件<a class="heading-anchor" href="#2-7-自定义硬件" aria-hidden="true"></a></h2><p><img data-src="https://i.loli.net/2021/07/03/CXAopyvYz418mnx.png" alt="自定义硬件"></p>
 <p><img data-src="https://i.loli.net/2021/07/03/RroL4YacJ1ksjEA.png" alt="开启虚拟化引擎"></p>
+<p>开启虚拟化引擎的前提是主机硬件支持，且在 BISO 设置中开启了相关的硬件虚拟化选项。</p>
 <p><img data-src="https://i.loli.net/2021/07/03/2Yxmoqye3EwNUXZ.png" alt="加载系统镜像文件"></p>
 <p><img data-src="https://i.loli.net/2021/07/03/FyKvIr4S8Vqgh35.png" alt="指定 USB 兼容性"></p>
 <h2 id="2-8-设置宿主机到虚拟机的文件夹共享" class="heading-control"><a href="#2-8-设置宿主机到虚拟机的文件夹共享" class="headerlink" title="2.8 设置宿主机到虚拟机的文件夹共享"></a>2.8 设置宿主机到虚拟机的文件夹共享<a class="heading-anchor" href="#2-8-设置宿主机到虚拟机的文件夹共享" aria-hidden="true"></a></h2><p><img data-src="https://i.loli.net/2021/07/04/6RIiJecQr2ySXFx.png" alt="编辑虚拟机设置"></p>
@@ -383,12 +393,15 @@
 <h2 id="2-11-安装-VMWare-Tools" class="heading-control"><a href="#2-11-安装-VMWare-Tools" class="headerlink" title="2.11 安装 VMWare Tools"></a>2.11 安装 VMWare Tools<a class="heading-anchor" href="#2-11-安装-VMWare-Tools" aria-hidden="true"></a></h2><p>完成虚拟机操作系统安装后，需要安装 VMWare Tools，才能使虚拟机操作系统界面在自由拉伸全屏模式下可以铺满屏幕，以及最终实现宿主机到虚拟机的文件共享（仅有 <a href="#28-设置宿主机到虚拟机的文件夹共享">2.8 节</a>的步骤是不够的）。选择 VMWare 菜单栏的的“虚拟机”选项，安装 VMWare Tools（这里我已经安装过了，所以会显示重新安装）：</p>
 <p><img data-src="https://i.loli.net/2021/07/04/K6P2OiXZtNkBMlb.png" alt="安装 VMWare Tools"></p>
 <p>虚拟机操作系统桌面会出现 VMWare Tools 镜像文件图标，双击打开后会看到包含安装文件的 <code>.tar.gz</code> 格式的压缩文件：</p>
-<p><img data-src alt="Uploading 加载 VMWare Tools 镜像文件.png… (1t9wjbdii)"></p>
+<p><img data-src="https://i.loli.net/2021/07/04/HOf5jRFeAZ2SoPW.png" alt="加载 VMWare Tools 镜像文件"></p>
 <p>将压缩文件拖到桌面并解压，在终端中以 <code>sudo</code> 模式执行安装文件一路回车即可：</p>
-<p><img data-src alt="Uploading 执行 VMWare Tools 安装文件.png… (ulyhm4ko9)"></p>
+<p><img data-src="https://i.loli.net/2021/07/04/kjAGR4ywi5bcCVm.png" alt="执行 VMWare Tools 安装文件"></p>
 <p>完成 VMWare Tools 的安装后重启虚拟机，此时虚拟机操作系统界面已经在自由拉伸全屏模式下铺满屏幕了，在 <code>/mnt/hfgs</code> 目录下可以看到此前挂载的共享目录：</p>
-<p><img data-src alt="Uploading 被挂载的共享目录.png… (5zvalh0k9)"></p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><p><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L255aXN0X3p4cC9hcnRpY2xlL2RldGFpbHMvMTA4NTAzNTgw" title="https://blog.csdn.net/nyist_zxp/article/details/108503580">VMware 设置虚拟机全屏<i class="fa fa-external-link"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vSmVzZWUvcC8xMDYwODY5Ni5odG1s" title="https://www.cnblogs.com/Jesee/p/10608696.html">Winscp 无法连接 linux 虚拟机解决<i class="fa fa-external-link"></i></span></p>
+<p><img data-src="https://i.loli.net/2021/07/04/38rlyW7t4nBcFjQ.png" alt="被挂载的共享目录"></p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L255aXN0X3p4cC9hcnRpY2xlL2RldGFpbHMvMTA4NTAzNTgw" title="https://blog.csdn.net/nyist_zxp/article/details/108503580">VMware 设置虚拟机全屏<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vSmVzZWUvcC8xMDYwODY5Ni5odG1s" title="https://www.cnblogs.com/Jesee/p/10608696.html">Winscp 无法连接 linux 虚拟机解决<i class="fa fa-external-link"></i></span></li>
+</ol>
 <!-- flag of hidden posts -->
     </div>
 
@@ -399,19 +412,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\8b42591c.html" rel="bookmark">Linux gcc/g++中的-I、-l、-L</a></div>
+      <div class="popular-posts-title"><a href="\archives\51299274.html" rel="bookmark">Linux Perf性能优化工具使用说明</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\51299274.html" rel="bookmark">Linux Perf性能优化工具使用说明</a></div>
+      <div class="popular-posts-title"><a href="\archives\8b42591c.html" rel="bookmark">Linux gcc/g++中的-I、-l、-L</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\f52fa610.html" rel="bookmark">Linux中使用core dump进行程序调试</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c5106d85.html" rel="bookmark">Linux中的ld-so与ld-linux-so</a></div>
+      <div class="popular-posts-title"><a href="\archives\31e5f0fe.html" rel="bookmark">Linux中使用sed命令进行字符串查找和替换</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\31e5f0fe.html" rel="bookmark">Linux中使用sed命令进行字符串查找和替换</a></div>
+      <div class="popular-posts-title"><a href="\archives\c5106d85.html" rel="bookmark">Linux中的ld-so与ld-linux-so</a></div>
     </li>
   </ul>
 
