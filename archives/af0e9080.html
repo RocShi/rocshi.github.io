@@ -52,21 +52,20 @@
   };
 </script>
 
-  <meta name="description" content="使用 GitBook 将本地 markdown 文件渲染为静态 HTML，部署到阿里云服务器后通过 Nginx 进行网络代理供外部访问，适宜作为笔记、博客、书籍等内容的发布平台。">
+  <meta name="description" content="Git 仓库包含每个文件的每个版本，但对于一些文件类型来说，这是不实际的，多次修订大文件会增加仓库其他用户克隆和获取的时间。本文旨在简述如何通过 Git Large File Storage (LFS) 管理带有大型文件（文件大小超过 100 MB）的 GitHub 项目。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用 GitBook + 阿里云搭建个人书籍共享站点">
-<meta property="og:url" content="https://blog.shipengx.com/archives/8c49fa90.html">
+<meta property="og:title" content="带有大文件的 GitHub 项目的创建与拉取——使用 Git Large File Storage (LFS)">
+<meta property="og:url" content="https://blog.shipengx.com/archives/af0e9080.html">
 <meta property="og:site_name" content="朝花夕拾">
-<meta property="og:description" content="使用 GitBook 将本地 markdown 文件渲染为静态 HTML，部署到阿里云服务器后通过 Nginx 进行网络代理供外部访问，适宜作为笔记、博客、书籍等内容的发布平台。">
+<meta property="og:description" content="Git 仓库包含每个文件的每个版本，但对于一些文件类型来说，这是不实际的，多次修订大文件会增加仓库其他用户克隆和获取的时间。本文旨在简述如何通过 Git Large File Storage (LFS) 管理带有大型文件（文件大小超过 100 MB）的 GitHub 项目。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-05-10T15:02:16.000Z">
-<meta property="article:modified_time" content="2021-06-05T06:05:17.361Z">
+<meta property="article:published_time" content="2021-07-06T14:57:12.000Z">
+<meta property="article:modified_time" content="2021-07-06T16:09:31.670Z">
 <meta property="article:author" content="ShiPeng">
-<meta property="article:tag" content="LeetCode">
-<meta property="article:tag" content="GitBook">
+<meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://blog.shipengx.com/archives/8c49fa90.html">
+<link rel="canonical" href="https://blog.shipengx.com/archives/af0e9080.html">
 
 
 <script id="page-configurations">
@@ -82,7 +81,7 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
-  <title>使用 GitBook + 阿里云搭建个人书籍共享站点 | 朝花夕拾</title><meta name="robots" content="noindex">
+  <title>带有大文件的 GitHub 项目的创建与拉取——使用 Git Large File Storage (LFS) | 朝花夕拾</title>
   
 
 
@@ -241,7 +240,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/8c49fa90.html">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/af0e9080.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -254,7 +253,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          使用 GitBook + 阿里云搭建个人书籍共享站点
+          带有大文件的 GitHub 项目的创建与拉取——使用 Git Large File Storage (LFS)
         </h2>
 
         <div class="post-meta">
@@ -264,14 +263,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-05-10 23:02:16" itemprop="dateCreated datePublished" datetime="2021-05-10T23:02:16+08:00">2021-05-10</time>
+              <time title="创建时间：2021-07-06 22:57:12" itemprop="dateCreated datePublished" datetime="2021-07-06T22:57:12+08:00">2021-07-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-05 14:05:17" itemprop="dateModified" datetime="2021-06-05T14:05:17+08:00">2021-06-05</time>
+                <time title="修改时间：2021-07-07 00:09:31" itemprop="dateModified" datetime="2021-07-07T00:09:31+08:00">2021-07-07</time>
               </span>
 
           <br>
@@ -281,8 +280,14 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BB%BA%E7%AB%99/" itemprop="url" rel="index">
-                    <span itemprop="name">建站</span>
+                  <a href="/categories/%E6%95%88%E7%8E%87/" itemprop="url" rel="index">
+                    <span itemprop="name">效率</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%88%E7%8E%87/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
                   </a>
                 </span>
             </span>
@@ -296,13 +301,13 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/archives/8c49fa90.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/archives/8c49fa90.html" itemprop="commentCount"></span>
+    <a title="valine" href="/archives/af0e9080.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/af0e9080.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-            <div class="post-description">使用 GitBook 将本地 markdown 文件渲染为静态 HTML，部署到阿里云服务器后通过 Nginx 进行网络代理供外部访问，适宜作为笔记、博客、书籍等内容的发布平台。</div>
+            <div class="post-description">Git 仓库包含每个文件的每个版本，但对于一些文件类型来说，这是不实际的，多次修订大文件会增加仓库其他用户克隆和获取的时间。本文旨在简述如何通过 Git Large File Storage (LFS) 管理带有大型文件（文件大小超过 100 MB）的 GitHub 项目。</div>
 
         </div>
       </header>
@@ -313,9 +318,55 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>在此前的几篇文章<a href="https://blog.shipengx.com/archives/208e6058.html">《使用 Hexo + GitHub Pages 搭建个人博客站点》</a>、<a href="https://blog.shipengx.com/archives/3955f5ec.html">《将 Hexo 搭建的博客站点从 GitHub Pages 迁移到腾讯云 VPS》</a>、<a href="https://blog.shipengx.com/archives/31218470.html">《基于 Hexo 的个人博客站点高级自定义设置——使用 NexT 主题》</a>中，我们使用 Hexo 静态博客系统打造了高度定制化的个人博客站点，并托管在远程云服务器，使用 Nginx 进行网络代理供外部访问，目前站点运行良好。</p>
-<p>博客站点适宜发布各种类型的经验总结、个人感悟，但对于一些强内在关联属性的内容（例如一本书各个章节的读书笔记，LeetCode 题解等）则更适合通过其它的统一平台进行发布，例如 <span class="exturl" data-url="aHR0cHM6Ly93d3cuZ2l0Ym9vay5jb20v" title="https://www.gitbook.com/">GitBook<i class="fa fa-external-link"></i></span></p>
-<h1 id="1-环境搭建" class="heading-control"><a href="#1-环境搭建" class="headerlink" title="1 环境搭建"></a>1 环境搭建<a class="heading-anchor" href="#1-环境搭建" aria-hidden="true"></a></h1><!-- flag of hidden posts -->
+        <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>某天下午在远程工作站上装 ROS 把我搞烦了，抽时间写了个开源脚本工具 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9yb3N0YWxsZXI=" title="https://github.com/RocShi/rostaller">rostaller<i class="fa fa-external-link"></i></span>，完全一键安装，自动在线更新 <code>YAML</code> 文件，不用再去应对手动安装时必然会遇到的 <code>rosdep init</code> 报错和 <code>rosdep update</code> 报错。工具最初的版本包含一个 <code>.tar.gz</code> 格式的压缩文件，向 GitHub 进行推送时被拒绝：文件大小超限（100 MB）。对于该问题，可以使用 Git Large File Storage (LFS) 对要上传的大文件进行托管。</p>
+<p>在 <code>clone</code> 本仓库前请务必确保已安装 Git LFS（参考下文）。若在安装 Git LFS 前已 <code>clone</code> 仓库，则可在完成 Git LFS 安装后在仓库中进行 LFS 拉取操作以完成 <code>rosdistro.tar</code> 的同步：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git lfs pull</span><br></pre></td></tr></table></figure>
+<h1 id="1-准备工作" class="heading-control"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作<a class="heading-anchor" href="#1-准备工作" aria-hidden="true"></a></h1><h2 id="1-1-安装-Git-LFS" class="heading-control"><a href="#1-1-安装-Git-LFS" class="headerlink" title="1.1 安装 Git LFS"></a>1.1 安装 Git LFS<a class="heading-anchor" href="#1-1-安装-Git-LFS" aria-hidden="true"></a></h2><p><strong>Windows</strong></p>
+<p>直接<span class="exturl" data-url="aHR0cHM6Ly9naXQtbGZzLmdpdGh1Yi5jb20v" title="https://git-lfs.github.com/">官网<i class="fa fa-external-link"></i></span>下载二进制文件进行安装即可</p>
+<p><strong>Ubuntu</strong></p>
+<ul>
+<li><p>安装 <code>curl</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install curl</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>请求并执行 Git LFS 前置脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 Git LFS</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install git-lfs</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="1-2-为当前用户配置-Git-LFS" class="heading-control"><a href="#1-2-为当前用户配置-Git-LFS" class="headerlink" title="1.2 为当前用户配置 Git LFS"></a>1.2 为当前用户配置 Git LFS<a class="heading-anchor" href="#1-2-为当前用户配置-Git-LFS" aria-hidden="true"></a></h2><p>每个用户只需执行一次：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git lfs install</span><br></pre></td></tr></table></figure>
+<h2 id="2-创建含有大文件的仓库" class="heading-control"><a href="#2-创建含有大文件的仓库" class="headerlink" title="2 创建含有大文件的仓库"></a>2 创建含有大文件的仓库<a class="heading-anchor" href="#2-创建含有大文件的仓库" aria-hidden="true"></a></h2><p>GitHub 端仓库的创建过程无异，不再赘述，对应的本地仓库的创建过程如下：</p>
+<ul>
+<li><p>初始化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置远程仓库地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@github.com:your_username/your_repo.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>告诉 Git LFS 需要追踪哪些文件。例如，追踪 <code>.tar.gz</code> 格式的压缩文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git lfs track &quot;*.tar.*&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>上一步骤将自动生成 <code>.gitattributes</code> 文件，将其添加到暂存区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add .gitattributes</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>向暂存区中添加剩余变更、提交、推送</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add --all</span><br><span class="line">git commit -m <span class="string">"first commit"</span></span><br><span class="line">git push orgin main</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="3-拉取含有大文件的-GitHub-仓库" class="heading-control"><a href="#3-拉取含有大文件的-GitHub-仓库" class="headerlink" title="3 拉取含有大文件的 GitHub 仓库"></a>3 拉取含有大文件的 GitHub 仓库<a class="heading-anchor" href="#3-拉取含有大文件的-GitHub-仓库" aria-hidden="true"></a></h1><p>直接 <code>clone</code> 即可。若在安装 Git LFS 前执行了 <code>clone</code>，则拉取下来的仓库中并不包含大文件本体，取而代之的是指向其 LFS 存储对象的文件指针，此种情况下，可通过在本地仓库中执行下述命令来 拉取文件指针所指向的完整对象：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git lfs pull</span><br></pre></td></tr></table></figure>
+<h1 id="4-存在的问题" class="heading-control"><a href="#4-存在的问题" class="headerlink" title="4 存在的问题"></a>4 存在的问题<a class="heading-anchor" href="#4-存在的问题" aria-hidden="true"></a></h1><p>Git LFS 免费用户每月有带宽限制，下载使用的总流量超限后会导致仓库无法 <code>clone</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Downloading rosdistro.tar.gz (105 MB)</span><br><span class="line">Error downloading object: rosdistro.tar.gz (2dffd34):</span><br><span class="line">Smudge error: Error downloading rosdistro.tar.gz (2dffd34dccb171115c2fcd4326735780181e0705bba57d502d3bf85538f92740):</span><br><span class="line">batch response: This repository is over its data quota.</span><br><span class="line">Account responsible for LFS bandwidth should purchase more data packs to restore access.</span><br><span class="line"></span><br><span class="line">Errors logged to &#x2F;home&#x2F;shipeng&#x2F;rostaller&#x2F;.git&#x2F;lfs&#x2F;logs&#x2F;20210706T224710.870367616.log</span><br><span class="line">Use &#96;git lfs logs last&#96; to view the log.</span><br><span class="line">error: external filter &#39;git-lfs filter-process&#39; failed</span><br><span class="line">fatal: rosdistro.tar.gz: smudge filter lfs failed</span><br><span class="line">warning: Clone succeeded, but checkout failed.</span><br><span class="line">You can inspect what was checked out with &#39;git status&#39;</span><br><span class="line">and retry the checkout with &#39;git checkout -f HEAD&#39;</span><br></pre></td></tr></table></figure>
+<p>大意是，使用的 LFS 下载流量达到带宽限制，需要购买更多数据包。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXQtbGZzLmdpdGh1Yi5jb20v" title="https://git-lfs.github.com/">Git Large File Storage<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC80OTNiODE1NDRmODA=" title="https://www.jianshu.com/p/493b81544f80">Git LFS 的使用<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGh1Yi5jb20vY24vZ2l0aHViL2FkbWluaXN0ZXJpbmctYS1yZXBvc2l0b3J5L21hbmFnaW5nLXJlcG9zaXRvcnktc2V0dGluZ3MvbWFuYWdpbmctZ2l0LWxmcy1vYmplY3RzLWluLWFyY2hpdmVzLW9mLXlvdXItcmVwb3NpdG9yeQ==" title="https://docs.github.com/cn/github/administering-a-repository/managing-repository-settings/managing-git-lfs-objects-in-archives-of-your-repository">GitHub Docs - 管理仓库存档中的 Git LFS 对象<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGh1Yi5jb20vY24vZ2l0aHViL21hbmFnaW5nLWxhcmdlLWZpbGVzL3ZlcnNpb25pbmctbGFyZ2UtZmlsZXMvYWJvdXQtc3RvcmFnZS1hbmQtYmFuZHdpZHRoLXVzYWdl" title="https://docs.github.com/cn/github/managing-large-files/versioning-large-files/about-storage-and-bandwidth-usage">GitHub Docs - 关于存储和带宽使用情况<i class="fa fa-external-link"></i></span></li>
+</ol>
+
     </div>
 
     
@@ -325,7 +376,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\ef26ff66.html" rel="bookmark">【LeetCode】341. 扁平化嵌套列表迭代器</a></div>
+      <div class="popular-posts-title"><a href="\archives\586b7559.html" rel="bookmark">Git版本库管理最佳实践——以创建新分支加入某个项目为例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\77718b2.html" rel="bookmark">Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\ba569070.html" rel="bookmark">gitignore与gitkeep的作用</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f390ae43.html" rel="bookmark">git的cherry-pick命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\296a9967.html" rel="bookmark">在腾讯云上搭建个人Git服务器</a></div>
     </li>
   </ul>
 
@@ -358,7 +421,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.shipengx.com/archives/8c49fa90.html" title="使用 GitBook + 阿里云搭建个人书籍共享站点">https://blog.shipengx.com/archives/8c49fa90.html</a>
+    <a href="https://blog.shipengx.com/archives/af0e9080.html" title="带有大文件的 GitHub 项目的创建与拉取——使用 Git Large File Storage (LFS)">https://blog.shipengx.com/archives/af0e9080.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -370,14 +433,20 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/LeetCode/" rel="tag"><i class="fa fa-tag"></i> LeetCode</a>
-              <a href="/tags/GitBook/" rel="tag"><i class="fa fa-tag"></i> GitBook</a>
+              <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
           </div>
 
         
 
 
         
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/5103b2eb.html" rel="prev" title="Win 10 中通过 VMWare 16 在 UEFI 引导模式下安装 Ubuntu 18.04 虚拟机并自定义分区">
+      <i class="fa fa-chevron-left"></i> Win 10 中通过 VMWare 16 在 UEFI 引导模式下安装 Ubuntu 18.04 虚拟机并自定义分区
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
     
   </article>
@@ -437,7 +506,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-环境搭建"><span class="nav-text">1 环境搭建</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-准备工作"><span class="nav-text">1 准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-安装-Git-LFS"><span class="nav-text">1.1 安装 Git LFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-为当前用户配置-Git-LFS"><span class="nav-text">1.2 为当前用户配置 Git LFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-创建含有大文件的仓库"><span class="nav-text">2 创建含有大文件的仓库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-拉取含有大文件的-GitHub-仓库"><span class="nav-text">3 拉取含有大文件的 GitHub 仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-存在的问题"><span class="nav-text">4 存在的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
