@@ -17,6 +17,7 @@
 
 <link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
   <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
   <script src="/lib/pace/pace.min.js"></script>
 
@@ -29,12 +30,12 @@
     scheme: 'Mist',
     version: '7.7.1',
     exturl: true,
-    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    sidebar: {"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},
     copycode: {"enable":true,"show_result":true,"style":null},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: true,
+    fancybox: true,
+    mediumzoom: false,
     lazyload: true,
     pangu: false,
     comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
@@ -67,8 +68,8 @@
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
-<meta property="article:tag" content="自动驾驶">
 <meta property="article:tag" content="贝叶斯滤波">
+<meta property="article:tag" content="自动驾驶">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.loli.net/2021/04/19/S5B7sqedVcla1Lt.png">
 
@@ -773,8 +774,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
           <div class="post-tags">
               <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i> 数学</a>
               <a href="/tags/%E6%BB%A4%E6%B3%A2/" rel="tag"><i class="fa fa-tag"></i> 滤波</a>
-              <a href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag"><i class="fa fa-tag"></i> 自动驾驶</a>
               <a href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2/" rel="tag"><i class="fa fa-tag"></i> 贝叶斯滤波</a>
+              <a href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag"><i class="fa fa-tag"></i> 自动驾驶</a>
           </div>
 
         
@@ -949,7 +950,8 @@ f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 
   
   <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
   <script src="/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
