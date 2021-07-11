@@ -599,14 +599,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/LeetCode/</loc>
+    <loc>https://blog.shipengx.com/tags/OJ/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/OJ/</loc>
+    <loc>https://blog.shipengx.com/tags/LeetCode/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -683,6 +683,13 @@
   </url>
   
   <url>
+    <loc>https://blog.shipengx.com/tags/make/</loc>
+    <lastmod>2021-07-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.shipengx.com/tags/Hexo/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
@@ -697,14 +704,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/make/</loc>
+    <loc>https://blog.shipengx.com/tags/%E5%AF%BC%E8%88%AA%E5%AE%9A%E4%BD%8D/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/%E5%AF%BC%E8%88%AA%E5%AE%9A%E4%BD%8D/</loc>
+    <loc>https://blog.shipengx.com/tags/VPS/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -719,13 +726,6 @@
   
   <url>
     <loc>https://blog.shipengx.com/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</loc>
-    <lastmod>2021-07-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/tags/VPS/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -783,14 +783,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/Linux/</loc>
+    <loc>https://blog.shipengx.com/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AC-Primer%E3%80%8B/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AC-Primer%E3%80%8B/</loc>
+    <loc>https://blog.shipengx.com/categories/Linux/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
