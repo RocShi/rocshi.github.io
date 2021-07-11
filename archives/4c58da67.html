@@ -60,7 +60,7 @@
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-26T08:20:25.000Z">
-<meta property="article:modified_time" content="2021-07-11T14:08:47.156Z">
+<meta property="article:modified_time" content="2021-07-11T15:33:20.731Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
@@ -271,7 +271,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-11 22:08:47" itemprop="dateModified" datetime="2021-07-11T22:08:47+08:00">2021-07-11</time>
+                <time title="修改时间：2021-07-11 23:33:20" itemprop="dateModified" datetime="2021-07-11T23:33:20+08:00">2021-07-11</time>
               </span>
 
           <br>
@@ -1070,9 +1070,33 @@
 </li>
 </ol>
 <h2 id="9-5-2-改变-string-的其他方法" class="heading-control"><a href="#9-5-2-改变-string-的其他方法" class="headerlink" title="9.5.2 改变 string 的其他方法"></a>9.5.2 改变 string 的其他方法<a class="heading-anchor" href="#9-5-2-改变-string-的其他方法" aria-hidden="true"></a></h2><ol>
-<li><h2 id="9-5-3-string-搜索操作" class="heading-control"><a href="#9-5-3-string-搜索操作" class="headerlink" title="9.5.3 string 搜索操作"></a>9.5.3 string 搜索操作<a class="heading-anchor" href="#9-5-3-string-搜索操作" aria-hidden="true"></a></h2></li>
+<li><p><code>string</code> 类型支持顺序容器的赋值运算符以及 <code>assign</code>、<code>insert</code> 和 <code>erase</code> 操作，除了接受迭代器的 <code>insert</code> 和 <code>erase</code> 版本外，<code>string</code> 还提供了接受下标的版本。下标指出了开始删除的位置，或是 <code>insert</code> 到给定值之前的位置：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s.insert(s.size(), <span class="number">5</span>, <span class="string">'!'</span>); <span class="comment">// 在 s 末尾插入 5 个感叹号</span></span><br><span class="line">s.erase(s.size() - <span class="number">5</span>, <span class="number">5</span>);   <span class="comment">// 从 s 删除最后 5 个字符</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>标准库 <code>string</code> 类型还提供了接受 C 风格字符数组的 <code>insert</code> 和 <code>assign</code> 版本。例如，我们可以将以空字符结尾的字符数组 <code>insert</code> 到或 <code>assign</code> 给一个 <code>string</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *cp = <span class="string">"Stately, plump Buck"</span>;</span><br><span class="line">s.assign(cp, <span class="number">7</span>);            <span class="comment">// s == "Stately"</span></span><br><span class="line">s.insert(s.size(), cp + <span class="number">7</span>); <span class="comment">// s == "Stately, plump Buck"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>我们也可以指定将来自其他 <code>string</code> 或子字符串的字符插入到当前 <code>string</code> 中或赋予当前 <code>string</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">"some string"</span>, s2 = <span class="string">"some other string"</span>;</span><br><span class="line">s.insert(<span class="number">0</span>, s2); <span class="comment">// 在 s 中位置 0 之前插入 s2 的拷贝</span></span><br><span class="line"><span class="comment">// 在 s[0] 之前插入 s2 中 s2[0] 开始的 s2.size() 个字符</span></span><br><span class="line">s.insert(<span class="number">0</span>, s2, <span class="number">0</span>, s2.size());</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>string</code> 类定义了两个额外的成员函数；<code>append</code> 和 <code>replace</code>，这两个函数可以改变 <code>string</code> 的内容。<code>append</code> 用于向 <code>string</code> 末尾追加字符串，<code>replace</code> 用于对 <code>string</code> 中的字符进行替换：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s.replace(<span class="number">11</span>, <span class="number">3</span>, <span class="string">"Fifth"</span>); <span class="comment">// s == "C++ Primer Fifth Ed."</span></span><br></pre></td></tr></table></figure>
+<p>在此调用中，删除了 3 个字符，但在其位置插入了 5 个新字符。</p>
+</li>
+<li><p><strong>练习 9.43：</strong> 编写一个函数，接受三个 <code>string</code> 参数 s、oldVal 和 newVal。使用迭代器及 <code>insert</code> 和 <code>erase</code> 函数将 s 中所有 o1dVal 替换为 newVal。测试你的程序，用它替换通用的简写形式，如，将”tho”替换为”though”，将”thru”替换为”through”。</p>
+<p>解：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> &amp;s, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;oldVal, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;newVal)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sLen = s.size(), oldLen = oldVal.size(), newLen = newVal.size();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (oldLen &gt; sLen || <span class="number">0</span> == oldLen)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> ptr = s.begin(); ptr != s.end();)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (s.substr(ptr - s.begin(), oldLen) == oldVal)</span><br><span class="line">        &#123;</span><br><span class="line">            ptr = s.erase(ptr, ptr + oldLen);</span><br><span class="line">            ptr = s.insert(ptr, newVal.begin(), newVal.end()) + newLen;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            ++ptr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>练习 9.44：</strong> 重写上一题的函数，这次使用一个下标和 <code>replace</code>。</p>
+<p>解：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> &amp;s, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;oldVal, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;newVal)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sLen = s.size(), oldLen = oldVal.size(), newLen = newVal.size();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (oldLen &gt; sLen || <span class="number">0</span> == oldLen)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; s.size();)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (s.substr(i, oldLen) == oldVal)</span><br><span class="line">        &#123;</span><br><span class="line">            s.replace(i, oldLen, newVal);</span><br><span class="line">            i += newLen;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            ++i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>练习 9.45：</strong> 编写一个函数，接受一个表示名字的 <code>string</code> 参数和两个分别表示前缀（如<br>“Mr.”或”Ms.”）和后缀（如”Jr.”或”II”）的字符串。使用迭代器及 <code>insert</code> 和 <code>append</code> 函数将前缀和后缀添加到给定的名字中，将生成的新 <code>string</code> 返回。</p>
+</li>
+<li><p><strong>练习 9.46：</strong> 重写上一题的函数，这次使用位置和长度来管理 <code>string</code>，并只使用 <code>insert</code>。</p>
+</li>
 </ol>
-<h2 id="9-5-4-compare-函数" class="heading-control"><a href="#9-5-4-compare-函数" class="headerlink" title="9.5.4 compare 函数"></a>9.5.4 compare 函数<a class="heading-anchor" href="#9-5-4-compare-函数" aria-hidden="true"></a></h2><h2 id="9-5-5-数值转换" class="heading-control"><a href="#9-5-5-数值转换" class="headerlink" title="9.5.5 数值转换"></a>9.5.5 数值转换<a class="heading-anchor" href="#9-5-5-数值转换" aria-hidden="true"></a></h2><h1 id="9-6-容器适配器" class="heading-control"><a href="#9-6-容器适配器" class="headerlink" title="9.6 容器适配器"></a>9.6 容器适配器<a class="heading-anchor" href="#9-6-容器适配器" aria-hidden="true"></a></h1><hr>
+<h2 id="9-5-3-string-搜索操作" class="heading-control"><a href="#9-5-3-string-搜索操作" class="headerlink" title="9.5.3 string 搜索操作"></a>9.5.3 string 搜索操作<a class="heading-anchor" href="#9-5-3-string-搜索操作" aria-hidden="true"></a></h2><h2 id="9-5-4-compare-函数" class="heading-control"><a href="#9-5-4-compare-函数" class="headerlink" title="9.5.4 compare 函数"></a>9.5.4 compare 函数<a class="heading-anchor" href="#9-5-4-compare-函数" aria-hidden="true"></a></h2><h2 id="9-5-5-数值转换" class="heading-control"><a href="#9-5-5-数值转换" class="headerlink" title="9.5.5 数值转换"></a>9.5.5 数值转换<a class="heading-anchor" href="#9-5-5-数值转换" aria-hidden="true"></a></h2><h1 id="9-6-容器适配器" class="heading-control"><a href="#9-6-容器适配器" class="headerlink" title="9.6 容器适配器"></a>9.6 容器适配器<a class="heading-anchor" href="#9-6-容器适配器" aria-hidden="true"></a></h1><hr>
 
     </div>
 
@@ -1083,19 +1107,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第 2 章 变量和基本类型</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c7171333.html" rel="bookmark">C++ Primer - 第 5 章 语句</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\dc74a592.html" rel="bookmark">C++ Primer - 第 4 章 表达式</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\e005f4cb.html" rel="bookmark">C++ Primer - 第 2 章 变量和基本类型</a></div>
     </li>
   </ul>
 
