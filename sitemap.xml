@@ -599,6 +599,13 @@
   </url>
   
   <url>
+    <loc>https://blog.shipengx.com/tags/OJ/</loc>
+    <lastmod>2021-07-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.shipengx.com/tags/LeetCode/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
@@ -614,13 +621,6 @@
   
   <url>
     <loc>https://blog.shipengx.com/tags/%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A0%81/</loc>
-    <lastmod>2021-07-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.shipengx.com/tags/OJ/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -669,7 +669,7 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/</loc>
+    <loc>https://blog.shipengx.com/tags/Matplotlib/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -690,14 +690,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/Matplotlib/</loc>
+    <loc>https://blog.shipengx.com/tags/make/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/tags/make/</loc>
+    <loc>https://blog.shipengx.com/tags/%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -811,14 +811,14 @@
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%95%8A/</loc>
+    <loc>https://blog.shipengx.com/categories/%E6%95%88%E7%8E%87/Git/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.shipengx.com/categories/%E6%95%88%E7%8E%87/Git/</loc>
+    <loc>https://blog.shipengx.com/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%95%8A/</loc>
     <lastmod>2021-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
