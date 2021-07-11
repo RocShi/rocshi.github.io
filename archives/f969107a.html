@@ -52,16 +52,17 @@
   };
 </script>
 
-  <meta name="description" content="近期有 ROS 使用需求，本文旨在记录 ROS 1 的手动安装和脚本自动化安装过程，以及执行 rosdep init 和 rosdep update 报错的应对方法，安装环境为 Ubuntu 18.04 + ROS Melodic。">
+  <meta name="description" content="近期有 ROS 使用需求，本文旨在记录 ROS 1 的手动安装过程和通过 rostaller 进行自动化安装的过程，安装环境为 Ubuntu 18.04 + ROS Melodic。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ROS 1 安装——从手动到自动：以 Ubuntu 18.04 + ROS Melodic 为例">
 <meta property="og:url" content="https://blog.shipengx.com/archives/f969107a.html">
 <meta property="og:site_name" content="朝花夕拾">
-<meta property="og:description" content="近期有 ROS 使用需求，本文旨在记录 ROS 1 的手动安装和脚本自动化安装过程，以及执行 rosdep init 和 rosdep update 报错的应对方法，安装环境为 Ubuntu 18.04 + ROS Melodic。">
+<meta property="og:description" content="近期有 ROS 使用需求，本文旨在记录 ROS 1 的手动安装过程和通过 rostaller 进行自动化安装的过程，安装环境为 Ubuntu 18.04 + ROS Melodic。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/07/04/P8XNYHh1bzSoLWR.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/11/s7puDWr3BgPfZGk.png">
 <meta property="article:published_time" content="2021-07-03T04:41:10.000Z">
-<meta property="article:modified_time" content="2021-07-08T13:53:17.461Z">
+<meta property="article:modified_time" content="2021-07-11T05:01:20.881Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="ROS">
 <meta name="twitter:card" content="summary">
@@ -83,7 +84,7 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
-  <title>ROS 1 安装——从手动到自动：以 Ubuntu 18.04 + ROS Melodic 为例 | 朝花夕拾</title><meta name="robots" content="noindex">
+  <title>ROS 1 安装——从手动到自动：以 Ubuntu 18.04 + ROS Melodic 为例 | 朝花夕拾</title>
   
 
 
@@ -155,17 +156,17 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">21</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">35</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">36</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">67</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">68</span></a>
 
   </li>
         <li class="menu-item menu-item-books">
@@ -272,10 +273,27 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-08 21:53:17" itemprop="dateModified" datetime="2021-07-08T21:53:17+08:00">2021-07-08</time>
+                <time title="修改时间：2021-07-11 13:01:20" itemprop="dateModified" datetime="2021-07-11T13:01:20+08:00">2021-07-11</time>
               </span>
 
           <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%95%8A/" itemprop="url" rel="index">
+                    <span itemprop="name">自动驾驶啊</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E5%95%8A/ROS/" itemprop="url" rel="index">
+                    <span itemprop="name">ROS</span>
+                  </a>
+                </span>
+            </span>
 
           
   
@@ -292,7 +310,7 @@
   </span>
   
   
-            <div class="post-description">近期有 ROS 使用需求，本文旨在记录 ROS 1 的手动安装和脚本自动化安装过程，以及执行 rosdep init 和 rosdep update 报错的应对方法，安装环境为 Ubuntu 18.04 + ROS Melodic。</div>
+            <div class="post-description">近期有 ROS 使用需求，本文旨在记录 ROS 1 的手动安装过程和通过 rostaller 进行自动化安装的过程，安装环境为 Ubuntu 18.04 + ROS Melodic。</div>
 
         </div>
       </header>
@@ -303,28 +321,59 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><h1 id="1-手动安装" class="heading-control"><a href="#1-手动安装" class="headerlink" title="1 手动安装"></a>1 手动安装<a class="heading-anchor" href="#1-手动安装" aria-hidden="true"></a></h1><h2 id="1-1-配置-Ubuntu-软件仓库" class="heading-control"><a href="#1-1-配置-Ubuntu-软件仓库" class="headerlink" title="1.1 配置 Ubuntu 软件仓库"></a>1.1 配置 Ubuntu 软件仓库<a class="heading-anchor" href="#1-1-配置-Ubuntu-软件仓库" aria-hidden="true"></a></h2><p><img data-src="https://i.loli.net/2021/07/04/P8XNYHh1bzSoLWR.png" alt="配置 Ubuntu 软件仓库"></p>
-<h2 id="1-2-设置-sources-list" class="heading-control"><a href="#1-2-设置-sources-list" class="headerlink" title="1.2 设置 sources.list"></a>1.2 设置 sources.list<a class="heading-anchor" href="#1-2-设置-sources-list" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh -c <span class="string">'. /etc/lsb-release &amp;&amp; echo "deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main" &gt; /etc/apt/sources.list.d/ros-latest.list'</span></span><br></pre></td></tr></table></figure>
+        <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>近期在 Ubuntu 18.04 下安装 ROS 1 Melodic 的过程中遇到 <code>rosdep init</code> 和 <code>rosdep update</code> 报错的问题，手动解决不免繁琐，而且 <code>rosdistro</code> 库会时常更新，如果 <code>rosdep update</code> 时使用了旧版的 <code>YAML</code> 文件，有可能导致安装其它 ROS 组件出现问题，为此开发了完全一键安装开源工具 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9yb3N0YWxsZXI=" title="https://github.com/RocShi/rostaller">rostaller<i class="fa fa-external-link"></i></span>。</p>
+<h1 id="1-手动安装" class="heading-control"><a href="#1-手动安装" class="headerlink" title="1 手动安装"></a>1 手动安装<a class="heading-anchor" href="#1-手动安装" aria-hidden="true"></a></h1><h2 id="1-1-配置-Ubuntu-软件仓库" class="heading-control"><a href="#1-1-配置-Ubuntu-软件仓库" class="headerlink" title="1.1 配置 Ubuntu 软件仓库"></a>1.1 配置 Ubuntu 软件仓库<a class="heading-anchor" href="#1-1-配置-Ubuntu-软件仓库" aria-hidden="true"></a></h2><p>确保 restricted、universe 和 multiverse 被勾选，选择国内更稳定的镜像源，例如清华源：<span class="exturl" data-url="aHR0cHM6Ly9taXJyb3JzLnR1bmEudHNpbmdodWEuZWR1LmNuL3VidW50dS8=" title="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/<i class="fa fa-external-link"></i></span></p>
+<p><img data-src="https://i.loli.net/2021/07/04/P8XNYHh1bzSoLWR.png" alt="配置 Ubuntu 软件仓库"></p>
+<h2 id="1-2-添加-ros-源" class="heading-control"><a href="#1-2-添加-ros-源" class="headerlink" title="1.2 添加 ros 源"></a>1.2 添加 ros 源<a class="heading-anchor" href="#1-2-添加-ros-源" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh -c <span class="string">'. /etc/lsb-release &amp;&amp; echo "deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main" &gt; /etc/apt/sources.list.d/ros-latest.list'</span></span><br></pre></td></tr></table></figure>
 <h2 id="1-3-设置密钥" class="heading-control"><a href="#1-3-设置密钥" class="headerlink" title="1.3 设置密钥"></a>1.3 设置密钥<a class="heading-anchor" href="#1-3-设置密钥" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install curl</span><br><span class="line">curl -sSL <span class="string">'http://keyserver.ubuntu.com/pks/lookup?op=get&amp;search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654'</span> | sudo apt-key add -</span><br></pre></td></tr></table></figure>
-<h2 id="1-4-安装-ROS-Melodic-桌面完全版" class="heading-control"><a href="#1-4-安装-ROS-Melodic-桌面完全版" class="headerlink" title="1.4 安装 ROS Melodic 桌面完全版"></a>1.4 安装 ROS Melodic 桌面完全版<a class="heading-anchor" href="#1-4-安装-ROS-Melodic-桌面完全版" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install ros-melodic-desktop-full</span><br></pre></td></tr></table></figure>
+<h2 id="1-4-安装-ROS" class="heading-control"><a href="#1-4-安装-ROS" class="headerlink" title="1.4 安装 ROS"></a>1.4 安装 ROS<a class="heading-anchor" href="#1-4-安装-ROS" aria-hidden="true"></a></h2><p>这里以 ROS Melodic 桌面完全版为例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install ros-melodic-desktop-full</span><br></pre></td></tr></table></figure>
 <h2 id="1-5-配置环境" class="heading-control"><a href="#1-5-配置环境" class="headerlink" title="1.5 配置环境"></a>1.5 配置环境<a class="heading-anchor" href="#1-5-配置环境" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"source /opt/ros/melodic/setup.bash"</span> &gt;&gt;~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
 <h2 id="1-6-安装构建包所需依赖" class="heading-control"><a href="#1-6-安装构建包所需依赖" class="headerlink" title="1.6 安装构建包所需依赖"></a>1.6 安装构建包所需依赖<a class="heading-anchor" href="#1-6-安装构建包所需依赖" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential</span><br></pre></td></tr></table></figure>
-<h2 id="1-7-初始化-rosdep-源" class="heading-control"><a href="#1-7-初始化-rosdep-源" class="headerlink" title="1.7 初始化 rosdep 源"></a>1.7 初始化 rosdep 源<a class="heading-anchor" href="#1-7-初始化-rosdep-源" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rosdep init</span><br></pre></td></tr></table></figure>
+<h2 id="1-7-初始化-rosdep" class="heading-control"><a href="#1-7-初始化-rosdep" class="headerlink" title="1.7 初始化 rosdep"></a>1.7 初始化 rosdep<a class="heading-anchor" href="#1-7-初始化-rosdep" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rosdep init</span><br></pre></td></tr></table></figure>
+<p>由于域名污染，这一步往往会报下面的错误：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ERROR: cannot download default sources list from:</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;sources.list.d&#x2F;20-default.list</span><br><span class="line">Website may be down.</span><br></pre></td></tr></table></figure>
+<p>为解决该问题，首先，克隆 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3Jvcy9yb3NkaXN0cm8=" title="https://github.com/ros/rosdistro">rosdistro<i class="fa fa-external-link"></i></span> 仓库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ros/rosdistro.git</span><br></pre></td></tr></table></figure>
+<p>然后，本地新建对应目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/ros/rosdep/sources.list.d</span><br></pre></td></tr></table></figure>
+<p>最后，将克隆下来的 <code>rosdistro</code> 仓库中的 <code>list</code> 文件拷贝到上述目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> rosdistro</span><br><span class="line">sudo cp rosdep/sources.list.d/20-default.list /etc/ros/rosdep/sources.list.d/</span><br></pre></td></tr></table></figure>
 <h2 id="1-8-更新本地-rosdep-数据库" class="heading-control"><a href="#1-8-更新本地-rosdep-数据库" class="headerlink" title="1.8 更新本地 rosdep 数据库"></a>1.8 更新本地 rosdep 数据库<a class="heading-anchor" href="#1-8-更新本地-rosdep-数据库" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosdep update</span><br></pre></td></tr></table></figure>
+<p>同样是由于域名污染，这一步往往会报下面的错误：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">reading in sources list data from &#x2F;etc&#x2F;ros&#x2F;rosdep&#x2F;sources.list.d</span><br><span class="line">ERROR: unable to process source [https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;osx-homebrew.yaml]:</span><br><span class="line">	&lt;urlopen error [Errno 111] Connection refused&gt; (https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;osx-homebrew.yaml)</span><br><span class="line">ERROR: unable to process source [https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;base.yaml]:</span><br><span class="line">	&lt;urlopen error [Errno 111] Connection refused&gt; (https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;base.yaml)</span><br><span class="line">ERROR: unable to process source [https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;python.yaml]:</span><br><span class="line">	&lt;urlopen error [Errno 111] Connection refused&gt; (https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;python.yaml)</span><br><span class="line">ERROR: unable to process source [https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;ruby.yaml]:</span><br><span class="line">	&lt;urlopen error [Errno 111] Connection refused&gt; (https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;ruby.yaml)</span><br><span class="line">ERROR: unable to process source [https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;releases&#x2F;fuerte.yaml]:</span><br><span class="line">	Failed to download target platform data for gbpdistro:</span><br><span class="line">	&lt;urlopen error [Errno 111] Connection refused&gt;</span><br><span class="line">Query rosdistro index https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;index-v4.yaml</span><br><span class="line">ERROR: error loading sources list:</span><br><span class="line">	&lt;urlopen error &lt;urlopen error [Errno 111] Connection refused&gt; (https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;index-v4.yaml)&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">reading in sources list data from &#x2F;etc&#x2F;ros&#x2F;rosdep&#x2F;sources.list.d</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosgo&#x2F;rosdistro&#x2F;rosdep&#x2F;osx-homebrew.yaml</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosgo&#x2F;rosdistro&#x2F;rosdep&#x2F;base.yaml</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosgo&#x2F;rosdistro&#x2F;rosdep&#x2F;python.yaml</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosgo&#x2F;rosdistro&#x2F;rosdep&#x2F;ruby.yaml</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosgo&#x2F;rosdistro&#x2F;releases&#x2F;fuerte.yaml</span><br><span class="line">Query rosdistro index file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosgo&#x2F;rosdistro&#x2F;index-v4.yaml</span><br><span class="line">Skip end-of-life distro &quot;ardent&quot;</span><br><span class="line">Skip end-of-life distro &quot;bouncy&quot;</span><br><span class="line">Skip end-of-life distro &quot;crystal&quot;</span><br><span class="line">Skip end-of-life distro &quot;dashing&quot;</span><br><span class="line">Skip end-of-life distro &quot;eloquent&quot;</span><br><span class="line">Add distro &quot;foxy&quot;</span><br><span class="line">Add distro &quot;galactic&quot;</span><br><span class="line">Skip end-of-life distro &quot;groovy&quot;</span><br><span class="line">Skip end-of-life distro &quot;hydro&quot;</span><br><span class="line">Skip end-of-life distro &quot;indigo&quot;</span><br><span class="line">Skip end-of-life distro &quot;jade&quot;</span><br><span class="line">Skip end-of-life distro &quot;kinetic&quot;</span><br><span class="line">Skip end-of-life distro &quot;lunar&quot;</span><br><span class="line">Add distro &quot;melodic&quot;</span><br><span class="line">Add distro &quot;noetic&quot;</span><br><span class="line">Add distro &quot;rolling&quot;</span><br><span class="line">updated cache in &#x2F;home&#x2F;shipeng&#x2F;.ros&#x2F;rosdep&#x2F;sources.cache</span><br></pre></td></tr></table></figure>
-<h2 id="1-8-运行小海龟示例" class="heading-control"><a href="#1-8-运行小海龟示例" class="headerlink" title="1.8 运行小海龟示例"></a>1.8 运行小海龟示例<a class="heading-anchor" href="#1-8-运行小海龟示例" aria-hidden="true"></a></h2><p>另开新的终端</p>
+<p>假设已经解决上面步骤中 <code>rosdep init</code> 遇到的问题，需要编辑以下四个文件（<strong>做好备份</strong>）：</p>
+<ul>
+<li><code>/etc/ros/rosdep/sources.list.d/20-default.list</code></li>
+<li><code>/usr/lib/python2.7/dist-packages/rosdep2/gbpdistro_support.py</code></li>
+<li><code>/usr/lib/python2.7/dist-packages/rosdep2/rep3.py</code></li>
+<li><code>/usr/lib/python2.7/dist-packages/rosdistro/__init__.py</code></li>
+</ul>
+<p>搜索文件中的 <code>https://raw.githubusercontent.com/ros/rosdistro/master</code> 字段，将其替换为本地 <code>rosdistro</code> 仓库的绝对地址，例如本示例中为 <code>file:///home/shipeng/Desktop/rosdistro</code>。编辑后的 <code>list</code> 文件如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># os-specific listings first</span><br><span class="line">yaml file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;osx-homebrew.yaml osx</span><br><span class="line"></span><br><span class="line"># generic</span><br><span class="line">yaml file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;base.yaml</span><br><span class="line">yaml file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;python.yaml</span><br><span class="line">yaml file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;ruby.yaml</span><br><span class="line">gbpdistro file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;releases&#x2F;fuerte.yaml fuerte</span><br><span class="line"></span><br><span class="line"># newer distributions (Groovy, Hydro, ...) must not be listed anymore, they are being fetched from the rosdistro index.yaml instead</span><br></pre></td></tr></table></figure>
+<p>然后重新执行 <code>rosdep update</code> 命令即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">reading in sources list data from &#x2F;etc&#x2F;ros&#x2F;rosdep&#x2F;sources.list.d</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;osx-homebrew.yaml</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;base.yaml</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;python.yaml</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;ruby.yaml</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;releases&#x2F;fuerte.yaml</span><br><span class="line">Query rosdistro index file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;index-v4.yaml</span><br><span class="line">Skip end-of-life distro &quot;ardent&quot;</span><br><span class="line">Skip end-of-life distro &quot;bouncy&quot;</span><br><span class="line">Skip end-of-life distro &quot;crystal&quot;</span><br><span class="line">Skip end-of-life distro &quot;dashing&quot;</span><br><span class="line">Skip end-of-life distro &quot;eloquent&quot;</span><br><span class="line">Add distro &quot;foxy&quot;</span><br><span class="line">Add distro &quot;galactic&quot;</span><br><span class="line">Skip end-of-life distro &quot;groovy&quot;</span><br><span class="line">Skip end-of-life distro &quot;hydro&quot;</span><br><span class="line">Skip end-of-life distro &quot;indigo&quot;</span><br><span class="line">Skip end-of-life distro &quot;jade&quot;</span><br><span class="line">Skip end-of-life distro &quot;kinetic&quot;</span><br><span class="line">Skip end-of-life distro &quot;lunar&quot;</span><br><span class="line">Add distro &quot;melodic&quot;</span><br><span class="line">Add distro &quot;noetic&quot;</span><br><span class="line">Add distro &quot;rolling&quot;</span><br><span class="line">updated cache in &#x2F;home&#x2F;shipeng&#x2F;.ros&#x2F;rosdep&#x2F;sources.cache</span><br></pre></td></tr></table></figure>
+<h2 id="1-8-运行小海龟示例" class="heading-control"><a href="#1-8-运行小海龟示例" class="headerlink" title="1.8 运行小海龟示例"></a>1.8 运行小海龟示例<a class="heading-anchor" href="#1-8-运行小海龟示例" aria-hidden="true"></a></h2><p>打开终端，执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roscore</span><br></pre></td></tr></table></figure>
+<p>另开新的终端，执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun turtlesim turtlesim_node</span><br></pre></td></tr></table></figure>
+<p>弹出小海龟界面：</p>
+<p><img data-src="https://i.loli.net/2021/07/11/s7puDWr3BgPfZGk.png" alt="小海龟"></p>
+<p>另开新的终端，执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">turtle_teleop_key</span><br></pre></td></tr></table></figure>
-<h1 id="2-自动化安装——使用-rostaller" class="heading-control"><a href="#2-自动化安装——使用-rostaller" class="headerlink" title="2 自动化安装——使用 rostaller"></a>2 自动化安装——使用 rostaller<a class="heading-anchor" href="#2-自动化安装——使用-rostaller" aria-hidden="true"></a></h1><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9yb3N0YWxsZXI=" title="https://github.com/RocShi/rostaller">rostaller<i class="fa fa-external-link"></i></span></p>
-<p>克隆 repo</p>
+<p>保持该终端中的光标处于激活状态，通过方向键即可控制小海龟的移动。</p>
+<h1 id="2-自动化安装——使用-rostaller" class="heading-control"><a href="#2-自动化安装——使用-rostaller" class="headerlink" title="2 自动化安装——使用 rostaller"></a>2 自动化安装——使用 rostaller<a class="heading-anchor" href="#2-自动化安装——使用-rostaller" aria-hidden="true"></a></h1><p>上述手动安装的步骤中，处理 <code>rosdep init</code> 和 <code>rosdep update</code> 报错问题的方法操作起来不免繁琐，而且 <code>rosdistro</code> 库会时常更新，如果 <code>rosdep update</code> 时使用了旧版的 <code>YAML</code> 文件，有可能导致安装其它 ROS 组件出现问题，为此开发了 Ubuntu 18.04 下 ROS1 Melodic 完全一键安装的开源工具 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9yb3N0YWxsZXI=" title="https://github.com/RocShi/rostaller">rostaller<i class="fa fa-external-link"></i></span>，再也不用纠结 <code>rosdep init</code> 和 <code>rosdep update</code> 报错的问题，工具执行时会尝试在线更新 <code>YAML</code> 文件，后面可能会增加对 ROS 1 其它版本及 ROS 2 的支持。欢迎使用，欢迎提 issue，欢迎 folk + pull request。工具使用方法：</p>
+<ul>
+<li><p>克隆仓库：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/RocShi/rostaller.git</span><br></pre></td></tr></table></figure>
-<p>进入 repo 目录，为脚本添加可执行权限（仅首次执行需要）：</p>
+</li>
+<li><p>进入仓库目录，为脚本添加可执行权限（仅首次执行需要）：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x run.sh</span><br></pre></td></tr></table></figure>
-<p>运行脚本，一键安装</p>
+</li>
+<li><p>运行脚本，一键安装：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./run.bash</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cDovL3dpa2kucm9zLm9yZy9jbi9tZWxvZGljL0luc3RhbGxhdGlvbi9VYnVudHU=" title="http://wiki.ros.org/cn/melodic/Installation/Ubuntu">在 Ubuntu 中安装 ROS Melodic<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cDovL3dpa2kucm9zLm9yZy9tZWxvZGljL0luc3RhbGxhdGlvbi9VYnVudHU=" title="http://wiki.ros.org/melodic/Installation/Ubuntu">Ubuntu install of ROS Melodic<i class="fa fa-external-link"></i></span></li>
@@ -332,7 +381,7 @@
 <li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU4NDkxNy9hcnRpY2xlL2RldGFpbHMvMTE0NDQ4MzU1" title="https://blog.csdn.net/weixin_42584917/article/details/114448355">ROS rosdep init/update 报错终极解决方法<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xlaWRhX3d0L2FydGljbGUvZGV0YWlscy8xMTUxMjA5NDA/dXRtX21lZGl1bT1kaXN0cmlidXRlLnBjX3JlbGV2YW50X2Rvd25sb2FkLm5vbmUtdGFzay1ibG9nLTJ+ZGVmYXVsdH5CbG9nQ29tbWVuZEZyb21CYWlkdX5kZWZhdWx0LTMubm9uZWNhc2UmYW1wO2RlcHRoXzEtdXRtX3NvdXJjZT1kaXN0cmlidXRlLnBjX3JlbGV2YW50X2Rvd25sb2FkLm5vbmUtdGFzay1ibG9nLTJ+ZGVmYXVsdH5CbG9nQ29tbWVuZEZyb21CYWlkdX5kZWZhdWx0LTMubm9uZWNhcw==" title="https://blog.csdn.net/leida_wt/article/details/115120940?utm_medium=distribute.pc_relevant_download.none-task-blog-2~default~BlogCommendFromBaidu~default-3.nonecase&amp;depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-2~default~BlogCommendFromBaidu~default-3.nonecas">解决 ROS 系统 rosdep update 超时问题的新方法<i class="fa fa-external-link"></i></span></li>
 </ol>
-<!-- flag of hidden posts -->
+
     </div>
 
     
@@ -388,6 +437,16 @@
 
 
         
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/9b53416f.html" rel="prev" title="C++ Primer - 第 15 章 面向对象程序设计">
+      <i class="fa fa-chevron-left"></i> C++ Primer - 第 15 章 面向对象程序设计
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/5103b2eb.html" rel="next" title="Win 10 中通过 VMWare 16 在 UEFI 引导模式下安装 Ubuntu 18.04 虚拟机并自定义分区">
+      Win 10 中通过 VMWare 16 在 UEFI 引导模式下安装 Ubuntu 18.04 虚拟机并自定义分区 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
     
   </article>
@@ -447,7 +506,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-手动安装"><span class="nav-text">1 手动安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-配置-Ubuntu-软件仓库"><span class="nav-text">1.1 配置 Ubuntu 软件仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-设置-sources-list"><span class="nav-text">1.2 设置 sources.list</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-设置密钥"><span class="nav-text">1.3 设置密钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-安装-ROS-Melodic-桌面完全版"><span class="nav-text">1.4 安装 ROS Melodic 桌面完全版</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-配置环境"><span class="nav-text">1.5 配置环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-安装构建包所需依赖"><span class="nav-text">1.6 安装构建包所需依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-初始化-rosdep-源"><span class="nav-text">1.7 初始化 rosdep 源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-更新本地-rosdep-数据库"><span class="nav-text">1.8 更新本地 rosdep 数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-运行小海龟示例"><span class="nav-text">1.8 运行小海龟示例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-自动化安装——使用-rostaller"><span class="nav-text">2 自动化安装——使用 rostaller</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-手动安装"><span class="nav-text">1 手动安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-配置-Ubuntu-软件仓库"><span class="nav-text">1.1 配置 Ubuntu 软件仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-添加-ros-源"><span class="nav-text">1.2 添加 ros 源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-设置密钥"><span class="nav-text">1.3 设置密钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-安装-ROS"><span class="nav-text">1.4 安装 ROS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-配置环境"><span class="nav-text">1.5 配置环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-安装构建包所需依赖"><span class="nav-text">1.6 安装构建包所需依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-初始化-rosdep"><span class="nav-text">1.7 初始化 rosdep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-更新本地-rosdep-数据库"><span class="nav-text">1.8 更新本地 rosdep 数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-运行小海龟示例"><span class="nav-text">1.8 运行小海龟示例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-自动化安装——使用-rostaller"><span class="nav-text">2 自动化安装——使用 rostaller</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -465,20 +524,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
