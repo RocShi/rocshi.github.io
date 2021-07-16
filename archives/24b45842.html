@@ -52,23 +52,21 @@
   };
 </script>
 
-  <meta name="description" content="本文结合实际工作情况简单讲解了Linux性能调优工具Perf的使用。">
+  <meta name="description" content="1234567891011121314151617class Singleton&amp;#123;private:    Singleton()&amp;#123;&amp;#125;;    Singleton(const Singleton &amp;) &#x3D; delete;    Singleton &amp;operator&#x3D;(const Singleton &amp;) &#x3D; delete;public:">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux Perf性能优化工具使用说明">
-<meta property="og:url" content="https://blog.shipengx.com/archives/51299274.html">
+<meta property="og:title" content="C++ 中使用宏定义并结合 std::once_flag 和 std::call_once 将任意类封装为线程安全的懒汉式单例类">
+<meta property="og:url" content="https://blog.shipengx.com/archives/24b45842.html">
 <meta property="og:site_name" content="朝花夕拾">
-<meta property="og:description" content="本文结合实际工作情况简单讲解了Linux性能调优工具Perf的使用。">
+<meta property="og:description" content="1234567891011121314151617class Singleton&amp;#123;private:    Singleton()&amp;#123;&amp;#125;;    Singleton(const Singleton &amp;) &#x3D; delete;    Singleton &amp;operator&#x3D;(const Singleton &amp;) &#x3D; delete;public:">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2020/06/17/jnSsxGqR5D7di9I.png">
-<meta property="article:published_time" content="2019-08-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-23T04:27:17.940Z">
+<meta property="article:published_time" content="2021-07-16T05:27:48.000Z">
+<meta property="article:modified_time" content="2021-07-16T05:46:51.972Z">
 <meta property="article:author" content="ShiPeng">
-<meta property="article:tag" content="Linux">
-<meta property="article:tag" content="性能优化">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2020/06/17/jnSsxGqR5D7di9I.png">
 
-<link rel="canonical" href="https://blog.shipengx.com/archives/51299274.html">
+<link rel="canonical" href="https://blog.shipengx.com/archives/24b45842.html">
 
 
 <script id="page-configurations">
@@ -84,7 +82,7 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
-  <title>Linux Perf性能优化工具使用说明 | 朝花夕拾</title>
+  <title>C++ 中使用宏定义并结合 std::once_flag 和 std::call_once 将任意类封装为线程安全的懒汉式单例类 | 朝花夕拾</title><meta name="robots" content="noindex">
   
 
 
@@ -243,7 +241,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/51299274.html">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/24b45842.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -256,7 +254,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          Linux Perf性能优化工具使用说明
+          C++ 中使用宏定义并结合 std::once_flag 和 std::call_once 将任意类封装为线程安全的懒汉式单例类
         </h2>
 
         <div class="post-meta">
@@ -265,16 +263,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2019-08-09 00:00:00" itemprop="dateCreated datePublished" datetime="2019-08-09T00:00:00+08:00">2019-08-09</time>
+              <time title="创建时间：2021-07-16 13:27:48 / 修改时间：13:46:51" itemprop="dateCreated datePublished" datetime="2021-07-16T13:27:48+08:00">2021-07-16</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 12:27:17" itemprop="dateModified" datetime="2020-07-23T12:27:17+08:00">2020-07-23</time>
-              </span>
 
           <br>
             <span class="post-meta-item">
@@ -283,8 +275,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
                   </a>
                 </span>
             </span>
@@ -298,13 +290,12 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/archives/51299274.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/archives/51299274.html" itemprop="commentCount"></span>
+    <a title="valine" href="/archives/24b45842.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/24b45842.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-            <div class="post-description">本文结合实际工作情况简单讲解了Linux性能调优工具Perf的使用。</div>
 
         </div>
       </header>
@@ -315,25 +306,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><strong>Perf</strong>工具是随Linux内核一起发布的系统级性能调优工具，<span class="exturl" data-url="aHR0cDovL3d3dy5icmVuZGFuZ3JlZ2cuY29tL3BlcmYuaHRtbA==" title="http://www.brendangregg.com/perf.html">官网<i class="fa fa-external-link"></i></span>和<span class="exturl" data-url="aHR0cHM6Ly9wZXJmLndpa2kua2VybmVsLm9yZy9pbmRleC5waHAvTWFpbl9QYWdl" title="https://perf.wiki.kernel.org/index.php/Main_Page">Wiki<i class="fa fa-external-link"></i></span>对Perf工具做了详细介绍。</p>
-<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><p>在工作中开发车道线融合模块<code>CtApLaneFusion</code>时曾经出现过偶发的模块卡死的情况，通过查阅资料，使用Perf工具排查出了问题所在。</p>
-<h1 id="2-实践" class="heading-control"><a href="#2-实践" class="headerlink" title="2 实践"></a>2 实践<a class="heading-anchor" href="#2-实践" aria-hidden="true"></a></h1><p>通过Linux <code>top</code>命令查看时发现，<code>CtApLaneFusion</code>进程CPU占用率很高。使用Perf工具排查具体原因：</p>
-<ul>
-<li>从整体视角查看当前iECU各进程运行状态，登录iECU终端，输入<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">perf top</span><br></pre></td></tr></table></figure></li>
-<li>记录并分析指定进程的调用情况及资源使用情况<ul>
-<li>首先，登录iECU终端，使用<code>top</code>命令查看<code>CtApLaneFusion</code>模块所在进程的PID<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top</span><br></pre></td></tr></table></figure></li>
-<li>然后，记录perf数据。<code>-p</code>后指定的为PID号，<code>sleep</code>后指定的为数据记录持续时间（s），数据文件名称默认为<code>perf.data</code>，保存在打开终端的目录下，<strong>应注意<code>--</code>与<code>sleep</code>间有空格符</strong><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">perf record -e cpu-clock -g -p 3729 -- sleep 120</span><br></pre></td></tr></table></figure></li>
-<li>最后，分析perf数据<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">perf report</span><br></pre></td></tr></table></figure>
-可将perf数据文件拷贝至台架iECU的任意目录进行离线分析，<code>Self</code>是最后一列的符号（可以理解为函数）本身所占比例，<code>Self</code>列所有数据的和为100%，<code>Children</code>是这个符号调用的其它符号（可以理解为子函数，包括直接和间接调用）占用的比例之和。若<code>Children</code>列和<code>Self</code>列的数据都比较高(<strong>飙红</strong>)，说明该进程或函数存在资源消耗过高的情况，可按回车键展开该进程查看调用情况，如下图所示：<br><img data-src="https://i.loli.net/2020/06/17/jnSsxGqR5D7di9I.png" alt="perf report数据分析示例"><br>图中从上至下表明CPU占用较高进程的函数调用层级关系，可以发现，CPU占用较高的原因是使用ipc库时出现了读写锁死锁。</li>
-</ul>
-</li>
-</ul>
-<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5icmVuZGFuZ3JlZ2cuY29tL3BlcmYuaHRtbA==" title="http://www.brendangregg.com/perf.html">perf Examples<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9wZXJmLndpa2kua2VybmVsLm9yZy9pbmRleC5waHAvTWFpbl9QYWdl" title="https://perf.wiki.kernel.org/index.php/Main_Page">perf: Linux profiling with performance counters<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9wZXJmLndpa2kua2VybmVsLm9yZy9pbmRleC5waHAvVHV0b3JpYWwjU2FtcGxlX2FuYWx5c2lzX3dpdGhfcGVyZl9yZXBvcnQ=" title="https://perf.wiki.kernel.org/index.php/Tutorial#Sample_analysis_with_perf_report">Linux kernel profiling with perf<i class="fa fa-external-link"></i></span></li>
-</ol>
-
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Singleton()&#123;&#125;;</span><br><span class="line">    Singleton(<span class="keyword">const</span> Singleton &amp;) = <span class="keyword">delete</span>;</span><br><span class="line">    Singleton &amp;<span class="keyword">operator</span>=(<span class="keyword">const</span> Singleton &amp;) = <span class="keyword">delete</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ~Singleton();</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">static</span> Singleton &amp;<span class="title">GetInstance</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">static</span> Singleton instance;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SensorManager</span> &#123;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// other code</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  DECLARE_SINGLETON(SensorManager)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>apollo\cyber\common\macros.h</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> CYBER_COMMON_MACROS_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CYBER_COMMON_MACROS_H_</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;type_traits&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"cyber/base/macros.h"</span></span></span><br><span class="line"></span><br><span class="line">DEFINE_TYPE_TRAIT(HasShutdown, Shutdown)</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">typename</span> <span class="built_in">std</span>::enable_if&lt;HasShutdown&lt;T&gt;::value&gt;::<span class="function">type <span class="title">CallShutdown</span><span class="params">(T *instance)</span> </span>&#123;</span><br><span class="line">  instance-&gt;Shutdown();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">typename</span> <span class="built_in">std</span>::enable_if&lt;!HasShutdown&lt;T&gt;::value&gt;::<span class="function">type <span class="title">CallShutdown</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    T *instance)</span> </span>&#123;</span><br><span class="line">  (<span class="keyword">void</span>)instance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// There must be many copy-paste versions of these macros which are same</span></span><br><span class="line"><span class="comment">// things, undefine them to avoid conflict.</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">undef</span> UNUSED</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">undef</span> DISALLOW_COPY_AND_ASSIGN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> UNUSED(param) (void)param</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DISALLOW_COPY_AND_ASSIGN(classname) \</span></span><br><span class="line">  classname(<span class="keyword">const</span> classname &amp;) = <span class="keyword">delete</span>;    \</span><br><span class="line">  classname &amp;<span class="keyword">operator</span>=(<span class="keyword">const</span> classname &amp;) = <span class="keyword">delete</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DECLARE_SINGLETON(classname)                                      \</span></span><br><span class="line"> <span class="keyword">public</span>:                                                                  \</span><br><span class="line">  <span class="function"><span class="keyword">static</span> classname *<span class="title">Instance</span><span class="params">(<span class="keyword">bool</span> create_if_needed = <span class="literal">true</span>)</span> </span>&#123;              \</span><br><span class="line">    <span class="keyword">static</span> classname *instance = <span class="literal">nullptr</span>;                                 \</span><br><span class="line">    <span class="keyword">if</span> (!instance &amp;&amp; create_if_needed) &#123;                                  \</span><br><span class="line">      <span class="keyword">static</span> <span class="built_in">std</span>::once_flag flag;                                         \</span><br><span class="line">      <span class="built_in">std</span>::call_once(flag,                                                \</span><br><span class="line">                     [&amp;] &#123; instance = <span class="keyword">new</span> (<span class="built_in">std</span>::nothrow) classname(); &#125;); \</span><br><span class="line">    &#125;                                                                     \</span><br><span class="line">    <span class="keyword">return</span> instance;                                                      \</span><br><span class="line">  &#125;                                                                       \</span><br><span class="line">                                                                          \</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CleanUp</span><span class="params">()</span> </span>&#123;                                                 \</span><br><span class="line">    <span class="keyword">auto</span> instance = Instance(<span class="literal">false</span>);                                      \</span><br><span class="line">    <span class="keyword">if</span> (instance != <span class="literal">nullptr</span>) &#123;                                            \</span><br><span class="line">      CallShutdown(instance);                                             \</span><br><span class="line">    &#125;                                                                     \</span><br><span class="line">  &#125;                                                                       \</span><br><span class="line">                                                                          \</span><br><span class="line"> <span class="keyword">private</span>:                                                                 \</span><br><span class="line">  classname();                                                            \</span><br><span class="line">  DISALLOW_COPY_AND_ASSIGN(classname)</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>  <span class="comment">// CYBER_COMMON_MACROS_H_</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEFINE_TYPE_TRAIT(name, func)                     \</span></span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;                                   \</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">name</span> &#123;</span>                                           \</span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Class&gt;                             \</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">bool</span> <span class="title">Test</span><span class="params">(<span class="keyword">decltype</span>(&amp;Class::func)*)</span> </span>&#123; \</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;                                        \</span><br><span class="line">    &#125;                                                     \</span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span>&gt;                                   \</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">bool</span> <span class="title">Test</span><span class="params">(...)</span> </span>&#123;                     \</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;                                       \</span><br><span class="line">    &#125;                                                     \</span><br><span class="line">                                                          \</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">bool</span> value = Test&lt;T&gt;(<span class="literal">nullptr</span>);       \</span><br><span class="line">  &#125;;                                                      \</span><br><span class="line">                                                          \</span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;                                   \</span><br><span class="line">  <span class="keyword">constexpr</span> <span class="keyword">bool</span> name&lt;T&gt;::value;</span><br></pre></td></tr></table></figure>
+<!-- flag of hidden posts -->
     </div>
 
     
@@ -343,19 +321,10 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\8b42591c.html" rel="bookmark">Linux gcc/g++中的-I、-l、-L</a></div>
+      <div class="popular-posts-title"><a href="\archives\ef26ff66.html" rel="bookmark">【LeetCode】341. 扁平化嵌套列表迭代器</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\c5106d85.html" rel="bookmark">Linux中的ld-so与ld-linux-so</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\ffbee3f1.html" rel="bookmark">Not able to execute a .sh file: /bin/bash^M: bad interpreter</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\f52fa610.html" rel="bookmark">Linux中使用core dump进行程序调试</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\31e5f0fe.html" rel="bookmark">Linux中使用sed命令进行字符串查找和替换</a></div>
+      <div class="popular-posts-title"><a href="\archives\c6c7f3af.html" rel="bookmark">【OJ】表示数字</a></div>
     </li>
   </ul>
 
@@ -388,7 +357,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.shipengx.com/archives/51299274.html" title="Linux Perf性能优化工具使用说明">https://blog.shipengx.com/archives/51299274.html</a>
+    <a href="https://blog.shipengx.com/archives/24b45842.html" title="C++ 中使用宏定义并结合 std::once_flag 和 std::call_once 将任意类封装为线程安全的懒汉式单例类">https://blog.shipengx.com/archives/24b45842.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -400,24 +369,14 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
-              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" rel="tag"><i class="fa fa-tag"></i> 性能优化</a>
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 设计模式</a>
           </div>
 
         
 
 
         
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/archives/74b2417b.html" rel="prev" title="配置Ubuntu下的shell默认显示所在git仓库的当前分支">
-      <i class="fa fa-chevron-left"></i> 配置Ubuntu下的shell默认显示所在git仓库的当前分支
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/archives/65fedf51.html" rel="next" title="VS Code C++程序中cout输出中文显示乱码">
-      VS Code C++程序中cout输出中文显示乱码 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
       </footer>
     
   </article>
@@ -477,7 +436,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-背景"><span class="nav-text">1 背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-实践"><span class="nav-text">2 实践</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-参考"><span class="nav-text">3 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
