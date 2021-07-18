@@ -1242,6 +1242,175 @@
       </tags>
   </entry>
   <entry>
+    <title>C++ Primer - 第 8 章 IO 库</title>
+    <url>/archives/f6bc4afa.html</url>
+    <content><![CDATA[<ol>
+<li><p>继承机制使我们可以声明一个特定的类继承自另一个类。我们通常可以将一个派生类（继承类）对象当作其基类（所继承的类）对象来使用。类型 <code>ifstream</code> 和 <code>istringstream</code> 都继承自 <code>istream</code>。因此，我们可以像使用 <code>istream</code> 对象一样来使用 <code>ifstream</code> 和 <code>istringstream</code> 对象。也就是说，我们是如何使用 <code>cin</code> 的，就可以同样地使用这些类型的对象。例如，<strong>可以对一个 <code>ifstream</code> 或 <code>istringstream</code> 对象调用 <code>getline</code>，也可以使用 <code>&gt;&gt;</code> 从一个 <code>ifstream</code> 或 <code>istringstream</code> 对象中读取数据</strong>。类似的，类型 <code>ofstream</code> 和 <code>ostringstream</code> 都继承自 <code>ostream</code>。因此，我们是如何使用 <code>cout</code> 的，就可以同样地使用这些类型的对象。</p>
+</li>
+<li><p>不能拷贝或对 IO 对象赋值。<strong>由于不能拷贝 IO 对象，因此我们也不能将形参或返回类型设置为流类型。进行 IO 操作的函数通常以引用方式传递和返回流。读写一个 IO 对象会改变其状态，因此传递和返回的引用不能是 <code>const</code> 的。</strong></p>
+</li>
+<li><p>一个流一旦发生错误，其上后续的 IO 操作都会失败。只有当一个流处于无错状态时，我们才可以从它读取数据，向它写入数据。由于流可能处于错误状态，因此代码通常应该在使用一个流之前检查它是否处于良好状态。确定一个流对象的状态的最简单的方法是将它当作一个条件来使用：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; word)</span><br><span class="line">    <span class="comment">// ok：读操作成功.....</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>操作 <code>good</code> 在所有错误位均未置位的情况下返回 true，而 <code>bad</code>、<code>fail</code> 和 <code>eof</code> 则在对应错误位被置位时返回 true。此外，在 <code>badbit</code> 被置位时，<code>fail</code> 也会返回 true。这意味着，<strong>使用 <code>good</code> 或 <code>fail</code> 是确定流的总体状态的正确方法。实际上，我们将流当作条件使用的代码就等价于<code>!fail()</code></strong>。</p>
+</li>
+<li><p>每个输出流都管理一个缓冲区，用来保存程序读写的数据。导致缓冲刷新（即，数据真正写到输出设备或文件）的原因有很多：</p>
+<ul>
+<li>程序正常结束，作为 <code>main</code> 函数的 <code>return</code> 操作的一部分，缓冲刷新被执行。</li>
+<li>缓冲区满时，需要刷新缓冲，而后新的数据才能继续写入缓冲区。</li>
+<li>可以使用操纵符如 <code>endl</code> 来显式刷新缓冲区。</li>
+<li>在每个输出操作之后，可以用操纵符 <code>unitbuf</code> 设置流的内部状态，来清空缓冲区。默认情况下，对 <code>cerr</code> 是设置 <code>unitbuf</code> 的，因此写到 <code>cerr</code> 的内容都是立即刷新的。</li>
+<li>一个输出流可能被关联到另一个流。在这种情况下，当读写被关联的流时，关联到的流的缓冲区会被刷新。例如，<strong>默认情况下，<code>cin</code> 和 <code>cerr</code> 都关联到 <code>cout</code>。因此，读 <code>cin</code> 或写 <code>cerr</code> 都会导致 <code>cout</code> 的缓冲区被刷新</strong>。<br><br></li>
+</ul>
+</li>
+<li><p>操纵符 <code>endl</code>，它完成换行并刷新缓冲区的工作。IO 库中还有两个类似的操纵符：<code>flush</code> 和 <code>ends</code>。<code>flush</code> 刷新缓冲区，但不输出任何额外的字符；<code>ends</code> 向缓冲区插入一个空字符，然后刷新缓冲区。</p>
+</li>
+<li><p>如果想在每次输出操作后都刷新缓冲区，我们可以使用 <code>unitbuf</code> 操纵符。它告诉流在接下来的每次写操作之后都进行一次 <code>flush</code> 操作。而 <code>nounitbuf</code> 操纵符则重置流，使其恢复使用正常的系统管理的缓冲区刷新机制：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cout</span> &lt;&lt; unitbuf;  <span class="comment">// 所有输出操作后都会立即刷新缓冲区</span></span><br><span class="line"><span class="comment">// 任何输出都立即刷新，无缓冲</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; nounitbuf;  <span class="comment">// 回到正常的缓冲方式</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果程序异常终止，输出缓冲区是不会被刷新的。当一个程序崩溃后，它所输出的数据很可能停留在输出缓冲区中等待打印。</p>
+</blockquote>
+</li>
+<li><p><strong>当一个输入流被关联到一个输出流时，任何试图从输入流读取数据的操作都会先刷新关联的输出流。</strong> 既可以将一个 <code>istream</code> 对象关联到另一个 <code>ostream</code>，也可以将一个 <code>ostream</code> 关联到另一个 <code>ostream</code>。每个流同时最多关联到一个流，但多个流可以同时关联到同一个 <code>ostream</code>。</p>
+</li>
+<li><p>头文件 <code>fstream</code> 定义了三个类型来支持文件 IO：<code>ifstream</code> 从一个给定文件读取数据，<code>ofstream</code> 向一个给定文件写入数据，以及 <code>fstream</code> 可以读写给定文件。</p>
+</li>
+<li><p>创建文件流对象时，我们可以提供文件名（可选的）。如果提供了一个文件名，则 <code>open</code> 会自动被调用。在新 C++ 标准中，文件名既可以是库类型 <code>string</code> 对象，也可以是 C 风格字符数组。</p>
+</li>
+<li><p>在要求使用基类型对象的地方，我们可以用继承类型的对象来替代。这意味着，接受一个 <code>iostream</code> 类型引用（或指针）参数的函数，可以用一个对应的 <code>fstream</code>（或 <code>sstream</code>）类型来调用。也就是说，如果有一个函数接受一个 <code>ostream&amp;</code> 参数，我们在调用这个函数时，可以传递给它一个 <code>ofstream</code> 对象，对 <code>istream&amp;</code> 和 <code>ifstream</code> 也是类似的。</p>
+</li>
+<li><p>如果我们定义了一个空文件流对象，可以随后调用 <code>open</code> 来将它与文件关联起来。如果调用 <code>open</code> 失败，<code>failbit</code> 会被置位。因为调用 <code>open</code> 可能失败，进行 <code>oppen</code> 是否成功的检测通常是一个好习惯。一旦一个文件流已经打开，它就保持与对应文件的关联。实际上，<strong>对一个已经打开的文件流调用 <code>open</code> 会失败，并会导致 <code>failbit</code> 被置位。随后的试图使用文件流的操作都会失败</strong>。为了将文件流关联到另外一个文件，必须首先关闭已经关联的文件。一旦文件成功关闭，我们可以打开新的文件。</p>
+</li>
+<li><p>当一个 <code>fstream</code> 对象离开其作用域时，与之关联的文件会自动关闭。</p>
+</li>
+<li><p>编写函数，以读模式打开一个文件，将其内容读入到一个 <code>string</code> 的 <code>vector</code> 中，将每一行作为一个独立的元素存于 <code>vector</code> 中，将每个单词作为一个独立的元素存储在另一个 <code>vector</code> 中。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">ifstream <span class="title">input</span><span class="params">(<span class="string">"license.txt"</span>)</span></span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; vs_line, vs_word;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (input)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (getline(input, s))</span><br><span class="line">            vs_line.push_back(s);</span><br><span class="line"></span><br><span class="line">        input.clear();  <span class="comment">// 复位输入文件流状态为 true（输入文件流遇到文件尾状态会被置为 false）</span></span><br><span class="line">        input.seekg(<span class="number">0</span>); <span class="comment">// 返回输入文件流首位置</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (input &gt;&gt; s)</span><br><span class="line">            vs_word.push_back(s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cerr</span> &lt;&lt; <span class="string">"Wrong input file stream."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Output by line: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = vs_line.begin(); iter != vs_line.end(); ++iter)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *iter &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Output by word: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = vs_word.begin(); iter != vs_word.end(); ++iter)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *iter &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>每个流都有一个关联的<strong>文件模式</strong>（file mode）。如下表所示：</p>
+<table>
+<thead>
+<tr>
+    <th colspan="2"><center>文件模式</center></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td>in</td>
+    <td>以读方式打开</td>
+</tr>
+<tr>
+    <td>out</td>
+    <td>以写方式打开</td>
+</tr>
+<tr>
+    <td>app</td>
+    <td>每次写操作均定位到文件末尾</td>
+</tr>
+<tr>
+    <td>ate</td>
+    <td>打开文件后立即定位到文件末尾</td>
+</tr>
+<tr>
+    <td>trunc</td>
+    <td>截断文件</td>
+</tr>
+<tr>
+    <td>binary</td>
+    <td>以二进制方式进行 IO</td>
+</tr>
+</tbody>
+</table>
+
+<p>无论用哪种方式打开文件，我们都可以指定文件模式，调用 <code>open</code> 打开文件时可以，用一个文件名初始化流来隐式打开文件时也可以。指定文件模式有如下限制：</p>
+<ul>
+<li>只可以对 <code>ofstream</code> 或 <code>fstream</code> 对象设定 <code>out</code> 模式。</li>
+<li>只可以对 <code>ifstream</code> 或 <code>fstream</code> 对象设定 <code>in</code> 模式。</li>
+<li>只有当 <code>out</code> 也被设定时才可设定 <code>trunc</code> 模式。</li>
+<li>只要 <code>trunc</code> 没被设定，就可以设定 <code>app</code> 模式。在 <code>app</code> 模式下，即使没有显式指定 <code>out</code> 模式，文件也总是以输出方式被打开。</li>
+<li>默认情况下，即使我们没有指定 <code>trunc</code>，以 <code>out</code> 模式打开的文件也会被截断。为了保留以 <code>out</code> 模式打开的文件的内容，我们必须同时指定 <code>app</code> 模式，这样只会将数据追加写到文件末尾；或者同时指定 <code>in</code> 模式，即打开文件同时进行读写操作。</li>
+<li><code>ate</code> 和 <code>binary</code> 模式可用于任何类型的文件流对象，且可以与其他任何文件模式组合使用。<br><br></li>
+</ul>
+<p>每个文件流类型都定义了一个默认的文件模式，当我们未指定文件模式时，就使用此默认模式。与 <code>ifstream</code> 关联的文件默认以 <code>in</code> 模式打开；与 <code>ofstream</code> 关联的文件默认以 <code>out</code> 模式打开；与 <code>fstream</code> 关联的文件默认以 <code>in</code> 和 <code>out</code> 模式打开。</p>
+</li>
+<li><p>默认情况下，当我们打开一个 <code>ofstream</code> 时，文件的内容会被丢弃。阻止一个 <code>ofstream</code> 清空给定文件内容的方法是同时指定 <code>app</code> 模式：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在这几条语句中，file1 都被截断</span></span><br><span class="line"><span class="function">ofstream <span class="title">out</span><span class="params">(<span class="string">"file1"</span>)</span></span>;  <span class="comment">// 隐含以输出模式打开文件并截断文件</span></span><br><span class="line"><span class="function">ofstream <span class="title">out2</span><span class="params">(<span class="string">"file1"</span>, ofstream::out)</span></span>;  <span class="comment">// 隐含地截断文件</span></span><br><span class="line"><span class="function">ofstream <span class="title">out3</span><span class="params">(<span class="string">"file1"</span>, ofstream::out | ofstream::trunc)</span></span>;</span><br><span class="line"><span class="comment">// 为了保留文件内容，我们必须显式指定 app 模式</span></span><br><span class="line"><span class="function">ofstream <span class="title">app</span><span class="params">(<span class="string">"file2"</span>, ofstream::app)</span></span>;  <span class="comment">// 隐含为输出模式</span></span><br><span class="line"><span class="function">ofstream <span class="title">app2</span><span class="params">(<span class="string">"file2"</span>, ofstream::out | ofstream::app)</span></span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>WARNING：保留被 ofstream 打开的文件中已有数据的唯一方法是显式指定 app 或 in 模式。</p>
+</blockquote>
+</li>
+<li><p><code>sstream</code> 头文件定义了三个类型来支持内存 IO，这些类型可以向 <code>string</code> 写入数据，从 <code>string</code> 读取数据，就像 <code>string</code> 是一个 IO 流一样。<code>istringstream</code> 从 <code>string</code> 读取数据，<code>ostringstream</code> 向 <code>string</code> 写入数据，而头文件 <code>stringstream</code> 既可从 <code>string</code> 读数据也可向 <code>string</code> 写数据。<code>stringstream</code> 特有的一些操作如下表所示：</p>
+<table>
+<thead>
+<tr>
+    <th colspan="2"><center>stringstream特有的操作</center></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td>sstream strm;</td>
+    <td>strm 是一个未绑定的 stringstream 对象。sstream 是头文件 sstream 中定义的一个类型</td>
+</tr>
+<tr>
+    <td>sstream strm(s);</td>
+    <td>strm 是一个 sstream 对象，保存 strings 的一个拷贝。此构造函数是 explicit 的</td>
+</tr>
+<tr>
+    <td>strm.str()</td>
+    <td>返回 strm 所保存的 string 的拷贝</td>
+</tr>
+<tr>
+    <td>strm.str(s)</td>
+    <td>将 string s 拷贝到 strm 中，返回 void</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>每个 IO 对象都维护一组条件状态，用来指出此对象上是否可以进行 IO 操作。如果遇到了错误——例如<strong>在输入流上遇到了文件末尾，则对象的状态变为失效，所有后续输入操作都不能执行，直至错误被纠正</strong>。标准库提供了一组函数，用来设置和检测这些状态。</p>
+</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>编码</category>
+        <category>C/C++</category>
+        <category>《C++ Primer》</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>C++ Primer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux Perf性能优化工具使用说明</title>
+    <url>/archives/51299274.html</url>
+    <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><strong>Perf</strong>工具是随Linux内核一起发布的系统级性能调优工具，<span class="exturl" data-url="aHR0cDovL3d3dy5icmVuZGFuZ3JlZ2cuY29tL3BlcmYuaHRtbA==" title="http://www.brendangregg.com/perf.html">官网<i class="fa fa-external-link"></i></span>和<span class="exturl" data-url="aHR0cHM6Ly9wZXJmLndpa2kua2VybmVsLm9yZy9pbmRleC5waHAvTWFpbl9QYWdl" title="https://perf.wiki.kernel.org/index.php/Main_Page">Wiki<i class="fa fa-external-link"></i></span>对Perf工具做了详细介绍。</p>
+<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><p>在工作中开发车道线融合模块<code>CtApLaneFusion</code>时曾经出现过偶发的模块卡死的情况，通过查阅资料，使用Perf工具排查出了问题所在。</p>
+<h1 id="2-实践" class="heading-control"><a href="#2-实践" class="headerlink" title="2 实践"></a>2 实践<a class="heading-anchor" href="#2-实践" aria-hidden="true"></a></h1><p>通过Linux <code>top</code>命令查看时发现，<code>CtApLaneFusion</code>进程CPU占用率很高。使用Perf工具排查具体原因：</p>
+<ul>
+<li>从整体视角查看当前iECU各进程运行状态，登录iECU终端，输入<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">perf top</span><br></pre></td></tr></table></figure></li>
+<li>记录并分析指定进程的调用情况及资源使用情况<ul>
+<li>首先，登录iECU终端，使用<code>top</code>命令查看<code>CtApLaneFusion</code>模块所在进程的PID<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">top</span><br></pre></td></tr></table></figure></li>
+<li>然后，记录perf数据。<code>-p</code>后指定的为PID号，<code>sleep</code>后指定的为数据记录持续时间（s），数据文件名称默认为<code>perf.data</code>，保存在打开终端的目录下，<strong>应注意<code>--</code>与<code>sleep</code>间有空格符</strong><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">perf record -e cpu-clock -g -p 3729 -- sleep 120</span><br></pre></td></tr></table></figure></li>
+<li>最后，分析perf数据<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">perf report</span><br></pre></td></tr></table></figure>
+可将perf数据文件拷贝至台架iECU的任意目录进行离线分析，<code>Self</code>是最后一列的符号（可以理解为函数）本身所占比例，<code>Self</code>列所有数据的和为100%，<code>Children</code>是这个符号调用的其它符号（可以理解为子函数，包括直接和间接调用）占用的比例之和。若<code>Children</code>列和<code>Self</code>列的数据都比较高(<strong>飙红</strong>)，说明该进程或函数存在资源消耗过高的情况，可按回车键展开该进程查看调用情况，如下图所示：<br><img data-src="https://i.loli.net/2020/06/17/jnSsxGqR5D7di9I.png" alt="perf report数据分析示例"><br>图中从上至下表明CPU占用较高进程的函数调用层级关系，可以发现，CPU占用较高的原因是使用ipc库时出现了读写锁死锁。</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5icmVuZGFuZ3JlZ2cuY29tL3BlcmYuaHRtbA==" title="http://www.brendangregg.com/perf.html">perf Examples<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9wZXJmLndpa2kua2VybmVsLm9yZy9pbmRleC5waHAvTWFpbl9QYWdl" title="https://perf.wiki.kernel.org/index.php/Main_Page">perf: Linux profiling with performance counters<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9wZXJmLndpa2kua2VybmVsLm9yZy9pbmRleC5waHAvVHV0b3JpYWwjU2FtcGxlX2FuYWx5c2lzX3dpdGhfcGVyZl9yZXBvcnQ=" title="https://perf.wiki.kernel.org/index.php/Tutorial#Sample_analysis_with_perf_report">Linux kernel profiling with perf<i class="fa fa-external-link"></i></span></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>性能优化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C++ Primer - 第 5 章 语句</title>
     <url>/archives/c7171333.html</url>
     <content><![CDATA[<ol>
@@ -1774,142 +1943,61 @@
       </tags>
   </entry>
   <entry>
-    <title>C++ Primer - 第 8 章 IO 库</title>
-    <url>/archives/f6bc4afa.html</url>
-    <content><![CDATA[<ol>
-<li><p>继承机制使我们可以声明一个特定的类继承自另一个类。我们通常可以将一个派生类（继承类）对象当作其基类（所继承的类）对象来使用。类型 <code>ifstream</code> 和 <code>istringstream</code> 都继承自 <code>istream</code>。因此，我们可以像使用 <code>istream</code> 对象一样来使用 <code>ifstream</code> 和 <code>istringstream</code> 对象。也就是说，我们是如何使用 <code>cin</code> 的，就可以同样地使用这些类型的对象。例如，<strong>可以对一个 <code>ifstream</code> 或 <code>istringstream</code> 对象调用 <code>getline</code>，也可以使用 <code>&gt;&gt;</code> 从一个 <code>ifstream</code> 或 <code>istringstream</code> 对象中读取数据</strong>。类似的，类型 <code>ofstream</code> 和 <code>ostringstream</code> 都继承自 <code>ostream</code>。因此，我们是如何使用 <code>cout</code> 的，就可以同样地使用这些类型的对象。</p>
-</li>
-<li><p>不能拷贝或对 IO 对象赋值。<strong>由于不能拷贝 IO 对象，因此我们也不能将形参或返回类型设置为流类型。进行 IO 操作的函数通常以引用方式传递和返回流。读写一个 IO 对象会改变其状态，因此传递和返回的引用不能是 <code>const</code> 的。</strong></p>
-</li>
-<li><p>一个流一旦发生错误，其上后续的 IO 操作都会失败。只有当一个流处于无错状态时，我们才可以从它读取数据，向它写入数据。由于流可能处于错误状态，因此代码通常应该在使用一个流之前检查它是否处于良好状态。确定一个流对象的状态的最简单的方法是将它当作一个条件来使用：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; word)</span><br><span class="line">    <span class="comment">// ok：读操作成功.....</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>操作 <code>good</code> 在所有错误位均未置位的情况下返回 true，而 <code>bad</code>、<code>fail</code> 和 <code>eof</code> 则在对应错误位被置位时返回 true。此外，在 <code>badbit</code> 被置位时，<code>fail</code> 也会返回 true。这意味着，<strong>使用 <code>good</code> 或 <code>fail</code> 是确定流的总体状态的正确方法。实际上，我们将流当作条件使用的代码就等价于<code>!fail()</code></strong>。</p>
-</li>
-<li><p>每个输出流都管理一个缓冲区，用来保存程序读写的数据。导致缓冲刷新（即，数据真正写到输出设备或文件）的原因有很多：</p>
-<ul>
-<li>程序正常结束，作为 <code>main</code> 函数的 <code>return</code> 操作的一部分，缓冲刷新被执行。</li>
-<li>缓冲区满时，需要刷新缓冲，而后新的数据才能继续写入缓冲区。</li>
-<li>可以使用操纵符如 <code>endl</code> 来显式刷新缓冲区。</li>
-<li>在每个输出操作之后，可以用操纵符 <code>unitbuf</code> 设置流的内部状态，来清空缓冲区。默认情况下，对 <code>cerr</code> 是设置 <code>unitbuf</code> 的，因此写到 <code>cerr</code> 的内容都是立即刷新的。</li>
-<li>一个输出流可能被关联到另一个流。在这种情况下，当读写被关联的流时，关联到的流的缓冲区会被刷新。例如，<strong>默认情况下，<code>cin</code> 和 <code>cerr</code> 都关联到 <code>cout</code>。因此，读 <code>cin</code> 或写 <code>cerr</code> 都会导致 <code>cout</code> 的缓冲区被刷新</strong>。<br><br></li>
-</ul>
-</li>
-<li><p>操纵符 <code>endl</code>，它完成换行并刷新缓冲区的工作。IO 库中还有两个类似的操纵符：<code>flush</code> 和 <code>ends</code>。<code>flush</code> 刷新缓冲区，但不输出任何额外的字符；<code>ends</code> 向缓冲区插入一个空字符，然后刷新缓冲区。</p>
-</li>
-<li><p>如果想在每次输出操作后都刷新缓冲区，我们可以使用 <code>unitbuf</code> 操纵符。它告诉流在接下来的每次写操作之后都进行一次 <code>flush</code> 操作。而 <code>nounitbuf</code> 操纵符则重置流，使其恢复使用正常的系统管理的缓冲区刷新机制：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cout</span> &lt;&lt; unitbuf;  <span class="comment">// 所有输出操作后都会立即刷新缓冲区</span></span><br><span class="line"><span class="comment">// 任何输出都立即刷新，无缓冲</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; nounitbuf;  <span class="comment">// 回到正常的缓冲方式</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>如果程序异常终止，输出缓冲区是不会被刷新的。当一个程序崩溃后，它所输出的数据很可能停留在输出缓冲区中等待打印。</p>
+    <title>Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</title>
+    <url>/archives/77718b2.html</url>
+    <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
+<p>在本地同步追踪某个远程仓库的某一分支（以develop分支为例）。</p>
 </blockquote>
-</li>
-<li><p><strong>当一个输入流被关联到一个输出流时，任何试图从输入流读取数据的操作都会先刷新关联的输出流。</strong> 既可以将一个 <code>istream</code> 对象关联到另一个 <code>ostream</code>，也可以将一个 <code>ostream</code> 关联到另一个 <code>ostream</code>。每个流同时最多关联到一个流，但多个流可以同时关联到同一个 <code>ostream</code>。</p>
-</li>
-<li><p>头文件 <code>fstream</code> 定义了三个类型来支持文件 IO：<code>ifstream</code> 从一个给定文件读取数据，<code>ofstream</code> 向一个给定文件写入数据，以及 <code>fstream</code> 可以读写给定文件。</p>
-</li>
-<li><p>创建文件流对象时，我们可以提供文件名（可选的）。如果提供了一个文件名，则 <code>open</code> 会自动被调用。在新 C++ 标准中，文件名既可以是库类型 <code>string</code> 对象，也可以是 C 风格字符数组。</p>
-</li>
-<li><p>在要求使用基类型对象的地方，我们可以用继承类型的对象来替代。这意味着，接受一个 <code>iostream</code> 类型引用（或指针）参数的函数，可以用一个对应的 <code>fstream</code>（或 <code>sstream</code>）类型来调用。也就是说，如果有一个函数接受一个 <code>ostream&amp;</code> 参数，我们在调用这个函数时，可以传递给它一个 <code>ofstream</code> 对象，对 <code>istream&amp;</code> 和 <code>ifstream</code> 也是类似的。</p>
-</li>
-<li><p>如果我们定义了一个空文件流对象，可以随后调用 <code>open</code> 来将它与文件关联起来。如果调用 <code>open</code> 失败，<code>failbit</code> 会被置位。因为调用 <code>open</code> 可能失败，进行 <code>oppen</code> 是否成功的检测通常是一个好习惯。一旦一个文件流已经打开，它就保持与对应文件的关联。实际上，<strong>对一个已经打开的文件流调用 <code>open</code> 会失败，并会导致 <code>failbit</code> 被置位。随后的试图使用文件流的操作都会失败</strong>。为了将文件流关联到另外一个文件，必须首先关闭已经关联的文件。一旦文件成功关闭，我们可以打开新的文件。</p>
-</li>
-<li><p>当一个 <code>fstream</code> 对象离开其作用域时，与之关联的文件会自动关闭。</p>
-</li>
-<li><p>编写函数，以读模式打开一个文件，将其内容读入到一个 <code>string</code> 的 <code>vector</code> 中，将每一行作为一个独立的元素存于 <code>vector</code> 中，将每个单词作为一个独立的元素存储在另一个 <code>vector</code> 中。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">ifstream <span class="title">input</span><span class="params">(<span class="string">"license.txt"</span>)</span></span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; vs_line, vs_word;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (input)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (getline(input, s))</span><br><span class="line">            vs_line.push_back(s);</span><br><span class="line"></span><br><span class="line">        input.clear();  <span class="comment">// 复位输入文件流状态为 true（输入文件流遇到文件尾状态会被置为 false）</span></span><br><span class="line">        input.seekg(<span class="number">0</span>); <span class="comment">// 返回输入文件流首位置</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (input &gt;&gt; s)</span><br><span class="line">            vs_word.push_back(s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cerr</span> &lt;&lt; <span class="string">"Wrong input file stream."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Output by line: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = vs_line.begin(); iter != vs_line.end(); ++iter)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *iter &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Output by word: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">""</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = vs_word.begin(); iter != vs_word.end(); ++iter)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *iter &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>每个流都有一个关联的<strong>文件模式</strong>（file mode）。如下表所示：</p>
-<table>
-<thead>
-<tr>
-    <th colspan="2"><center>文件模式</center></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-    <td>in</td>
-    <td>以读方式打开</td>
-</tr>
-<tr>
-    <td>out</td>
-    <td>以写方式打开</td>
-</tr>
-<tr>
-    <td>app</td>
-    <td>每次写操作均定位到文件末尾</td>
-</tr>
-<tr>
-    <td>ate</td>
-    <td>打开文件后立即定位到文件末尾</td>
-</tr>
-<tr>
-    <td>trunc</td>
-    <td>截断文件</td>
-</tr>
-<tr>
-    <td>binary</td>
-    <td>以二进制方式进行 IO</td>
-</tr>
-</tbody>
-</table>
-
-<p>无论用哪种方式打开文件，我们都可以指定文件模式，调用 <code>open</code> 打开文件时可以，用一个文件名初始化流来隐式打开文件时也可以。指定文件模式有如下限制：</p>
+<h1 id="2-问题" class="heading-control"><a href="#2-问题" class="headerlink" title="2 问题"></a>2 问题<a class="heading-anchor" href="#2-问题" aria-hidden="true"></a></h1><p>起初先进行了如下操作：</p>
 <ul>
-<li>只可以对 <code>ofstream</code> 或 <code>fstream</code> 对象设定 <code>out</code> 模式。</li>
-<li>只可以对 <code>ifstream</code> 或 <code>fstream</code> 对象设定 <code>in</code> 模式。</li>
-<li>只有当 <code>out</code> 也被设定时才可设定 <code>trunc</code> 模式。</li>
-<li>只要 <code>trunc</code> 没被设定，就可以设定 <code>app</code> 模式。在 <code>app</code> 模式下，即使没有显式指定 <code>out</code> 模式，文件也总是以输出方式被打开。</li>
-<li>默认情况下，即使我们没有指定 <code>trunc</code>，以 <code>out</code> 模式打开的文件也会被截断。为了保留以 <code>out</code> 模式打开的文件的内容，我们必须同时指定 <code>app</code> 模式，这样只会将数据追加写到文件末尾；或者同时指定 <code>in</code> 模式，即打开文件同时进行读写操作。</li>
-<li><code>ate</code> 和 <code>binary</code> 模式可用于任何类型的文件流对象，且可以与其他任何文件模式组合使用。<br><br></li>
+<li>创建一个文件夹，初始化为git仓库：<code>git init</code></li>
+<li>进行用户基本信息配置：<code>git config</code></li>
+<li>创建本地仓库的develop分支：<code>git checkout -b</code></li>
+<li>关联远程仓库git地址：<code>git remote add</code></li>
 </ul>
-<p>每个文件流类型都定义了一个默认的文件模式，当我们未指定文件模式时，就使用此默认模式。与 <code>ifstream</code> 关联的文件默认以 <code>in</code> 模式打开；与 <code>ofstream</code> 关联的文件默认以 <code>out</code> 模式打开；与 <code>fstream</code> 关联的文件默认以 <code>in</code> 和 <code>out</code> 模式打开。</p>
-</li>
-<li><p>默认情况下，当我们打开一个 <code>ofstream</code> 时，文件的内容会被丢弃。阻止一个 <code>ofstream</code> 清空给定文件内容的方法是同时指定 <code>app</code> 模式：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在这几条语句中，file1 都被截断</span></span><br><span class="line"><span class="function">ofstream <span class="title">out</span><span class="params">(<span class="string">"file1"</span>)</span></span>;  <span class="comment">// 隐含以输出模式打开文件并截断文件</span></span><br><span class="line"><span class="function">ofstream <span class="title">out2</span><span class="params">(<span class="string">"file1"</span>, ofstream::out)</span></span>;  <span class="comment">// 隐含地截断文件</span></span><br><span class="line"><span class="function">ofstream <span class="title">out3</span><span class="params">(<span class="string">"file1"</span>, ofstream::out | ofstream::trunc)</span></span>;</span><br><span class="line"><span class="comment">// 为了保留文件内容，我们必须显式指定 app 模式</span></span><br><span class="line"><span class="function">ofstream <span class="title">app</span><span class="params">(<span class="string">"file2"</span>, ofstream::app)</span></span>;  <span class="comment">// 隐含为输出模式</span></span><br><span class="line"><span class="function">ofstream <span class="title">app2</span><span class="params">(<span class="string">"file2"</span>, ofstream::out | ofstream::app)</span></span>;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>WARNING：保留被 ofstream 打开的文件中已有数据的唯一方法是显式指定 app 或 in 模式。</p>
-</blockquote>
-</li>
-<li><p><code>sstream</code> 头文件定义了三个类型来支持内存 IO，这些类型可以向 <code>string</code> 写入数据，从 <code>string</code> 读取数据，就像 <code>string</code> 是一个 IO 流一样。<code>istringstream</code> 从 <code>string</code> 读取数据，<code>ostringstream</code> 向 <code>string</code> 写入数据，而头文件 <code>stringstream</code> 既可从 <code>string</code> 读数据也可向 <code>string</code> 写数据。<code>stringstream</code> 特有的一些操作如下表所示：</p>
-<table>
-<thead>
-<tr>
-    <th colspan="2"><center>stringstream特有的操作</center></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-    <td>sstream strm;</td>
-    <td>strm 是一个未绑定的 stringstream 对象。sstream 是头文件 sstream 中定义的一个类型</td>
-</tr>
-<tr>
-    <td>sstream strm(s);</td>
-    <td>strm 是一个 sstream 对象，保存 strings 的一个拷贝。此构造函数是 explicit 的</td>
-</tr>
-<tr>
-    <td>strm.str()</td>
-    <td>返回 strm 所保存的 string 的拷贝</td>
-</tr>
-<tr>
-    <td>strm.str(s)</td>
-    <td>将 string s 拷贝到 strm 中，返回 void</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li><p>每个 IO 对象都维护一组条件状态，用来指出此对象上是否可以进行 IO 操作。如果遇到了错误——例如<strong>在输入流上遇到了文件末尾，则对象的状态变为失效，所有后续输入操作都不能执行，直至错误被纠正</strong>。标准库提供了一组函数，用来设置和检测这些状态。</p>
-</li>
+<p>接下来，尝试通过<code>git branch --set-upstream-to</code>将本地仓库develop分支与远程仓库develop分支进行关联时报错：develop分支不存在。使用<code>git branch -r</code>发现远程仓库分支为空，其实使用<code>git branch -a</code>可以发现根本看不到任何分支。</p>
+<h1 id="3-解决" class="heading-control"><a href="#3-解决" class="headerlink" title="3 解决"></a>3 解决<a class="heading-anchor" href="#3-解决" aria-hidden="true"></a></h1><p>因为仅仅是关联了远程仓库，本地仓库并未获取远程仓库的修改（包括分支信息），所以本地看不到远程仓库的分支，也就无法进行分支关联操作。以<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">参考1<i class="fa fa-external-link"></i></span>中的建议，在将本地仓库分支与远程仓库分支进行关联前，可先通过<code>git fetch origin</code>命令拉取远程仓库的修改，这样便可获取远程仓库分支信息，但还无法看到本地分支。最佳实践是使用<code>git pull origin develop</code>命令（前提是你必须知道想要将远程仓库的哪个分支并入本地分支），便可看到远程仓库的develop分支和本地仓库的develop分支（当前分支），进而可进行分支关联操作。</p>
+<h1 id="4-结论" class="heading-control"><a href="#4-结论" class="headerlink" title="4 结论"></a>4 结论<a class="heading-anchor" href="#4-结论" aria-hidden="true"></a></h1><p>总结一下最佳实践：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git checkout -b local_branch</span><br><span class="line">git remote add origin repo_addr</span><br><span class="line">git pull origin repo_branch</span><br><span class="line">git branch --<span class="built_in">set</span>-upstream-to=origin/repo_branch local_branch</span><br><span class="line">git fetch --all</span><br></pre></td></tr></table></figure>
+<p>当然，直接使用<code>git clone</code>也是可以的（<strong>这才应该算是最佳实践！</strong>）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch</span><br></pre></td></tr></table></figure>
+<p><code>git checkout target_repo_branch</code>将自动在本地创建一个名为target_repo_branch的分支，并将其与远程仓库中的target_repo_branch分支进行关联。执行完<code>git clone</code>后，默认在本地仓库创建的是master分支，并将其与远程仓库的master分支进行关联，但通常情况下，maser分支仅用于版本释放，我们并不会直接向mater分支推送修改，而是在其它分支（如develop分支）完成开发与调试后，再通过<code>git merge</code>将分支上的工作并入master分支。</p>
+<h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">Git branch -r 无法获取远程分支，ui可以看见分支但是git 命令无法查看解决方案<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
       <categories>
-        <category>编码</category>
-        <category>C/C++</category>
-        <category>《C++ Primer》</category>
+        <category>效率</category>
+        <category>Git</category>
       </categories>
       <tags>
-        <tag>C/C++</tag>
-        <tag>C++ Primer</tag>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux中使用core dump进行程序调试</title>
+    <url>/archives/f52fa610.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><ul>
+<li>在ubuntu 14.04系统中临时编译了LaneViewer（项目中基于QGLViewer编写的一个GUI界面），但在ubuntu 14.04系统中无法正常运行，启动后闪退，想到了使用<code>core dump</code>文件进行调试，定位问题所在；</li>
+<li>项目中所负责的某模块在iECU中运行时会出现<code>defunct</code>（挂掉）问题，想到了使用<code>core dump</code>文件进行调试，定位问题所在。</li>
+</ul>
+<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
+<li>临时开启<code>core dump</code>，取消core文件大小限制（仅对当前终端有效）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br></pre></td></tr></table></figure></li>
+<li>运行目标程序，若非正常退出，会在程序所在目录下生成对应core文件</li>
+<li>使用<code>gdb</code>调试core文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gdb .&#x2F;LaneViewer core</span><br></pre></td></tr></table></figure></li>
+<li>进入<code>gdb</code>调试界面后，输入<code>r</code>并回车，可使程序运行至断点位置，输入<code>bt</code>并回车，可显示程序运行时的调用堆栈，<code>bt</code>代表<code>backtrace</code>。</li>
+</ol>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuaXRleWUuY29tL2Jsb2cvdmFxZXRlYXJ0LTEwMTMzOTc=" title="https://www.iteye.com/blog/vaqeteart-1013397">利用Core Dump调试程序<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2311,69 +2399,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux Perf性能优化工具使用说明</title>
-    <url>/archives/51299274.html</url>
-    <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><strong>Perf</strong>工具是随Linux内核一起发布的系统级性能调优工具，<span class="exturl" data-url="aHR0cDovL3d3dy5icmVuZGFuZ3JlZ2cuY29tL3BlcmYuaHRtbA==" title="http://www.brendangregg.com/perf.html">官网<i class="fa fa-external-link"></i></span>和<span class="exturl" data-url="aHR0cHM6Ly9wZXJmLndpa2kua2VybmVsLm9yZy9pbmRleC5waHAvTWFpbl9QYWdl" title="https://perf.wiki.kernel.org/index.php/Main_Page">Wiki<i class="fa fa-external-link"></i></span>对Perf工具做了详细介绍。</p>
-<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><p>在工作中开发车道线融合模块<code>CtApLaneFusion</code>时曾经出现过偶发的模块卡死的情况，通过查阅资料，使用Perf工具排查出了问题所在。</p>
-<h1 id="2-实践" class="heading-control"><a href="#2-实践" class="headerlink" title="2 实践"></a>2 实践<a class="heading-anchor" href="#2-实践" aria-hidden="true"></a></h1><p>通过Linux <code>top</code>命令查看时发现，<code>CtApLaneFusion</code>进程CPU占用率很高。使用Perf工具排查具体原因：</p>
-<ul>
-<li>从整体视角查看当前iECU各进程运行状态，登录iECU终端，输入<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">perf top</span><br></pre></td></tr></table></figure></li>
-<li>记录并分析指定进程的调用情况及资源使用情况<ul>
-<li>首先，登录iECU终端，使用<code>top</code>命令查看<code>CtApLaneFusion</code>模块所在进程的PID<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">top</span><br></pre></td></tr></table></figure></li>
-<li>然后，记录perf数据。<code>-p</code>后指定的为PID号，<code>sleep</code>后指定的为数据记录持续时间（s），数据文件名称默认为<code>perf.data</code>，保存在打开终端的目录下，<strong>应注意<code>--</code>与<code>sleep</code>间有空格符</strong><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">perf record -e cpu-clock -g -p 3729 -- sleep 120</span><br></pre></td></tr></table></figure></li>
-<li>最后，分析perf数据<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">perf report</span><br></pre></td></tr></table></figure>
-可将perf数据文件拷贝至台架iECU的任意目录进行离线分析，<code>Self</code>是最后一列的符号（可以理解为函数）本身所占比例，<code>Self</code>列所有数据的和为100%，<code>Children</code>是这个符号调用的其它符号（可以理解为子函数，包括直接和间接调用）占用的比例之和。若<code>Children</code>列和<code>Self</code>列的数据都比较高(<strong>飙红</strong>)，说明该进程或函数存在资源消耗过高的情况，可按回车键展开该进程查看调用情况，如下图所示：<br><img data-src="https://i.loli.net/2020/06/17/jnSsxGqR5D7di9I.png" alt="perf report数据分析示例"><br>图中从上至下表明CPU占用较高进程的函数调用层级关系，可以发现，CPU占用较高的原因是使用ipc库时出现了读写锁死锁。</li>
-</ul>
-</li>
-</ul>
-<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5icmVuZGFuZ3JlZ2cuY29tL3BlcmYuaHRtbA==" title="http://www.brendangregg.com/perf.html">perf Examples<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9wZXJmLndpa2kua2VybmVsLm9yZy9pbmRleC5waHAvTWFpbl9QYWdl" title="https://perf.wiki.kernel.org/index.php/Main_Page">perf: Linux profiling with performance counters<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9wZXJmLndpa2kua2VybmVsLm9yZy9pbmRleC5waHAvVHV0b3JpYWwjU2FtcGxlX2FuYWx5c2lzX3dpdGhfcGVyZl9yZXBvcnQ=" title="https://perf.wiki.kernel.org/index.php/Tutorial#Sample_analysis_with_perf_report">Linux kernel profiling with perf<i class="fa fa-external-link"></i></span></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>性能优化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</title>
-    <url>/archives/77718b2.html</url>
-    <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
-<p>在本地同步追踪某个远程仓库的某一分支（以develop分支为例）。</p>
-</blockquote>
-<h1 id="2-问题" class="heading-control"><a href="#2-问题" class="headerlink" title="2 问题"></a>2 问题<a class="heading-anchor" href="#2-问题" aria-hidden="true"></a></h1><p>起初先进行了如下操作：</p>
-<ul>
-<li>创建一个文件夹，初始化为git仓库：<code>git init</code></li>
-<li>进行用户基本信息配置：<code>git config</code></li>
-<li>创建本地仓库的develop分支：<code>git checkout -b</code></li>
-<li>关联远程仓库git地址：<code>git remote add</code></li>
-</ul>
-<p>接下来，尝试通过<code>git branch --set-upstream-to</code>将本地仓库develop分支与远程仓库develop分支进行关联时报错：develop分支不存在。使用<code>git branch -r</code>发现远程仓库分支为空，其实使用<code>git branch -a</code>可以发现根本看不到任何分支。</p>
-<h1 id="3-解决" class="heading-control"><a href="#3-解决" class="headerlink" title="3 解决"></a>3 解决<a class="heading-anchor" href="#3-解决" aria-hidden="true"></a></h1><p>因为仅仅是关联了远程仓库，本地仓库并未获取远程仓库的修改（包括分支信息），所以本地看不到远程仓库的分支，也就无法进行分支关联操作。以<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">参考1<i class="fa fa-external-link"></i></span>中的建议，在将本地仓库分支与远程仓库分支进行关联前，可先通过<code>git fetch origin</code>命令拉取远程仓库的修改，这样便可获取远程仓库分支信息，但还无法看到本地分支。最佳实践是使用<code>git pull origin develop</code>命令（前提是你必须知道想要将远程仓库的哪个分支并入本地分支），便可看到远程仓库的develop分支和本地仓库的develop分支（当前分支），进而可进行分支关联操作。</p>
-<h1 id="4-结论" class="heading-control"><a href="#4-结论" class="headerlink" title="4 结论"></a>4 结论<a class="heading-anchor" href="#4-结论" aria-hidden="true"></a></h1><p>总结一下最佳实践：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git checkout -b local_branch</span><br><span class="line">git remote add origin repo_addr</span><br><span class="line">git pull origin repo_branch</span><br><span class="line">git branch --<span class="built_in">set</span>-upstream-to=origin/repo_branch local_branch</span><br><span class="line">git fetch --all</span><br></pre></td></tr></table></figure>
-<p>当然，直接使用<code>git clone</code>也是可以的（<strong>这才应该算是最佳实践！</strong>）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch</span><br></pre></td></tr></table></figure>
-<p><code>git checkout target_repo_branch</code>将自动在本地创建一个名为target_repo_branch的分支，并将其与远程仓库中的target_repo_branch分支进行关联。执行完<code>git clone</code>后，默认在本地仓库创建的是master分支，并将其与远程仓库的master分支进行关联，但通常情况下，maser分支仅用于版本释放，我们并不会直接向mater分支推送修改，而是在其它分支（如develop分支）完成开发与调试后，再通过<code>git merge</code>将分支上的工作并入master分支。</p>
-<h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vbGVvZGF4aW4vcC84NTY5MDYxLmh0bWw=" title="https://www.cnblogs.com/leodaxin/p/8569061.html">Git branch -r 无法获取远程分支，ui可以看见分支但是git 命令无法查看解决方案<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>效率</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux 下使用 vscode 调试 C++ 程序的一般步骤</title>
     <url>/archives/f27f966b.html</url>
     <content><![CDATA[<blockquote>
@@ -2419,51 +2444,6 @@
       <tags>
         <tag>C/C++</tag>
         <tag>VS Code</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux中使用core dump进行程序调试</title>
-    <url>/archives/f52fa610.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><ul>
-<li>在ubuntu 14.04系统中临时编译了LaneViewer（项目中基于QGLViewer编写的一个GUI界面），但在ubuntu 14.04系统中无法正常运行，启动后闪退，想到了使用<code>core dump</code>文件进行调试，定位问题所在；</li>
-<li>项目中所负责的某模块在iECU中运行时会出现<code>defunct</code>（挂掉）问题，想到了使用<code>core dump</code>文件进行调试，定位问题所在。</li>
-</ul>
-<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
-<li>临时开启<code>core dump</code>，取消core文件大小限制（仅对当前终端有效）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br></pre></td></tr></table></figure></li>
-<li>运行目标程序，若非正常退出，会在程序所在目录下生成对应core文件</li>
-<li>使用<code>gdb</code>调试core文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gdb .&#x2F;LaneViewer core</span><br></pre></td></tr></table></figure></li>
-<li>进入<code>gdb</code>调试界面后，输入<code>r</code>并回车，可使程序运行至断点位置，输入<code>bt</code>并回车，可显示程序运行时的调用堆栈，<code>bt</code>代表<code>backtrace</code>。</li>
-</ol>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuaXRleWUuY29tL2Jsb2cvdmFxZXRlYXJ0LTEwMTMzOTc=" title="https://www.iteye.com/blog/vaqeteart-1013397">利用Core Dump调试程序<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux gcc/g++中的-I、-l、-L</title>
-    <url>/archives/8b42591c.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><ul>
-<li><code>-I</code> 指定第一个用于寻找头文件的目录；</li>
-<li><code>-L</code> 指定第一个用于寻找库文件的目录；</li>
-<li><code>-l</code> 用于指定程序具体要链接的库的名字。</li>
-</ul>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NzQ3JhenliaW5nL2FydGljbGUvZGV0YWlscy84MDMzNzc3Nw==" title="https://blog.csdn.net/csCrazybing/article/details/80337777">gcc “-I”（大写 i），“-L”（大写 l），“-l”（小写 l）的区别<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2515,11 +2495,15 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux中的ld-so与ld-linux-so</title>
-    <url>/archives/c5106d85.html</url>
-    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>动态链接器/加载器，<code>ld.so</code>和 <code>ld-linux.so*</code>查找并加载程序运行时所需要的共享对象（共享库），然后准备好程序并运行它，Linux二进制文件需要在运行时进行动态链接，除非在程序编译期间为ld（GNU链接器）指定了<code>-static</code>选项。<code>ld.so</code>程序处理a.out二进制格式（一种年代久远的二进制格式），<code>ld-linux.so*</code>（于libc5而言是/lib/ld-linux.so.1，于glibc2而言是/lib/ld-linux.so.2）处理更加现代的ELF二进制格式。两个程序具有相同的行为，使用相同的支持文件和程序（ldd、ldconfig和/etc/ld.so.conf）。<strong>ld.so与ld-linux.so是相似的，于程序运行期间起作用</strong>。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cDovL21hbjcub3JnL2xpbnV4L21hbi1wYWdlcy9tYW44L2xkLWxpbnV4LnNvLjguaHRtbA==" title="http://man7.org/linux/man-pages/man8/ld-linux.so.8.html">ld.so, ld-linux.so - dynamic linker/loader<i class="fa fa-external-link"></i></span></li>
+    <title>Linux gcc/g++中的-I、-l、-L</title>
+    <url>/archives/8b42591c.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><ul>
+<li><code>-I</code> 指定第一个用于寻找头文件的目录；</li>
+<li><code>-L</code> 指定第一个用于寻找库文件的目录；</li>
+<li><code>-l</code> 用于指定程序具体要链接的库的名字。</li>
+</ul>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NzQ3JhenliaW5nL2FydGljbGUvZGV0YWlscy84MDMzNzc3Nw==" title="https://blog.csdn.net/csCrazybing/article/details/80337777">gcc “-I”（大写 i），“-L”（大写 l），“-l”（小写 l）的区别<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -2528,25 +2512,6 @@
       </categories>
       <tags>
         <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
-    <url>/archives/43b2dca3.html</url>
-    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
-<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>编码</category>
-        <category>Python</category>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -2581,6 +2546,41 @@
       <tags>
         <tag>Linux</tag>
         <tag>Shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python中的当前工作路径与当前脚本文件所在路径</title>
+    <url>/archives/43b2dca3.html</url>
+    <content><![CDATA[<h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>在编写Robot Framework测试库的过程中，需要将自建库的<strong>init</strong>.py脚本文件所在路径添加进系统路径，Python才能够识别库中的各个模块。</p>
+<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>假如，在桌面创建了一个名为<code>test.py</code>的Python脚本，并输入如下代码：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.path.dirname(__file__))</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure><br>然后，我们在电脑中的另一个位置<code>F:\04_Individual\03_Tech\00_Hexo</code>打开终端，并运行刚刚创建的脚本<code>test.py</code>，会得到如下结果：<br><figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">ShiPeng@HelloWorld MINGW64 /f/<span class="number">04</span>_Individual/<span class="number">03</span>_Tech/<span class="number">00</span>_Hexo</span><br><span class="line">$ python3 -u "c:\Users\ShiPeng\Desktop\test.py"</span><br><span class="line"><span class="function">c:\<span class="title">Users</span>\<span class="title">ShiPeng</span>\<span class="title">Desktop</span></span></span><br><span class="line"><span class="function"><span class="title">F</span>:\04<span class="title">_Individual</span>\03<span class="title">_Tech</span>\00<span class="title">_Hexo</span></span></span><br></pre></td></tr></table></figure><br>可以发现，<code>os.getcwd()</code>获取的是当前工作目录（即工程目录），而<code>os.path.dirname(__file__)</code>获得的才是当前Python脚本所在目录（不包含文件名）。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xNDY1NDQuaHRt" title="https://www.jb51.net/article/146544.htm">浅析python3中的os.path.dirname的使用<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>编码</category>
+        <category>Python</category>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux中的ld-so与ld-linux-so</title>
+    <url>/archives/c5106d85.html</url>
+    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>动态链接器/加载器，<code>ld.so</code>和 <code>ld-linux.so*</code>查找并加载程序运行时所需要的共享对象（共享库），然后准备好程序并运行它，Linux二进制文件需要在运行时进行动态链接，除非在程序编译期间为ld（GNU链接器）指定了<code>-static</code>选项。<code>ld.so</code>程序处理a.out二进制格式（一种年代久远的二进制格式），<code>ld-linux.so*</code>（于libc5而言是/lib/ld-linux.so.1，于glibc2而言是/lib/ld-linux.so.2）处理更加现代的ELF二进制格式。两个程序具有相同的行为，使用相同的支持文件和程序（ldd、ldconfig和/etc/ld.so.conf）。<strong>ld.so与ld-linux.so是相似的，于程序运行期间起作用</strong>。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cDovL21hbjcub3JnL2xpbnV4L21hbi1wYWdlcy9tYW44L2xkLWxpbnV4LnNvLjguaHRtbA==" title="http://man7.org/linux/man-pages/man8/ld-linux.so.8.html">ld.so, ld-linux.so - dynamic linker/loader<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2846,6 +2846,28 @@
       </tags>
   </entry>
   <entry>
+    <title>gitignore与gitkeep的作用</title>
+    <url>/archives/ba569070.html</url>
+    <content><![CDATA[<h1 id="1-gitignore" class="heading-control"><a href="#1-gitignore" class="headerlink" title="1 .gitignore"></a>1 .gitignore<a class="heading-anchor" href="#1-gitignore" aria-hidden="true"></a></h1><p>.gitignore用于指定版本库中的某些文件或目录将被git系统忽略，例如，个人在腾讯云的git服务器上维护某工程时，.gitignore中的内容如下所示，用以忽略工程根目录下的build目录以及所有包目录内的一些并不参与编译的目录：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;build</span><br><span class="line">**&#x2F;0000_Common</span><br><span class="line">**&#x2F;0600_Toolkit</span><br><span class="line">**&#x2F;0900_System&#x2F;01_core</span><br><span class="line">**&#x2F;0900_System&#x2F;03_flashing</span><br><span class="line">**&#x2F;0900_System&#x2F;04_model</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>其中的“**”可以匹配工程目录内的多级目录，参考<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDI=" title="https://blog.csdn.net/ljb_wh/article/details/51083402">这里<i class="fa fa-external-link"></i></span>。</p>
+</blockquote>
+<h1 id="2-gitkeep" class="heading-control"><a href="#2-gitkeep" class="headerlink" title="2 .gitkeep"></a>2 .gitkeep<a class="heading-anchor" href="#2-gitkeep" aria-hidden="true"></a></h1><p>git系统并不会追踪版本库中的空目录，通过在空目录中创建一个.gitkeep文件即可让git系统对这个空目录进行追踪，.gitkeep实则是一个占位符，并没有其它特性，通俗点讲，.fu*k可以实现和.gitkeep相同的功能。</p>
+<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDI=" title="https://blog.csdn.net/ljb_wh/article/details/51083402">TIPS：.gitignore 忽略多层文件夹用 **<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxODE5MTAzMD91dG1fc291cmNlPXRhZy1uZXdlc3Q=" title="https://segmentfault.com/a/1190000018191030?utm_source=tag-newest">.gitkeep 是什么? .gitignore 和. gitkeep 之间的区别<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>效率</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Win 10 中通过 VMWare 16 在 UEFI 引导模式下安装 Ubuntu 18.04 虚拟机并自定义分区</title>
     <url>/archives/5103b2eb.html</url>
     <content><![CDATA[<h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://i.loli.net/2021/07/04/OWDXu5jF7Ry3eGf.png" alt="目录"></p>
@@ -2919,28 +2941,6 @@
         <tag>Linux</tag>
         <tag>虚拟机</tag>
         <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>gitignore与gitkeep的作用</title>
-    <url>/archives/ba569070.html</url>
-    <content><![CDATA[<h1 id="1-gitignore" class="heading-control"><a href="#1-gitignore" class="headerlink" title="1 .gitignore"></a>1 .gitignore<a class="heading-anchor" href="#1-gitignore" aria-hidden="true"></a></h1><p>.gitignore用于指定版本库中的某些文件或目录将被git系统忽略，例如，个人在腾讯云的git服务器上维护某工程时，.gitignore中的内容如下所示，用以忽略工程根目录下的build目录以及所有包目录内的一些并不参与编译的目录：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;build</span><br><span class="line">**&#x2F;0000_Common</span><br><span class="line">**&#x2F;0600_Toolkit</span><br><span class="line">**&#x2F;0900_System&#x2F;01_core</span><br><span class="line">**&#x2F;0900_System&#x2F;03_flashing</span><br><span class="line">**&#x2F;0900_System&#x2F;04_model</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>其中的“**”可以匹配工程目录内的多级目录，参考<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDI=" title="https://blog.csdn.net/ljb_wh/article/details/51083402">这里<i class="fa fa-external-link"></i></span>。</p>
-</blockquote>
-<h1 id="2-gitkeep" class="heading-control"><a href="#2-gitkeep" class="headerlink" title="2 .gitkeep"></a>2 .gitkeep<a class="heading-anchor" href="#2-gitkeep" aria-hidden="true"></a></h1><p>git系统并不会追踪版本库中的空目录，通过在空目录中创建一个.gitkeep文件即可让git系统对这个空目录进行追踪，.gitkeep实则是一个占位符，并没有其它特性，通俗点讲，.fu*k可以实现和.gitkeep相同的功能。</p>
-<h1 id="3-参考" class="heading-control"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考<a class="heading-anchor" href="#3-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xqYl93aC9hcnRpY2xlL2RldGFpbHMvNTEwODM0MDI=" title="https://blog.csdn.net/ljb_wh/article/details/51083402">TIPS：.gitignore 忽略多层文件夹用 **<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxODE5MTAzMD91dG1fc291cmNlPXRhZy1uZXdlc3Q=" title="https://segmentfault.com/a/1190000018191030?utm_source=tag-newest">.gitkeep 是什么? .gitignore 和. gitkeep 之间的区别<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>效率</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
@@ -4315,28 +4315,6 @@ R =
       </tags>
   </entry>
   <entry>
-    <title>关于make、makefile、cmake、cmakelist、qmake等的区别</title>
-    <url>/archives/e3f2e7f0.html</url>
-    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>首先，开发人员根据项目目录结构编写cmakelist文件；然后，cmake根据编写的cmakelist文件生成makefile文件；最后，make根据生成的makefile文件对代码进行预处理、编译、汇编、链接等操作，生成可执行文件或共享库。流程如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/02/03/EasPfXOzWQdV4A9.png" alt="cmake工作流"></p>
-<p>qmake——与cmake同等地位的工具。<br>综上，<strong>重点是cmakelist文件的编写</strong>。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC94dW54dW4vYmxvZy84Njc4MQ==" title="https://my.oschina.net/xunxun/blog/86781">CMake与Make<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FpeWFuZ2hvbmcvYXJ0aWNsZS9kZXRhaWxzLzg2NTAxNzIw" title="https://blog.csdn.net/Aiyanghong/article/details/86501720">make、makefile、cmake之间的区别与联系<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYW5nX3hpbnhpbmcvYXJ0aWNsZS9kZXRhaWxzLzcyODI3NjY0" title="https://blog.csdn.net/jiang_xinxing/article/details/72827664">编译过程，make,makefile,cmake,qmake,cmakelist总结<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vY2oyMDE0L3AvNjExMTYzNC5odG1s" title="https://www.cnblogs.com/cj2014/p/6111634.html">make makefile cmake qmake都是什么，有什么区别<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>编译</category>
-        <category>make</category>
-      </categories>
-      <tags>
-        <tag>make</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>使用Python + Matplotlib绘制双柱状图</title>
     <url>/archives/208a7c66.html</url>
     <content><![CDATA[<p><img data-src="https://i.loli.net/2020/05/03/yHbgphKYvA6l8sa.png" alt="demo"></p>
@@ -4363,6 +4341,28 @@ R =
       <tags>
         <tag>Python</tag>
         <tag>Matplotlib</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于make、makefile、cmake、cmakelist、qmake等的区别</title>
+    <url>/archives/e3f2e7f0.html</url>
+    <content><![CDATA[<h1 id="1-结论" class="heading-control"><a href="#1-结论" class="headerlink" title="1 结论"></a>1 结论<a class="heading-anchor" href="#1-结论" aria-hidden="true"></a></h1><p>首先，开发人员根据项目目录结构编写cmakelist文件；然后，cmake根据编写的cmakelist文件生成makefile文件；最后，make根据生成的makefile文件对代码进行预处理、编译、汇编、链接等操作，生成可执行文件或共享库。流程如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/02/03/EasPfXOzWQdV4A9.png" alt="cmake工作流"></p>
+<p>qmake——与cmake同等地位的工具。<br>综上，<strong>重点是cmakelist文件的编写</strong>。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9teS5vc2NoaW5hLm5ldC94dW54dW4vYmxvZy84Njc4MQ==" title="https://my.oschina.net/xunxun/blog/86781">CMake与Make<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FpeWFuZ2hvbmcvYXJ0aWNsZS9kZXRhaWxzLzg2NTAxNzIw" title="https://blog.csdn.net/Aiyanghong/article/details/86501720">make、makefile、cmake之间的区别与联系<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYW5nX3hpbnhpbmcvYXJ0aWNsZS9kZXRhaWxzLzcyODI3NjY0" title="https://blog.csdn.net/jiang_xinxing/article/details/72827664">编译过程，make,makefile,cmake,qmake,cmakelist总结<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vY2oyMDE0L3AvNjExMTYzNC5odG1s" title="https://www.cnblogs.com/cj2014/p/6111634.html">make makefile cmake qmake都是什么，有什么区别<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>编译</category>
+        <category>make</category>
+      </categories>
+      <tags>
+        <tag>make</tag>
       </tags>
   </entry>
   <entry>
@@ -4641,6 +4641,24 @@ R =
       </tags>
   </entry>
   <entry>
+    <title>如何删除本地 Git 仓库和远程 Git 仓库的 tag</title>
+    <url>/archives/a38a4de1.html</url>
+    <content><![CDATA[<blockquote>
+<p>使用 Git 进行代码仓库的版本控制时，定期会为仓库打上 tag，有时会有删除 tag 的操作。本文以 tag <code>v1.1.4</code> 为例，分别描述了删除本地仓库 tag 和删除远程仓库 tag 的方法。</p>
+</blockquote>
+<h1 id="删除本地仓库-tag" class="heading-control"><a href="#删除本地仓库-tag" class="headerlink" title="删除本地仓库 tag"></a>删除本地仓库 tag<a class="heading-anchor" href="#删除本地仓库-tag" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git tag -d v1.1.4</span><br></pre></td></tr></table></figure>
+<h1 id="删除远程仓库-tag" class="heading-control"><a href="#删除远程仓库-tag" class="headerlink" title="删除远程仓库 tag"></a>删除远程仓库 tag<a class="heading-anchor" href="#删除远程仓库-tag" aria-hidden="true"></a></h1><p>假设本地仓库与远程仓库 <code>orgin</code> 相关联：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git push origin :refs/tags/v1.1.4</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>效率</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何检出git仓库中最新的tag号</title>
     <url>/archives/732ab93b.html</url>
     <content><![CDATA[<h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
@@ -4658,6 +4676,21 @@ R =
       </categories>
       <tags>
         <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安装第三方python库过程中的egg-info与dist-info文件夹</title>
+    <url>/archives/42095346.html</url>
+    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在安装第三方python库过程中，在site-packages目录中与安装结果同时生成的后缀名为egg-info或dist-info的文件夹：<br>用应用程序安装生成egg-info文件夹，用whl或tar安装生成dist-info文件夹。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>编码</category>
+        <category>Python</category>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -4684,39 +4717,6 @@ R =
       <tags>
         <tag>自动驾驶</tag>
         <tag>导航定位</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安装第三方python库过程中的egg-info与dist-info文件夹</title>
-    <url>/archives/42095346.html</url>
-    <content><![CDATA[<h1 id="结论" class="heading-control"><a href="#结论" class="headerlink" title="结论"></a>结论<a class="heading-anchor" href="#结论" aria-hidden="true"></a></h1><p>在安装第三方python库过程中，在site-packages目录中与安装结果同时生成的后缀名为egg-info或dist-info的文件夹：<br>用应用程序安装生成egg-info文件夹，用whl或tar安装生成dist-info文件夹。</p>
-<hr>
-]]></content>
-      <categories>
-        <category>编码</category>
-        <category>Python</category>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何删除本地 Git 仓库和远程 Git 仓库的 tag</title>
-    <url>/archives/a38a4de1.html</url>
-    <content><![CDATA[<blockquote>
-<p>使用 Git 进行代码仓库的版本控制时，定期会为仓库打上 tag，有时会有删除 tag 的操作。本文以 tag <code>v1.1.4</code> 为例，分别描述了删除本地仓库 tag 和删除远程仓库 tag 的方法。</p>
-</blockquote>
-<h1 id="删除本地仓库-tag" class="heading-control"><a href="#删除本地仓库-tag" class="headerlink" title="删除本地仓库 tag"></a>删除本地仓库 tag<a class="heading-anchor" href="#删除本地仓库-tag" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git tag -d v1.1.4</span><br></pre></td></tr></table></figure>
-<h1 id="删除远程仓库-tag" class="heading-control"><a href="#删除远程仓库-tag" class="headerlink" title="删除远程仓库 tag"></a>删除远程仓库 tag<a class="heading-anchor" href="#删除远程仓库-tag" aria-hidden="true"></a></h1><p>假设本地仓库与远程仓库 <code>orgin</code> 相关联：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git push origin :refs/tags/v1.1.4</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>效率</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
@@ -4983,65 +4983,6 @@ R =
       </tags>
   </entry>
   <entry>
-    <title>带有大文件的 GitHub 项目的创建与拉取——使用 Git Large File Storage (LFS)</title>
-    <url>/archives/af0e9080.html</url>
-    <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>某天下午在远程工作站上装 ROS 把我搞烦了，抽时间写了个开源脚本工具 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9yb3N0YWxsZXI=" title="https://github.com/RocShi/rostaller">rostaller<i class="fa fa-external-link"></i></span>，完全一键安装，自动在线更新 <code>YAML</code> 文件，不用再去应对手动安装时必然会遇到的 <code>rosdep init</code> 报错和 <code>rosdep update</code> 报错。工具最初的版本包含一个 <code>.tar.gz</code> 格式的压缩文件，向 GitHub 进行推送时被拒绝：文件大小超限（100 MB）。对于该问题，可以使用 Git Large File Storage (LFS) 对要上传的大文件进行托管。</p>
-<p><img data-src="https://i.loli.net/2021/07/07/yMt4LQ3hDYlRgjw.gif" alt="Git LFS"></p>
-<h1 id="1-准备工作" class="heading-control"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作<a class="heading-anchor" href="#1-准备工作" aria-hidden="true"></a></h1><h2 id="1-1-安装-Git-LFS" class="heading-control"><a href="#1-1-安装-Git-LFS" class="headerlink" title="1.1 安装 Git LFS"></a>1.1 安装 Git LFS<a class="heading-anchor" href="#1-1-安装-Git-LFS" aria-hidden="true"></a></h2><p><strong>Windows</strong></p>
-<p>直接<span class="exturl" data-url="aHR0cHM6Ly9naXQtbGZzLmdpdGh1Yi5jb20v" title="https://git-lfs.github.com/">官网<i class="fa fa-external-link"></i></span>下载二进制文件进行安装即可.</p>
-<p><strong>Ubuntu</strong></p>
-<ul>
-<li><p>安装 <code>curl</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install curl</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>请求并执行 Git LFS 前置脚本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>安装 Git LFS</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install git-lfs</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="1-2-为当前用户配置-Git-LFS" class="heading-control"><a href="#1-2-为当前用户配置-Git-LFS" class="headerlink" title="1.2 为当前用户配置 Git LFS"></a>1.2 为当前用户配置 Git LFS<a class="heading-anchor" href="#1-2-为当前用户配置-Git-LFS" aria-hidden="true"></a></h2><p>每个用户执行一次即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git lfs install</span><br></pre></td></tr></table></figure>
-<h2 id="2-创建含有大文件的仓库" class="heading-control"><a href="#2-创建含有大文件的仓库" class="headerlink" title="2 创建含有大文件的仓库"></a>2 创建含有大文件的仓库<a class="heading-anchor" href="#2-创建含有大文件的仓库" aria-hidden="true"></a></h2><p>GitHub 端仓库的创建过程无异，不再赘述，对应的本地仓库的创建过程如下：</p>
-<ul>
-<li><p>初始化</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置远程仓库地址</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:your_username/your_repo.git</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>告诉 Git LFS 需要追踪哪些文件。例如，追踪 <code>.tar.gz</code> 格式的压缩文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git lfs track &quot;*.tar.*&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>上一步骤将自动生成 <code>.gitattributes</code> 文件，将其添加到暂存区</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git add .gitattributes</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>向暂存区中添加剩余变更、提交、推送</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git add --all</span><br><span class="line">git commit -m <span class="string">"first commit"</span></span><br><span class="line">git push orgin main</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="3-拉取含有大文件的-GitHub-仓库" class="heading-control"><a href="#3-拉取含有大文件的-GitHub-仓库" class="headerlink" title="3 拉取含有大文件的 GitHub 仓库"></a>3 拉取含有大文件的 GitHub 仓库<a class="heading-anchor" href="#3-拉取含有大文件的-GitHub-仓库" aria-hidden="true"></a></h1><p>直接 <code>clone</code> 即可。若在安装 Git LFS 前执行了 <code>clone</code>，则拉取下来的仓库中并不包含大文件本体，取而代之的是指向其 LFS 存储对象的文件指针，此种情况下，可通过在本地仓库中执行下述命令来 拉取文件指针所指向的完整对象：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git lfs pull</span><br></pre></td></tr></table></figure>
-<h1 id="4-存在的问题" class="heading-control"><a href="#4-存在的问题" class="headerlink" title="4 存在的问题"></a>4 存在的问题<a class="heading-anchor" href="#4-存在的问题" aria-hidden="true"></a></h1><p>Git LFS 免费用户有 1 GB 的免费存储空间和每月 1 GB 的下载带宽，下载使用的总流量超限后会导致仓库无法 <code>clone</code>：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Downloading rosdistro.tar.gz (105 MB)</span><br><span class="line">Error downloading object: rosdistro.tar.gz (2dffd34):</span><br><span class="line">Smudge error: Error downloading rosdistro.tar.gz (2dffd34dccb171115c2fcd4326735780181e0705bba57d502d3bf85538f92740):</span><br><span class="line">batch response: This repository is over its data quota.</span><br><span class="line">Account responsible for LFS bandwidth should purchase more data packs to restore access.</span><br><span class="line"></span><br><span class="line">Errors logged to &#x2F;home&#x2F;shipeng&#x2F;rostaller&#x2F;.git&#x2F;lfs&#x2F;logs&#x2F;20210706T224710.870367616.log</span><br><span class="line">Use &#96;git lfs logs last&#96; to view the log.</span><br><span class="line">error: external filter &#39;git-lfs filter-process&#39; failed</span><br><span class="line">fatal: rosdistro.tar.gz: smudge filter lfs failed</span><br><span class="line">warning: Clone succeeded, but checkout failed.</span><br><span class="line">You can inspect what was checked out with &#39;git status&#39;</span><br><span class="line">and retry the checkout with &#39;git checkout -f HEAD&#39;</span><br></pre></td></tr></table></figure>
-<p>大意是，使用的 LFS 下载流量达到带宽限制，需要购买更多数据包。一般使用勉强够了。</p>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXQtbGZzLmdpdGh1Yi5jb20v" title="https://git-lfs.github.com/">Git Large File Storage<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC80OTNiODE1NDRmODA=" title="https://www.jianshu.com/p/493b81544f80">Git LFS 的使用<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGh1Yi5jb20vY24vZ2l0aHViL2FkbWluaXN0ZXJpbmctYS1yZXBvc2l0b3J5L21hbmFnaW5nLXJlcG9zaXRvcnktc2V0dGluZ3MvbWFuYWdpbmctZ2l0LWxmcy1vYmplY3RzLWluLWFyY2hpdmVzLW9mLXlvdXItcmVwb3NpdG9yeQ==" title="https://docs.github.com/cn/github/administering-a-repository/managing-repository-settings/managing-git-lfs-objects-in-archives-of-your-repository">GitHub Docs - 管理仓库存档中的 Git LFS 对象<i class="fa fa-external-link"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGh1Yi5jb20vY24vZ2l0aHViL21hbmFnaW5nLWxhcmdlLWZpbGVzL3ZlcnNpb25pbmctbGFyZ2UtZmlsZXMvYWJvdXQtc3RvcmFnZS1hbmQtYmFuZHdpZHRoLXVzYWdl" title="https://docs.github.com/cn/github/managing-large-files/versioning-large-files/about-storage-and-bandwidth-usage">GitHub Docs - 关于存储和带宽使用情况<i class="fa fa-external-link"></i></span></li>
-</ol>
-]]></content>
-      <categories>
-        <category>效率</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>工作中关于 CI 持续集成的一些总结</title>
     <url>/archives/9b577a68.html</url>
     <content><![CDATA[<h1 id="0-背景" class="heading-control"><a href="#0-背景" class="headerlink" title="0 背景"></a>0 背景<a class="heading-anchor" href="#0-背景" aria-hidden="true"></a></h1><p>持续集成（Continuous Integration，简称 CI）、持续交付（Continuous Delivery）和持续部署（Continuous Deployment）都是互联网领域优秀且成熟的软件工程实践。关于 CI，可以参考阮一峰老师的文章<span class="exturl" data-url="aHR0cDovL3d3dy5ydWFueWlmZW5nLmNvbS9ibG9nLzIwMTUvMDkvY29udGludW91cy1pbnRlZ3JhdGlvbi5odG1s" title="http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html">《持续集成是什么？》<i class="fa fa-external-link"></i></span>进行大致的了解。</p>
@@ -5199,6 +5140,65 @@ R =
       </categories>
       <tags>
         <tag>CI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>带有大文件的 GitHub 项目的创建与拉取——使用 Git Large File Storage (LFS)</title>
+    <url>/archives/af0e9080.html</url>
+    <content><![CDATA[<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>某天下午在远程工作站上装 ROS 把我搞烦了，抽时间写了个开源脚本工具 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9yb3N0YWxsZXI=" title="https://github.com/RocShi/rostaller">rostaller<i class="fa fa-external-link"></i></span>，完全一键安装，自动在线更新 <code>YAML</code> 文件，不用再去应对手动安装时必然会遇到的 <code>rosdep init</code> 报错和 <code>rosdep update</code> 报错。工具最初的版本包含一个 <code>.tar.gz</code> 格式的压缩文件，向 GitHub 进行推送时被拒绝：文件大小超限（100 MB）。对于该问题，可以使用 Git Large File Storage (LFS) 对要上传的大文件进行托管。</p>
+<p><img data-src="https://i.loli.net/2021/07/07/yMt4LQ3hDYlRgjw.gif" alt="Git LFS"></p>
+<h1 id="1-准备工作" class="heading-control"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作<a class="heading-anchor" href="#1-准备工作" aria-hidden="true"></a></h1><h2 id="1-1-安装-Git-LFS" class="heading-control"><a href="#1-1-安装-Git-LFS" class="headerlink" title="1.1 安装 Git LFS"></a>1.1 安装 Git LFS<a class="heading-anchor" href="#1-1-安装-Git-LFS" aria-hidden="true"></a></h2><p><strong>Windows</strong></p>
+<p>直接<span class="exturl" data-url="aHR0cHM6Ly9naXQtbGZzLmdpdGh1Yi5jb20v" title="https://git-lfs.github.com/">官网<i class="fa fa-external-link"></i></span>下载二进制文件进行安装即可.</p>
+<p><strong>Ubuntu</strong></p>
+<ul>
+<li><p>安装 <code>curl</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install curl</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>请求并执行 Git LFS 前置脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 Git LFS</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install git-lfs</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="1-2-为当前用户配置-Git-LFS" class="heading-control"><a href="#1-2-为当前用户配置-Git-LFS" class="headerlink" title="1.2 为当前用户配置 Git LFS"></a>1.2 为当前用户配置 Git LFS<a class="heading-anchor" href="#1-2-为当前用户配置-Git-LFS" aria-hidden="true"></a></h2><p>每个用户执行一次即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git lfs install</span><br></pre></td></tr></table></figure>
+<h2 id="2-创建含有大文件的仓库" class="heading-control"><a href="#2-创建含有大文件的仓库" class="headerlink" title="2 创建含有大文件的仓库"></a>2 创建含有大文件的仓库<a class="heading-anchor" href="#2-创建含有大文件的仓库" aria-hidden="true"></a></h2><p>GitHub 端仓库的创建过程无异，不再赘述，对应的本地仓库的创建过程如下：</p>
+<ul>
+<li><p>初始化</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置远程仓库地址</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:your_username/your_repo.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>告诉 Git LFS 需要追踪哪些文件。例如，追踪 <code>.tar.gz</code> 格式的压缩文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git lfs track &quot;*.tar.*&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>上一步骤将自动生成 <code>.gitattributes</code> 文件，将其添加到暂存区</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git add .gitattributes</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>向暂存区中添加剩余变更、提交、推送</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git add --all</span><br><span class="line">git commit -m <span class="string">"first commit"</span></span><br><span class="line">git push orgin main</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="3-拉取含有大文件的-GitHub-仓库" class="heading-control"><a href="#3-拉取含有大文件的-GitHub-仓库" class="headerlink" title="3 拉取含有大文件的 GitHub 仓库"></a>3 拉取含有大文件的 GitHub 仓库<a class="heading-anchor" href="#3-拉取含有大文件的-GitHub-仓库" aria-hidden="true"></a></h1><p>直接 <code>clone</code> 即可。若在安装 Git LFS 前执行了 <code>clone</code>，则拉取下来的仓库中并不包含大文件本体，取而代之的是指向其 LFS 存储对象的文件指针，此种情况下，可通过在本地仓库中执行下述命令来 拉取文件指针所指向的完整对象：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git lfs pull</span><br></pre></td></tr></table></figure>
+<h1 id="4-存在的问题" class="heading-control"><a href="#4-存在的问题" class="headerlink" title="4 存在的问题"></a>4 存在的问题<a class="heading-anchor" href="#4-存在的问题" aria-hidden="true"></a></h1><p>Git LFS 免费用户有 1 GB 的免费存储空间和每月 1 GB 的下载带宽，下载使用的总流量超限后会导致仓库无法 <code>clone</code>：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Downloading rosdistro.tar.gz (105 MB)</span><br><span class="line">Error downloading object: rosdistro.tar.gz (2dffd34):</span><br><span class="line">Smudge error: Error downloading rosdistro.tar.gz (2dffd34dccb171115c2fcd4326735780181e0705bba57d502d3bf85538f92740):</span><br><span class="line">batch response: This repository is over its data quota.</span><br><span class="line">Account responsible for LFS bandwidth should purchase more data packs to restore access.</span><br><span class="line"></span><br><span class="line">Errors logged to &#x2F;home&#x2F;shipeng&#x2F;rostaller&#x2F;.git&#x2F;lfs&#x2F;logs&#x2F;20210706T224710.870367616.log</span><br><span class="line">Use &#96;git lfs logs last&#96; to view the log.</span><br><span class="line">error: external filter &#39;git-lfs filter-process&#39; failed</span><br><span class="line">fatal: rosdistro.tar.gz: smudge filter lfs failed</span><br><span class="line">warning: Clone succeeded, but checkout failed.</span><br><span class="line">You can inspect what was checked out with &#39;git status&#39;</span><br><span class="line">and retry the checkout with &#39;git checkout -f HEAD&#39;</span><br></pre></td></tr></table></figure>
+<p>大意是，使用的 LFS 下载流量达到带宽限制，需要购买更多数据包。一般使用勉强够了。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXQtbGZzLmdpdGh1Yi5jb20v" title="https://git-lfs.github.com/">Git Large File Storage<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC80OTNiODE1NDRmODA=" title="https://www.jianshu.com/p/493b81544f80">Git LFS 的使用<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGh1Yi5jb20vY24vZ2l0aHViL2FkbWluaXN0ZXJpbmctYS1yZXBvc2l0b3J5L21hbmFnaW5nLXJlcG9zaXRvcnktc2V0dGluZ3MvbWFuYWdpbmctZ2l0LWxmcy1vYmplY3RzLWluLWFyY2hpdmVzLW9mLXlvdXItcmVwb3NpdG9yeQ==" title="https://docs.github.com/cn/github/administering-a-repository/managing-repository-settings/managing-git-lfs-objects-in-archives-of-your-repository">GitHub Docs - 管理仓库存档中的 Git LFS 对象<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGh1Yi5jb20vY24vZ2l0aHViL21hbmFnaW5nLWxhcmdlLWZpbGVzL3ZlcnNpb25pbmctbGFyZ2UtZmlsZXMvYWJvdXQtc3RvcmFnZS1hbmQtYmFuZHdpZHRoLXVzYWdl" title="https://docs.github.com/cn/github/managing-large-files/versioning-large-files/about-storage-and-bandwidth-usage">GitHub Docs - 关于存储和带宽使用情况<i class="fa fa-external-link"></i></span></li>
+</ol>
+]]></content>
+      <categories>
+        <category>效率</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
@@ -5404,9 +5404,37 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
         <category>Linux</category>
       </categories>
       <tags>
-        <tag>Git</tag>
         <tag>Linux</tag>
+        <tag>Git</tag>
         <tag>Shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>（三）百度无人车传感器GPS深入剖析</title>
+    <url>/archives/c870f676.html</url>
+    <content><![CDATA[<blockquote>
+<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">这里<i class="fa fa-external-link"></i></span>。</p>
+</blockquote>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>百度Apollo 1.0技术框架如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/03/01/XgGkhdfU2eSiKNc.jpg" alt="百度Apollo 1.0技术框架"></p>
+<p>GPS全球定位系统（Global Position System）定位原理为<strong>三角定位法（Triangulation）</strong>，如下图所示，通过测量无人车分别距三颗卫星的距离来对无人车进行唯一定位：</p>
+<p><img data-src="https://i.loli.net/2020/03/01/niauPdXFYyBHIg3.jpg" alt="三角定位法原理图"></p>
+<p>为降低天气、云层对定位的影响，引入了差分GPS的技术，原理如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/03/01/BCnQa5P9RheEbA4.jpg" alt="差分GPS技术原理图"></p>
+<p>在地面上建立基站（Base Station），基站在建立时可得到其精确的位置信息（经纬度），同时基站具有接收卫星信号的功能。当基站的GPS接收机与车载GPS接收机相距较近时（&lt;30km），可以认为两者的GPS信号通过的是同一片大气区域，即两者的信号误差基本一致。<strong>根据基站的精确位置和信号传播时间，可反推此时天气原因导致的信号传播误差，之后利用该误差便可修正车载GPS信号，从而降低云层、天气情况等对信号传输的影响。</strong>利用差分GPS技术，可使无人车定位精度由十米级别提升至米级。<strong>差分GPS技术可以解决定位的精度问题，但是无法解决遮挡和反射问题</strong>，当无人车在高楼林立的环境中行驶时，会发生信号丢失和多路径信号（Multi-Path Signal）的问题：</p>
+<p><img data-src="https://i.loli.net/2020/03/01/Rlh5aZ26CzQmuxj.jpg" alt="多路径信号问题示意图"></p>
+<p>同时，GPS定位频率不高，相当于定位实时性较差。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">无人驾驶技术入门（三）| 百度无人车传感器 GPS 深入剖析<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
       </tags>
   </entry>
   <entry>
@@ -5432,34 +5460,6 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
 </ul>
 <h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNDY3NTM5Mg==" title="https://zhuanlan.zhihu.com/p/34675392">无人驾驶技术入门（七）| 量产必备的毫米波雷达<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>自动驾驶</category>
-        <category>无人驾驶技术入门</category>
-      </categories>
-      <tags>
-        <tag>自动驾驶</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>（三）百度无人车传感器GPS深入剖析</title>
-    <url>/archives/c870f676.html</url>
-    <content><![CDATA[<blockquote>
-<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">这里<i class="fa fa-external-link"></i></span>。</p>
-</blockquote>
-<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>百度Apollo 1.0技术框架如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/03/01/XgGkhdfU2eSiKNc.jpg" alt="百度Apollo 1.0技术框架"></p>
-<p>GPS全球定位系统（Global Position System）定位原理为<strong>三角定位法（Triangulation）</strong>，如下图所示，通过测量无人车分别距三颗卫星的距离来对无人车进行唯一定位：</p>
-<p><img data-src="https://i.loli.net/2020/03/01/niauPdXFYyBHIg3.jpg" alt="三角定位法原理图"></p>
-<p>为降低天气、云层对定位的影响，引入了差分GPS的技术，原理如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/03/01/BCnQa5P9RheEbA4.jpg" alt="差分GPS技术原理图"></p>
-<p>在地面上建立基站（Base Station），基站在建立时可得到其精确的位置信息（经纬度），同时基站具有接收卫星信号的功能。当基站的GPS接收机与车载GPS接收机相距较近时（&lt;30km），可以认为两者的GPS信号通过的是同一片大气区域，即两者的信号误差基本一致。<strong>根据基站的精确位置和信号传播时间，可反推此时天气原因导致的信号传播误差，之后利用该误差便可修正车载GPS信号，从而降低云层、天气情况等对信号传输的影响。</strong>利用差分GPS技术，可使无人车定位精度由十米级别提升至米级。<strong>差分GPS技术可以解决定位的精度问题，但是无法解决遮挡和反射问题</strong>，当无人车在高楼林立的环境中行驶时，会发生信号丢失和多路径信号（Multi-Path Signal）的问题：</p>
-<p><img data-src="https://i.loli.net/2020/03/01/Rlh5aZ26CzQmuxj.jpg" alt="多路径信号问题示意图"></p>
-<p>同时，GPS定位频率不高，相当于定位实时性较差。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMjYzODYzMw==" title="https://zhuanlan.zhihu.com/p/32638633">无人驾驶技术入门（三）| 百度无人车传感器 GPS 深入剖析<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 ]]></content>
@@ -5677,6 +5677,98 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
       </tags>
   </entry>
   <entry>
+    <title>（十二）无人驾驶中的坐标转换</title>
+    <url>/archives/b10733db.html</url>
+    <content><![CDATA[<blockquote>
+<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80MTI2MzcwMQ==" title="https://zhuanlan.zhihu.com/p/41263701">这里<i class="fa fa-external-link"></i></span></p>
+</blockquote>
+<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>车辆坐标系的原点在车辆后轮轴的中心，如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/07/26/apIGHZdzyu7NX8x.jpg" alt="车辆坐标系示意图"></p>
+<p>以安装在无人车左前方的角雷达（Corner radar）为例，角雷达的安装位置和坐标系如下图绿线所示：</p>
+<p><img data-src="https://i.loli.net/2020/07/26/CQl5je3tbucfqHX.jpg" alt="角雷达坐标系示意图"></p>
+<p>角雷达检测到的障碍物如图中的绿点所示，绿点在雷达坐标系下的坐标为$(x_1, y_1)$，为了便于理解暂不加入$z$方向的坐标，绿点转换到自车坐标系下需要经过一定的数学运算：</p>
+<p><strong>(1) 旋转</strong><br>将角雷达坐标系沿着$z$轴进行一定角度的旋转，新坐标系与自车坐标系相平行，</p>
+<p><img data-src="https://i.loli.net/2020/07/26/gsIhPiXezmS1Zx8.jpg" alt="旋转角雷达坐标系使之与自车坐标系平行"></p>
+<p>障碍物在角雷达坐标系下的坐标为$(x_1, y_1)$，假设障碍物在旋转后的新坐标系下的坐标为$(x_0, y_0)$，安装角度$α$（可测量），做辅助线后如下图所示：</p>
+<p><img data-src="https://i.loli.net/2020/07/26/wI6ldTOeYgorqnz.jpg" alt="做辅助线后坐标系示意图"></p>
+<p>根据几何关系可得：</p>
+<script type="math/tex; mode=display">
+x_0=x_1*cosα-y_1*sinα \\
+y_0=x_1*sinα+y_1*cosα</script><p>矩阵形式为：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+x_0 \\
+y_0
+\end{bmatrix}
+=\begin{bmatrix}
+cosα & -sinα \\
+sinα & cosα
+\end{bmatrix}
+*\begin{bmatrix}
+x_1 \\
+y_1
+\end{bmatrix}</script><p>由于旋转是绕$z$轴旋转，因此旋转前后$z$值保持不变，即$z_0$=$z_1$，故：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+x_0 \\
+y_0 \\
+z_0
+\end{bmatrix}
+=\begin{bmatrix}
+cosα & -sinα & 0 \\
+sinα & cosα & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+*\begin{bmatrix}
+x_1 \\
+y_1 \\
+z_1
+\end{bmatrix}
+=R_z
+*\begin{bmatrix}
+x_1 \\
+y_1 \\
+z_1
+\end{bmatrix}</script><p>$R_z$为绕$z$轴的旋转矩阵，同样也有绕$x$轴的旋转矩阵$R_x$和绕$y$轴的旋转矩阵$R_y$，考虑到一般情况，上式变换为：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+x_0 \\
+y_0 \\
+z_0
+\end{bmatrix}
+=R_x*R_y*R_z
+*\begin{bmatrix}
+x_1 \\
+y_1 \\
+z_1
+\end{bmatrix}</script><p>再加上一个平移矩阵，就能够得到障碍物在自车坐标系中的最终坐标描述：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+x_0 \\
+y_0 \\
+z_0
+\end{bmatrix}
+=R_x*R_y*R_z
+*\begin{bmatrix}
+x_1 \\
+y_1 \\
+z_1
+\end{bmatrix}
++T_{xyz}</script><p>以上过程也称为<strong>欧拉变换</strong>，但是欧拉变换会有一个不可避免的问题——<strong>万向锁</strong>，欧拉变换的过程中在某些特殊情况时，会导致少一个维度。为了解决欧拉变换存在的万向锁问题，引入了<strong>四元数</strong>的概念。四元数除了能够解决万向锁的问题外，还能在一定程度上简化计算，因而百度Apollo也选择了四元数作为各个传感器安装位置和角度的存储介质。</p>
+<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80MTI2MzcwMQ==" title="https://zhuanlan.zhihu.com/p/41263701">无人驾驶技术入门（十二）| 无人驾驶中的坐标转换<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>自动驾驶</category>
+        <category>无人驾驶技术入门</category>
+      </categories>
+      <tags>
+        <tag>自动驾驶</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>（十三）手把手教你写卡尔曼滤波器</title>
     <url>/archives/d3b96bd5.html</url>
     <content><![CDATA[<blockquote>
@@ -5872,88 +5964,9 @@ H=
       </tags>
   </entry>
   <entry>
-    <title>（十二）无人驾驶中的坐标转换</title>
-    <url>/archives/b10733db.html</url>
-    <content><![CDATA[<blockquote>
-<p>本文章学习总结自知乎大V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80MTI2MzcwMQ==" title="https://zhuanlan.zhihu.com/p/41263701">这里<i class="fa fa-external-link"></i></span></p>
-</blockquote>
-<h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>车辆坐标系的原点在车辆后轮轴的中心，如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/07/26/apIGHZdzyu7NX8x.jpg" alt="车辆坐标系示意图"></p>
-<p>以安装在无人车左前方的角雷达（Corner radar）为例，角雷达的安装位置和坐标系如下图绿线所示：</p>
-<p><img data-src="https://i.loli.net/2020/07/26/CQl5je3tbucfqHX.jpg" alt="角雷达坐标系示意图"></p>
-<p>角雷达检测到的障碍物如图中的绿点所示，绿点在雷达坐标系下的坐标为$(x_1, y_1)$，为了便于理解暂不加入$z$方向的坐标，绿点转换到自车坐标系下需要经过一定的数学运算：</p>
-<p><strong>(1) 旋转</strong><br>将角雷达坐标系沿着$z$轴进行一定角度的旋转，新坐标系与自车坐标系相平行，</p>
-<p><img data-src="https://i.loli.net/2020/07/26/gsIhPiXezmS1Zx8.jpg" alt="旋转角雷达坐标系使之与自车坐标系平行"></p>
-<p>障碍物在角雷达坐标系下的坐标为$(x_1, y_1)$，假设障碍物在旋转后的新坐标系下的坐标为$(x_0, y_0)$，安装角度$α$（可测量），做辅助线后如下图所示：</p>
-<p><img data-src="https://i.loli.net/2020/07/26/wI6ldTOeYgorqnz.jpg" alt="做辅助线后坐标系示意图"></p>
-<p>根据几何关系可得：</p>
-<script type="math/tex; mode=display">
-x_0=x_1*cosα-y_1*sinα \\
-y_0=x_1*sinα+y_1*cosα</script><p>矩阵形式为：</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}
-x_0 \\
-y_0
-\end{bmatrix}
-=\begin{bmatrix}
-cosα & -sinα \\
-sinα & cosα
-\end{bmatrix}
-*\begin{bmatrix}
-x_1 \\
-y_1
-\end{bmatrix}</script><p>由于旋转是绕$z$轴旋转，因此旋转前后$z$值保持不变，即$z_0$=$z_1$，故：</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}
-x_0 \\
-y_0 \\
-z_0
-\end{bmatrix}
-=\begin{bmatrix}
-cosα & -sinα & 0 \\
-sinα & cosα & 0 \\
-0 & 0 & 1
-\end{bmatrix}
-*\begin{bmatrix}
-x_1 \\
-y_1 \\
-z_1
-\end{bmatrix}
-=R_z
-*\begin{bmatrix}
-x_1 \\
-y_1 \\
-z_1
-\end{bmatrix}</script><p>$R_z$为绕$z$轴的旋转矩阵，同样也有绕$x$轴的旋转矩阵$R_x$和绕$y$轴的旋转矩阵$R_y$，考虑到一般情况，上式变换为：</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}
-x_0 \\
-y_0 \\
-z_0
-\end{bmatrix}
-=R_x*R_y*R_z
-*\begin{bmatrix}
-x_1 \\
-y_1 \\
-z_1
-\end{bmatrix}</script><p>再加上一个平移矩阵，就能够得到障碍物在自车坐标系中的最终坐标描述：</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}
-x_0 \\
-y_0 \\
-z_0
-\end{bmatrix}
-=R_x*R_y*R_z
-*\begin{bmatrix}
-x_1 \\
-y_1 \\
-z_1
-\end{bmatrix}
-+T_{xyz}</script><p>以上过程也称为<strong>欧拉变换</strong>，但是欧拉变换会有一个不可避免的问题——<strong>万向锁</strong>，欧拉变换的过程中在某些特殊情况时，会导致少一个维度。为了解决欧拉变换存在的万向锁问题，引入了<strong>四元数</strong>的概念。四元数除了能够解决万向锁的问题外，还能在一定程度上简化计算，因而百度Apollo也选择了四元数作为各个传感器安装位置和角度的存储介质。</p>
-<h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80MTI2MzcwMQ==" title="https://zhuanlan.zhihu.com/p/41263701">无人驾驶技术入门（十二）| 无人驾驶中的坐标转换<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
+    <title>（十五）再识图像之高级车道线检测</title>
+    <url>/archives/a2ff34db.html</url>
+    <content><![CDATA[<hr>
 ]]></content>
       <categories>
         <category>自动驾驶</category>
@@ -5966,19 +5979,6 @@ z_1
   <entry>
     <title>（十四）初识图像之初级车道线检测</title>
     <url>/archives/418d7d6f.html</url>
-    <content><![CDATA[<hr>
-]]></content>
-      <categories>
-        <category>自动驾驶</category>
-        <category>无人驾驶技术入门</category>
-      </categories>
-      <tags>
-        <tag>自动驾驶</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>（十五）再识图像之高级车道线检测</title>
-    <url>/archives/a2ff34db.html</url>
     <content><![CDATA[<hr>
 ]]></content>
       <categories>
