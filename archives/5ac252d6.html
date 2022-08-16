@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer - 第 14 章 操作重载与类型转换">
+<meta property="og:url" content="https://blog.shipengx.com/archives/5ac252d6.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E7%AC%AC%2014%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8.png">
+<meta property="article:published_time" content="2022-02-04T09:23:31.000Z">
+<meta property="article:modified_time" content="2022-05-12T07:56:45.254Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="C++ Primer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E7%AC%AC%2014%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/5ac252d6.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>C++ Primer - 第 14 章 操作重载与类型转换 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/5ac252d6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          C++ Primer - 第 14 章 操作重载与类型转换
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-04 17:23:31" itemprop="dateCreated datePublished" datetime="2022-02-04T17:23:31+08:00">2022-02-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-12 15:56:45" itemprop="dateModified" datetime="2022-05-12T15:56:45+08:00">2022-05-12</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">编码</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AC-Primer%E3%80%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">《C++ Primer》</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/5ac252d6.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/5ac252d6.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ol>
+<li><p>和内置类型的转换一样，类类型转换隐式地将一种类型的对象转换成另一种我们所需类型的对象。</p>
+</li>
+<li><p>当运算符作用于类类型的运算对象时，可以通过运算符重载重新定义该运算符的含义。</p>
+</li>
+</ol>
+<h1 id="14-1-基本概念" class="heading-control"><a href="#14-1-基本概念" class="headerlink" title="14.1 基本概念"></a>14.1 基本概念<a class="heading-anchor" href="#14-1-基本概念" aria-hidden="true"></a></h1><ol>
+<li><p><strong>重载的运算符是具有特殊名字的函数：它们的名字由关键字 <code>operator</code> 和其后要定义的运算符号共同组成。和其他函数一样，重载的运算符也包含返回类型、参数列表以及函数体。</strong></p>
+<p>重载运算符函数的参数数量与该运算符作用的运算对象数量一样多。一元运算符有一个参数，二元运算符有两个。对于二元运算符来说，左侧运算对象传递给第一个参数，而右侧运算对象传递给第二个参数。<strong>除了重载的函数调用运算符 <code>operator()</code> 之外，其他重载运算符不能含有默认实参。</strong></p>
+<p><strong>如果一个运算符函数是成员函数，则它的第一个（左侧）运算对象绑定到隐式的 <code>this</code> 指针上，因此，成员运算符函数的（显式）参数数量比运算符的运算对象总数少一个。</strong></p>
+<blockquote>
+<p>Note：当一个重载的运算符是成员函数时，<code>this</code> 绑定到左侧运算对象。成员运算符函数的（显式）参数数量比运算对象的数量少一个。</p>
+</blockquote>
+</li>
+<li><p>对于一个运算符函数来说，它或者是类的成员，或者至少含有一个类类型的参数。这一约定意味着当运算符作用于内置类型的运算对象时，我们无法改变该运算符的含义。</p>
+</li>
+<li><p>我们可以重载大多数（但不是全部）运算符：</p>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-1wig{font-weight:bold;text-align:left;vertical-align:top}<br>.tg .tg-baqh{text-align:center;vertical-align:top}<br>.tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-amwm" colspan="6"><center>运算符</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-1wig" colspan="6"><b>可以被重载的运算符</b></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">+</td>
+    <td class="tg-baqh">-</td>
+    <td class="tg-baqh">*</td>
+    <td class="tg-baqh">/</td>
+    <td class="tg-baqh">%</td>
+    <td class="tg-baqh">^</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">&amp;</td>
+    <td class="tg-baqh">|</td>
+    <td class="tg-baqh">~</td>
+    <td class="tg-baqh">!</td>
+    <td class="tg-baqh">,</td>
+    <td class="tg-baqh">=</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">&lt;</td>
+    <td class="tg-baqh">&gt;</td>
+    <td class="tg-baqh">&lt;=</td>
+    <td class="tg-baqh">&gt;=</td>
+    <td class="tg-baqh">++</td>
+    <td class="tg-baqh">--</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">&lt;&lt;</td>
+    <td class="tg-baqh">&gt;&gt;</td>
+    <td class="tg-baqh">==</td>
+    <td class="tg-baqh">!=</td>
+    <td class="tg-baqh">&amp;&amp;</td>
+    <td class="tg-baqh">||</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">+=</td>
+    <td class="tg-baqh">-=</td>
+    <td class="tg-baqh">/=</td>
+    <td class="tg-baqh">%=</td>
+    <td class="tg-baqh">^=</td>
+    <td class="tg-baqh">&amp;=</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">|=</td>
+    <td class="tg-baqh">*=</td>
+    <td class="tg-baqh">&lt;&lt;=</td>
+    <td class="tg-baqh">&gt;&gt;=</td>
+    <td class="tg-baqh">[]</td>
+    <td class="tg-baqh">()</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">-&gt;</td>
+    <td class="tg-baqh">-&gt;*</td>
+    <td class="tg-baqh">new</td>
+    <td class="tg-baqh">new[]</td>
+    <td class="tg-baqh">delete</td>
+    <td class="tg-baqh">delete[]</td>
+  </tr>
+  <tr>
+    <td class="tg-1wig" colspan="6"><b>不能被重载的运算符</b></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh" colspan="2">::</td>
+    <td class="tg-baqh">.*</td>
+    <td class="tg-baqh">.</td>
+    <td class="tg-baqh" colspan="2">?:</td>
+  </tr>
+</tbody>
+</table>
+</li>
+<li><p><strong>我们只能重载已有的运算符，而无权发明新的运算符号。</strong></p>
+</li>
+<li><p>有四个符号（<code>+</code>、<code>-</code>、<code>*</code>、<code>&amp;</code>）既是一元运算符也是二元运算符，所有这些运算符都能被重载，从参数的数量我们可以推断到底定义的是哪种运算符。</p>
+</li>
+<li><p><strong>对于一个重载的运算符来说，其优先级和结合律与对应的内置运算符保持一致。</strong> 不考虑运算对象类型的话，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x == y + z;</span><br></pre></td></tr></table></figure>
+<p>永远等价于 <code>x == (y + z);</code>。</p>
+</li>
+<li><p>通常情况下，我们将运算符作用于类型正确的实参，从而以这种间接方式“调用”重载的运算符函数。然而，<strong>我们也能像调用普通函数一样直接调用运算符函数，先指定函数名字，然后传入数量正确、类型适当的实参</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个非成员运算符函数的等价调用</span></span><br><span class="line">data1 + data2;           <span class="comment">// 普通的表达式</span></span><br><span class="line"><span class="keyword">operator</span>+(data1, data2); <span class="comment">// 等价的函数调用</span></span><br></pre></td></tr></table></figure>
+<p><strong>我们像调用其他成员函数一样显式地调用成员运算符函数。具体做法是，首先指定运行函数的对象（或指针）的名字，然后使用点运算符（或箭头运算符）访问希望调用的函数</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data1 += data2;          <span class="comment">// 基于“调用”的表达式</span></span><br><span class="line">data1.<span class="keyword">operator</span>+=(data2); <span class="comment">// 对成员运算符函数的等价调用</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>因为使用重载的运算符本质上是一次函数调用，所以这些关于运算对象求值顺序的规则无法应用到重载的运算符上。特别是，逻辑与运算符、逻辑或运算符和逗号运算符的运算对象求值顺序规则无法保留下来。除此之外，<strong><code>&amp;&amp;</code> 和 <code>||</code> 运算符的重载版本也无法保留内置运算符的短路求值属性，两个运算对象总是会被求值</strong>。</p>
+<p>因为上述运算符的重载版本无法保留求值顺序和/或短路求值属性，因此不建议重载它们。当代码使用了这些运算符的重载版本时，用户可能会突然发现他们一直习惯的求值规则不再适用了。</p>
+</li>
+<li><p>还有一个原因使得我们一般不重载逗号运算符和取地址运算符：C++ 语言已经定义了这两种运算符用于类类型对象时的特殊含义，这一点与大多数运算符都不相同。因为这两种运算符已经有了内置的含义，所以一般来说它们不应该被重载，否则它们的行为将异于常态，从而导致类的用户无法适应。</p>
+<blockquote>
+<p><strong>Best Practices：通常情况下，不应该重载逗号、取地址、逻辑与和逻辑或运算符。</strong></p>
+</blockquote>
+</li>
+<li><p>赋值运算符的行为与复合版本的类似：赋值之后，左侧运算对象和右侧运算对象的值相等，并且<strong>运算符应该返回它左侧运算对象的一个引用</strong>。重载的赋值运算应该继承而非违背其内置版本的含义。</p>
+</li>
+<li><p>下面的准则有助于我们在将运算符定义为成员函数还是普通的非成员函数做出抉择：</p>
+<ul>
+<li>赋值（<code>=</code>）、下标（<code>[]</code>）、调用（<code>()</code>）和成员访问箭头（<code>-&gt;</code>）运算符必须是成员。</li>
+<li>复合赋值运算符一般来说应该是成员，但并非必须，这一点与赋值运算符略有不同。</li>
+<li>改变对象状态的运算符或者与给定类型密切相关的运算符，如递增、递减和解引用运算符，通常应该是成员。</li>
+<li>具有对称性的运算符可能转换任意一端的运算对象，例如算术、相等性、关系和位运算符等，因此它们通常应该是普通的非成员函数。</li>
+</ul>
+</li>
+<li><p><strong>如果我们想提供含有类对象的混合类型表达式，则运算符必须定义成非成员函数。当我们把运算符定义成成员函数时，它的左侧运算对象必须是运算符所属类的一个对象。</strong> 例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">"world"</span>;</span><br><span class="line"><span class="built_in">string</span> t = s + <span class="string">"!"</span>;  <span class="comment">// 正确：我们能把一个 const char* 加到一个 string 对象中</span></span><br><span class="line"><span class="built_in">string</span> u = <span class="string">"hi"</span> + s; <span class="comment">// 如果 + 是 string 的成员，则产生错误</span></span><br></pre></td></tr></table></figure>
+<p>如果 <code>operator+</code> 是 <code>string</code> 类的成员，则上面的第一个加法等价于 <code>s.operator+(&quot;!&quot;)</code>。同样的，<code>&quot;hi&quot; + s</code> 等价于 <code>&quot;hi&quot;.operator+(s)</code>。显然 <code>&quot;hi&quot;</code> 的类型是 <code>const char*</code>，这是一种内置类型，根本就没有成员函数。</p>
+<p>因为 <code>string</code> 将 <code>+</code> 定义成了普通的非成员函数，所以 <code>&quot;hi&quot; + s</code> 等价于 <code>operator+(&quot;hi&quot;, s)</code>。和任何其他函数调用一样，每个实参都能被转换成形参类型。唯一的要求是至少有一个运算对象是类类型，并且两个运算对象都能准确无误地转换成 <code>string</code>。</p>
+</li>
+</ol>
+<h1 id="14-2-输入和输出运算符" class="heading-control"><a href="#14-2-输入和输出运算符" class="headerlink" title="14.2 输入和输出运算符"></a>14.2 输入和输出运算符<a class="heading-anchor" href="#14-2-输入和输出运算符" aria-hidden="true"></a></h1><h2 id="14-2-1-重载输出运算符-lt-lt" class="heading-control"><a href="#14-2-1-重载输出运算符-lt-lt" class="headerlink" title="14.2.1 重载输出运算符 &lt;&lt;"></a>14.2.1 重载输出运算符 &lt;&lt;<a class="heading-anchor" href="#14-2-1-重载输出运算符-lt-lt" aria-hidden="true"></a></h2><ol>
+<li><p>通常情况下，输出运算符的第一个形参是一个非常量 <code>ostream</code> 对象的引用。之所以 <code>ostream</code> 是非常量是因为向流写入内容会改变其状态；而该形参是引用是因为我们无法直接复制一个 <code>ostream</code> 对象。第二个形参一般来说是一个常量的引用，该常量是我们想要打印的类类型。第二个形参是引用的原因是我们希望避免复制实参；而之所以该形参可以是常量是因为（通常情况下）打印对象不会改变对象的内容。为了与其他输出运算符保持一致，<code>operator&lt;&lt;</code> 一般要返回它的 <code>ostream</code> 形参。</p>
+</li>
+<li><blockquote>
+<p><strong>Best Practices：</strong> 通常，输出运算符应该主要负责打印对象的内容而非控制格式，输出运算符不应该打印换行符。</p>
+</blockquote>
+</li>
+<li><p><strong>与 <code>iostream</code> 标准库兼容的输入输出运算符必须是普通的非成员函数，而不能是类的成员函数。</strong> 否则，它们的左侧运算对象将是我们的类的一个对象。</p>
+</li>
+<li><p><strong>IO 运算符通常需要读写类的非公有数据成员，所以 IO 运算符一般被声明为友元。</strong></p>
+</li>
+</ol>
+<h2 id="14-2-2-重载输入运算符-gt-gt" class="heading-control"><a href="#14-2-2-重载输入运算符-gt-gt" class="headerlink" title="14.2.2 重载输入运算符 &gt;&gt;"></a>14.2.2 重载输入运算符 &gt;&gt;<a class="heading-anchor" href="#14-2-2-重载输入运算符-gt-gt" aria-hidden="true"></a></h2><ol>
+<li><p>通常情况下，输入运算符的第一个形参是运算符将要读取的流的引用，第二个形参是将要读入到的（非常量）对象的引用。该运算符通常会返回某个给定流的引用。第二个形参之所以必须是个非常量是因为输入运算符本身的目的就是将数据读入到这个对象中。</p>
+</li>
+<li><blockquote>
+<p><strong>Note：</strong> 输入运算符必须处理输入可能失败的情况，而输出运算符不需要。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p><strong>Best Practices：</strong> 当读取操作发生错误时，输入运算符应该负责从错误中恢复。</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="14-3-算术和关系运算符" class="heading-control"><a href="#14-3-算术和关系运算符" class="headerlink" title="14.3 算术和关系运算符"></a>14.3 算术和关系运算符<a class="heading-anchor" href="#14-3-算术和关系运算符" aria-hidden="true"></a></h1><ol>
+<li><p>通常情况下，我们把算术和关系运算符定义成非成员函数以允许对左侧或右侧的运算对象进行转换。因为这些运算符一般不需要改变运算对象的状态，所以形参都是常量的引用。</p>
+</li>
+<li><p><strong>算术运算符通常会计算它的两个运算对象并得到一个新值，这个值有别于任意一个运算对象，常常位于一个局部变量之内，操作完成后返回该局部变量的副本作为其结果。</strong> 如果类定义了算术运算符，则它一般也会定义一个对应的复合赋值运算符。此时，最有效的方式是使用复合赋值来定义算术运算符：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设两个对象指向同一本书</span></span><br><span class="line">Sales_data <span class="keyword">operator</span>+(<span class="keyword">const</span> Sales_data &amp;lhs, <span class="keyword">const</span> Sales_data &amp;rhs)</span><br><span class="line">&#123;</span><br><span class="line">    Sales_data sum = lhs; <span class="comment">// 把 lhs 的数据成员拷贝给 sum</span></span><br><span class="line">    sum += rhs;           <span class="comment">// 将 rhs 加到 sum 中</span></span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>Tip：</strong> 如果类同时定义了算术运算符和相关的复合赋值运算符，则通常情况下应该使用复合赋值来实现算术运算符。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="14-3-1-相等运算符" class="heading-control"><a href="#14-3-1-相等运算符" class="headerlink" title="14.3.1 相等运算符"></a>14.3.1 相等运算符<a class="heading-anchor" href="#14-3-1-相等运算符" aria-hidden="true"></a></h2><ol>
+<li><ul>
+<li>如果一个类含有判断两个对象是否相等的操作，则它显然应该把函数定义成 <code>operator==</code> 而非一个普通的命名函数：因为用户肯定希望能使用 <code>==</code> 比较对象，所以提供了 <code>==</code> 就意味着用户无须再费时费力地学习并记忆一个全新的函数名字。此外，类定义了 <code>==</code> 运算符之后也更容易使用标准库容器和算法。</li>
+<li>如果类定义了 <code>operator==</code>，则该运算符应该能判断一组给定的对象中是否含有重复数据。</li>
+<li>通常情况下，相等运算符应该具有传递性，换句话说，如果 <code>a == b</code> 和 <code>b == c</code> 都为真，则 <code>a == c</code> 也应该为真。</li>
+<li>如果类定义了 <code>operator==</code>，则这个类也应该定义 <code>operator!=</code>。对于用户来说，当他们能使用 <code>==</code> 时肯定也希望能使用 <code>!=</code>，反之亦然。</li>
+<li>相等运算符和不相等运算符中的一个应该把工作委托给另外一个，这意味着其中一个运算符应该负责实际比较对象的工作，而另一个运算符则只是调用那个真正工作的运算符。</li>
+</ul>
+<p><br></p>
+<blockquote>
+<p><strong>Best Practices：</strong> 如果某个类在逻辑上有相等性的含义，则该类应该定义 <code>operator==</code>，这样做可以使得用户更容易使用标准库算法来处理这个类。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="14-3-2-关系运算符" class="heading-control"><a href="#14-3-2-关系运算符" class="headerlink" title="14.3.2 关系运算符"></a>14.3.2 关系运算符<a class="heading-anchor" href="#14-3-2-关系运算符" aria-hidden="true"></a></h2><ol>
+<li>定义了相等运算符的类也常常（但不总是）包含关系运算符。特别是，因为关联容器和一些算法要用到小于运算符，所以定义 <code>operator&lt;</code> 会比较有用。</li>
+<li><blockquote>
+<p><strong>Best Practices：</strong> 如果存在唯一一种逻辑可靠的 <code>&lt;</code> 定义，则应该考虑为这个类定义 <code>&lt;</code> 运算符。如果类同时还包含 <code>==</code>，则当且仅当 <code>&lt;</code> 的定义和 <code>==</code> 产生的结果一致时才定义 <code>&lt;</code> 运算符。</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="14-4-赋值运算符" class="heading-control"><a href="#14-4-赋值运算符" class="headerlink" title="14.4 赋值运算符"></a>14.4 赋值运算符<a class="heading-anchor" href="#14-4-赋值运算符" aria-hidden="true"></a></h1><ol>
+<li><p>和拷贝赋值及移动赋值运算符一样，其他重载的赋值运算符也必须先释放当前内存空间，再创建一片新空间。（移动赋值运算符并没有创建新空间，而是接管了右侧运算对象的资源——博主注）</p>
+</li>
+<li><p><strong>我们可以重载赋值运算符。不论形参的类型是什么，赋值运算符都必须定义为成员函数。</strong></p>
+</li>
+<li><p>复合赋值运算符不非得是类的成员，不过我们还是倾向于把包括复合赋值在内的所有赋值运算都定义在类的内部。为了与内置类型的复合赋值保持一致，类中的复合赋值运算符也要返回其左侧运算对象的引用。</p>
+<blockquote>
+<p><strong>Best Practices：赋值运算符必须定义成类的成员，复合赋值运算符通常情况下也应该这样做。这两类运算符都应该返回左侧运算对象的引用。</strong></p>
+</blockquote>
+</li>
+</ol>
+<h1 id="14-5-下标运算符" class="heading-control"><a href="#14-5-下标运算符" class="headerlink" title="14.5 下标运算符"></a>14.5 下标运算符<a class="heading-anchor" href="#14-5-下标运算符" aria-hidden="true"></a></h1><ol>
+<li><blockquote>
+<p><strong>Note：下标运算符必须是成员函数。</strong></p>
+</blockquote>
+</li>
+<li><p>为了与下标的原始定义兼容，下标运算符通常以所访问元素的引用作为返回值，这样做的好处是下标可以出现在赋值运算符的任意一端。进一步，<strong>我们最好同时定义下标运算符的常量版本和非常量版本，当作用于一个常量对象时，下标运算符返回常量引用以确保我们不会给返回的对象赋值</strong>。</p>
+<blockquote>
+<p><strong>Best Practices：如果一个类包含下标运算符，则它通常会定义两个版本：一个返回普通引用，另一个是类的常量成员并且返回常量引用。</strong></p>
+</blockquote>
+<p>举个例子，我们按照如下形式定义 <code>StrVec</code> 的下标运算符：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StrVec</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> &amp;<span class="keyword">operator</span>[](<span class="built_in">std</span>::<span class="keyword">size_t</span> n)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> elements[n];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;<span class="keyword">operator</span>[](<span class="built_in">std</span>::<span class="keyword">size_t</span> n) <span class="keyword">const</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> elements[n];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> *elements; <span class="comment">// 指向数组首元素的指针</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>上面这两个下标运算符的用法类似于 <code>vector</code> 或者数组中的下标。因为下标运算符返回的是元素的引用，所以当 <code>StrVec</code> 是非常量时，我们可以给元素赋值；而当我们对常量对象取下标时，不能为其赋值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设 svec 是一个 StrVec 对象</span></span><br><span class="line"><span class="keyword">const</span> StrVec cvec = svec; <span class="comment">// 把 svec 的元素拷贝到 cvec 中</span></span><br><span class="line"><span class="comment">// 如果 svec 中含有元素，对第一个元素运行 string 的 empty 函数</span></span><br><span class="line"><span class="keyword">if</span> (svec.size() &amp;&amp; svec[<span class="number">0</span>].empty())</span><br><span class="line">&#123;</span><br><span class="line">    svec[<span class="number">0</span>] = <span class="string">"zero"</span>; <span class="comment">// 正确：下标运算符返回 string 的引用</span></span><br><span class="line">    cvec[<span class="number">0</span>] = <span class="string">"Zip"</span>;  <span class="comment">// 错误：对 cvec 取下标返回的是常量引用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>通过区分成员函数是否是 <code>const</code> 的，我们可以对其进行重载。因为非常量版本的函数对于常量对象是不可用的，所以我们只能在一个常量对象上调用 <code>const</code> 成员函数。另一方面，虽然可以在非常量对象上调用常量版本或非常量版本，但显然此时非常量版本是一个更好的匹配。</strong>——博主注，<a href="https://blog.shipengx.com/archives/53fe514.html">《C++ Primer - 第 7 章 类》</a>第 41 条。</p>
+</li>
+</ol>
+<h1 id="14-6-递增和递减运算符" class="heading-control"><a href="#14-6-递增和递减运算符" class="headerlink" title="14.6 递增和递减运算符"></a>14.6 递增和递减运算符<a class="heading-anchor" href="#14-6-递增和递减运算符" aria-hidden="true"></a></h1><ol>
+<li>C++ 语言并不要求递增和递减运算符必须是类的成员，但是因为它们改变的正好是所操作对象的状态，所以建议将其设定为成员函数。</li>
+<li><blockquote>
+<p><strong>Best Practices：定义递增和递减运算符的类应该同时定义前置版本和后置版本。这些运算符通常应该被定义成类的成员。</strong></p>
+</blockquote>
+</li>
+<li><blockquote>
+<p><strong>Best Practices：为了与内置版本保持一致，前置运算符应该返回递增或递减后对象的引用。</strong></p>
+</blockquote>
+</li>
+<li><p>要想同时定义前置和后置运算符，必须首先解决一个问题，即普通的重载形式无法区分这两种情况。前置和后置版本使用的是同一个符号，意味着其重载版本所用的名字将是相同的，并且运算对象的数量和类型也相同。</p>
+<p><strong>为了解决这个问题，后置版本接受一个额外的（不被使用）<code>int</code> 类型的形参。当我们使用后置运算符时，编译器为这个形参提供一个值为 0 的实参。尽管从语法上来说后置函数可以使用这个额外的形参，但是在实际过程中通常不会这么做。这个形参的唯一作用就是区分前置版本和后置版本的函数，而不是真的要在实现后置版本时参与运算。</strong></p>
+</li>
+<li><blockquote>
+<p><strong>Best Practices：为了与内置版本保持一致，后置运算符应该返回对象的原值（递增或递减之前的值），返回的形式是一个值而非引用。</strong></p>
+</blockquote>
+</li>
+<li><p>对于后置版本来说，在递增对象之前需要首先记录对象的状态：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 后置版本：递增/递减对象的值但是返回原值</span></span><br><span class="line">StrBlobPtr StrBlobPtr::<span class="keyword">operator</span>++(<span class="keyword">int</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 此处无须检查有效性，调用前置递增运算时才需要检查</span></span><br><span class="line">    StrBlobPtr ret = *<span class="keyword">this</span>; <span class="comment">// 记录当前的值</span></span><br><span class="line">    ++*<span class="keyword">this</span>;                <span class="comment">// 向前移动一个元素，前置 ++ 需要检查递增的有效性</span></span><br><span class="line">    <span class="keyword">return</span> ret;             <span class="comment">// 返回之前记录的状态</span></span><br><span class="line">&#125;</span><br><span class="line">StrBlobPtr StrBlobPtr::<span class="keyword">operator</span>--(<span class="keyword">int</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 此处无须检查有效性，调用前置递减运算时才需要检查</span></span><br><span class="line">    StrBlobPtr ret = *<span class="keyword">this</span>; <span class="comment">// 记录当前的值</span></span><br><span class="line">    --*<span class="keyword">this</span>;                <span class="comment">// 向后移动一个元素，前置 -- 需要检查递减的有效性</span></span><br><span class="line">    <span class="keyword">return</span> ret;             <span class="comment">// 返回之前记录的状态</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>Note：</strong> 因为我们不会用到 <code>int</code> 形参，所以无须为其命名。</p>
+</blockquote>
+</li>
+<li><p>如果我们想通过函数调用的方式调用后置版本，则必须为它的整型参数传递一个值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">StrBlobPtr <span class="title">p</span><span class="params">(a1)</span></span>; <span class="comment">// p 指向 a1 中的 vector</span></span><br><span class="line">p.<span class="keyword">operator</span>++(<span class="number">0</span>);  <span class="comment">// 调用后置版本的 operator++</span></span><br><span class="line">p.<span class="keyword">operator</span>++();   <span class="comment">// 调用前置版本的 operator++</span></span><br></pre></td></tr></table></figure>
+<p>尽管传入的值通常会被运算符函数忽略，但却必不可少，因为编译器只有通过它才能知道应该使用后置版本。</p>
+</li>
+</ol>
+<h1 id="14-7-成员访问运算符" class="heading-control"><a href="#14-7-成员访问运算符" class="headerlink" title="14.7 成员访问运算符"></a>14.7 成员访问运算符<a class="heading-anchor" href="#14-7-成员访问运算符" aria-hidden="true"></a></h1><ol>
+<li><blockquote>
+<p><strong>Note：</strong> 箭头运算符必须是类的成员。解引用运算符通常也是类的成员，尽管并非必须如此。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p><strong>Note：</strong> 重载的箭头运算符必须返回类的指针或者自定义了箭头运算符的某个类的对象。</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="14-8-函数调用运算符" class="heading-control"><a href="#14-8-函数调用运算符" class="headerlink" title="14.8 函数调用运算符"></a>14.8 函数调用运算符<a class="heading-anchor" href="#14-8-函数调用运算符" aria-hidden="true"></a></h1><ol>
+<li><p>如果类重载了函数调用运算符，则我们可以像使用函数一样使用该类的对象。</p>
+<p>举个简单的例子，下面这个名为 <code>absInt</code> 的 <code>struct</code> 含有一个调用运算符，该运算符负责返回其参数的绝对值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">absInt</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">int</span> val)</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> val &lt; <span class="number">0</span> ? -val : val; &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这个类只定义了一种操作：函数调用运算符，它负责接受一个 <code>int</code> 类型的实参，然后返回该实参的绝对值。</p>
+<p>我们使用调用运算符的方式是令一个 <code>absInt</code> 对象作用于一个实参列表，这一过程看起来非常像调用函数的过程：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">-42</span>;</span><br><span class="line">absInt absObj;      <span class="comment">// 含有函数调用运算符的对象</span></span><br><span class="line"><span class="keyword">int</span> ui = absObj(i); <span class="comment">// 将 i 传递给 absObj.operator()</span></span><br></pre></td></tr></table></figure>
+<p>即使 <code>absObj</code> 只是一个对象而非函数，我们也能“调用”该对象。<strong>调用对象实际上是在运行重载的调用运算符。</strong> 在此例中，该运算符接受一个 <code>int</code> 值并返回其绝对值。</p>
+</li>
+<li><blockquote>
+<p><strong>Note：函数调用运算符必须是成员函数。一个类可以定义多个不同版本的调用运算符，相互之间应该在参数数量或类型上有所区别。</strong></p>
+</blockquote>
+</li>
+<li><p>如果类定义了调用运算符，则该类的对象称作<strong>函数对象</strong>（function object）。因为可以调用这种对象，所以我们说这些对象的“行为像函数一样”。</p>
+</li>
+<li><p>和其他类一样，函数对象类除了 <code>operator()</code> 之外也可以包含其他成员。函数对象类通常含有一些数据成员，这些成员被用于定制调用运算符中的操作。</p>
+</li>
+<li><p><strong>函数对象常常作为泛型算法的实参。</strong> 例如，可以使用标准库 <code>for_each</code> 算法和我们自己的 <code>PrintString</code> 类来打印容器的内容：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for_each(vs.begin(), vs.end(), PrintString(<span class="built_in">cerr</span>, <span class="string">'\n'</span>));</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="14-8-1-lambda-是函数对象" class="heading-control"><a href="#14-8-1-lambda-是函数对象" class="headerlink" title="14.8.1 lambda 是函数对象"></a>14.8.1 lambda 是函数对象<a class="heading-anchor" href="#14-8-1-lambda-是函数对象" aria-hidden="true"></a></h2><ol>
+<li><p>当我们编写了一个 <code>lambda</code> 后，编译器将该表达式翻译成一个未命名类的未命名对象，在 <code>lambda</code> 表达式产生的类中含有一个重载的函数调用运算符，例如，对于我们传递给 <code>stable_sort</code> 作为其最后一个实参的 <code>lambda</code> 表达式来说：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据单词的长度对其进行排序，对于长度相同的单词按照字母表顺序排序</span></span><br><span class="line">stable_sort(words.begin(), words.end(),</span><br><span class="line">            [](<span class="keyword">const</span> <span class="built_in">string</span> &amp;a, <span class="keyword">const</span> <span class="built_in">string</span> &amp;b)</span><br><span class="line">            &#123; <span class="keyword">return</span> a.size() &lt; b.size(); &#125;);</span><br></pre></td></tr></table></figure>
+<p>其行为类似于下面这个类的一个未命名对象</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ShorterString</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;s1, <span class="keyword">const</span> <span class="built_in">string</span> &amp;s2)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> s1.size() &lt; s2.size();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>产生的类只有一个函数调用运算符成员，它负责接受两个 <code>string</code> 并比较它们的长度，它的形参列表和函数体与 <code>lambda</code> 表达式完全一样。默认情况下 <code>lambda</code> 不能改变它捕获的变量。因此在默认情况下，由 <code>lambda</code> 产生的类当中的函数调用运算符是一个 <code>const</code> 成员函数。如果 <code>lambda</code> 被声明为可变的，则调用运算符就不是 <code>const</code> 的了。</p>
+<p>用这个类替代 <code>lambda</code> 表达式后，我们可以重写并重新调用 <code>stable_sort</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stable_sort(words.begin(), words.end(), ShorterString());</span><br></pre></td></tr></table></figure>
+<p>第三个实参是新构建的 <code>ShorterString</code> 对象，当 <code>stable_sort</code> 内部的代码每次比较两个 <code>string</code> 时就会“调用”这一对象，此时该对象将调用运算符的函数体，判断第一个 <code>string</code> 的大小小于第二个时返回 <code>true</code>。</p>
+</li>
+<li><p><strong>当一个 <code>lambda</code> 表达式通过引用捕获变量时，将由程序负责确保 <code>lambda</code> 执行时引用所引的对象确实存在。因此，编译器可以直接使用该引用而无须在 <code>lambda</code> 产生的类中将其存储为数据成员。</strong></p>
+</li>
+<li><p><strong>通过值捕获的变量被拷贝到 <code>lambda</code> 中。因此，这种 <code>lambda</code> 产生的类必须为每个值捕获的变量建立对应的数据成员，同时创建构造函数，令其使用捕获的变量的值来初始化数据成员。</strong></p>
+</li>
+<li><p><strong><code>lambda</code> 表达式产生的类不含默认构造函数、赋值运算符及默认析构函数；它是否含有默认的拷贝/移动构造函数则通常要视捕获的数据成员类型而定。</strong></p>
+</li>
+</ol>
+<h2 id="14-8-2-标准库定义的函数对象" class="heading-control"><a href="#14-8-2-标准库定义的函数对象" class="headerlink" title="14.8.2 标准库定义的函数对象"></a>14.8.2 标准库定义的函数对象<a class="heading-anchor" href="#14-8-2-标准库定义的函数对象" aria-hidden="true"></a></h2><ol>
+<li><p>标准库定义了一组表示算术运算符、关系运算符和逻辑运算符的类，每个类分别定义了一个执行命名操作的调用运算符。例如，<code>plus</code> 类定义了一个函数调用运算符用于对一对运算对象执行 <code>+</code> 的操作；<code>modulus</code> 类定义了一个调用运算符执行二元的 <code>%</code> 操作；<code>equal_to</code> 类执行 <code>==</code>，等等。</p>
+<p>这些类都被定义成模板的形式，我们可以为其指定具体的应用类型，这里的类型即调用运算符的形参类型。例如，<code>plus&lt;string&gt;</code> 令 <code>string</code> 加法运算符作用于 <code>string</code> 对象；<code>plus&lt;int&gt;</code> 的运算对象是 <code>int</code>；<code>plus&lt;Sales_data&gt;</code> 对 <code>Sales_data</code> 对象执行加法运算，以此类推。</p>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial,    sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial,    sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;   vertical-align:top}<br>.tg .tg-fymr{border-color:inherit;font-weight:bold;text-align:left;   vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="3"><center>标准库函数对象</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <th class="tg-7btt">算术</th>
+    <th class="tg-7btt">关系</th>
+    <th class="tg-7btt">逻辑</th>
+  </tr>
+  <tr>
+    <td class="tg-0pky">plus&lt;Type&gt;</td>
+    <td class="tg-0pky">equal_to&lt;Type&gt;</td>
+    <td class="tg-0pky">logical_and&lt;Type&gt;</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">minus&lt;Type&gt;</td>
+    <td class="tg-0pky">not_equal_to&lt;Type&gt;</td>
+    <td class="tg-0pky">logical_or&lt;Type&gt;</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">multiplies&lt;Type&gt;</td>
+    <td class="tg-0pky">greater&lt;Type&gt;</td>
+    <td class="tg-0pky">logical_not&lt;Type&gt;</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">divides&lt;Type&gt;</td>
+    <td class="tg-0pky">greater_equal&lt;Type&gt;</td>
+    <td class="tg-0pky" rowspan="3"></td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">modulus&lt;Type&gt;</td>
+    <td class="tg-0pky">less&lt;Type&gt;</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">negate&lt;Type&gt;</td>
+    <td class="tg-0pky">less_equal&lt;Type&gt;</td>
+  </tr>      
+</tbody>
+</table>
+</li>
+<li><p>表示运算符的函数对象类常用来替换算法中的默认运算符。如我们所知，在默认情况下排序算法使用 <code>operator&lt;</code> 将序列按照升序排列。如果要执行降序排列的话，我们可以传入一个 <code>greater</code> 类型的对象。该类将产生一个调用运算符并负责执行待排序类型的大于运算。例如，如果 <code>svec</code> 是一个 <code>vector&lt;string&gt;</code>，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sort(svec.begin(), svec.end(), greater&lt;<span class="built_in">string</span>&gt;());</span><br></pre></td></tr></table></figure>
+<p>则上面的语句将按照降序对 <code>svec</code> 进行排序。第三个实参是 <code>greater&lt;string&gt;</code> 类型的一个未命名的对象，因此当 <code>sort</code> 比较元素时，不再是使用默认的 <code>&lt;</code> 运算符，而是调用给定的 <code>greater</code> 函数对象。该对象负责在 <code>string</code> 元素之间执行 <code>&gt;</code> 比较运算。</p>
+<p>需要特别注意的是，<strong>标准库规定其函数对象对于指针同样适用</strong>。我们之前曾经介绍过比较两个无关指针将产生未定义的行为，然而我们可能会希望通过比较指针的内存地址来 <code>sort</code> 指针的 <code>vector</code>。直接这么做将产生未定义的行为，因此我们可以使用一个标准库函数对象来实现该目的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span> *&gt; nameTable; <span class="comment">// 指针的 vector</span></span><br><span class="line"><span class="comment">//错误：nameTable 中的指针彼此之间没有关系，所以 &lt; 将产生未定义的行为</span></span><br><span class="line">sort(nameTable.begin(), nameTable.end(),</span><br><span class="line">     [](<span class="built_in">string</span> *a, <span class="built_in">string</span> *b)</span><br><span class="line">     &#123; <span class="keyword">return</span> a &lt; b; &#125;);</span><br><span class="line"><span class="comment">// 正确：标准库规定指针的 less 是定义良好的</span></span><br><span class="line">sort(nameTable.begin(), nameTable.end(), less&lt;<span class="built_in">string</span> *&gt;());</span><br></pre></td></tr></table></figure>
+<p><strong>关联容器使用 <code>less&lt;key_type&gt;</code> 对元素排序，因此我们可以定义一个指针的 <code>set</code> 或者在 <code>map</code> 中使用指针作为关键值而无须直接声明 <code>less</code>。</strong></p>
+</li>
+</ol>
+<h2 id="14-8-3-可调用对象与-function" class="heading-control"><a href="#14-8-3-可调用对象与-function" class="headerlink" title="14.8.3 可调用对象与 function"></a>14.8.3 可调用对象与 function<a class="heading-anchor" href="#14-8-3-可调用对象与-function" aria-hidden="true"></a></h2><ol>
+<li><p><strong>C++ 语言中有几种可调用的对象：函数、函数指针、<code>lambda</code> 表达式、<code>bind</code> 创建的对象以及重载了函数调用运算符的类。</strong></p>
+</li>
+<li><p>和其他对象一样，可调用的对象也有类型。例如，每个 <code>lambda</code> 有它自己唯一的（未命名）类类型；函数及函数指针的类型则由其返回值类型和实参类型决定，等等。</p>
+<p>然而，两个不同类型的可调用对象却可能共享同一种<strong>调用形式</strong>（call signature）。调用形式指明了调用返回的类型以及传递给调用的实参类型。一种调用形式对应一个函数类型，例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>(<span class="keyword">int</span>, <span class="keyword">int</span>)</span><br></pre></td></tr></table></figure>
+<p>是一个函数类型，它接受两个 <code>int</code>、返回一个 <code>int</code>。</p>
+</li>
+<li><p>对于几个可调用对象共享同一种调用形式的情况，有时我们会希望把它们看成具有相同的类型。例如，考虑下列不同类型的可调用对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 普通函数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123; returni + j; &#125;</span><br><span class="line"><span class="comment">// lambda，其产生一个未命名的函数对象类</span></span><br><span class="line"><span class="keyword">auto</span> mod = [](<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span><br><span class="line">&#123; <span class="keyword">return</span> i % j; &#125;;</span><br><span class="line"><span class="comment">// 函数对象类</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">divide</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">int</span> denominator, <span class="keyword">int</span> divisor)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> denominator / divisor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>上面这些可调用对象分别对其参数执行了不同的算术运算，尽管它们的类型各不相同，但是共享同一种调用形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>(<span class="keyword">int</span>, <span class="keyword">int</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>函数表</strong>（function table）用于存储指向可调用对象的“指针”。当程序需要执行某个特定的操作时，从表中查找该调用的函数。</p>
+<p>在 C++ 语言中，函数表很容易通过 <code>map</code> 来实现。对于此例来说，我们使用一个表示运算符符号的 <code>string</code> 对象作为关键字；使用实现运算符的函数作为值。当我们需要求给定运算符的值时，先通过运算符索引 <code>map</code>，然后调用找到的那个元素。</p>
+<p>假定我们的所有函数都相互独立，并且只处理关于 <code>int</code> 的二元运算，则 <code>map</code> 可以定义成如下的形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 构建从运算符到函数指针的映射关系，其中函数接受两个 int、返回一个 int</span></span><br><span class="line"><span class="built_in">map</span>&lt;<span class="built_in">string</span>, <span class="keyword">int</span> (*)(<span class="keyword">int</span>, <span class="keyword">int</span>)&gt; binops;</span><br></pre></td></tr></table></figure>
+<p>我们可以按照下面的形式将 <code>add</code> 的指针添加到 <code>binops</code> 中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正确：add 是一个指向正确类型函数的指针</span></span><br><span class="line">binops.insert(&#123;<span class="string">"+"</span>, add&#125;); <span class="comment">// &#123;"+", add&#125; 是一个 pair</span></span><br></pre></td></tr></table></figure>
+<p>但是我们不能将 <code>mod</code> 或者 <code>divide</code> 存入 <code>binops</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">binops.insert(&#123;<span class="string">"%"</span>, mod&#125;); <span class="comment">// 错误：mod 不是一个函数指针</span></span><br></pre></td></tr></table></figure>
+<p>问题在于 <code>mod</code> 是个 <code>lambda</code> 表达式，而每个 <code>lambda</code> 有它自己的类类型，该类型与存储在 <code>binops</code> 中的值的类型不匹配。</p>
+</li>
+<li><p>可以使用一个名为 <code>function</code> 的新的标准库类型解决上述问题，<code>function</code> 定义在 <code>functional</code> 头文件中：</p>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-cly1{text-align:left;vertical-align:middle}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;   vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}<br>.tg .tg-fymr{border-color:inherit;font-weight:bold;text-align:left;   vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="2"><center>function 的操作</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">function&lt;T&gt; f;</td>
+    <td class="tg-0pky">f 是一个用来存储可调用对象的空 function，这些可调用对象的调用形式应该与函数类型 T 相同（即 T 是 retType(args)）</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">function&lt;T&gt; f(nullptr);</td>
+    <td class="tg-0pky">显式地构造一个空 function</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">function&lt;T&gt; f(obj);</td>
+    <td class="tg-0lax">在 f 中存储可调用对象 obj 的副本</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">f</td>
+    <td class="tg-0pky">将 f 作为条件：当 f 含有一个可调用对象时为真；否则为假</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">f(args)</td>
+    <td class="tg-0pky">调用 f 中的对象，参数是 args</td>
+  </tr>
+  <tr>
+    <th class="tg-fymr" colspan="2">定义为 function&lt;T&gt; 的成员的类型</th>
+  </tr>
+  <tr>
+    <td class="tg-0pky">result type</td>
+    <td class="tg-0pky">该 function 类型的可调用对象返回的类型</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">argument_type</td>
+    <td class="tg-cly1" rowspan="3">当 T 有一个或两个实参时定义的类型。如果 T 只有一个实参，则 argument_type 是该类型的同义词；如果 T 有两个实参，则    first_argument_type 和 second_argument_type 分别代表两个实参的类型</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">first_argument_type</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">second_argument_type</td>
+  </tr>
+</tbody>
+</table>
+</li>
+<li><p><code>function</code> 是一个模板，和我们使用过的其他模板一样，当创建一个具体的 <code>function</code> 类型时我们必须提供额外的信息。在此例中，所谓额外的信息是指该 <code>function</code> 类型能够表示的对象的调用形式。参考其他模板，我们在一对尖括号内指定类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function&lt;<span class="keyword">int</span>(<span class="keyword">int</span>, <span class="keyword">int</span>)&gt;</span><br></pre></td></tr></table></figure>
+<p>在这里我们声明了一个 <code>function</code> 类型，它可以表示接受两个 <code>int</code>、返回一个 <code>int</code> 的可调用对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function&lt;<span class="keyword">int</span>(<span class="keyword">int</span>, <span class="keyword">int</span>)&gt; f1 = add;             <span class="comment">// 函数指针</span></span><br><span class="line">function&lt;<span class="keyword">int</span>(<span class="keyword">int</span>, <span class="keyword">int</span>)&gt; f2 = divide();        <span class="comment">// 函数对象类的对象</span></span><br><span class="line">function&lt;<span class="keyword">int</span>(<span class="keyword">int</span>, <span class="keyword">int</span>)&gt; f3 = [](<span class="keyword">int</span> i, <span class="keyword">int</span> j) <span class="comment">// lambda</span></span><br><span class="line">                             &#123; <span class="keyword">return</span> i * j; &#125;;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; f1(<span class="number">4</span>, <span class="number">2</span>) &lt;&lt; <span class="built_in">endl</span>; <span class="comment">// 打印 6</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; f2(<span class="number">4</span>, <span class="number">2</span>) &lt;&lt; <span class="built_in">endl</span>; <span class="comment">// 打印 2</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; f3(<span class="number">4</span>, <span class="number">2</span>) &lt;&lt; <span class="built_in">endl</span>; <span class="comment">// 打印 8</span></span><br></pre></td></tr></table></figure>
+<p>使用这个 <code>function</code> 类型我们可以重新定义 <code>map</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 列举了可调用对象与二元运算符对应关系的表格</span></span><br><span class="line"><span class="comment">// 所有可调用对象都必须接受两个 int、返回一个 int</span></span><br><span class="line"><span class="comment">// 其中的元素可以是函数指针、函数对象或者 lambda</span></span><br><span class="line"><span class="built_in">map</span>&lt;<span class="built_in">string</span>, function&lt;<span class="keyword">int</span>(<span class="keyword">int</span>, <span class="keyword">int</span>)&gt;&gt; binops;</span><br></pre></td></tr></table></figure>
+<p>我们能把所有可调用对象，包括函数指针、<code>lambda</code> 或者函数对象在内，都添加到这个 <code>map</code> 中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">map</span>&lt;<span class="built_in">string</span>, function&lt;<span class="keyword">int</span>(<span class="keyword">int</span>, <span class="keyword">int</span>)&gt;&gt; binops = &#123;</span><br><span class="line">    &#123;<span class="string">"+"</span>, add&#125;,                                <span class="comment">// 函数指针</span></span><br><span class="line">    &#123;<span class="string">"-"</span>, <span class="built_in">std</span>::minus&lt;<span class="keyword">int</span>&gt;()&#125;,                  <span class="comment">// 标准库函数对象</span></span><br><span class="line">    &#123;<span class="string">"/"</span>, divide()&#125;,                           <span class="comment">// 用户定义的函数对象</span></span><br><span class="line">    &#123;<span class="string">"*"</span>, [](<span class="keyword">int</span> i, <span class="keyword">int</span> j) &#123; <span class="keyword">return</span> i * j; &#125;&#125;, <span class="comment">// 未命名的 lambda</span></span><br><span class="line">    &#123;<span class="string">"8"</span>, mod&#125;&#125;;                               <span class="comment">// 命名了的 lambda 对象</span></span><br></pre></td></tr></table></figure>
+<p>一如往常，<strong>当我们索引 <code>map</code> 时将得到关联值的一个引用</strong>。如果我们索引 <code>binops</code>，将得到 <code>function</code> 对象的引用。<strong><code>function</code> 类型重载了调用运算符，该运算符接受它自己的实参然后将其传递给存好的可调用对象</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">binops[<span class="string">"+"</span>](<span class="number">10</span>, <span class="number">5</span>); <span class="comment">// 调用 add(10, 5)</span></span><br><span class="line">binops[<span class="string">"-"</span>](<span class="number">10</span>, <span class="number">5</span>); <span class="comment">// 使用 minus&lt;int&gt; 对象的调用运算符</span></span><br><span class="line">binops[<span class="string">"/"</span>](<span class="number">10</span>, <span class="number">5</span>); <span class="comment">// 使用 divide 对象的调用运算符</span></span><br><span class="line">binops[<span class="string">"*"</span>](<span class="number">10</span>, <span class="number">5</span>); <span class="comment">// 调用 lambda 函数对象</span></span><br><span class="line">binops[<span class="string">"%"</span>](<span class="number">10</span>, <span class="number">5</span>); <span class="comment">// 调用 lambda 函数对象</span></span><br></pre></td></tr></table></figure>
+<p>我们依次调用了 <code>binops</code> 中存储的每个操作。在第一个调用中，我们获得的元素存放着一个指向 <code>add</code> 函数的指针，因此调用 <code>binops[&quot;+&quot;](10, 5)</code> 实际上是使用该指针调用 <code>add</code>，并传入 10 和 5。在接下来的调用中，<code>binops[&quot;-&quot;]</code> 返回一个存放着 <code>std::minus&lt;int&gt;</code> 类型对象的 <code>function</code>，我们将执行该对象的调用运算符。</p>
+</li>
+<li><p>我们不能（直接）将重载函数的名字存入 <code>function</code> 类型的对象中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123; <span class="keyword">return</span> i + j; &#125;</span><br><span class="line"><span class="function">Sales_data <span class="title">add</span><span class="params">(<span class="keyword">const</span> Sales data &amp;, <span class="keyword">const</span> Sales data &amp;)</span></span>;</span><br><span class="line"><span class="built_in">map</span>&lt;<span class="built_in">string</span>, function&lt;<span class="keyword">int</span>(<span class="keyword">int</span>, <span class="keyword">int</span>)&gt;&gt; binops;</span><br><span class="line">binops.insert(&#123;<span class="string">"+"</span>, add&#125;); <span class="comment">// 错误：哪个 add？</span></span><br></pre></td></tr></table></figure>
+<p>解决上述二义性问题的一条途径是存储函数指针而非函数的名字：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> (*fp)(<span class="keyword">int</span>, <span class="keyword">int</span>) = add; <span class="comment">// 指针所指的 add 是接受两个 int 的版本</span></span><br><span class="line">binops.insert(&#123;<span class="string">"+"</span>, fp&#125;);  <span class="comment">// 正确：fp 指向一个正确的 add 版本</span></span><br></pre></td></tr></table></figure>
+<p>同样，我们也能使用 <code>lambda</code> 来消除二义性：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正确：使用 lambda 来指定我们希望使用的 add 版本</span></span><br><span class="line">binops.insert(&#123;<span class="string">"+"</span>, [](<span class="keyword">int</span> a, <span class="keyword">int</span> b) &#123; <span class="keyword">return</span> add(a, b); &#125;&#125;);</span><br></pre></td></tr></table></figure>
+<p><code>lambda</code> 内部的函数调用传入了两个 <code>int</code>，因此该调用只能匹配接受两个 <code>int</code> 的 <code>add</code> 版本，而这也正是执行 <code>lambda</code> 时真正调用的函数。</p>
+</li>
+</ol>
+<h1 id="14-9-重载、类型转换与运算符" class="heading-control"><a href="#14-9-重载、类型转换与运算符" class="headerlink" title="14.9 重载、类型转换与运算符"></a>14.9 重载、类型转换与运算符<a class="heading-anchor" href="#14-9-重载、类型转换与运算符" aria-hidden="true"></a></h1><ol>
+<li>转换构造函数和类型转换运算符共同定义了<strong>类类型转换</strong>（class-type conversions），这样的转换有时也被称作<strong>用户定义的类型转换</strong>（user-defined conversions）。</li>
+</ol>
+<h2 id="14-9-1-类型转换运算符" class="heading-control"><a href="#14-9-1-类型转换运算符" class="headerlink" title="14.9.1 类型转换运算符"></a>14.9.1 类型转换运算符<a class="heading-anchor" href="#14-9-1-类型转换运算符" aria-hidden="true"></a></h2><ol>
+<li><p>转换构造函数和类型转换运算符共同定义了<strong>类类型转换</strong>（class-type conversions），这样的转换有时也被称作<strong>用户定义的类型转换</strong>（user-defined conversions）。</p>
+</li>
+<li><p><strong>类型转换运算符</strong>（conversion operator）是类的一种特殊成员函数，它负责将一个类类型的值转换成其他类型。类型转换函数的一般形式如下所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">operator</span> <span class="title">type</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br></pre></td></tr></table></figure>
+<p>其中 <code>type</code> 表示某种类型。类型转换运算符可以面向任意类型（除了 <code>void</code> 之外）进行定义，只要该类型能作为函数的返回类型。因此，我们<strong>不允许转换成数组或者函数类型，但允许转换成指针（包括数组指针及函数指针）或者引用类型</strong>。</p>
+<p><strong>类型转换运算符既没有显式的返回类型，也没有形参，而且必须定义成类的成员函数。类型转换运算符通常不应该改变待转换对象的内容，因此，类型转换运算符一般被定义成 <code>const</code> 成员。</strong></p>
+<blockquote>
+<p><strong>Note：一个类型转换函数必须是类的成员函数；它不能声明返回类型，形参列表也必须为空。类型转换函数通常应该是 <code>const</code>。</strong></p>
+</blockquote>
+</li>
+<li><p>举个例子，我们定义一个比较简单的类，令其表示 0 到 255 之间的一个整数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SmallInt</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    SmallInt(<span class="keyword">int</span> i = <span class="number">0</span>) : val(i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (i &lt; <span class="number">0</span> || i &gt; <span class="number">255</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="built_in">std</span>::out_of_range(<span class="string">"Bad SmallInt value"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">int</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> val; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">size_t</span> val;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>我们的 <code>SmallInt</code> 类既定义了向类类型的转换，也定义了从类类型向其他类型的转换。其中，构造函数将算术类型的值转换成 <code>smallInt</code> 对象，而类型转换运算符将 <code>SmallInt</code> 对象转换成 <code>int</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SmallInt si;</span><br><span class="line">si = <span class="number">4</span>; <span class="comment">// 首先将 4 隐式地转换成 SmallInt，然后调用 SmallInt::operator=</span></span><br><span class="line">si + <span class="number">3</span>; <span class="comment">// 首先将 si 隐式地转换成 int，然后执行整数的加法</span></span><br></pre></td></tr></table></figure>
+<p><strong>尽管编译器一次只能执行一个用户定义的类型转换，但是隐式的用户定义类型转换可以置于一个标准（内置）类型转换之前或之后，并与其一起使用。</strong> 因此，我们可以将任何算术类型传递给 <code>SmallInt</code> 的构造函数。类似的，我们也能使用类型转换运算符将一个 <code>SmallInt</code> 对象转换成 <code>int</code>，然后再将所得的 <code>int</code> 转换成任何其他算术类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 内置类型转换将 double 实参转换成 int</span></span><br><span class="line">SmallInt si = <span class="number">3.14</span>; <span class="comment">// 调用 SmallInt(int) 构造函数</span></span><br><span class="line"><span class="comment">// SmallInt 的类型转换运算符将 si 转换成 int</span></span><br><span class="line">si + <span class="number">3.14</span>;          <span class="comment">// 内置类型转换将所得的 int 继续转换成 double</span></span><br></pre></td></tr></table></figure>
+<p>因为类型转换运算符是隐式执行的，所以无法给这些函数传递实参，当然也就不能在类型转换运算符的定义中使用任何形参。同时，尽管类型转换函数不负责指定返回类型，但实际上每个类型转换函数都会返回一个对应类型的值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SmallInt</span>;</span></span><br><span class="line"><span class="function"><span class="keyword">operator</span> <span class="title">int</span><span class="params">(SmallInt &amp;)</span></span>; <span class="comment">// 错误：不是成员函数</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SmallInt</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="keyword">operator</span> <span class="title">int</span><span class="params">()</span> <span class="keyword">const</span></span>;             <span class="comment">// 错误：指定了返回类型</span></span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">int</span><span class="params">(<span class="keyword">int</span> = <span class="number">0</span>)</span> <span class="keyword">const</span></span>;          <span class="comment">// 错误：参数列表不为空</span></span><br><span class="line">    <span class="keyword">operator</span> <span class="keyword">int</span> *() <span class="keyword">const</span> &#123; <span class="keyword">return</span> <span class="number">42</span>; &#125; <span class="comment">// 错误：42 不是一个指针</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对于类来说，定义向 <code>bool</code> 的类型转换还是比较普遍的现象。</p>
+</li>
+<li><p>C++11 新标准引入了<strong>显式的类型转换运算符</strong>（explicit conversion operator）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SmallInt</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 编译器不会自动执行这一类型转换</span></span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="keyword">operator</span> <span class="title">int</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> val; &#125;</span><br><span class="line">    <span class="comment">// 其他成员与之前的版本一致</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>和显式的构造函数一样，编译器（通常）也不会将一个显式的类型转换运算符用于隐式类型转换</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SmallInt si = <span class="number">3</span>;          <span class="comment">// 正确：SmallInt 的构造函数不是显式的</span></span><br><span class="line">si + <span class="number">3</span>;                   <span class="comment">// 错误：此处需要隐式的类型转换，但类的运算符是显式的</span></span><br><span class="line"><span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(si) + <span class="number">3</span>; <span class="comment">// 正确：显式地请求类型转换</span></span><br></pre></td></tr></table></figure>
+<p><strong>当类型转换运算符是显式的时，我们也能执行类型转换，不过必须通过显式的强制类型转换才可以。</strong></p>
+<p>该规定存在一个例外，即<strong>如果表达式被用作条件，则编译器会将显式的类型转换自动应用于它。换句话说，当表达式出现在下列位置时，显式的类型转换将被隐式地执行</strong>：</p>
+<ul>
+<li><code>if</code>、<code>while</code> 及 <code>do</code> 语句的条件部分</li>
+<li><code>for</code> 语句头的条件表达式</li>
+<li>逻辑非运算符（<code>!</code>）、逻辑或运算符（<code>||</code>）、逻辑与运算符（<code>&amp;&amp;</code>）的运算对象</li>
+<li>条件运算符（<code>? :</code>）的条件表达式。</li>
+</ul>
+</li>
+<li><p><strong>无论我们什么时候在条件中使用流对象，都会使用为 IO 类型定义的 <code>operator bool</code>。</strong> 例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; value)</span><br></pre></td></tr></table></figure>
+<p><code>while</code> 语句的条件执行输入运算符，它负责将数据读入到 <code>value</code> 并返回 <code>cin</code>。为了对条件求值，<code>cin</code> 被 <code>istream operator bool</code> 类型转换函数隐式地执行了转换。如果 <code>cin</code> 的条件状态是 <code>good</code>，则该函数返回为真；否则该函数返回为假。</p>
+</li>
+<li><blockquote>
+<p><strong>Best Practices：</strong> 向 <code>bool</code> 的类型转换通常用在条件部分，因此 <code>operator bool</code> 一般定义成 <code>explicit</code> 的。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="14-9-2-避免有二义性的类型转换" class="heading-control"><a href="#14-9-2-避免有二义性的类型转换" class="headerlink" title="14.9.2 避免有二义性的类型转换"></a>14.9.2 避免有二义性的类型转换<a class="heading-anchor" href="#14-9-2-避免有二义性的类型转换" aria-hidden="true"></a></h2><ol>
+<li><p>在两种情况下可能产生多重转换路径。第一种情况是两个类提供相同的类型转换：例如，当 A 类定义了一个接受 B 类对象的转换构造函数，同时 B 类定义了一个转换目标是 A 类的类型转换运算符时，我们就说它们提供了相同的类型转换。</p>
+<p>第二种情况是类定义了多个转换规则，而这些转换涉及的类型本身可以通过其他类型转换联系在一起。最典型的例子是算术运算符，对某个给定的类来说，最好只定义最多一个与算术类型有关的转换规则。</p>
+<blockquote>
+<p><strong>WARNING：</strong> 通常情况下，不要为类定义相同的类型转换，也不要在类中定义两个及两个以上转换源或转换目标是算术类型的转换。</p>
+</blockquote>
+</li>
+<li><p>在下面的例子中，我们定义了两种将 <code>B</code> 转换成 <code>A</code> 的方法：一种使用 <code>B</code> 的类型转换运算符、另一种使用 <code>A</code> 的以 <code>B</code> 为参数的构造函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 最好不要在两个类之间构建相同的类型转换</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    A() = <span class="keyword">default</span>;</span><br><span class="line">    A(<span class="keyword">const</span> B &amp;); <span class="comment">// 把一个 B 转换成 A</span></span><br><span class="line">    <span class="comment">// 其他数据成员</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">A</span><span class="params">()</span> <span class="keyword">const</span></span>; <span class="comment">// 也是把一个 B 转换成 A</span></span><br><span class="line">    <span class="comment">// 其他数据成员</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">A <span class="title">f</span><span class="params">(<span class="keyword">const</span> A &amp;)</span></span>;</span><br><span class="line">B b;</span><br><span class="line">A a = f(b); <span class="comment">// 二义性错误：含义是 f(B::operator A())</span></span><br><span class="line">            <span class="comment">// 还是 f(A::A(const B &amp;))?</span></span><br></pre></td></tr></table></figure>
+<p>因为同时存在两种由 <code>B</code> 获得 <code>A</code> 的方法，所以造成编译器无法判断应该运行哪个类型转换，也就是说，对 <code>f</code> 的调用存在二义性。该调用可以使用以 <code>B</code> 为参数的 <code>A</code> 的构造函数，也可以使用 <code>B</code> 当中把 <code>B</code> 转换成 <code>A</code> 的类型转换运算符。因为这两个函数效果相当、难分伯仲，所以该调用将产生错误。</p>
+<p>如果我们确实想执行上述的调用，就不得不显式地调用类型转换运算符或者转换构造函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A a1 = f(b.<span class="keyword">operator</span> A()); <span class="comment">// 正确：使用 B 的类型转换运算符</span></span><br><span class="line">A a2 = f(A(b));           <span class="comment">// 正确：使用 A 的构造函数</span></span><br></pre></td></tr></table></figure>
+<p>值得注意的是，我们无法使用强制类型转换来解决二义性问题，因为强制类型转换本身也面临二义性。</p>
+</li>
+<li><p>另外如果类定义了一组类型转换，它们的转换源（或者转换目标）类型本身可以通过其他类型转换联系在一起，则同样会产生二义性的问题。最简单也是最困扰我们的例子就是类当中定义了多个参数都是算术类型的构造函数，或者转换目标都是算术类型的类型转换运算符。</p>
+<p>例如，在下面的类中包含两个转换构造函数，它们的参数是两种不同的算术类型；同时还包含两个类型转换运算符，它们的转换目标也恰好是两种不同的算术类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    A(<span class="keyword">int</span> = <span class="number">0</span>); <span class="comment">// 最好不要创建两个转换源都是算术类型的类型转换</span></span><br><span class="line">    A(<span class="keyword">double</span>);</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">int</span><span class="params">()</span> <span class="keyword">const</span></span>; <span class="comment">// 最好不要创建两个转换对象都是算术类型的类型转换</span></span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">double</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="comment">// 其他成员</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f2</span><span class="params">(<span class="keyword">long</span> <span class="keyword">double</span>)</span></span>;</span><br><span class="line">A a;</span><br><span class="line">f2(a); <span class="comment">// 二义性错误：含义是 f(A::operator int())</span></span><br><span class="line">       <span class="comment">// 还是 f(A::operator double())？</span></span><br><span class="line"><span class="keyword">long</span> lg;</span><br><span class="line"><span class="function">A <span class="title">a2</span><span class="params">(lg)</span></span>; <span class="comment">// 二义性错误：含义是 A::A(int) 还是 A::A(double)？</span></span><br></pre></td></tr></table></figure>
+<p>在对 <code>f2</code> 的调用中，哪个类型转换都无法精确匹配 <code>long double</code>。然而这两个类型转换都可以使用，只要后面再执行一次生成 <code>long double</code> 的标准类型转换即可。因此，在上面的两个类型转换中哪个都不比另一个更好，调用将产生二义性。</p>
+<p>当我们试图用 <code>long</code> 初始化 <code>a2</code> 时也遇到了同样问题，哪个构造函数都无法精确匹配 <code>long</code> 类型。它们在使用构造函数前都要求先将实参进行类型转换：</p>
+<ul>
+<li>先执行 <code>long</code> 到 <code>double</code> 的标准类型转换，再执行 <code>A(double)</code></li>
+<li>先执行 <code>long</code> 到 <code>int</code> 的标准类型转换，再执行 <code>A(int)</code></li>
+</ul>
+<p><br></p>
+<p>编译器没办法区分这两种转换序列的好坏，因此该调用将产生二义性。</p>
+<p>调用 <code>f2</code> 及初始化 <code>a2</code> 的过程之所以会产生二义性，根本原因是它们所需的标准类型转换级别一致。当我们使用用户定义的类型转换时，如果转换过程包含标准类型转换，则标准类型转换的级别将决定编译器选择最佳匹配的过程：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">short s = <span class="number">42</span>;</span><br><span class="line"><span class="comment">// 把 short 提升成 int 优于把 short 转换成 double</span></span><br><span class="line"><span class="function">A <span class="title">a3</span><span class="params">(s)</span></span>; <span class="comment">// 使用 A::A(int)</span></span><br></pre></td></tr></table></figure>
+<p>在此例中，<strong>把 <code>short</code> 提升成 <code>int</code> 的操作要优于把 <code>short</code> 转换成 <code>double</code> 的操作</strong>，因此编译器将使用 <code>A::A(int)</code> 构造函数构造 <code>a3</code>，其中实参是 <code>s</code>（提升后）的值。</p>
+<blockquote>
+<p><strong>Note：</strong> 当我们使用两个用户定义的类型转换时，如果转换函数之前或之后存在标准类型转换，则标准类型转换将决定最佳匹配到底是哪个。</p>
+</blockquote>
+</li>
+<li><p>除了显式地向 <code>bool</code> 类型的转换之外，我们应该尽量避免定义类型转换函数并尽可能地限制那些“显然正确”的非显式构造函数。</p>
+</li>
+<li><p>当我们调用重载的函数时，从多个类型转换中进行选择将变得更加复杂。如果两个或多个类型转换都提供了同一种可行匹配，则这些类型转换一样好。</p>
+<p>举个例子，当几个重载函数的参数分属不同的类类型时，如果这些类恰好定义了同样的转换构造函数，则二义性问题将进一步提升：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">C</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    C(<span class="keyword">int</span>);</span><br><span class="line">    <span class="comment">// 其他成员</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    D(<span class="keyword">int</span>);</span><br><span class="line">    <span class="comment">// 其他成员</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">manip</span><span class="params">(<span class="keyword">const</span> C &amp;)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">manip</span><span class="params">(<span class="keyword">const</span> D &amp;)</span></span>;</span><br><span class="line">manip(<span class="number">10</span>); <span class="comment">// 二义性错误：含义是 manip(C(10)) 还是 manip(D(10))</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当调用重载函数时，如果两个（或多个）用户定义的类型转换都提供了可行匹配，则我们认为这些类型转换一样好。在这个过程中，我们不会考虑任何可能出现的标准类型转换的级别。只有当重载函数能通过同一个类型转换函数得到匹配时，我们才会考虑其中出现的标准类型转换。</p>
+<p>例如当我们调用 <code>manip</code> 时，即使其中一个类定义了需要对实参进行标准类型转换的构造函数，这次调用仍然会具有二义性：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">E</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    E(<span class="keyword">double</span>);</span><br><span class="line">    <span class="comment">// 其他成员</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">manip2</span><span class="params">(<span class="keyword">const</span> C &amp;)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">manip2</span><span class="params">(<span class="keyword">const</span> E &amp;)</span></span>;</span><br><span class="line"><span class="comment">// 二义性错误：两个不同的用户定义的类型转换都能用在此处</span></span><br><span class="line">manip2(<span class="number">10</span>); <span class="comment">// 含义是 manip2(C(10)) 还是 manip2(E(double(10)))</span></span><br></pre></td></tr></table></figure>
+<p>在此例中，<code>C</code> 有一个转换源为 <code>int</code> 的类型转换，<code>E</code> 有一个转换源为 <code>double</code> 的类型转换。对于 <code>manip2(10)</code> 来说，两个 <code>manip2</code> 函数都是可行的：</p>
+<ul>
+<li><code>manip2(const C &amp;)</code> 是可行的，因为 <code>C</code> 有一个接受 <code>int</code> 的转换构造函数，该构造函数与实参精确匹配。</li>
+<li><code>manip2(const E &amp;)</code> 是可行的，因为 <code>E</code> 有一个接受 <code>double</code> 的转换构造函数，而且为了使用该函数我们可以利用标准类型转换把 <code>int</code> 转换成所需的类型。</li>
+</ul>
+<p><br></p>
+<p>因为调用重载函数所请求的用户定义的类型转换不止一个且彼此不同，所以该调用具有二义性。<strong>即使其中一个调用需要额外的标准类型转换而另一个调用能精确匹配，编译器也会将该调用标示为错误。</strong></p>
+<blockquote>
+<p><strong>Note：</strong> 在调用重载函数时，如果需要额外的标准类型转换，则该转换的级别只有当所有可行函数都请求同一个用户定义的类型转换时才有用。如果所需的用户定义的类型转换不止一个，则该调用具有二义性。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="14-9-3-函数匹配与重载运算符" class="heading-control"><a href="#14-9-3-函数匹配与重载运算符" class="headerlink" title="14.9.3 函数匹配与重载运算符"></a>14.9.3 函数匹配与重载运算符<a class="heading-anchor" href="#14-9-3-函数匹配与重载运算符" aria-hidden="true"></a></h2><ol>
+<li><p>重载的运算符也是重载的函数。</p>
+</li>
+<li><p>和普通函数调用不同，我们不能通过调用的形式来区分当前调用的是成员函数还是非成员函数。</p>
+<p>当我们使用重载运算符作用于类类型的运算对象时，候选函数中包含该运算符的普通非成员版本和内置版本。除此之外，如果左侧运算对象是类类型，则定义在该类中的运算符的重载版本也包含在候选函数内。</p>
+<p>当我们调用一个命名的函数时，具有该名字的成员函数和非成员函数不会彼此重载，这是因为我们用来调用命名函数的语法形式对于成员函数和非成员函数来说是不相同的。当我们通过类类型的对象（或者该对象的指针及引用）进行函数调用时，只考虑该类的成员函数。而当我们在表达式中使用重载的运算符时，无法判断正在使用的是成员函数还是非成员函数，因此二者都应该在考虑的范围内。</p>
+<blockquote>
+<p><strong>Note：</strong> 表达式中运算符的候选函数集既应该包括成员函数，也应该包括非成员函数。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p><strong>WARNING：</strong> 如果我们对同一个类既提供了转换目标是算术类型的类型转换，也提供了重载的运算符，则将会遇到重载运算符与内置运算符的二义性问题。</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="小结" class="heading-control"><a href="#小结" class="headerlink" title="小结"></a>小结<a class="heading-anchor" href="#小结" aria-hidden="true"></a></h1><ol>
+<li><p>一个重载的运算符必须是某个类的成员或者至少拥有一个类类型的运算对象。重载运算符的运算对象数量、结合律、优先级与对应的用于内置类型的运算符完全一致。当运算符被定义为类的成员时，类对象的隐式 <code>this</code> 指针绑定到第一个运算对象。赋值、下标、函数调用和箭头运算符必须作为类的成员。</p>
+</li>
+<li><p>如果类重载了函数调用运算符 <code>operator()</code>，则该类的对象被称作“函数对象”。这样的对象常用在标准函数中。<code>lambda</code> 表达式是一种简便的定义函数对象类的方式。</p>
+</li>
+<li><p>在类中可以定义转换源或转换目的是该类型本身的类型转换，这样的类型转换将自动执行。只接受单独一个实参的非显式构造函数定义了从实参类型到类类型的类型转换；而非显式的类型转换运算符则定义了从类类型到其他类型的转换。</p>
+</li>
+</ol>
+<h1 id="术语表" class="heading-control"><a href="#术语表" class="headerlink" title="术语表"></a>术语表<a class="heading-anchor" href="#术语表" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%AC%AC%2014%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8.png" alt="第 14 章术语表"></p>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/5ac252d6.html" title="C++ Primer - 第 14 章 操作重载与类型转换">https://blog.shipengx.com/archives/5ac252d6.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"><i class="fa fa-tag"></i> C/C++</a>
+              <a href="/tags/C-Primer/" rel="tag"><i class="fa fa-tag"></i> C++ Primer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/17c6bb1a.html" rel="prev" title="实用 Shell 脚本：自动拉取 Git 仓库所有远程分支代码到本地">
+      <i class="fa fa-chevron-left"></i> 实用 Shell 脚本：自动拉取 Git 仓库所有远程分支代码到本地
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/ef5b128d.html" rel="next" title="使用 vscode + Remote-SSH 插件 + vscode-server 进行远程开发">
+      使用 vscode + Remote-SSH 插件 + vscode-server 进行远程开发 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#14-1-基本概念"><span class="nav-text">14.1 基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-2-输入和输出运算符"><span class="nav-text">14.2 输入和输出运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#14-2-1-重载输出运算符-lt-lt"><span class="nav-text">14.2.1 重载输出运算符 &lt;&lt;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-2-2-重载输入运算符-gt-gt"><span class="nav-text">14.2.2 重载输入运算符 &gt;&gt;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-3-算术和关系运算符"><span class="nav-text">14.3 算术和关系运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#14-3-1-相等运算符"><span class="nav-text">14.3.1 相等运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-3-2-关系运算符"><span class="nav-text">14.3.2 关系运算符</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-4-赋值运算符"><span class="nav-text">14.4 赋值运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-5-下标运算符"><span class="nav-text">14.5 下标运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-6-递增和递减运算符"><span class="nav-text">14.6 递增和递减运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-7-成员访问运算符"><span class="nav-text">14.7 成员访问运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-8-函数调用运算符"><span class="nav-text">14.8 函数调用运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#14-8-1-lambda-是函数对象"><span class="nav-text">14.8.1 lambda 是函数对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-8-2-标准库定义的函数对象"><span class="nav-text">14.8.2 标准库定义的函数对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-8-3-可调用对象与-function"><span class="nav-text">14.8.3 可调用对象与 function</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-9-重载、类型转换与运算符"><span class="nav-text">14.9 重载、类型转换与运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#14-9-1-类型转换运算符"><span class="nav-text">14.9.1 类型转换运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-9-2-避免有二义性的类型转换"><span class="nav-text">14.9.2 避免有二义性的类型转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-9-3-函数匹配与重载运算符"><span class="nav-text">14.9.3 函数匹配与重载运算符</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#术语表"><span class="nav-text">术语表</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

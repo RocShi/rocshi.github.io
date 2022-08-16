@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="卡尔曼滤波以贝叶斯滤波为理论基础，并通过假设状态量、观测量均服从正态分布，假设过程噪声、观测噪声均服从均值为0的正态分布，以及假设状态转移函数和观测函数均为线性函数，实现对连续型随机过程的递推状态估计。简言之，卡尔曼滤波是在贝叶斯滤波框架下求解线性高斯问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从贝叶斯滤波到卡尔曼滤波">
+<meta property="og:url" content="https://blog.shipengx.com/archives/3bb74af.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="卡尔曼滤波以贝叶斯滤波为理论基础，并通过假设状态量、观测量均服从正态分布，假设过程噪声、观测噪声均服从均值为0的正态分布，以及假设状态转移函数和观测函数均为线性函数，实现对连续型随机过程的递推状态估计。简言之，卡尔曼滤波是在贝叶斯滤波框架下求解线性高斯问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%88%B0%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%85%88%E9%AA%8C%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0wls%E8%84%9A%E6%9C%AC%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%85%88%E9%AA%8C%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0wls%E8%84%9A%E6%9C%AC%E5%8C%96%E7%AE%80%E7%BB%93%E6%9E%9C.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%90%8E%E9%AA%8C%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0wls%E8%84%9A%E6%9C%AC%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%90%8E%E9%AA%8C%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0wls%E8%84%9A%E6%9C%AC%E5%8C%96%E7%AE%80%E7%BB%93%E6%9E%9C.png">
+<meta property="article:published_time" content="2020-09-06T05:13:37.000Z">
+<meta property="article:modified_time" content="2022-05-12T05:57:28.128Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="自动驾驶">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="滤波">
+<meta property="article:tag" content="卡尔曼滤波">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%88%B0%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/3bb74af.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>从贝叶斯滤波到卡尔曼滤波 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/3bb74af.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          从贝叶斯滤波到卡尔曼滤波
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-06 13:13:37" itemprop="dateCreated datePublished" datetime="2020-09-06T13:13:37+08:00">2020-09-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-12 13:57:28" itemprop="dateModified" datetime="2022-05-12T13:57:28+08:00">2022-05-12</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">自动驾驶</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/%E5%A4%9A%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BF%A1%E6%81%AF%E8%9E%8D%E5%90%88/" itemprop="url" rel="index">
+                    <span itemprop="name">多传感器信息融合</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/3bb74af.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/3bb74af.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">卡尔曼滤波以贝叶斯滤波为理论基础，并通过假设状态量、观测量均服从正态分布，假设过程噪声、观测噪声均服从均值为0的正态分布，以及假设状态转移函数和观测函数均为线性函数，实现对连续型随机过程的递推状态估计。简言之，卡尔曼滤波是在贝叶斯滤波框架下求解线性高斯问题。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%88%B0%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2.png" alt="目录-从贝叶斯滤波到卡尔曼滤波"></p>
+<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><strong>卡尔曼滤波</strong>（Kalman Filter，KF）以贝叶斯滤波为理论基础，并通过假设状态量随机变量（以下简称状态量）、观测量均服从正态分布，假设过程噪声、观测噪声均服从均值为 0 的正态分布，以及假设状态转移函数和观测函数均为线性函数，实现对连续型随机过程的递推状态估计。简言之，卡尔曼滤波是在贝叶斯滤波框架下求解线性高斯问题。</p>
+<h1 id="1-贝叶斯滤波的三大概率密度函数" class="heading-control"><a href="#1-贝叶斯滤波的三大概率密度函数" class="headerlink" title="1 贝叶斯滤波的三大概率密度函数"></a>1 贝叶斯滤波的三大概率密度函数<a class="heading-anchor" href="#1-贝叶斯滤波的三大概率密度函数" aria-hidden="true"></a></h1><p>在此前的文章<a href="https://blog.shipengx.com/archives/9fb25cec.html">《从概率到贝叶斯滤波》</a>中，已经讲到贝叶斯滤波的先验概率密度函数、似然概率密度函数和后验概率密度函数：</p>
+<p><strong>(1) 先验概率密度函数</strong></p>
+<script type="math/tex; mode=display">
+f_{X_k}^-(x)=\int_{-\infty}^{+\infty}f_{Q_k}[x-f(v)]f_{X_{k-1}}^+(v)\mathrm{d}v</script><p><strong>(2) 似然概率密度函数</strong></p>
+<script type="math/tex; mode=display">
+f_{Y_k|X_k}(y_k \ | \ x) = f_{R_k}[y_k-h(x)]</script><p><strong>(3) 后验概率密度函数</strong></p>
+<script type="math/tex; mode=display">
+f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>其中，后验概率密度函数中的归一化常数 $\eta_k$ 为：</p>
+<script type="math/tex; mode=display">
+\eta_k=\left\{\int_{-\infty}^{+\infty}f_{R_k}[y_k-h(x)]f_{X_k}^-(x)\mathrm{d}x\right\}^{-1}</script><h1 id="2-卡尔曼滤波的假设" class="heading-control"><a href="#2-卡尔曼滤波的假设" class="headerlink" title="2 卡尔曼滤波的假设"></a>2 卡尔曼滤波的假设<a class="heading-anchor" href="#2-卡尔曼滤波的假设" aria-hidden="true"></a></h1><p>卡尔曼滤波以贝叶斯滤波为理论基础，并作了六个前提假设：</p>
+<p><strong>(1) 假设一：状态量服从正态分布</strong></p>
+<script type="math/tex; mode=display">
+X \sim \mathcal{N}(\mu_X, \ \sigma_X^2)</script><p><strong>(2) 假设二：观测量服从正态分布</strong></p>
+<script type="math/tex; mode=display">
+Y \sim \mathcal{N}(\mu_Y, \ \sigma_Y^2)</script><p><strong>(3) 假设三：过程噪声服从均值为 0 的正态分布</strong></p>
+<script type="math/tex; mode=display">
+Q \sim \mathcal{N}(0, \ \sigma_Q^2)</script><p><strong>(4) 假设四：观测噪声服从均值为 0 的正态分布</strong></p>
+<script type="math/tex; mode=display">
+Q \sim \mathcal{N}(0, \ \sigma_R^2)</script><p><strong>(5) 假设五：状态转移函数为线性函数</strong></p>
+<script type="math/tex; mode=display">
+f(X_k)=F*X_{k-1}+B*u_k</script><p>其中，$F$ 为状态转移比例项，对于单一状态量的卡尔曼滤波中，$F$ 为一常数；$B$ 为控制比例项，$u_k$ 为控制量，$B$ 和 $u_k$ 的乘积可视为线性状态转移函数中的截距项。在简单的系统中，常常没有控制项 $B$ 和 $u_k$。</p>
+<p><strong>(6) 假设六：观测函数为线性函数</strong></p>
+<script type="math/tex; mode=display">
+h(X_k)=H*X_k</script><p>$H$ 为观测比例项，对于单一状态量的卡尔曼滤波中，$H$ 为一常数。</p>
+<h1 id="3-卡尔曼滤波的公式推导" class="heading-control"><a href="#3-卡尔曼滤波的公式推导" class="headerlink" title="3 卡尔曼滤波的公式推导"></a>3 卡尔曼滤波的公式推导<a class="heading-anchor" href="#3-卡尔曼滤波的公式推导" aria-hidden="true"></a></h1><h2 id="3-1-预测步的两个公式" class="heading-control"><a href="#3-1-预测步的两个公式" class="headerlink" title="3.1 预测步的两个公式"></a>3.1 预测步的两个公式<a class="heading-anchor" href="#3-1-预测步的两个公式" aria-hidden="true"></a></h2><p>根据假设一，$k-1$ 时刻状态量 $X_{k-1}$ 服从均值为 $\mu_{k-1}^+$，方差为 ${\sigma_{k-1}^+}^2$ 的正态分布：</p>
+<script type="math/tex; mode=display">
+X_{k-1} \sim \mathcal{N}(\mu_{k-1}^+, \ {\sigma_{k-1}^+}^2)</script><p>$X_{k-1}$ 的后验概率密度函数为：</p>
+<script type="math/tex; mode=display">
+f_{X_{k-1}}^+=\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(x-\mu_{k-1}^+)^2}{2{\sigma_{k-1}^+}^2}}</script><p>结合假设三与假设五，k 时刻状态量 $X_k$ 的先验概率密度函数为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    f_{X_k}^-(x) & = \int_{-\infty}^{+\infty}f_{Q_k}[x-f(v)]f_{X_{k-1}}^+(v)\mathrm{d}v \\
+    & = \int_{-\infty}^{+\infty}\frac{1}{\sigma_{Q_k}\sqrt{2\pi}}e^{-\frac{(x-F*v-B*u_k)^2}{2{\sigma_{Q_k}}^2}}*\frac{1}{\sigma_{k-1}^+\sqrt{2\pi}}e^{-\frac{(v-\mu_{k-1}^+)^2}{2{\sigma_{k-1}^+}^2}}\mathrm{d}v
+\end{aligned}</script><p>对于 $f_{X_k}^-(x)$ 的推导，有三种方法：</p>
+<ul>
+<li>Mathematica 软件做符号推导</li>
+<li>复变函数留数定理</li>
+<li>傅里叶变换 + 卷积</li>
+</ul>
+<p>这里使用 Mathematica 软件做符号推导，创建 WolframScript（.wls）脚本文件，创建 $f_{X_k}^-(x)$ 公式：</p>
+<p><img data-src="https://image.shipengx.com/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%85%88%E9%AA%8C%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0wls%E8%84%9A%E6%9C%AC%E5%85%AC%E5%BC%8F.png" alt="卡尔曼滤波先验概率密度函数wls脚本公式"></p>
+<p>其中，${\sigma_{Q_k}}^2$ 表示 k 时刻过程噪声的方差；$\mu_{k-one}^+$ 表示 $k-1$ 时刻状态量的后验概率密度函数均值；${\sigma_{k-one}^+}^2$ 表示 $k-1$ 时刻状态量的后验概率密度函数方差。</p>
+<p>运行代码进行化简，得到如下条件表达式结果：</p>
+<p><img data-src="https://image.shipengx.com/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%85%88%E9%AA%8C%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0wls%E8%84%9A%E6%9C%AC%E5%8C%96%E7%AE%80%E7%BB%93%E6%9E%9C.png" alt="卡尔曼滤波先验概率密度函数wls脚本化简结果"></p>
+<p>条件表达式中的条件显然成立，整理表达式形式可知，先验概率密度函数 $f_{X_k}^-(x)$ 为正态分布函数，均值和方差分别为：</p>
+<script type="math/tex; mode=display">
+\mu_k^- = F*\mu_{k-1}^++B*u_k \tag{3.1}</script><script type="math/tex; mode=display">
+{\sigma_k^-}^2 = F^2*{\sigma_{k-1}^+}^2+{\sigma_{Q_k}}^2 \tag{3.2}</script><h2 id="3-2-更新步的三个公式" class="heading-control"><a href="#3-2-更新步的三个公式" class="headerlink" title="3.2 更新步的三个公式"></a>3.2 更新步的三个公式<a class="heading-anchor" href="#3-2-更新步的三个公式" aria-hidden="true"></a></h2><p>结合假设四、假设六、公式 (3.1)、公式 (3.2)，可知，k 时刻状态量 $X_k$ 的后验概率密度函数为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    f_{X_k}^+(x) & = \eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x) \\
+    & = \eta_k*\frac{1}{\sigma_{R_k}\sqrt{2\pi}}e^{-\frac{(y_k-H*x)^2}{2{\sigma_{R_k}}^2}}*\frac{1}{\sigma_{k}^-\sqrt{2\pi}}e^{-\frac{(x-\mu_{k}^-)^2}{2{\sigma_{k}^-}^2}}
+\end{aligned}</script><p>其中，归一化常数 $\eta_k$ 为：</p>
+<script type="math/tex; mode=display">
+\eta_k=\int_{-\infty}^{\infty}\frac{1}{\sigma_{R_k}\sqrt{2\pi}}e^{-\frac{(y_k-H*x)^2}{2{\sigma_{R_k}}^2}}*\frac{1}{\sigma_{k}^-\sqrt{2\pi}}e^{-\frac{(x-\mu_{k}^-)^2}{2{\sigma_{k}^-}^2}}\mathrm{d}x</script><p>创建 WolframScript（.wls）脚本文件，创建 $f_{X_k}^+(x)$ 公式：</p>
+<p><img data-src="https://image.shipengx.com/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%90%8E%E9%AA%8C%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0wls%E8%84%9A%E6%9C%AC%E5%85%AC%E5%BC%8F.png" alt="卡尔曼滤波后验概率密度函数wls脚本公式"></p>
+<p>其中，${\sigma_{R_k}}^2$ 表示 k 时刻观测噪声的方差；$y_k$ 表示 k 时刻观测量的取值。<code>Simplify[]</code> 函数的使用是为了简化结果。</p>
+<p>运行代码进行化简，得到如下条件表达式结果：</p>
+<p><img data-src="https://image.shipengx.com/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%90%8E%E9%AA%8C%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0wls%E8%84%9A%E6%9C%AC%E5%8C%96%E7%AE%80%E7%BB%93%E6%9E%9C.png" alt="卡尔曼滤波后验概率密度函数wls脚本化简结果"></p>
+<p>条件表达式中的条件显然成立，整理表达式形式可知后验概率密度函数 $f_{X_k}^+(x)$ 的均值和方差分别为：</p>
+<script type="math/tex; mode=display">
+\mu_k^+ = \mu_k^-+K*(y_k-H*\mu_k^-) \tag{3.3}</script><script type="math/tex; mode=display">
+{\sigma_k^+}^2 = (1-K*H)*{\sigma_k^-}^2 \tag{3.4}</script><p>$\mu_k^+$ 即 k 时刻状态量 $X_k$ 的后验估计 $\hat{x}_k^+$。其中，$K$ 被称为卡尔曼增益系数：</p>
+<script type="math/tex; mode=display">
+K=\frac{H*{\sigma_k^-}^2}{H^2*{\sigma_k^-}^2+{\sigma_{R_k}}^2} \tag{3.5}</script><p>卡尔曼增益系数 $K$ 可变形为：</p>
+<script type="math/tex; mode=display">
+K=\frac{H*{\sigma_k^-}^2}{H^2*{\sigma_k^-}^2+{\sigma_{R_k}}^2} = \frac{H}{H^2+{\sigma_{R_k}}^2/{\sigma_k^-}^2}</script><p>当 ${\sigma_{R_k}}^2 \gg {\sigma_k^-}^2$ 时，$K\to0$，故</p>
+<script type="math/tex; mode=display">
+\mu_k^+ = \mu_k^-+K*(y_k-H*\mu_k^-) \to \mu_k^-</script><p>此时，后验估计结果倾向于预测；</p>
+<p>当 ${\sigma_{R_k}}^2 \ll {\sigma_k^-}^2$ 时，$K\to\frac{1}{H}$，故</p>
+<script type="math/tex; mode=display">
+\mu_k^+ = \mu_k^-+K*(y_k-H*\mu_k^-) \to \frac{y_k}{H}</script><p>此时，后验估计结果倾向于观测。</p>
+<p>点击<a href="/download/KalmanFilter.wls">这里</a>下载我的 WolframScript（.wls）脚本文件。</p>
+<h1 id="4-矩阵形式的卡尔曼滤波" class="heading-control"><a href="#4-矩阵形式的卡尔曼滤波" class="headerlink" title="4 矩阵形式的卡尔曼滤波"></a>4 矩阵形式的卡尔曼滤波<a class="heading-anchor" href="#4-矩阵形式的卡尔曼滤波" aria-hidden="true"></a></h1><p>上文内容所描述的是一维的卡尔曼滤波，当状态量和观测量不再是单一的随机变量而是由多个随机变量组成的序列时，卡尔曼滤波中各个量的维数也将随之改变：</p>
+<ul>
+<li>状态量 $X$ 由随机变量演变为随机向量，随机向量中的每一个分量为一个状态量随机变量。维数为 $n_X \times 1$</li>
+<li>状态转移比例项 $F$ 演变为矩阵，维数为 $n_X \times n_X$</li>
+<li>控制量 $u_k$ 演变为矩阵，维数为 $n_u \times 1$</li>
+<li>控制比例项 $B$ 演变为矩阵，维数为 $n_X \times n_u$</li>
+<li>状态量概率密度函数均值 $\mu$ 演变为矩阵，维数为 $n_X \times 1$</li>
+<li>状态量概率密度函数方差 $\sigma^2$ 演变为协方差矩阵，用 $\Sigma$ 表示，维数为 $n_X \times n_X$</li>
+<li>过程噪声方差 ${\sigma_Q}^2$ 演变为协方差矩阵，用 $\Sigma_Q$ 表示，维数为 $n_X \times n_X$</li>
+<li>观测量 $Y$ 由随机变量演变为随机向量，随机向量中的每一个分量为一个观测量随机变量。维数为 $n_Y \times 1$</li>
+<li>观测值 $y_k$ 由单一值演变为由单一值组成的值矩阵，维数为 $n_Y \times 1$</li>
+<li>观测比例项 $H$ 演变为矩阵，维数为 $n_Y \times n_X$</li>
+<li>观测噪声方差 ${\sigma_R}^2$ 演变为协方差矩阵，用 $\Sigma_R$ 表示，维数为 $n_Y \times n_Y$</li>
+<li>卡尔曼增益系数 $K$ 演变为矩阵，维数为 $n_X \times n_Y$</li>
+</ul>
+<p>对应的五个公式演变为：</p>
+<script type="math/tex; mode=display">
+\mu_k^- = F*\mu_{k-1}^++B*u_k \tag{4.1}</script><script type="math/tex; mode=display">
+\Sigma_k^- = F*\Sigma_{k-1}^+*F^T+{\Sigma_{Q_k}} \tag{4.2}</script><script type="math/tex; mode=display">
+\mu_k^+ = \mu_k^-+K*(y_k-H*\mu_k^-) \tag{4.3}</script><script type="math/tex; mode=display">
+\Sigma_k^+ = (I-K*H)*\Sigma_k^- \tag{4.4}</script><script type="math/tex; mode=display">
+K=\Sigma_k^-*H^T*(H*\Sigma_k^-*H^T+{\Sigma_{R_k}})^{-1} \tag{4.5}</script><p>公式 (4.3) 中 $\mu_k^+$ 即 k 时刻状态量 $X_k$ 的后验估计 $\hat{x}_k^+$，$y_k-H*\mu_k^-$ 常被称为残差（Residual）或新息（Innovation）；公式 (4.4) 中的 $I$ 代表单位矩阵，维数为 $n_X \times n_X$。</p>
+<p>从结果中还可以发现，外部控制项 $B*u_k$ 通过影响先验估计均值间接影响了后验估计均值，但对后验估计方差没有影响。</p>
+<h1 id="5-应用实例" class="heading-control"><a href="#5-应用实例" class="headerlink" title="5 应用实例"></a>5 应用实例<a class="heading-anchor" href="#5-应用实例" aria-hidden="true"></a></h1><p>卡尔曼滤波的应用实例可参考此前的学习文章<a href="https://blog.shipengx.com/archives/d3b96bd5.html">《（十三）手把手教你写卡尔曼滤波器》</a>，文章中的应用场景是使用激光雷达（Lidar）对匀速直线运动（Constant Velocity，CV）目标的测距过程。</p>
+<p>博主工作中使用卡尔曼滤波对路口前的停止线（来自单目前向视觉）纵向距离进行了估计，系统模型抽象为匀加速直线运动（Constant Acceleration，CA），此时的状态转移函数 $f(x)$ 中存在外部控制项 $B*u_k$，停止线纵向距离估计结果用于下游规划控制模块的纵向速度规划输入参考。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUhUNHkxNTc3ZyNyZXBseTM0NjI4MDMxNTQ=" title="https://www.bilibili.com/video/BV1HT4y1577g#reply3462803154">b 站忠实的王大头《贝叶斯滤波与卡尔曼滤波》第七讲：卡尔曼滤波<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80NTIzODY4MQ==" title="https://zhuanlan.zhihu.com/p/45238681">无人驾驶技术入门（十三）| 手把手教你写卡尔曼滤波器<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5iemFyZy5jb20vcC9ob3ctYS1rYWxtYW4tZmlsdGVyLXdvcmtzLWluLXBpY3R1cmVzLw==" title="http://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/">How a Kalman filter works, in pictures<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA3MjA2NjEvYXJ0aWNsZS9kZXRhaWxzLzYzMjUzNTA5" title="https://blog.csdn.net/u010720661/article/details/63253509">详解卡尔曼滤波原理<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zeW5hcHRpY2xhYi5jby5rci9hdHRhY2htZW50L2NmaWxlMS51ZkAyNzM3QzU0QjU5MDkwN0JBMEQ0NkNFLnBkZg==" title="https://synapticlab.co.kr/attachment/cfile1.uf@2737C54B590907BA0D46CE.pdf">Understanding the Basis of the Kalman Filter Via a Simple and Intuitive Derivation<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\cfd8b171.html" rel="bookmark">从贝叶斯滤波到无迹卡尔曼滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f3c9e219.html" rel="bookmark">从贝叶斯滤波到粒子滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e0ebe48c.html" rel="bookmark">最小二乘法多项式曲线拟合数学原理及其C++实现</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/3bb74af.html" title="从贝叶斯滤波到卡尔曼滤波">https://blog.shipengx.com/archives/3bb74af.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag"><i class="fa fa-tag"></i> 自动驾驶</a>
+              <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i> 数学</a>
+              <a href="/tags/%E6%BB%A4%E6%B3%A2/" rel="tag"><i class="fa fa-tag"></i> 滤波</a>
+              <a href="/tags/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/" rel="tag"><i class="fa fa-tag"></i> 卡尔曼滤波</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/9fb25cec.html" rel="prev" title="从概率到贝叶斯滤波">
+      <i class="fa fa-chevron-left"></i> 从概率到贝叶斯滤波
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/ea375326.html" rel="next" title="从贝叶斯滤波到扩展卡尔曼滤波">
+      从贝叶斯滤波到扩展卡尔曼滤波 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-贝叶斯滤波的三大概率密度函数"><span class="nav-text">1 贝叶斯滤波的三大概率密度函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-卡尔曼滤波的假设"><span class="nav-text">2 卡尔曼滤波的假设</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-卡尔曼滤波的公式推导"><span class="nav-text">3 卡尔曼滤波的公式推导</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-预测步的两个公式"><span class="nav-text">3.1 预测步的两个公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-更新步的三个公式"><span class="nav-text">3.2 更新步的三个公式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-矩阵形式的卡尔曼滤波"><span class="nav-text">4 矩阵形式的卡尔曼滤波</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-应用实例"><span class="nav-text">5 应用实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

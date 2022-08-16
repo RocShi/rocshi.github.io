@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="粒子滤波是贝叶斯滤波的一种非参数实现，所谓非参数，即不对滤波状态量的后验概率密度作任何假设。粒子滤波的主要思想是用一系列从后验得到的带权重的随机采样表示后验。从采样的角度考虑，粒子滤波与无迹卡尔曼滤波相似，区别在于，无迹卡尔曼滤波使用 sigma 确定性采样，通过无迹变换计算 sigma 样本点的位置与权重；而粒子滤波使用蒙特卡罗随机采样从建议分布中得到样本（粒子），并通过观测值更新粒子权重，针对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从贝叶斯滤波到粒子滤波">
+<meta property="og:url" content="https://blog.shipengx.com/archives/f3c9e219.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="粒子滤波是贝叶斯滤波的一种非参数实现，所谓非参数，即不对滤波状态量的后验概率密度作任何假设。粒子滤波的主要思想是用一系列从后验得到的带权重的随机采样表示后验。从采样的角度考虑，粒子滤波与无迹卡尔曼滤波相似，区别在于，无迹卡尔曼滤波使用 sigma 确定性采样，通过无迹变换计算 sigma 样本点的位置与权重；而粒子滤波使用蒙特卡罗随机采样从建议分布中得到样本（粒子），并通过观测值更新粒子权重，针对">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%88%B0%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2.png">
+<meta property="og:image" content="https://image.shipengx.com/%E9%87%8D%E9%87%87%E6%A0%B7%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="https://image.shipengx.com/SIR%20%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E7%9A%84%E6%97%A0%E4%BA%BA%E8%BD%A6%E5%AE%9A%E4%BD%8D%E6%B5%81%E7%A8%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="https://image.shipengx.com/%E6%9C%80%E8%BF%91%E9%82%BB%E6%95%B0%E6%8D%AE%E5%85%B3%E8%81%94%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9.png">
+<meta property="article:published_time" content="2020-12-03T12:36:32.000Z">
+<meta property="article:modified_time" content="2022-05-12T06:01:09.865Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="自动驾驶">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="滤波">
+<meta property="article:tag" content="粒子滤波">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%88%B0%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/f3c9e219.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>从贝叶斯滤波到粒子滤波 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/f3c9e219.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          从贝叶斯滤波到粒子滤波
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-03 20:36:32" itemprop="dateCreated datePublished" datetime="2020-12-03T20:36:32+08:00">2020-12-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-12 14:01:09" itemprop="dateModified" datetime="2022-05-12T14:01:09+08:00">2022-05-12</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">自动驾驶</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/%E5%A4%9A%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BF%A1%E6%81%AF%E8%9E%8D%E5%90%88/" itemprop="url" rel="index">
+                    <span itemprop="name">多传感器信息融合</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/f3c9e219.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/f3c9e219.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">粒子滤波是贝叶斯滤波的一种非参数实现，所谓非参数，即不对滤波状态量的后验概率密度作任何假设。粒子滤波的主要思想是用一系列从后验得到的带权重的随机采样表示后验。从采样的角度考虑，粒子滤波与无迹卡尔曼滤波相似，区别在于，无迹卡尔曼滤波使用 sigma 确定性采样，通过无迹变换计算 sigma 样本点的位置与权重；而粒子滤波使用蒙特卡罗随机采样从建议分布中得到样本（粒子），并通过观测值更新粒子权重，针对粒子的权值退化问题，还涉及粒子的重采样步骤。粒子滤波算法广泛用于解决无人车的定位问题。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%88%B0%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2.png" alt="目录-从贝叶斯滤波到粒子滤波"></p>
+<h1 id="0-回顾与引言" class="heading-control"><a href="#0-回顾与引言" class="headerlink" title="0 回顾与引言"></a>0 回顾与引言<a class="heading-anchor" href="#0-回顾与引言" aria-hidden="true"></a></h1><p>在此前的文章<a href="https://blog.shipengx.com/archives/9fb25cec.html">《从概率到贝叶斯滤波》</a>中，我们曾经提到，贝叶斯滤波框架下求解预测步中的先验概率密度函数 $f_{X_k}^-(x)$、更新步中的归一化常数 $\eta_k$、状态量最优估计 $\hat{x}_k$ 时均涉及到<strong>无穷积分</strong>，大多数情况无法得到解析解，使得贝叶斯滤波算法的直接应用十分困难。为了解决贝叶斯滤波积分难的问题，通常从两个角度出发：</p>
+<p><strong>(1) 作理想假设</strong></p>
+<ul>
+<li><p><strong>线性高斯</strong><br>假设状态转移函数 $g(x)$ 和观测函数 $h(x)$ 均为线性函数，过程噪声随机变量 $Q_k$ 和观测噪声随机变量 $R_k$ 均服从均值为 0 的正态分布。线性高斯问题可通过卡尔曼滤波（Kalman Filter）进行解决，详细内容请参考此前文章<a href="https://blog.shipengx.com/archives/3bb74af.html">《从贝叶斯滤波到卡尔曼滤波》</a>。</p>
+</li>
+<li><p><strong>非线性高斯</strong><br>假设状态转移函数 $g(x)$ 和（或）观测函数 $h(x)$ 为非线性函数，过程噪声随机变量 $Q_k$ 和观测噪声随机变量 $R_k$ 均服从均值为 0 的正态分布。非线性高斯问题可通过扩展卡尔曼滤波（Extended Kalman Filter）和无迹卡尔曼滤波（Unscented Kalman Filter）进行解决。扩展卡尔曼滤波通过一阶泰勒级数展开将非线性高斯系统的状态转移函数 $g(x)$ 和（或）观测函数 $h(x)$ 线性化，然后采用标准卡尔曼滤波框架实现状态量的滤波过程，详细内容请参考此前文章<a href="https://blog.shipengx.com/archives/ea375326.html">《从贝叶斯滤波到扩展卡尔曼滤波》</a>；无迹卡尔曼滤波基于无迹变换，无迹变换研究的是如何通过确定的采样点捕获经非线性变换的高斯随机变量的后验分布的问题，通过无迹变换得到相应的统计特性后，再结合标准卡尔曼滤波框架，便得到无迹卡尔曼滤波，详细内容请参考此前文章<a href="https://blog.shipengx.com/archives/cfd8b171.html">《从贝叶斯滤波到无迹卡尔曼滤波》</a>。</p>
+</li>
+</ul>
+<p><strong>(2) 化连续为离散</strong></p>
+<p>对于强<strong>非线性非高斯</strong>问题，需要将无穷积分转化为离散的数值积分——即化整为零，由此可以引申出本文的主题——粒子滤波（Particle Filter，PF）。</p>
+<p>粒子滤波是贝叶斯滤波的一种非参数实现，所谓非参数，即不对滤波状态量的后验概率密度作任何假设。粒子滤波的主要思想是用一系列从后验得到的带权重的随机采样表示后验。从采样的角度考虑，粒子滤波与无迹卡尔曼滤波相似，区别在于，无迹卡尔曼滤波使用 sigma 确定性采样，通过无迹变换计算 sigma 样本点的位置与权重；而粒子滤波使用蒙特卡罗随机采样从建议分布中得到样本（粒子），并通过观测值更新粒子权重，针对粒子的权值退化问题，还涉及粒子的重采样步骤。粒子滤波算法广泛用于解决无人车的定位问题。</p>
+<p><strong>关键词：</strong> 贝叶斯，大数定律，蒙特卡罗，重要性采样，序贯重要性采样，粒子退化，重采样，采样重要性重采样，无人车定位</p>
+<h1 id="1-蒙特卡罗方法" class="heading-control"><a href="#1-蒙特卡罗方法" class="headerlink" title="1 蒙特卡罗方法"></a>1 蒙特卡罗方法<a class="heading-anchor" href="#1-蒙特卡罗方法" aria-hidden="true"></a></h1><p>假设存在某一连续型随机变量 $X$，其概率密度函数为 $p(x)$，则 $X$ 的数学期望为：</p>
+<script type="math/tex; mode=display">
+\mathrm{E}(X)=\int x·p(x)\mathrm{d}x \tag{1.1}</script><p>若存在另一连续型随机变量 $Y$，满足 $Y = g(X)$，则 $Y$ 的数学期望为：</p>
+<script type="math/tex; mode=display">
+\mathrm{E}(Y)=\int g(x)·p(x)\mathrm{d}x \tag{1.2}</script><p>正如我们所知道的，上式中的 $\mathrm{E}(X)$ 和 $\mathrm{E}(Y)$ 可能很难得到解析解。<strong>蒙特卡罗</strong>（Monte Carlo）方法告诉我们，可以通过对随机变量的概率密度进行随机采样，并对样本进行加权求和来近似随机变量的期望，如此一来，积分问题便转化为有限样本点的求和问题。</p>
+<p>假设 $\mathcal{X}$ 是从 $p(x)$ 中进行随机采样得到的样本集合，样本数量为 $N$，每一个样本（粒子）$\mathcal{X}^{(i)}$ 代表 $X$ 的一种可能状态，即</p>
+<script type="math/tex; mode=display">
+\mathcal{X}^{(i)}\sim p(x) \tag{1.3}</script><p>根据<strong>辛钦大数定律</strong>，$\mathcal{X}$ 的样本均值依概率 1 收敛于数学期望，即对 $\forall\epsilon &gt; 0$，有</p>
+<script type="math/tex; mode=display">
+\lim_{N\rightarrow\infty}P\left\{\bigg|\frac{1}{N}\sum_{i=0}^{N-1}\mathcal{X}^{(i)}-\mathrm{E}(X)\bigg|<\epsilon\right\}=1 \tag{1.4}</script><script type="math/tex; mode=display">
+\lim_{N\rightarrow\infty}P\left\{\bigg|\frac{1}{N}\sum_{i=0}^{N-1}g(\mathcal{X}^{(i)})-\mathrm{E}(Y)\bigg|<\epsilon\right\}=1 \tag{1.5}</script><p>式 (1.4) 和 (1.5) 意味着，当样本数量 $N$ 足够大时，有</p>
+<script type="math/tex; mode=display">
+\mathrm{E}(X)\approx \frac{1}{N}\sum_{i=0}^{N-1}\mathcal{X}^{(i)} \tag{1.6}</script><script type="math/tex; mode=display">
+\mathrm{E}(Y)\approx \frac{1}{N}\sum_{i=0}^{N-1}g(\mathcal{X}^{(i)}) \tag{1.7}</script><h1 id="2-重要性采样" class="heading-control"><a href="#2-重要性采样" class="headerlink" title="2 重要性采样"></a>2 重要性采样<a class="heading-anchor" href="#2-重要性采样" aria-hidden="true"></a></h1><h2 id="2-1-什么是重要性采样" class="heading-control"><a href="#2-1-什么是重要性采样" class="headerlink" title="2.1 什么是重要性采样"></a>2.1 什么是重要性采样<a class="heading-anchor" href="#2-1-什么是重要性采样" aria-hidden="true"></a></h2><p>如上述，如果我们能够对概率密度函数 $p(x)$ 进行随机采样，便可通过对样本进行加权求和来近似随机变量 $X$ 和 $Y=g(X)$ 的数学期望，然而现实情况是，$p(x)$ 可能很难直接采样，甚至根本无法采样。此时，可以选择从一个更加容易采样的概率密度函数 $q(x)$ 中进行随机采样得到样本集合 $\mathcal{X}$，并通过 $\mathcal{X}$ 近似估计 $\mathrm{E}(Y)$</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \mathrm{E}(Y)
+        & =\int g(x)·p(x)\mathrm{d}x \\
+        & = \int g(x)\frac{p(x)}{q(x)}·q(x)\mathrm{d}x \\
+        & \approx \frac{1}{N}\sum_{i=0}^{N-1}g(\mathcal{X}^{(i)})\frac{p(\mathcal{X}^{(i)})}{q(\mathcal{X}^{(i)})}
+\end{aligned} \tag{2.1}</script><p>其中</p>
+<script type="math/tex; mode=display">
+\mathcal{X}^{(i)}\sim q(x) \tag{2.2}</script><p>上述的采样方式称为<strong>重要性采样</strong>（Importance Sampling），其中的更易采样的概率密度函数 $q(x)$ 称为<strong>建议分布</strong>（Proposal Distribution），也称重要性密度（Importance Density）或重要性函数（Importance Function）。</p>
+<p>令</p>
+<script type="math/tex; mode=display">
+w(x)=\frac{p(x)}{q(x)} \tag{2.3}</script><p>显然</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \int p(x)\mathrm{d}x
+        & = \int w(x)·q(x)\mathrm{d}x \\
+        & \approx \frac{1}{N}\sum_{i=0}^{N-1}w(\mathcal{X}^{(i)}) \\
+        & = 1
+\end{aligned} \tag{2.4}</script><p>故，式 (2.1) 可改写为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \mathrm{E}(Y)
+        & \approx \frac{1}{N}\sum_{i=0}^{N-1}g(\mathcal{X}^{(i)})\frac{p(\mathcal{X}^{(i)})}{q(\mathcal{X}^{(i)})} \\
+        & \approx \frac{ \frac{1}{N}\sum\limits_{i=0}^{N-1}g(\mathcal{X}^{(i)})w(\mathcal{X}^{(i)}) }{ \frac{1}{N}\sum\limits_{i=0}^{N-1}w(\mathcal{X}^{(i)}) } \\
+        & \approx \sum_{i=0}^{N-1}g(\mathcal{X}^{(i)})\frac{ w(\mathcal{X}^{(i)}) }{ \sum\limits_{i=0}^{N-1}w(\mathcal{X}^{(i)}) }
+\end{aligned} \tag{2.5}</script><p>我们记 $w^{(i)}=w(\mathcal{X}^{(i)})$，并记</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \widetilde{w}^{(i)}
+        & = \frac{ w(\mathcal{X}^{(i)}) }{ \sum\limits_{i=0}^{N-1}w(\mathcal{X}^{(i)}) } \\
+        & = \frac{w^{(i)}}{\sum\limits_{i=0}^{N-1}w^{(i)}}
+\end{aligned} \tag{2.6}</script><p>$w^{(i)}$ 我们称之为粒子 $\mathcal{X}^{(i)}$ 的<strong>非归一化的重要性权重</strong>（Unnormalized Importance Weight），$\widetilde{w}^{(i)}$ 我们称之为<strong>归一化的重要性权重</strong>（Normalized Importance Weight），则式 (2.5) 等价于</p>
+<script type="math/tex; mode=display">
+\mathrm{E}(Y)\approx \sum_{i=0}^{N-1}g(\mathcal{X}^{(i)})\widetilde{w}^{(i)} \tag{2.7}</script><p>从式 (2.7) 中我们不难发现，归一化的重要性权重 $\widetilde{w}^{(i)}$ 即对应粒子 $\mathcal{X}^{(i)}$ 的离散概率值（概率质量），只要得到了粒子 $\mathcal{X}^{(i)}$ 及其对应的归一化的重要性权重 $\widetilde{w}^{(i)}$，便可通过式 (2.7) 近似估计期望 $\mathrm{E}(Y)$。<strong>简言之，重要性采样要解决的是原分布难以采样甚至无法采样的问题。</strong></p>
+<h2 id="2-2-序贯重要性采样" class="heading-control"><a href="#2-2-序贯重要性采样" class="headerlink" title="2.2 序贯重要性采样"></a>2.2 序贯重要性采样<a class="heading-anchor" href="#2-2-序贯重要性采样" aria-hidden="true"></a></h2><p>上述的重要性采样过程针对的是单一随机变量的估计，而对于贝叶斯估计而言，我们需要处理的是从 $0$ 时刻到 $k$ 时刻的随机过程</p>
+<script type="math/tex; mode=display">
+X_{0:k}=\{X_0, X_1, X_2, \dotsb, X_k\} \tag{2.8}</script><p>意即，我们需要估计的是条件期望</p>
+<script type="math/tex; mode=display">
+\mathrm{E}[g(X_k)|Z_{1:k}]=\int g(x_k)·p(x_k|z_{1:k})\mathrm{d}{x_k} \tag{2.9}</script><p>类似 2.1 节中的推导过程，我们从一个更加容易采样的概率密度函数 $q(x_{0:k}|z_{1:k})$ 中进行随机采样得到样本集合 $\mathcal{X}_{0:k}$，并通过 $\mathcal{X}_{0:k}$ 近似估计条件期望 $\mathrm{E}[g(X_k)|Z_{1:k}]$</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \mathrm{E}[g(X_k)|Z_{1:k}]
+        & = \int g(x_k)·p(x_k|z_{1:k})\mathrm{d}{x_k} \\
+        & = \int g(x_k)·p(x_{0:k}|z_{1:k})\mathrm{d}{x_{0:k}} \\
+        & = \int g(x_k)\frac{p(x_{0:k}|z_{1:k})}{q(x_{0:k}|z_{1:k})}·q(x_{0:k}|z_{1:k})\mathrm{d}x_{0:k} \\
+        & \approx \frac{1}{N}\sum_{i=0}^{N-1}g(\mathcal{X}_k^{(i)})\frac{p(\mathcal{X}_{0:k}^{(i)}|z_{1:k})}{q(\mathcal{X}_{0:k}^{(i)}|z_{1:k})}
+\end{aligned} \tag{2.10}</script><p>其中</p>
+<script type="math/tex; mode=display">
+\mathcal{X}_{0:k}^{(i)}\sim q(x_{0:k}|z_{1:k}) \tag{2.11}</script><p>$\mathcal{X}_{0:k}^{(i)}$ 是由每一时刻的第 $i$ 个样本粒子依次增广构成的粒子簇</p>
+<script type="math/tex; mode=display">
+\mathcal{X}_{0:k}^{(i)}=\{\mathcal{X}_0^{(i)}, \mathcal{X}_1^{(i)}, \dotsb, \mathcal{X}_k^{(i)}\} \quad i=0, 1, 2, \dotsb, N-1 \tag{2.12}</script><p>令</p>
+<script type="math/tex; mode=display">
+w(x_{0:k})=\frac{p(x_{0:k}|z_{1:k})}{q(x_{0:k}|z_{1:k})} \tag{2.13}</script><p>显然</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \int p(x_{0:k}|z_{1:k})\mathrm{d}x_{0:k}
+        & = \int w(x_{0:k})·q(x_{0:k}|z_{1:k})\mathrm{d}x_{0:k} \\
+        & \approx \frac{1}{N}\sum_{i=0}^{N-1}w(\mathcal{X}_{0:k}^{(i)}) \\
+        & = 1
+\end{aligned} \tag{2.14}</script><p>故，式 (2.10) 可改写为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \mathrm{E}[g(X_k)|Z_{1:k}]
+        & \approx \frac{1}{N}\sum_{i=0}^{N-1}g(\mathcal{X}_k^{(i)})\frac{p(\mathcal{X}_{0:k}^{(i)}|z_{1:k})}{q(\mathcal{X}_{0:k}^{(i)}|z_{1:k})} \\
+        & \approx \frac{ \frac{1}{N}\sum\limits_{i=0}^{N-1}g(\mathcal{X}_k^{(i)})w(\mathcal{X}_{0:k}^{(i)}) }{ \frac{1}{N}\sum\limits_{i=0}^{N-1}w(\mathcal{X}_{0:k}^{(i)}) } \\
+        & \approx \sum_{i=0}^{N-1}g(\mathcal{X}_k^{(i)})\frac{ w(\mathcal{X}_{0:k}^{(i)}) }{ \sum\limits_{i=0}^{N-1}w(\mathcal{X}_{0:k}^{(i)}) }
+\end{aligned} \tag{2.15}</script><p>我们记 $w_k^{(i)}=w(\mathcal{X}_{0:k}^{(i)})$，并记</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \widetilde{w}_k^{(i)}
+        & = \frac{ w(\mathcal{X}_{0:k}^{(i)}) }{ \sum\limits_{i=0}^{N-1}w(\mathcal{X}_{0:k}^{(i)}) } \\
+        & = \frac{w_k^{(i)}}{\sum\limits_{i=0}^{N-1}w_k^{(i)}}
+\end{aligned} \tag{2.16}</script><p>$w_k^{(i)}$ 我们称之为粒子簇 $\mathcal{X}_{0:k}^{(i)}$ 的非归一化的重要性权重，$\widetilde{w}^{(i)}$ 我们称之为归一化的重要性权重，则式 (2.15) 等价于</p>
+<script type="math/tex; mode=display">
+\mathrm{E}[g(X_k)|Z_{1:k}]\approx \sum_{i=0}^{N-1}g(\mathcal{X}_k^{(i)})\widetilde{w}_k^{(i)} \tag{2.17}</script><p>从式 (2.17) 中我们不难发现，归一化的重要性权重 $\widetilde{w}_k^{(i)}$ 即对应粒子簇 $\mathcal{X}_{0:k}^{(i)}$ 的离散概率值（概率质量），只要得到了粒子簇 $\mathcal{X}_{0:k}^{(i)}$ 及其对应的归一化的重要性权重 $\widetilde{w}_k^{(i)}$，便可通过式 (2.17) 近似估计条件期望 $\mathrm{E}[g(X_k)|Z_{1:k}]$。</p>
+<p>式 (2.16) 中的重要性权重是批量形式，存在这样一个问题，每个新的时刻的观测数据到来时都需要重新批量计算整个状态序列的重要性权重，随着时间的推移，这无疑将带来巨大的资源消耗。为了递推地更新相邻时刻间粒子的重要性权重，我们引入<strong>序贯重要性采样</strong>（Sequential Importance Sampling，SIS）算法。</p>
+<p>根据贝叶斯公式、马尔可夫状态独立性假设和马尔可夫观测独立性假设，我们很容易得到原分布的的递推形式</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    p(x_{0:k}|z_{1:k})
+        & = \frac{p(x_{0:k},z_{1:k})}{p(z_k,z_{1:{k-1} })} \\
+        & = \frac{p(z_k,x_{0:k},z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })p(z_{1:{k-1} })} \\
+        & = \frac{p(z_k|x_{0:k},z_{1:{k-1} })p(x_{0:k},z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })p(z_{1:{k-1} })} \\
+        & = \frac{p(z_k|x_{0:k},z_{1:{k-1} })p(x_k,x_{0:{k-1} },z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })p(z_{1:{k-1} })} \\
+        & = \frac{p(z_k|x_{0:k},z_{1:{k-1} })p(x_k|x_{0:{k-1} },z_{1:{k-1} })p(x_{0:{k-1} },z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })p(z_{1:{k-1} })} \\
+        & = \frac{p(z_k|x_{0:k},z_{1:{k-1} })p(x_k|x_{0:{k-1} },z_{1:{k-1} })p(x_{0:{k-1} }|z_{1:{k-1} })p(z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })p(z_{1:{k-1} })} \\
+        & = \frac{p(z_k|x_{0:k},z_{1:{k-1} })p(x_k|x_{0:{k-1} },z_{1:{k-1} })p(x_{0:{k-1} }|z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })} \\
+        & = \frac{p(z_k|x_k)p(x_k|x_{k-1})p(x_{0:{k-1} }|z_{1:{k-1} })}{p(z_k|z_{1:{k-1} })} \\
+        & \propto p(z_k|x_k)p(x_k|x_{k-1})p(x_{0:{k-1} }|z_{1:{k-1} })
+\end{aligned} \tag{2.18}</script><p>假定建议分布有如下的递推形式</p>
+<script type="math/tex; mode=display">
+q(x_{0:k}|z_{1:k})=q(x_k|x_{0:k-1},z_{1:k})q(x_{0:k-1}|z_{1:k-1}) \tag{2.19}</script><p>将式 (2.18) 和式 (2.19) 代入式 (2.13)</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    w(x_{0:k})
+        & = \frac{p(x_{0:k}|z_{1:k})}{q(x_{0:k}|z_{1:k})} \\
+        & \propto \frac{ p(z_k|x_k)p(x_k|x_{k-1})p(x_{0:{k-1} }|z_{1:{k-1} })}{ q(x_k|x_{0:k-1},z_{1:k})q(x_{0:k-1}|z_{1:k-1}) } \\
+        & = \frac{ p(z_k|x_k)p(x_k|x_{k-1})}{ q(x_k|x_{0:k-1},z_{1:k})}w(x_{0:{k-1}})
+\end{aligned} \tag{2.20}</script><p>根据式 (2.19) 对建议分布递推形式的假设，式 (2.11) 粒子簇的批量采样可以很自然地转化为单个粒子的序贯采样形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \mathcal{X}_0^{(i)} & \sim q(x_0) \\
+    \mathcal{X}_1^{(i)} & \sim q(x_1|\mathcal{X}_0^{(i)},z_1) \\
+    \mathcal{X}_2^{(i)} & \sim q(x_2|\mathcal{X}_{0:1}^{(i)},z_{1:2}) \\
+    & \qquad \vdots \\
+    \mathcal{X}_k^{(i)} & \sim q(x_k|\mathcal{X}_{0:{k-1}}^{(i)},z_{1:k})
+\end{aligned} \tag{2.21}</script><p>将式 (2.21) 代入式 (2.20) 便得到重要性权重的递推更新形式：</p>
+<script type="math/tex; mode=display">
+w_k^{(i)}\propto\frac{ p(z_k|\mathcal{X}_k^{(i)})p(\mathcal{X}_k^{(i)}|\mathcal{X}_{k-1}^{(i)})}{ q(\mathcal{X}_k^{(i)}|\mathcal{X}_{0:k-1}^{(i)},z_{1:k})} w_{k-1}^{(i)} \tag{2.22}</script><p>若我们只关心当前 $k$ 时刻状态的估计结果，则根据系统的马尔可夫特性，有</p>
+<script type="math/tex; mode=display">
+q(x_k|x_{0:k-1},z_{1:k})=q(x_k|x_{k-1},z_k) \tag{2.23}</script><p>此时的建议分布只与 $k-1$ 时刻的状态 $x_{k-1}$ 和 $k$ 时刻的观测结果 $z_k$ 有关，这意味着，在实际应用时，我们无需存储更早时刻的历史状态序列和观测序列。根据式 (2.23)，式 (2.21) 演变为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \mathcal{X}_0^{(i)} & \sim q(x_0) \\
+    \mathcal{X}_1^{(i)} & \sim q(x_1|\mathcal{X}_0^{(i)},z_1) \\
+    \mathcal{X}_2^{(i)} & \sim q(x_2|\mathcal{X}_1^{(i)},z_2) \\
+    & \qquad \vdots \\
+    \mathcal{X}_k^{(i)} & \sim q(x_k|\mathcal{X}_{k-1}^{(i)},z_k)
+\end{aligned} \tag{2.24}</script><p>将式 (2.23) 和式 (2.24) 代入式 (2.22)，可以得到重要性权重最终的递推更新形式</p>
+<script type="math/tex; mode=display">
+w_k^{(i)}\propto\frac{ p(z_k|\mathcal{X}_k^{(i)})p(\mathcal{X}_k^{(i)}|\mathcal{X}_{k-1}^{(i)})}{ q(\mathcal{X}_k^{(i)}|\mathcal{X}_{k-1}^{(i)},z_k)} w_{k-1}^{(i)} \tag{2.25}</script><p>注意，式 (2.25) 中的 $w_k^{(i)}=w(\mathcal{X}_k^{(i)})$。按照式 (2.25) 递推地得到 $k$ 时刻每个粒子的重要性权重后，再对权重作归一化处理，最终便可根据式 (2.17) 近似估计条件期望。式 (2.24)、(2.25)、(2.16) 和 (2.17) 构成了 SIS 算法的核心流程，下面我们总结下 SIS 的整体框架伪代码。</p>
+<script type="math/tex; mode=display">
+\boxed{
+    \begin{aligned}
+    & \color{red}{\big[\{ \mathcal{X}_k^{(i)}, w_k^{(i)} \}_{i=0}^{N-1}, \mathrm{E}(·)\big]=\texttt{SIS}\big[\{ \mathcal{X}_{k-1}^{(i)}, w_{k-1}^{(i)} \}_{i=0}^{N-1}, z_k\big]} \\
+    & \\
+    & \texttt{FOR} \quad i=0:N-1 \\
+    & \qquad \text{(1) 0 时刻粒子及其重要性权重初始化：}\mathcal{X}_0^{(i)}\sim q(x_0), \quad w_0^{(i)}=\frac{1}{N}\\
+    & \texttt{END FOR} \\
+    & \\
+    & \texttt{FOR} \quad i=0:N-1 \\
+    & \qquad \text{(2) 粒子序贯采样：}\mathcal{X}_k^{(i)} \sim q(x_k|\mathcal{X}_{k-1}^{(i)},z_k) \\
+    & \qquad \text{(3) 粒子重要性权重序贯更新：}w_k^{(i)}\propto\frac{ p(z_k|\mathcal{X}_k^{(i)})p(\mathcal{X}_k^{(i)}|\mathcal{X}_{k-1}^{(i)})}{ q(\mathcal{X}_k^{(i)}|\mathcal{X}_{k-1}^{(i)},z_k)} w_{k-1}^{(i)} \\
+    & \texttt{END FOR} \\
+    & \\
+    & \text{(4) 粒子重要性权重归一化：}\widetilde{w}_k^{(i)}= \frac{w_k^{(i)}}{\sum\limits_{i=0}^{N-1}w_k^{(i)}} \\
+    & \\
+    & \text{(5) 期望估计：}\mathrm{E}[g(X_k)|Z_{1:k}]\approx \sum_{i=0}^{N-1}g(\mathcal{X}_k^{(i)})\widetilde{w}_k^{(i)}
+\end{aligned}
+}</script><p><strong>简言之，序贯重要性采样是为了序贯地进行粒子采样，并递推地更新粒子的重要性权重。</strong></p>
+<h1 id="3-粒子退化问题" class="heading-control"><a href="#3-粒子退化问题" class="headerlink" title="3 粒子退化问题"></a>3 粒子退化问题<a class="heading-anchor" href="#3-粒子退化问题" aria-hidden="true"></a></h1><h2 id="3-1-概述" class="heading-control"><a href="#3-1-概述" class="headerlink" title="3.1 概述"></a>3.1 概述<a class="heading-anchor" href="#3-1-概述" aria-hidden="true"></a></h2><h3 id="3-1-1-什么是粒子退化" class="heading-control"><a href="#3-1-1-什么是粒子退化" class="headerlink" title="3.1.1 什么是粒子退化"></a>3.1.1 什么是粒子退化<a class="heading-anchor" href="#3-1-1-什么是粒子退化" aria-hidden="true"></a></h3><p>SIS 算法在经历次多次迭代后，粒子重要性权重的方差可能将变得很大，从而引发<strong>粒子退化问题</strong>（Particle Degeneracy Problem）。所谓粒子退化，指的是大量粒子中只有少数粒子具有较高权重，而绝大多数粒子的权重都很小甚至接近于 $0$，导致计算加权均值时大量的运算资源被浪费在了小权重粒子上。粒子退化问题发生的根本原因是建议分布与真实分布的不匹配。</p>
+<h3 id="3-1-2-粒子退化程度的度量" class="heading-control"><a href="#3-1-2-粒子退化程度的度量" class="headerlink" title="3.1.2 粒子退化程度的度量"></a>3.1.2 粒子退化程度的度量<a class="heading-anchor" href="#3-1-2-粒子退化程度的度量" aria-hidden="true"></a></h3><p>为了度量粒子退化问题的严重程度，我们引入<strong>有效样本数 $N_{eff}$</strong>，并将其定义如下</p>
+<script type="math/tex; mode=display">
+N_{eff}=\frac{1}{1+\mathrm{Var}[w_k^{(i)}]} \tag{3.1}</script><p>$N_{eff}$ 的直接计算并不容易，我们通常代为使用其估计量 $\widehat{N_{eff}}$</p>
+<script type="math/tex; mode=display">
+\widehat{N_{eff}}=\frac{1}{\sum\limits_{i=0}^N(\widetilde{w}_k^{(i)})^2} \tag{3.2}</script><p>$\widehat{N_{eff}}$ 越小，则意味着粒子退化越严重。抑制粒子退化问题最直观的方法是增加采样粒子数量 $N$，但这无疑会增加计算负担，降低算法实时性，以下两个手段则更具实操性：</p>
+<ul>
+<li>选择合适的建议分布</li>
+<li>在 SIS 算法流程结束后，实施粒子重采样（Resampling）步骤</li>
+</ul>
+<h2 id="3-2-建议分布的选择" class="heading-control"><a href="#3-2-建议分布的选择" class="headerlink" title="3.2 建议分布的选择"></a>3.2 建议分布的选择<a class="heading-anchor" href="#3-2-建议分布的选择" aria-hidden="true"></a></h2><p>最优的建议分布无疑就是真实的后验分布本身</p>
+<script type="math/tex; mode=display">
+q(x_{0:k}|z_{1:k})=p(x_{0:k}|z_{1:k}) \tag{3.3}</script><p>但这个结论对于问题的求解并没有实际意义，因为正是由于后验分布未知或难于积分我们才引入了建议分布的概念。建议分布的设计已经发展出很多形式，并由此衍生出种类繁多的粒子滤波变种：</p>
+<ul>
+<li>以 UKF 生成建议分布的无迹粒子滤波（Unscented Particle Filter，UPF）</li>
+<li>以 EKF 生成建议分布的扩展卡尔曼粒子滤波（Extended Kalman Particle Filter，EKPF）</li>
+<li>通过构建辅助变量，提升和观测更为匹配的粒子被采样的概率的辅助粒子滤波（Auxiliary Particle Filter，APF）</li>
+</ul>
+<p>UPF、EKPF、APF 等并不是本文的主题，这里我们介绍一种精度尚可，但实现更加简单的建议分布形式——先验状态转移概率分布。</p>
+<p>根据式 (2.19) 和式 (2.23) 我们不难发现，只要条件建议分布 $q(x_k|x_{k-1},z_k)$ 一经确定，建议分布 $q(x_{0:k}|z_{1:k})$ 便自然确定，假设我们选取系统的先验状态转移概率分布 $p(x_k|x_{k-1})$ 作为条件建议分布</p>
+<script type="math/tex; mode=display">
+q(x_k|x_{k-1},z_k)=p(x_k|x_{k-1}) \tag{3.4}</script><p>根据式 (3.4)，式 (2.24) 演变为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \mathcal{X}_0^{(i)} & \sim p(x_0) \\
+    \mathcal{X}_1^{(i)} & \sim p(x_1|\mathcal{X}_0^{(i)}) \\
+    \mathcal{X}_2^{(i)} & \sim p(x_2|\mathcal{X}_1^{(i)}) \\
+    & \quad \vdots \\
+    \mathcal{X}_k^{(i)} & \sim p(x_k|\mathcal{X}_{k-1}^{(i)})
+\end{aligned} \tag{3.5}</script><p>从式 (3.5) 我们可以知道，只要确定了系统先验的状态转移概率分布，便可以根据系统的状态转移方程进行粒子序贯采样。根据式 (3.4) 和式 (3.5)，式 (2.25) 演变为</p>
+<script type="math/tex; mode=display">
+w_k^{(i)}\propto\underbrace{p(z_k|\mathcal{X}_k^{(i)})}_{似然概率分布} w_{k-1}^{(i)} \tag{3.6}</script><p>从式 (3.6) 我们可以知道，只要完成了粒子的序贯采样，并确定了系统的似然概率分布，便可以根据系统的观测方程以及上一时刻粒子的重要性权重递推地更新当前时刻粒子的重要性权重（非归一化的）。</p>
+<h2 id="3-3-重采样" class="heading-control"><a href="#3-3-重采样" class="headerlink" title="3.3 重采样"></a>3.3 重采样<a class="heading-anchor" href="#3-3-重采样" aria-hidden="true"></a></h2><p>重采样也可有效抑制粒子退化问题。所谓重采样，指的是在得到当前时刻的粒子集及每个粒子归一化的重要性权重 $\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}$ 后，根据每个粒子的权重需要进行重新采样，粒子权重越高，被重新采样到的概率也越高，这意味着，某些粒子在重采样后可能会被复制多份，而某些粒子在重采样后可能直接不存在了，如下图所示（参考 23，P263）。</p>
+<p><img data-src="https://image.shipengx.com/%E9%87%8D%E9%87%87%E6%A0%B7%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="重采样示意图"></p>
+<p>重采样过程等价于对下面这个离散分布进行采样</p>
+<script type="math/tex; mode=display">
+\mathrm{P}(x_k=\mathcal{X}_k^{(i)})=\widetilde{w}_k^{(i)} \tag{3.7}</script><p>我们记重采样得到的粒子集及每个粒子各自的权重为 $\{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=0}^{N-1}$，因为是直接对离散分布进行采样，故</p>
+<script type="math/tex; mode=display">
+w_k^{\ast (j)}=\frac{1}{N}, \quad j=0, 1, 2, \dotsb, N-1 \tag{3.8}</script><p>针对重采样过程，目前已发展出多种方法，如多项式重采样（Multinomial Resampling）、分层重采样（Stratified Resampling）、系统重采样（Systematic Resampling）、残差重采样（Residual Resampling）等，后面我们会对这几种方法作简单介绍并给出详尽的伪代码实现框架。</p>
+<h3 id="3-3-1-几种经典的重采样算法" class="heading-control"><a href="#3-3-1-几种经典的重采样算法" class="headerlink" title="3.3.1 几种经典的重采样算法"></a>3.3.1 几种经典的重采样算法<a class="heading-anchor" href="#3-3-1-几种经典的重采样算法" aria-hidden="true"></a></h3><h4 id="3-3-1-1-多项式重采样" class="heading-control"><a href="#3-3-1-1-多项式重采样" class="headerlink" title="3.3.1.1 多项式重采样"></a>3.3.1.1 多项式重采样<a class="heading-anchor" href="#3-3-1-1-多项式重采样" aria-hidden="true"></a></h4><p>又称简单随机重采样（Simple Random Resampling）。其核心思想很简单，首先，计算粒子归一化权重的累积分布</p>
+<script type="math/tex; mode=display">
+c_i=
+\begin{cases}
+    \widetilde{w}_k^{(0)} & \quad i=0 \\
+    c_i=c_{i-1}+\widetilde{w}_k^{(i)} & \quad i=1,2, \cdots , N-1
+\end{cases} \tag{3.9}</script><p>然后，生成服从均匀分布 [0, 1] 内的随机数</p>
+<script type="math/tex; mode=display">
+u\sim\mathcal{U}(0,1) \tag{3.10}</script><p>使用二分搜索查找该随机数在累积分布中所处的位置，得到重采样粒子对应的原粒子的索引 $i$，$i$ 满足</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+    u \le c_i \quad & i=0 \\
+    c_{i-1}\lt u \le c_i \quad & i=1,2, \cdots , N-1
+\end{cases} \tag{3.11}</script><p>多项式重采样算法的时间复杂度为 $\mathcal{O}(n\log(n))$，其中的对数项源于二分搜索的使用。下面我们给出多项式重采样的伪代码。</p>
+<script type="math/tex; mode=display">
+\boxed{
+    \begin{aligned}
+    & \color{red}{\{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=0}^{N-1}=\texttt{MultinomialResampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}, N_r\big]} \\
+    & \\
+    & c_0 = \widetilde{w}_k^{(0)} \\
+    & \texttt{FOR} \quad i=1:N-1 \\
+    & \qquad c_i=c_{i-1}+\widetilde{w}_k^{(i)}\\
+    & \texttt{END FOR} \\
+    & c_{N-1}=1 \\
+    & \\
+    & \texttt{FOR} \quad j=N-N_r:N-1 \\
+    & \qquad u\sim\mathcal{U}(0,1) \\
+    & \qquad left=0, \quad right=N-1 \\
+    & \qquad \texttt{WHILE} \quad left \lt right \\
+    & \qquad \qquad middle=\lfloor\frac{left+right}{2}\rfloor \\
+    & \qquad \qquad \texttt{IF} \quad u \gt c_{middle} \\
+    & \qquad \qquad \qquad left=middle+1 \\
+    & \qquad \qquad \texttt{ELSE} \\
+    & \qquad \qquad \qquad right=middle \\
+    & \qquad \qquad \texttt{END IF} \\
+    & \qquad \texttt{END WHILE} \\
+    & \qquad \mathcal{X}_k^{\ast (j)}=\mathcal{X}_k^{(right)} \\
+    & \qquad w_k^{\ast (j)}=\frac{1}{N} \\
+    & \texttt{END FOR}
+\end{aligned}
+}</script><p>其中，$N$ 表示粒子总数，$N_r$ 表示重采样的粒子数（$N_r \leq N$。在单独使用多项式重采样时，$N_r=N$；在用于残差重采样的步骤二时，$N_r \lt N$），$\lfloor \cdot\rfloor$ 表示向下取整。在计算粒子权重的累积分布时，为避免圆整误差，需要令 $c_{N-1}=1$。此外，使用二分搜索时需要注意搜索区间的设置。</p>
+<h4 id="3-3-1-2-分层重采样" class="heading-control"><a href="#3-3-1-2-分层重采样" class="headerlink" title="3.3.1.2 分层重采样"></a>3.3.1.2 分层重采样<a class="heading-anchor" href="#3-3-1-2-分层重采样" aria-hidden="true"></a></h4><p>分层重采样将粒子归一化重要性权重的累积分布等分为 $N_r$ 层子区间，对每层子区间，使用一个介于子区间左右边界值的随机数来查找该层子区间重采样粒子所对应的原粒子索引，分层重采样算法的时间复杂度为 $\mathcal{O}(n)$。下面我们给出分层重采样的伪代码。</p>
+<script type="math/tex; mode=display">
+\boxed{
+    \begin{aligned}
+    & \color{red}{\{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=0}^{N-1}=\texttt{StratifiedResampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}, N_r\big]} \\
+    & \\
+    & c_0 = \widetilde{w}_k^{(0)} \\
+    & \texttt{FOR} \quad i=1:N-1 \\
+    & \qquad c_i=c_{i-1}+\widetilde{w}_k^{(i)}\\
+    & \texttt{END FOR} \\
+    & c_{N-1}=1 \\
+    & \\
+    & i=0 \\
+    & \texttt{FOR} \quad j=N-N_r:N-1 \\
+    & \qquad u_0\sim\mathcal{U}(0,\frac{1}{N_r}) \\
+    & \qquad u=u_0+\frac{j-(N-N_r)}{N_r} \\
+    & \qquad \texttt{WHILE} \quad c_i \lt u \\
+    & \qquad \qquad i=i+1 \\
+    & \qquad \texttt{END WHILE} \\
+    & \qquad \mathcal{X}_k^{\ast (j)}=\mathcal{X}_k^{(i)} \\
+    & \qquad w_k^{\ast (j)}=\frac{1}{N} \\
+    & \texttt{END FOR}
+\end{aligned}
+}</script><p>其中，$N$ 表示粒子总数，$N_r$ 表示重采样的粒子数（$N_r \leq N$。在单独使用分层重采样时，$N_r=N$；在用于残差重采样的步骤二时，$N_r \lt N$）。</p>
+<h4 id="3-3-1-3-系统重采样" class="heading-control"><a href="#3-3-1-3-系统重采样" class="headerlink" title="3.3.1.3 系统重采样"></a>3.3.1.3 系统重采样<a class="heading-anchor" href="#3-3-1-3-系统重采样" aria-hidden="true"></a></h4><p>系统重采样与分层重采样类似，唯一的区别在于，系统重采样中的每层子区间在查找各自重采样粒子对应的原粒子索引时使用的是同一个随机数，意即，系统重采样只涉及一次随机数生成操作，系统重采样算法的时间复杂度同样为 $\mathcal{O}(n)$。下面我们给出系统重采样的伪代码。</p>
+<script type="math/tex; mode=display">
+\boxed{
+    \begin{aligned}
+    & \color{red}{\{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=0}^{N-1}=\texttt{SystematicResampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}, N_r\big]} \\
+    & \\
+    & c_0 = \widetilde{w}_k^{(0)} \\
+    & \texttt{FOR} \quad i=1:N-1 \\
+    & \qquad c_i=c_{i-1}+\widetilde{w}_k^{(i)}\\
+    & \texttt{END FOR} \\
+    & c_{N-1}=1 \\
+    & \\
+    & i=0 \\
+    & u_0\sim\mathcal{U}(0,\frac{1}{N_r}) \\
+    & \texttt{FOR} \quad j=N-N_r:N-1 \\
+    & \qquad u=u_0+\frac{j-(N-N_r)}{N_r} \\
+    & \qquad \texttt{WHILE} \quad c_i \lt u \\
+    & \qquad \qquad i=i+1 \\
+    & \qquad \texttt{END WHILE} \\
+    & \qquad \mathcal{X}_k^{\ast (j)}=\mathcal{X}_k^{(i)} \\
+    & \qquad w_k^{\ast (j)}=\frac{1}{N} \\
+    & \texttt{END FOR}
+\end{aligned}
+}</script><p>其中，$N$ 表示粒子总数，$N_r$ 表示重采样的粒子数（$N_r \leq N$。在单独使用系统重采样时，$N_r=N$；在用于残差重采样的步骤二时，$N_r \lt N$）。</p>
+<h4 id="3-3-1-4-残差重采样" class="heading-control"><a href="#3-3-1-4-残差重采样" class="headerlink" title="3.3.1.4 残差重采样"></a>3.3.1.4 残差重采样<a class="heading-anchor" href="#3-3-1-4-残差重采样" aria-hidden="true"></a></h4><p>残差重采样分两步进行：</p>
+<p><strong>步骤一：确定性拷贝采样</strong></p>
+<p>对原粒子集的每个粒子 $\mathcal{X}^{(i)}$ 根据 $N_{k_1}^{(i)}$ 作为复制次数进行拷贝采样，其中</p>
+<script type="math/tex; mode=display">
+N_{k_1}^{(i)}=\lfloor N \widetilde{w}_k^{(i)} \rfloor \qquad i=0,1,2, \cdots , N-1 \tag{3.12}</script><p>例如，原粒子集共有 $N=1000$ 个粒子，第 $i=10$ 个粒子 $\mathcal{X}_k^{(10)}$ 的归一化的重要性权重为 $\widetilde{w}_k^{(10)}=0.0036$，则在残差重采样的步骤一中，$\mathcal{X}_k^{(10)}$ 将被拷贝 $N_{k_1}^{(10)}=\lfloor 1000*0.0036 \rfloor=3$ 次。在步骤一中，总的重采样粒子数为</p>
+<script type="math/tex; mode=display">
+N_{k_1}^\ast=\sum_{i=0}^{N-1}N_{k_1}^{(i)} \tag{3.13}</script><p>每个拷贝后的重采样粒子的权重置为 $\frac{1}{N}$。</p>
+<p><strong>步骤二：残差随机采样</strong></p>
+<p>显然，由于忽略了 $N \widetilde{w}_k^{(i)}$ 的小数部分，经过步骤一后重采样粒子集中还缺少 $N_{k_2}=N-N_{k_1}^\ast$ 个粒子，对于剩余的待重采样的粒子，我们结合上面的重采样方法进行随机采样。首先，计算原粒子集中每个粒子经过确定性拷贝采样后新的归一化权重 $\widetilde{w}_k^{r(i)}$（这里我们称之为归一化的残差权重，上角标 $r$ 代表 residual）</p>
+<script type="math/tex; mode=display">
+\widetilde{w}_k^{r(i)}=\frac{N \widetilde{w}_k^{(i)}-N_{k_1}^{(i)}}{N_{k_2}} \qquad i=0,1,2, \cdots , N-1 \tag{3.14}</script><p>然后，将 $\widetilde{w}_k^{r(i)}$ 和 $N_{k_2}$ 代入多项式重采样、分层重采样或系统重采样中的任意一种，完成剩余重采样粒子的采样。</p>
+<p>下面我们给出残差重采样的伪代码，其中步骤二使用的是多项式重采样。</p>
+<script type="math/tex; mode=display">
+\boxed{
+    \begin{aligned}
+    & \color{red}{\{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=0}^{N-1}=\texttt{ResidualResampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}\big]} \\
+    & \\
+    & j=0 \\
+    & \texttt{FOR} \quad i=0:N-1 \\
+    & \qquad N_{k_1}^{(i)}=\lfloor N \widetilde{w}_k^{(i)} \rfloor \\
+    & \qquad \texttt{FOR} \quad m=0:N_{k_1}^{(i)}-1 \\
+    & \qquad \qquad \mathcal{X}_k^{\ast (j)}=\mathcal{X}_k^{(i)} \\
+    & \qquad \qquad w_k^{\ast (j)}=\frac{1}{N} \\
+    & \qquad \qquad j=j+1\\
+    & \qquad \texttt{END FOR} \\
+    & \texttt{END FOR} \\
+    & \\
+    & N_{k_2}=N-j \\
+    & \texttt{FOR} \quad i=0:N-1 \\
+    & \qquad \widetilde{w}_k^{r(i)}=\frac{N \widetilde{w}_k^{(i)}-N_{k_1}^{(i)}}{N_{k_2}} \\
+    & \texttt{END FOR} \\
+    & \\
+    & \{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=0}^{N-1}=\texttt{MultinomialResampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{r(i)} \}_{i=0}^{N-1}, N_{k_2}\big]
+\end{aligned}
+}</script><h3 id="3-3-2-重采样的副作用" class="heading-control"><a href="#3-3-2-重采样的副作用" class="headerlink" title="3.3.2 重采样的副作用"></a>3.3.2 重采样的副作用<a class="heading-anchor" href="#3-3-2-重采样的副作用" aria-hidden="true"></a></h3><p>如果粒子的权值退化问题非常严重，那么重采样后的粒子将会是极少数个别粒子的大量副本，这意味粒子的多样性严重丧失，此时的粒子集已经无法很好地刻画原本的概率密度函数，我们称这种现象为粒子的<strong>样本贫化</strong>（Sample Impoverishment）。样本贫化极有可能导致滤波器发散，为了处理样本贫化问题，已经发展出很多方法，例如正则粒子滤波（Regularized Particle Filter，RPF），本文不对此作展开，有兴趣可以查阅相关文献。</p>
+<h3 id="3-3-3-基本的粒子滤波器" class="heading-control"><a href="#3-3-3-基本的粒子滤波器" class="headerlink" title="3.3.3 基本的粒子滤波器"></a>3.3.3 基本的粒子滤波器<a class="heading-anchor" href="#3-3-3-基本的粒子滤波器" aria-hidden="true"></a></h3><p>将 SIS 与重采样进行结合便构成了<strong>基本的粒子滤波器</strong>，下面我们总结下整体框架的伪代码（以 SIS + SystematicResampling 为例）。</p>
+<script type="math/tex; mode=display">
+\boxed{
+    \begin{aligned}
+    & \color{red}{\big[\{ \mathcal{X}_k^{(i)}, w_k^{(i)} \}_{i=0}^{N-1}, \mathrm{E}(·)\big]=\texttt{GenericParticleFilter}\big[\{ \mathcal{X}_{k-1}^{(i)}, w_{k-1}^{(i)} \}_{i=0}^{N-1}, z_k\big]} \\
+    & \\
+    & \texttt{FOR} \quad i=0:N-1 \\
+    & \qquad \text{(1) 0 时刻粒子及其重要性权重初始化：}\mathcal{X}_0^{(i)}\sim q(x_0), \quad w_0^{(i)}=\frac{1}{N}\\
+    & \texttt{END FOR} \\
+    & \\
+    & \texttt{FOR} \quad i=0:N-1 \\
+    & \qquad \text{(2) 粒子序贯采样：}\mathcal{X}_k^{(i)} \sim q(x_k|\mathcal{X}_{k-1}^{(i)},z_k) \\
+    & \qquad \text{(3) 粒子重要性权重序贯更新：}w_k^{(i)}\propto\frac{ p(z_k|\mathcal{X}_k^{(i)})p(\mathcal{X}_k^{(i)}|\mathcal{X}_{k-1}^{(i)})}{ q(\mathcal{X}_k^{(i)}|\mathcal{X}_{k-1}^{(i)},z_k)} w_{k-1}^{(i)} \\
+    & \texttt{END FOR} \\
+    & \\
+    & \text{(4) 粒子重要性权重归一化：}\widetilde{w}_k^{(i)}= \frac{w_k^{(i)}}{\sum\limits_{i=0}^{N-1}w_k^{(i)}} \\
+    & \\
+    & \widehat{N_{eff}}=\frac{1}{\sum\limits_{i=0}^N(\widetilde{w}_k^{(i)})^2} \\
+    & \\
+    & \texttt{IF} \quad \widehat{N_{eff} }\lt N_{thr} \\
+    & \qquad \text{(5) 重采样：}\{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=0}^{N-1}=\texttt{SystematicResampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}, N\big] \\
+    & \texttt{END IF}\\
+    & \\
+    & \text{(6) 期望估计：}
+    \begin{cases}
+        \{ \mathcal{X}_k^{(i)}, w_k^{(i)} \}_{i=0}^{N-1}=\{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=0}^{N-1} \\
+        \{ \widetilde{w}_k^{(i)}\}_{i=0}^{N-1}= \{ w_k^{\ast (j)}\}_{j=0}^{N-1} \\
+        \mathrm{E}[g(X_k)|Z_{1:k}]\approx \sum\limits_{i=0}^{N-1}g(\mathcal{X}_k^{(i)})\widetilde{w}_k^{(i)}
+    \end{cases}
+\end{aligned}
+}</script><p>其中，$N_{thr}$ 是用于决定是否执行重采样步骤的阈值，通常取 $N_{thr}=\frac{N}{2}$。</p>
+<h1 id="4-SIR-滤波器" class="heading-control"><a href="#4-SIR-滤波器" class="headerlink" title="4 SIR 滤波器"></a>4 SIR 滤波器<a class="heading-anchor" href="#4-SIR-滤波器" aria-hidden="true"></a></h1><p>这里我们介绍一种常用的经典粒子滤波算法实现——采样重要性重采样（Sampling Importance Resampling，SIR）滤波。</p>
+<p>在 3.2 节的结论中我们已经知道，假设我们取系统的先验状态转移概率分布 $p(x_k|x_{k-1})$ 作为条件建议分布，便可以根据系统的状态转移方程进行粒子的序贯采样；同时，只要完成了粒子的序贯采样，并确定了系统的似然概率分布，便可以根据系统的观测方程以及上一时刻粒子的重要性权重递推地更新当前时刻粒子的重要性权重（非归一化的）。据此，我们对 3.3.3 节中的基本粒子滤波算法框架中的建议分布稍加修改，并在每次计算完归一化的重要性权重后都实施一次重采样，便可得到 SIR 滤波算法框架：</p>
+<script type="math/tex; mode=display">
+\boxed{
+    \begin{aligned}
+    & \color{red}{\big[\{ \mathcal{X}_k^{(i)}, w_k^{(i)} \}_{i=0}^{N-1}, \mathrm{E}(·)\big]=\texttt{SIR}\big[\{ \mathcal{X}_{k-1}^{(i)}, w_{k-1}^{(i)} \}_{i=0}^{N-1}, z_k\big]} \\
+    & \\
+    & \texttt{FOR} \quad i=0:N-1 \\
+    & \qquad \text{(1) 0 时刻粒子及其重要性权重初始化：}\mathcal{X}_0^{(i)}\sim q(x_0), \quad w_0^{(i)}=\frac{1}{N}\\
+    & \texttt{END FOR} \\
+    & \\
+    & \texttt{FOR} \quad i=0:N-1 \\
+    & \qquad \text{(2) 预测步。粒子序贯采样：}\mathcal{X}_k^{(i)}\sim p(x_k|\mathcal{X}_{k-1}^{(i)}) \\
+    & \qquad \text{(3) 更新步。粒子重要性权重序贯更新：}w_k^{(i)}\propto p(z_k|\mathcal{X}_k^{(i)}) w_{k-1}^{(i)} \\
+    & \texttt{END FOR} \\
+    & \\
+    & \text{(4) 粒子重要性权重归一化：}\widetilde{w}_k^{(i)}= \frac{w_k^{(i)}}{\sum\limits_{i=0}^{N-1}w_k^{(i)}} \\
+    & \\
+    & \text{(5) 重采样：}\{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=0}^{N-1}=\texttt{SystematicResampling}\big[\{ \mathcal{X}_k^{(i)}, \widetilde{w}_k^{(i)} \}_{i=0}^{N-1}, N\big] \\
+    & \\
+    & \text{(6) 期望估计：}
+    \begin{cases}
+        \{ \mathcal{X}_k^{(i)}, w_k^{(i)} \}_{i=0}^{N-1}=\{ \mathcal{X}_k^{\ast (j)}, w_k^{\ast (j)} \}_{j=0}^{N-1} \\
+        \{ \widetilde{w}_k^{(i)}\}_{i=0}^{N-1}= \{ w_k^{\ast (j)}\}_{j=0}^{N-1} \\
+        \mathrm{E}[g(X_k)|Z_{1:k}]\approx \sum\limits_{i=0}^{N-1}g(\mathcal{X}_k^{(i)})\widetilde{w}_k^{(i)}
+    \end{cases}
+\end{aligned}
+}</script><p>从框架中我们可以看出，SIR 的粒子序贯采样依赖上一时刻的粒子状态及系统的状态转移方程，我们称之为预测步；SIR 的粒子重要性权重序贯更新依赖上一时刻的粒子重要性权重及预测步粒子对应的似然概率，我们称之为更新步。<strong>预测步只改变粒子的位置，不改变粒子的权重；更新步只改变粒子的权重，不改变粒子的位置。</strong> SIR 算法的流程示意图如下图所示（出自参考 24，P681）。</p>
+<p><img data-src="https://image.shipengx.com/SIR%20%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="SIR 算法流程示意图"></p>
+<h1 id="5-应用实例——基于粒子滤波的无人车定位" class="heading-control"><a href="#5-应用实例——基于粒子滤波的无人车定位" class="headerlink" title="5 应用实例——基于粒子滤波的无人车定位"></a>5 应用实例——基于粒子滤波的无人车定位<a class="heading-anchor" href="#5-应用实例——基于粒子滤波的无人车定位" aria-hidden="true"></a></h1><h2 id="5-1-问题描述" class="heading-control"><a href="#5-1-问题描述" class="headerlink" title="5.1 问题描述"></a>5.1 问题描述<a class="heading-anchor" href="#5-1-问题描述" aria-hidden="true"></a></h2><p>粒子滤波常被用于解决无人车的定位问题。假设我们有一辆无人车，且已知下面的输入条件：</p>
+<ul>
+<li>无人车系统初始化瞬间的 GPS 输出（全局坐标系下的自车位置及航向），GPS 观测的不确定度（即位置与航向的标准差）</li>
+<li>每一时刻的外部控制输入（车速及航向角速率）</li>
+<li>一系列地图路标在全局坐标系下的位置及 id（假设 id 是从 $1$ 开始顺序排列的正整数）</li>
+<li>每一时刻若干个观测到的路标位置（自车坐标系），路标观测的不确定度</li>
+<li>用于路标感知的传感器有效测量范围</li>
+</ul>
+<p>我们如何估计每个时刻无人车的定位信息（位置及航向）？这里我们使用粒子滤波，下图给出了基于粒子滤波的无人车定位流程（图片出自 Udacity）。</p>
+<p><img data-src="https://image.shipengx.com/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E7%9A%84%E6%97%A0%E4%BA%BA%E8%BD%A6%E5%AE%9A%E4%BD%8D%E6%B5%81%E7%A8%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="基于粒子滤波的无人车定位流程示意图"></p>
+<p>下面我们结合 SIR 算法框架及具体代码来详细阐述，代码实现基于 Udacity 的工程框架并进行了优化重构，点击<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3VkYWNpdHkvQ2FyTkQtS2lkbmFwcGVkLVZlaGljbGUtUHJvamVjdA==" title="https://github.com/udacity/CarND-Kidnapped-Vehicle-Project">这里<i class="fa fa-external-link"></i></span>查看 Udacity 源码。这里我们只关注核心算法本身，因此没有做仿真环节，相比理论分析，经典粒子滤波的代码实现要简单得多，实际效果在工程开发中去调试体会即可。</p>
+<h2 id="5-2-代码实现" class="heading-control"><a href="#5-2-代码实现" class="headerlink" title="5.2 代码实现"></a>5.2 代码实现<a class="heading-anchor" href="#5-2-代码实现" aria-hidden="true"></a></h2><h3 id="5-2-1-初始化" class="heading-control"><a href="#5-2-1-初始化" class="headerlink" title="5.2.1 初始化"></a>5.2.1 初始化<a class="heading-anchor" href="#5-2-1-初始化" aria-hidden="true"></a></h3><p>我们假设 GPS 的位置及航向输出服从正态分布，因此在得到 GPS 的初始输出后，我们可以根据初始值（均值 $\mu$）和 GPS 观测不确定度（标准差 $\sigma$）构造无人车的定位初始分布，并通过对初始分布进行随机采样完成粒子集的初始化。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Initialize the particle filter.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param x Initial x position [m] from GPS.</span></span><br><span class="line"><span class="comment"> * @param y Initial y position [m] from GPS.</span></span><br><span class="line"><span class="comment"> * @param theta Initial heading angle [rad] from GPS.</span></span><br><span class="line"><span class="comment"> * @param std_pos Array of dimension 3 [standard deviation of x [m],</span></span><br><span class="line"><span class="comment"> *   standard deviation of y [m], standard deviation of theta [rad]]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParticleFilter::Init</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span> &amp;x, <span class="keyword">const</span> <span class="keyword">double</span> &amp;y, <span class="keyword">const</span> <span class="keyword">double</span> &amp;theta,</span></span></span><br><span class="line"><span class="function"><span class="params">                          <span class="keyword">const</span> <span class="keyword">double</span> std_pos[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!IsInited())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// create normal distributions around the initial gps measurement values</span></span><br><span class="line">        <span class="built_in">std</span>::default_random_engine gen;</span><br><span class="line">        <span class="function"><span class="built_in">std</span>::normal_distribution&lt;<span class="keyword">double</span>&gt; <span class="title">norm_dist_x</span><span class="params">(x, std_pos[<span class="number">0</span>])</span></span>;</span><br><span class="line">        <span class="function"><span class="built_in">std</span>::normal_distribution&lt;<span class="keyword">double</span>&gt; <span class="title">norm_dist_y</span><span class="params">(y, std_pos[<span class="number">1</span>])</span></span>;</span><br><span class="line">        <span class="function"><span class="built_in">std</span>::normal_distribution&lt;<span class="keyword">double</span>&gt; <span class="title">norm_dist_theta</span><span class="params">(theta, std_pos[<span class="number">2</span>])</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// initialize particles one by one</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; n_p; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            particles(<span class="number">0</span>, i) = norm_dist_x(gen);</span><br><span class="line">            particles(<span class="number">1</span>, i) = norm_dist_y(gen);</span><br><span class="line">            particles(<span class="number">2</span>, i) = norm_dist_theta(gen);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// initialize weights to 1 / n_p</span></span><br><span class="line">        weights_nonnormalized.fill(<span class="number">1</span> / n_p);</span><br><span class="line">        weights_normalized.fill(<span class="number">1</span> / n_p);</span><br><span class="line"></span><br><span class="line">        is_inited = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有几点说明如下：</p>
+<ul>
+<li>这里使用了 C++ 的随机数引擎 <code>std::default_random_engine</code> 和正态分布模板类 <code>std::normal_distribution</code> 实现了高斯随机数的生成</li>
+<li><code>particles</code> 是 $3\times n_p$ 的粒子 Eigen 矩阵，$n_p$ 表示粒子数目，我们在构造函数的初始值列表中将其初始化为了 $1000$，矩阵的每一列表示一个粒子的状态，矩阵的第 $0$、$1$、$2$ 行分别表示粒子的横向位置 $x$、纵向位置 $y$ 和航向角 $\theta$</li>
+<li><code>weights_nonnormalized</code> 和 <code>weights_normalized</code> 分别表示未归一化和归一化的重要性权重，数据类型都是 $n_p\times 1$ 的 Eigen 向量。很多粒子滤波教程中使用同一个变量存放未归一化和归一化的重要性权重，这样也是可以的，这里我们的目的是使代码逻辑更加清晰。</li>
+</ul>
+<h3 id="5-2-2-预测" class="heading-control"><a href="#5-2-2-预测" class="headerlink" title="5.2.2 预测"></a>5.2.2 预测<a class="heading-anchor" href="#5-2-2-预测" aria-hidden="true"></a></h3><p>在预测步中，我们需要根据无人车的运动模型、车速、航向角速率、相邻两帧的时间间隔等将上一步的粒子集向当前时刻进行预测。这里我们我们假设自车遵从 CRTV 运动模型，关于 CRTV，在此前文章<a href="https://blog.shipengx.com/archives/cfd8b171.html">《从贝叶斯滤波到无迹卡尔曼滤波》</a>中我们已经介绍过，不再赘述，这里我们这里直接给出不计噪声时的 CRTV 状态方程</p>
+<script type="math/tex; mode=display">
+X_k = X_{k-1} +
+\begin{cases}
+    \begin{bmatrix}
+        \frac{v}{\omega} \bigl(\mathrm{sin}(\psi_{k-1}+\omega\Delta t)-\mathrm{sin}(\psi_{k-1}) \bigr) \\
+        \frac{v}{\omega} \bigl(-\mathrm{cos}(\psi_{k-1}+\omega\Delta t)+\mathrm{cos}(\psi_{k-1}) \bigr) \\
+        0 \\
+        \omega \Delta t \\
+        0
+    \end{bmatrix} \quad & \omega \neq 0 \\
+    \\
+    \begin{bmatrix}
+        v·\mathrm{cos}(\psi_{k-1})\Delta t \\
+        v·\mathrm{sin}(\psi_{k-1})\Delta t \\
+        0 \\
+        0 \\
+        0
+    \end{bmatrix} \quad & \omega = 0
+\end{cases} \tag{5.1}</script><p>式 (5.1) 中，$\omega$ 即自车的航向角速率。CTRV 是 CV 的一般形式，当 $\omega = 0$ 时，CTRV 退化为 CV。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Predict new state of particle according to the system motion model.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param velocity Velocity of car [m/s]</span></span><br><span class="line"><span class="comment"> * @param yaw_rate Yaw rate of car [rad/s]</span></span><br><span class="line"><span class="comment"> * @param delta_t delta time between last timestamp and current timestamp [s]</span></span><br><span class="line"><span class="comment"> * @param std_pos Array of dimension 3 [standard deviation of x [m],</span></span><br><span class="line"><span class="comment"> *   standard deviation of y [m], standard deviation of yaw [rad]]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParticleFilter::Predict</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span> &amp;velocity, <span class="keyword">const</span> <span class="keyword">double</span> &amp;yaw_rate,</span></span></span><br><span class="line"><span class="function"><span class="params">                             <span class="keyword">const</span> <span class="keyword">double</span> &amp;<span class="keyword">delta_t</span>, <span class="keyword">const</span> <span class="keyword">double</span> std_pos[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!IsInited())</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// create process noise's normal distributions of which the mean is zero</span></span><br><span class="line">    <span class="built_in">std</span>::default_random_engine gen;</span><br><span class="line">    <span class="function"><span class="built_in">std</span>::normal_distribution&lt;<span class="keyword">double</span>&gt; <span class="title">norm_dist_x</span><span class="params">(<span class="number">0</span>, std_pos[<span class="number">0</span>])</span></span>;</span><br><span class="line">    <span class="function"><span class="built_in">std</span>::normal_distribution&lt;<span class="keyword">double</span>&gt; <span class="title">norm_dist_y</span><span class="params">(<span class="number">0</span>, std_pos[<span class="number">1</span>])</span></span>;</span><br><span class="line">    <span class="function"><span class="built_in">std</span>::normal_distribution&lt;<span class="keyword">double</span>&gt; <span class="title">norm_dist_theta</span><span class="params">(<span class="number">0</span>, std_pos[<span class="number">2</span>])</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// predict state of particles one by one</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; n_p; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">double</span> theta_last = particles(<span class="number">2</span>, i);</span><br><span class="line"></span><br><span class="line">        Eigen::Vector3d state_trans_item_motion;</span><br><span class="line">        Eigen::Vector3d state_trans_item_noise;</span><br><span class="line"></span><br><span class="line">        state_trans_item_noise &lt;&lt; norm_dist_x(gen), norm_dist_y(gen), norm_dist_theta(gen);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">fabs</span>(yaw_rate) &gt; <span class="number">0.001</span>) <span class="comment">// CTRV model</span></span><br><span class="line">        &#123;</span><br><span class="line">            state_trans_item_motion &lt;&lt; velocity / yaw_rate * (<span class="built_in">sin</span>(theta_last + yaw_rate * <span class="keyword">delta_t</span>) - <span class="built_in">sin</span>(theta_last)),</span><br><span class="line">                velocity / yaw_rate * (-<span class="built_in">cos</span>(theta_last + yaw_rate * <span class="keyword">delta_t</span>) + <span class="built_in">cos</span>(theta_last)),</span><br><span class="line">                yaw_rate * <span class="keyword">delta_t</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="comment">// approximate CV model</span></span><br><span class="line">        &#123;</span><br><span class="line">            state_trans_item_motion &lt;&lt; velocity * <span class="built_in">cos</span>(theta_last) * <span class="keyword">delta_t</span>,</span><br><span class="line">                velocity * <span class="built_in">sin</span>(theta_last) * <span class="keyword">delta_t</span>,</span><br><span class="line">                yaw_rate * <span class="keyword">delta_t</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// predict new state of the ith particle</span></span><br><span class="line">        particles.col(i) = particles.col(i) + state_trans_item_motion + state_trans_item_noise;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// normalize theta</span></span><br><span class="line">        NormalizeAngle(particles(<span class="number">2</span>, i));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>状态转移过程中的过程噪声我们假设为零均值的高斯白噪声。很明显预测步只改变了每个粒子的状态，未改变粒子的权重。每个粒子的预测航向角我们都做了 $[-\pi, \pi]$ 的归一化处理，后面在计算系统最终的加权状态估计时不需要重复处理。</p>
+<h3 id="5-2-3-更新" class="heading-control"><a href="#5-2-3-更新" class="headerlink" title="5.2.3 更新"></a>5.2.3 更新<a class="heading-anchor" href="#5-2-3-更新" aria-hidden="true"></a></h3><p>更新步的目的是根据最新的路标观测结果（自车局部坐标系下的横纵向相对位置），更新预测步后每个粒子的重要性权重。更新步主要由以下四个子步骤组成，需要对粒子集中的每个粒子依次执行以下步骤，我们结合代码进行阐述。</p>
+<p><strong>步骤 (1)： 坐标变换</strong></p>
+<p>无人车实时观测到的路标结果基于自车局部坐标系，我们将其转换到地图的全局坐标系，关于坐标系变换推导并不复杂，可见参考 34。假设当前时刻自车观测到某个路标 $lmrk(x_c, y_c)$，下角标 $c$ 表示自车坐标系，该路标对应于地图坐标系中的位置为 $lmrk(x_m, y_m)$，下角标 $m$ 表示地图坐标系。对于粒子 $p(x_p, y_p, \theta_p)$，下角标 $p$ 表示粒子，我们直接给出从 $lmrk(x_c, y_c)$ 到 $lmrk(x_m, y_m)$ 的坐标变换方程。</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+    x_m=x_c*\cos\theta-y_c*\sin\theta+x_p \\
+    y_m=x_c*\sin\theta+y_c*\cos\theta+y_p
+\end{cases} \tag{5.2}</script><p>代码实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Transform observed landmarks from local ego vehicle coordinate to</span></span><br><span class="line"><span class="comment"> *   global map coordinate.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param lmrks_obs Observed landmarks in ego vehicle coordinate.</span></span><br><span class="line"><span class="comment"> * @param particle Single particle with state of [x, y, theta]</span></span><br><span class="line"><span class="comment"> * @param lmrks_trans2map Observed landmarks transformed from local ego vehicle</span></span><br><span class="line"><span class="comment"> *   coordinate to global map coordinate.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParticleFilter::TransLandmarksFromVehicle2Map</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Obs&gt; &amp;lmrks_obs,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                   <span class="keyword">const</span> Eigen::Vector3d &amp;particle,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                   <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Map&gt; &amp;lmrks_trans2map)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; lmrks_obs.size(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        lmrks_trans2map[i].x = lmrks_obs[i].x * <span class="built_in">cos</span>(particle(<span class="number">2</span>)) -</span><br><span class="line">                               lmrks_obs[i].y * <span class="built_in">sin</span>(particle(<span class="number">2</span>)) + particle(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        lmrks_trans2map[i].y = lmrks_obs[i].x * <span class="built_in">sin</span>(particle(<span class="number">2</span>)) +</span><br><span class="line">                               lmrks_obs[i].y * <span class="built_in">cos</span>(particle(<span class="number">2</span>)) + particle(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>步骤 (2)： 查找传感器感知范围内的地图路标</strong></p>
+<p>传感器的实际感知范围是有限的，我们需要找到每个粒子对应的传感器感知范围内的地图路标。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Find map landmarks within the sensor measuremet range.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param lmrks_map All map landmarks.</span></span><br><span class="line"><span class="comment"> * @param particle Single particle with state of [x, y, theta]</span></span><br><span class="line"><span class="comment"> * @param snsr_range Sensor measuremet range.</span></span><br><span class="line"><span class="comment"> * @param lmrks_within_range Map landmarks within the sensor measuremet range.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParticleFilter::FindMapLandmarksWithinSensorRange</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Map&gt; &amp;lmrks_map,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                       <span class="keyword">const</span> Eigen::Vector3d &amp;particle,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                       <span class="keyword">const</span> <span class="keyword">double</span> &amp;snsr_range,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                       <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Map&gt; &amp;lmrks_within_range)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">double</span> distance_threshold_square = snsr_range * snsr_range;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> landmark : lmrks_map)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">double</span> distance_square = <span class="built_in">std</span>::<span class="built_in">pow</span>(particle(<span class="number">0</span>) - landmark.x, <span class="number">2</span>) +</span><br><span class="line">                                 <span class="built_in">std</span>::<span class="built_in">pow</span>(particle(<span class="number">1</span>) - landmark.y, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (distance_square &lt;= distance_threshold_square)</span><br><span class="line">            lmrks_within_range.push_back(landmark);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>步骤 (1) 和步骤 (2) 作为步骤 (3) 的输入，其顺序无关紧要。</p>
+<p><strong>步骤 (3)： 数据关联</strong></p>
+<p>数据关联的目的是找到观测路标与实际地图路标的一一对应关系，步骤 (4) 中需要通过这个对应关系更新每个粒子的权重。这里我们使用一种最为简单的数据关联方法——最近邻（Nearest Neighbor，NN）数据关联，其核心思想很直观：对于两个待关联的数据集，数据间的欧氏距离越小，关联的概率越高。NN 数据关联方法的优缺点总结如下（图片出自 Udacity）。</p>
+<p><img data-src="https://image.shipengx.com/%E6%9C%80%E8%BF%91%E9%82%BB%E6%95%B0%E6%8D%AE%E5%85%B3%E8%81%94%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9.png" alt="最近邻数据关联的优缺点"></p>
+<p>下面我们给出基于 NN 的数据关联 C++ 实现。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Associate observed landmarks which have been transformed to global</span></span><br><span class="line"><span class="comment"> *   map coordinate with map landmarks within the sensor measuremet range.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param lmrks_within_range Map landmarks within the sensor measuremet range.</span></span><br><span class="line"><span class="comment"> * @param lmrks_trans2map Observed landmarks transformed from local ego vehicle</span></span><br><span class="line"><span class="comment"> *   coordinate to global map coordinate.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParticleFilter::DataAssociation</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Map&gt; &amp;lmrks_within_range,</span></span></span><br><span class="line"><span class="function"><span class="params">                                     <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Map&gt; &amp;lmrks_trans2map)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;landmark_trans2map : lmrks_trans2map)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">double</span> distance_min = <span class="built_in">std</span>::numeric_limits&lt;<span class="keyword">double</span>&gt;::max();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;landmark_within_range : lmrks_within_range)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">double</span> distance_square = <span class="built_in">std</span>::<span class="built_in">pow</span>(landmark_trans2map.x - landmark_within_range.x, <span class="number">2</span>) +</span><br><span class="line">                                     <span class="built_in">std</span>::<span class="built_in">pow</span>(landmark_trans2map.y - landmark_within_range.y, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (distance_square &lt; distance_min)</span><br><span class="line">            &#123;</span><br><span class="line">                distance_min = distance_square;</span><br><span class="line">                landmark_trans2map.id = landmark_within_range.id;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于数据关联匹配，还有很多其它优秀算法，后面会单独开几篇文章进行介绍。</p>
+<p><strong>步骤 (4)： 粒子权重更新</strong></p>
+<p>执行完关联步后，每个观测路标都对应一个地图路标，我们需要根据每个观测路标与地图路标的关联匹配程度来计算粒子的似然概率。这里我们假设对每个路标的观测都服从二元高斯分布，且相互独立，观测噪声也是高斯的，则每个观测路标的似然概率密度为</p>
+<script type="math/tex; mode=display">
+P(x, y)=\frac{1}{2\pi\sigma_x\sigma_y}\mathrm{e}^{-\big[\frac{(x-\mu_x)^2}{2\sigma_x^2}+\frac{(y-\mu_y)^2}{2\sigma_y^2}\big]} \tag{5.3}</script><p>其中，$x$ 和 $y$ 分别表示观测路标转换到地图坐标系后的横向位置和纵向位置，$\mu_x$ 和 $\mu_y$ 分别表示观测路标关联上的地图路标的横向位置和纵向位置， $\sigma_x$ 和 $\sigma_y$ 表示路标观测的标准差。由于对每个路标的观测相互独立，粒子的总的似然概率密度为</p>
+<script type="math/tex; mode=display">
+P=\prod_{i=1}^m\frac{1}{2\pi\sigma_x\sigma_y}\mathrm{e}^{-\big[\frac{(x_i-\mu_{x_i})^2}{2\sigma_x^2}+\frac{(y_i-\mu_{y_i})^2}{2\sigma_y^2}\big]} \tag{5.4}</script><p>其中，$m$ 表示观测路标的数量。将每个观测路标转换到地图坐标系后的测量值代入式 (5.4) 便可得到粒子总的似然概率，结合粒子上一时刻的权重便可近似地序贯更新粒子当前时刻的权重（未归一化的）。下面我们给出权重更新部分的 C++ 实现。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief For each observed landmark with an associated landmark, calculate</span></span><br><span class="line"><span class="comment"> *   its' weight contribution, and then multiply to particle's final weight.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param lmrks_trans2map Observed landmarks transformed from local ego vehicle</span></span><br><span class="line"><span class="comment"> *   coordinate to global map coordinate.</span></span><br><span class="line"><span class="comment"> * @param lmrks_map All map landmarks.</span></span><br><span class="line"><span class="comment"> * @param std_lmrks Array of dimension 2 [Landmark measurement uncertainty</span></span><br><span class="line"><span class="comment"> *   [x [m], y [m]]]</span></span><br><span class="line"><span class="comment"> * @param weight Non-normalized weight of particle.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParticleFilter::UpdateWeight</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Map&gt; &amp;lmrks_trans2map,</span></span></span><br><span class="line"><span class="function"><span class="params">                                  <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Map&gt; &amp;lmrks_map,</span></span></span><br><span class="line"><span class="function"><span class="params">                                  <span class="keyword">const</span> <span class="keyword">double</span> std_lmrks[],</span></span></span><br><span class="line"><span class="function"><span class="params">                                  <span class="keyword">double</span> &amp;weight)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> likelyhood_probability_particle = <span class="number">1.0</span>;</span><br><span class="line">    <span class="keyword">double</span> sigma_x = std_lmrks[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">double</span> sigma_y = std_lmrks[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;landmark_trans2map : lmrks_trans2map)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">double</span> x = landmark_trans2map.x;</span><br><span class="line">        <span class="keyword">double</span> y = landmark_trans2map.y;</span><br><span class="line">        <span class="keyword">double</span> ux = lmrks_map.at(landmark_trans2map.id - <span class="number">1</span>).x;</span><br><span class="line">        <span class="keyword">double</span> uy = lmrks_map.at(landmark_trans2map.id - <span class="number">1</span>).y;</span><br><span class="line">        <span class="keyword">double</span> exponent = -(<span class="built_in">std</span>::<span class="built_in">pow</span>(x - ux, <span class="number">2</span>) / (<span class="number">2</span> * <span class="built_in">std</span>::<span class="built_in">pow</span>(sigma_x, <span class="number">2</span>)) +</span><br><span class="line">                            <span class="built_in">std</span>::<span class="built_in">pow</span>(y - uy, <span class="number">2</span>) / (<span class="number">2</span> * <span class="built_in">std</span>::<span class="built_in">pow</span>(sigma_y, <span class="number">2</span>)));</span><br><span class="line">        <span class="keyword">double</span> likelyhood_probability_landmark = <span class="number">1.0</span> / (<span class="number">2</span> * M_PI * sigma_x * sigma_y) *</span><br><span class="line">                                                 <span class="built_in">std</span>::<span class="built_in">exp</span>(exponent);</span><br><span class="line">        likelyhood_probability_particle *= likelyhood_probability_landmark;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    weight *= likelyhood_probability_particle;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是整个更新步的代码实现。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param lmrks_obs Observed landmarks in local ego vehicle coordinate.</span></span><br><span class="line"><span class="comment"> * @param snsr_range Sensor measuremet range.</span></span><br><span class="line"><span class="comment"> * @param lmrks_map All map landmarks.</span></span><br><span class="line"><span class="comment"> * @param std_lmrks Array of dimension 2 [Landmark measurement uncertainty</span></span><br><span class="line"><span class="comment"> *   [x [m], y [m]]]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParticleFilter::Update</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Ego&gt; &amp;lmrks_obs,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="keyword">const</span> <span class="keyword">double</span> &amp;snsr_range,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Map&gt; &amp;lmrks_map,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="keyword">const</span> <span class="keyword">double</span> std_lmrks[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// process particles one by one</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; n_p; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// step1: transform observed landmarks from local ego vehicle coordinate</span></span><br><span class="line">        <span class="comment">// to global map coordinate</span></span><br><span class="line">        <span class="function"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Map&gt; <span class="title">landmarks_trans2map</span><span class="params">(lmrks_obs.size())</span></span>;</span><br><span class="line">        TransLandmarksFromVehicle2Map(lmrks_obs, particles.col(i), landmarks_trans2map);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// step2: find map landmarks within the sensor measuremet range</span></span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Map&gt; landmarks_within_sensor_range;</span><br><span class="line">        FindMapLandmarksWithinSensorRange(lmrks_map, particles.col(i), snsr_range,</span><br><span class="line">                                          landmarks_within_sensor_range);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// step3: associate observed landmarks which have been transformed to</span></span><br><span class="line">        <span class="comment">// global map coordinate with map landmarks within the sensor measuremet</span></span><br><span class="line">        <span class="comment">// range</span></span><br><span class="line">        DataAssociation(landmarks_within_sensor_range, landmarks_trans2map);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// step4: for each observed landmark with an associated landmark, calculate</span></span><br><span class="line">        <span class="comment">// its' weight contribution, and then multiply to particle's final weight</span></span><br><span class="line">        UpdateWeight(landmarks_trans2map, lmrks_map, std_lmrks, weights_nonnormalized(i));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很明显更新步只改变了每个粒子的权重，未改变粒子的状态。</p>
+<h3 id="5-2-4-粒子权重归一化" class="heading-control"><a href="#5-2-4-粒子权重归一化" class="headerlink" title="5.2.4 粒子权重归一化"></a>5.2.4 粒子权重归一化<a class="heading-anchor" href="#5-2-4-粒子权重归一化" aria-hidden="true"></a></h3><p>完成粒子非归一化权重的更新后，我们需要计算粒子新的归一化的权重，作为后面重采样步骤的输入。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Normalize the weights of particles.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param w_nonnormalized Weights to be normalized.</span></span><br><span class="line"><span class="comment"> * @param w_normalized Weights which have been normalized.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">NormalizeWeights</span><span class="params">(<span class="keyword">const</span> Eigen::VectorXd &amp;w_nonnormalized,</span></span></span><br><span class="line"><span class="function"><span class="params">                             Eigen::VectorXd &amp;w_normalized)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    w_normalized = w_nonnormalized / w_nonnormalized.sum();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-5-重采样" class="heading-control"><a href="#5-2-5-重采样" class="headerlink" title="5.2.5 重采样"></a>5.2.5 重采样<a class="heading-anchor" href="#5-2-5-重采样" aria-hidden="true"></a></h3><p>完成粒子权重归一化后，我们需要对粒子集进行重采样。对于重采样步骤，大多数基于 Udacity 工程框架的开源项目使用了 C++ 标准库中的离散分布模板类 <code>std::discrete_distribution</code> ，这里我们“舍近求远”，手工实现 3.3.1 节中介绍的四种重采样算法，以加深对重采样的理解，随机数的生成我们通过模板类 <code>std::uniform_real_distribution</code> 实现。</p>
+<p><strong>多项式重采样</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Multinomial resampling method.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param particles_ori Particles before resampling.</span></span><br><span class="line"><span class="comment"> * @param weights_ori_norm Normalized weights before resampling.</span></span><br><span class="line"><span class="comment"> * @param particles_resampled Particles after resampling.</span></span><br><span class="line"><span class="comment"> * @param weights_resampled Weights after resampling.</span></span><br><span class="line"><span class="comment"> * @param N_r Number of particles to resample.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParticleFilter::MultinomialResampling</span><span class="params">(<span class="keyword">const</span> Eigen::MatrixXd &amp;particles_ori,</span></span></span><br><span class="line"><span class="function"><span class="params">                                           <span class="keyword">const</span> Eigen::VectorXd &amp;weights_ori_norm,</span></span></span><br><span class="line"><span class="function"><span class="params">                                           Eigen::MatrixXd &amp;particles_resampled,</span></span></span><br><span class="line"><span class="function"><span class="params">                                           Eigen::VectorXd &amp;weights_resampled,</span></span></span><br><span class="line"><span class="function"><span class="params">                                           <span class="keyword">uint32_t</span> N_r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> N = weights_ori_norm.size();</span><br><span class="line">    <span class="keyword">uint32_t</span> left, right, middle;</span><br><span class="line"></span><br><span class="line">    Eigen::VectorXd weights_cum_sum = CalcWeightsCumSum(weights_ori_norm);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> j = N - N_r; j &lt; N; ++j)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// produces random values u, uniformly distributed on the interval [0.0, 1.0)</span></span><br><span class="line">        <span class="built_in">std</span>::random_device rd;</span><br><span class="line">        <span class="function"><span class="built_in">std</span>::mt19937 <span class="title">gen</span><span class="params">(rd())</span></span>;</span><br><span class="line">        <span class="function"><span class="built_in">std</span>::uniform_real_distribution&lt;&gt; <span class="title">uniform_dist</span><span class="params">(<span class="number">0.0</span>, <span class="number">1.0</span>)</span></span>;</span><br><span class="line">        <span class="keyword">double</span> u = uniform_dist(gen);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// select the resampled particle using binary search</span></span><br><span class="line">        left = <span class="number">0</span>;</span><br><span class="line">        right = N - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right)</span><br><span class="line">        &#123;</span><br><span class="line">            middle = <span class="built_in">std</span>::<span class="built_in">floor</span>((left + right) / <span class="number">2</span>);</span><br><span class="line">            <span class="keyword">if</span> (u &gt; weights_cum_sum(middle))</span><br><span class="line">                left = middle + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                right = middle;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        particles_resampled(j) = particles_ori(right);</span><br><span class="line">        weights_resampled(j) = <span class="number">1</span> / N;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>分层重采样</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Stratified resampling method.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param particles_ori Particles before resampling.</span></span><br><span class="line"><span class="comment"> * @param weights_ori_norm Normalized weights before resampling.</span></span><br><span class="line"><span class="comment"> * @param particles_resampled Particles after resampling.</span></span><br><span class="line"><span class="comment"> * @param weights_resampled Weights after resampling.</span></span><br><span class="line"><span class="comment"> * @param N_r Number of particles to resample.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParticleFilter::StratifiedResampling</span><span class="params">(<span class="keyword">const</span> Eigen::MatrixXd &amp;particles_ori,</span></span></span><br><span class="line"><span class="function"><span class="params">                                          <span class="keyword">const</span> Eigen::VectorXd &amp;weights_ori_norm,</span></span></span><br><span class="line"><span class="function"><span class="params">                                          Eigen::MatrixXd &amp;particles_resampled,</span></span></span><br><span class="line"><span class="function"><span class="params">                                          Eigen::VectorXd &amp;weights_resampled,</span></span></span><br><span class="line"><span class="function"><span class="params">                                          <span class="keyword">uint32_t</span> N_r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> N = weights_ori_norm.size();</span><br><span class="line"></span><br><span class="line">    Eigen::VectorXd weights_cum_sum = CalcWeightsCumSum(weights_ori_norm);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uint32_t</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> j = N - N_r; j &lt; N; ++j)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// produces random values u0, uniformly distributed on the interval [0.0, 1.0 / N_r)</span></span><br><span class="line">        <span class="comment">// then calculate u = u0 + (j - (N - N_r)) / N_r</span></span><br><span class="line">        <span class="built_in">std</span>::random_device rd;</span><br><span class="line">        <span class="function"><span class="built_in">std</span>::mt19937 <span class="title">gen</span><span class="params">(rd())</span></span>;</span><br><span class="line">        <span class="function"><span class="built_in">std</span>::uniform_real_distribution&lt;&gt; <span class="title">uniform_dist</span><span class="params">(<span class="number">0.0</span>, <span class="number">1</span> / N_r)</span></span>;</span><br><span class="line">        <span class="keyword">double</span> u0 = uniform_dist(gen);</span><br><span class="line">        <span class="keyword">double</span> u = u0 + (j - (N - N_r)) / N_r;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// select the resampled particle</span></span><br><span class="line">        <span class="keyword">while</span> (weights_cum_sum(i) &lt; u)</span><br><span class="line">            ++i;</span><br><span class="line"></span><br><span class="line">        particles_resampled(j) = particles_ori(i);</span><br><span class="line">        weights_resampled(j) = <span class="number">1</span> / N;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>系统重采样</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Systematic resampling method.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param particles_ori Particles before resampling.</span></span><br><span class="line"><span class="comment"> * @param weights_ori_norm Normalized weights before resampling.</span></span><br><span class="line"><span class="comment"> * @param particles_resampled Particles after resampling.</span></span><br><span class="line"><span class="comment"> * @param weights_resampled Weights after resampling.</span></span><br><span class="line"><span class="comment"> * @param N_r Number of particles to resample.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParticleFilter::SystematicResampling</span><span class="params">(<span class="keyword">const</span> Eigen::MatrixXd &amp;particles_ori,</span></span></span><br><span class="line"><span class="function"><span class="params">                                          <span class="keyword">const</span> Eigen::VectorXd &amp;weights_ori_norm,</span></span></span><br><span class="line"><span class="function"><span class="params">                                          Eigen::MatrixXd &amp;particles_resampled,</span></span></span><br><span class="line"><span class="function"><span class="params">                                          Eigen::VectorXd &amp;weights_resampled,</span></span></span><br><span class="line"><span class="function"><span class="params">                                          <span class="keyword">uint32_t</span> N_r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> N = weights_ori_norm.size();</span><br><span class="line"></span><br><span class="line">    Eigen::VectorXd weights_cum_sum = CalcWeightsCumSum(weights_ori_norm);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uint32_t</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// produces random values u0, uniformly distributed on the interval [0.0, 1.0 / N_r)</span></span><br><span class="line">    <span class="built_in">std</span>::random_device rd;</span><br><span class="line">    <span class="function"><span class="built_in">std</span>::mt19937 <span class="title">gen</span><span class="params">(rd())</span></span>;</span><br><span class="line">    <span class="function"><span class="built_in">std</span>::uniform_real_distribution&lt;&gt; <span class="title">uniform_dist</span><span class="params">(<span class="number">0.0</span>, <span class="number">1</span> / N_r)</span></span>;</span><br><span class="line">    <span class="keyword">double</span> u0 = uniform_dist(gen);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> j = N - N_r; j &lt; N; ++j)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// calculate u = u0 + (j - (N - N_r)) / N_r</span></span><br><span class="line">        <span class="keyword">double</span> u = u0 + (j - (N - N_r)) / N_r;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// select the resampled particle</span></span><br><span class="line">        <span class="keyword">while</span> (weights_cum_sum(i) &lt; u)</span><br><span class="line">            ++i;</span><br><span class="line"></span><br><span class="line">        particles_resampled(j) = particles_ori(i);</span><br><span class="line">        weights_resampled(j) = <span class="number">1</span> / N;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>残差重采样</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Residual resampling method.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param particles_ori Particles before resampling.</span></span><br><span class="line"><span class="comment"> * @param weights_ori_norm Normalized weights before resampling.</span></span><br><span class="line"><span class="comment"> * @param particles_resampled Particles after resampling.</span></span><br><span class="line"><span class="comment"> * @param weights_resampled Weights after resampling.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParticleFilter::ResidualResampling</span><span class="params">(<span class="keyword">const</span> Eigen::MatrixXd &amp;particles_ori,</span></span></span><br><span class="line"><span class="function"><span class="params">                                        <span class="keyword">const</span> Eigen::VectorXd &amp;weights_ori_norm,</span></span></span><br><span class="line"><span class="function"><span class="params">                                        Eigen::MatrixXd &amp;particles_resampled,</span></span></span><br><span class="line"><span class="function"><span class="params">                                        Eigen::VectorXd &amp;weights_resampled)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> N = weights_ori_norm.size();</span><br><span class="line">    <span class="keyword">uint32_t</span> j = <span class="number">0</span>;</span><br><span class="line">    <span class="function">Eigen::VectorXi <span class="title">N_k1</span><span class="params">(N)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// step1: deterministic copy sampling</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; N; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        N_k1(i) = <span class="built_in">std</span>::<span class="built_in">floor</span>(N * weights_ori_norm(i));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">size_t</span> m = <span class="number">0</span>; m &lt; N_k1(i); ++m)</span><br><span class="line">        &#123;</span><br><span class="line">            particles_resampled(j) = particles_ori(i);</span><br><span class="line">            weights_resampled(j) = <span class="number">1</span> / N;</span><br><span class="line">            ++j;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// step2: residual random sampling</span></span><br><span class="line">    <span class="keyword">uint32_t</span> N_k2 = N - j;</span><br><span class="line">    Eigen::VectorXd weights_residual_norm = (N * weights_ori_norm - N_k1) / N_k2;</span><br><span class="line">    MultinomialResampling(particles_ori, weights_residual_norm, particles_resampled,</span><br><span class="line">                          weights_resampled, N_k2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-6-状态估计" class="heading-control"><a href="#5-2-6-状态估计" class="headerlink" title="5.2.6 状态估计"></a>5.2.6 状态估计<a class="heading-anchor" href="#5-2-6-状态估计" aria-hidden="true"></a></h3><p>完成重采样后，我们将所有的重采样粒子及其对应的重采样权重（$\frac{1}{N}$）进行加权求和，便可得到系统最终的状态估计结果，即每个时刻无人车的位置、航向估计。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Estimate the final state of system by combing all particles.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param particles_resampled Particles after resampling.</span></span><br><span class="line"><span class="comment"> * @param weights_resampled Weights after resampling.</span></span><br><span class="line"><span class="comment"> * @param particles_ori Particles before resampling.</span></span><br><span class="line"><span class="comment"> * @param weights_ori_norm Normalized weights before resampling.</span></span><br><span class="line"><span class="comment"> * @param weights_ori Non-normalized weights before resampling.</span></span><br><span class="line"><span class="comment"> * @return Eigen::Vector3d The final estimated state of system.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> Eigen::Vector3d <span class="title">EstimateState</span><span class="params">(<span class="keyword">const</span> Eigen::MatrixXd &amp;particles_resampled,</span></span></span><br><span class="line"><span class="function"><span class="params">                                     <span class="keyword">const</span> Eigen::VectorXd &amp;weights_resampled,</span></span></span><br><span class="line"><span class="function"><span class="params">                                     Eigen::MatrixXd &amp;particles_ori,</span></span></span><br><span class="line"><span class="function"><span class="params">                                     Eigen::VectorXd &amp;weights_ori_norm,</span></span></span><br><span class="line"><span class="function"><span class="params">                                     Eigen::VectorXd &amp;weights_ori)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    particles_ori = particles_resampled;</span><br><span class="line">    weights_ori = weights_resampled;</span><br><span class="line">    weights_ori_norm = weights_resampled;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> particles_ori * weights_ori_norm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是我们的 <code>main.cpp</code> 中的内容。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ParticleFilter.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ParticleFilter pf;                   <span class="comment">// particle filter instance</span></span><br><span class="line">    <span class="keyword">double</span> x, y, theta;                  <span class="comment">// gps measurement data</span></span><br><span class="line">    <span class="keyword">double</span> v, yaw_rate;                  <span class="comment">// input control data</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Ego&gt; lmrks_obs; <span class="comment">// observed landmarks in local ego vehicle coordinate</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;LandMark_Map&gt; lmrks_map; <span class="comment">// map landmarks</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        pf.RecvRawData(x, y, theta, v, yaw_rate, lmrks_obs, lmrks_map);</span><br><span class="line"></span><br><span class="line">        pf.Init(x, y, theta, pf.sigma_gps);</span><br><span class="line">        pf.Predict(v, yaw_rate, pf.dt, pf.sigma_gps);</span><br><span class="line">        pf.Update(lmrks_obs, pf.sensor_range, lmrks_map, pf.sigma_landmark);</span><br><span class="line">        pf.NormalizeWeights(pf.weights_nonnormalized, pf.weights_normalized);</span><br><span class="line">        pf.SystematicResampling(pf.particles, pf.weights_normalized,</span><br><span class="line">                                pf.particles_re, pf.weights_re, pf.n_p);</span><br><span class="line">        pf.estimated_state = pf.EstimateState(pf.particles_re, pf.weights_re,</span><br><span class="line">                                              pf.particles, pf.weights_normalized,</span><br><span class="line">                                              pf.weights_nonnormalized);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>点击<a href="/download/ParticleFilter.zip">这里</a>下载完整代码工程。</p>
+<h1 id="6-总结" class="heading-control"><a href="#6-总结" class="headerlink" title="6 总结"></a>6 总结<a class="heading-anchor" href="#6-总结" aria-hidden="true"></a></h1><p>首先，我们回顾了用于解决线性高斯问题的卡尔曼滤波，用于解决非线性高斯问题的扩展卡尔曼滤波与无迹卡尔曼滤波，为解决强非线性非高斯问题我们引入了粒子滤波的概念。</p>
+<p>粒子滤波基于随机采样实现。我们从蒙特卡罗方法讲起，为解决原分布难以采样甚至无法采样的问题引入了重要性采样。为序贯地进行粒子采样，并递推地更新粒子的重要性权重，又引入了序贯重要性采样。序贯重要性采样存在粒子退化问题，为应对该问题，可以选择恰当的建议分布并实施重采样步骤，文中介绍了四种重采样方法。通过将系统的状态转移概率分布选择为建议分布，并辅以重采样方法，我们由序贯重要性采样得到了采样重要性重采样滤波器。</p>
+<p>最后，我们优化重构了 Udacity 工程框架，完整展示了如何通过粒子滤波实现无人车的匹配定位。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JsYWJiZS9LYWxtYW4tYW5kLUJheWVzaWFuLUZpbHRlcnMtaW4tUHl0aG9u" title="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">Kalman-and-Bayesian-Filters-in-Python<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMXhXNDExTjdmMT9wPTg=" title="https://www.bilibili.com/video/BV1xW411N7f1?p=8">b 站徐亦达机器学习：Particle Filter 粒子滤波<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zODQ0MTE3NA==" title="https://zhuanlan.zhihu.com/p/38441174">概率机器人——粒子滤波<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvUGFydGljbGVfZmlsdGVy" title="https://en.wikipedia.org/wiki/Particle_filter">维基百科：Particle filter<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JUE0JUE3JUU2JTk1JUIwJUU1JUFFJTlBJUU1JUJFJThC" title="https://zh.wikipedia.org/wiki/%E5%A4%A7%E6%95%B0%E5%AE%9A%E5%BE%8B">维基百科：大数定律<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5hYXMubmV0LmNuL2ZpbGVaREhYQi9qb3VybmFsL2FydGljbGUvemRoeGIvMjAxNS8xMi9QREYvMjAxNS0xMi0xOTgxLnBkZg==" title="http://www.aas.net.cn/fileZDHXB/journal/article/zdhxb/2015/12/PDF/2015-12-1981.pdf">粒子滤波理论、方法及其在多目标跟踪中的应用<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL2hlbHAvcm9ib3RpY3MvdWcvcGFydGljbGUtZmlsdGVyLXBhcmFtZXRlcnMuaHRtbCNidTU3b2Y4" title="https://ww2.mathworks.cn/help/robotics/ug/particle-filter-parameters.html#bu57of8">MathWorks：Particle Filter Parameters<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cueHVlYnV5dWFuLmNvbS8zMjMyNjYzLmh0bWw=" title="https://www.xuebuyuan.com/3232663.html">粒子滤波（PF：Particle Filter）<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMVJLNDExTDdNdA==" title="https://www.bilibili.com/video/BV1RK411L7Mt">b 站贝叶斯滤波与卡尔曼滤波第九讲：粒子滤波原理详述<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMVJLNDExTDdNdA==" title="https://www.bilibili.com/video/BV1RK411L7Mt">b 站贝叶斯滤波与卡尔曼滤波第十讲：重采样<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMVJLNDExTDdNdA==" title="https://www.bilibili.com/video/BV1RK411L7Mt">b 站贝叶斯滤波与卡尔曼滤波第十二讲：粒子滤波拾遗——采样方法、预测方程<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9nYW95aWNoYW8uY29tL1hpYW90dS8/Ym9vaz10dXJ0bGVib3QmYW1wO3RpdGxlPSVFNyVCMiU5MiVFNSVBRCU5MCVFNiVCQiVBNCVFNiVCMyVBMiVFNSU5OSVBOA==" title="https://gaoyichao.com/Xiaotu/?book=turtlebot&amp;title=%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8">粒子滤波器<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMjYxOTg0MTY=" title="https://zhuanlan.zhihu.com/p/126198416">粒子滤波<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuaXJpc2EuZnIvYXNwaS9sZWdsYW5kL2Vuc3RhL3JlZi9hcnVsYW1wYWxhbTAyYS5wZGY=" title="https://www.irisa.fr/aspi/legland/ensta/ref/arulampalam02a.pdf">A Tutorial on Particle Filters for Online Nonlinear/Non-Gaussian Bayesian Tracking<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oZXlpamlhLmJsb2cuY3Nkbi5uZXQvYXJ0aWNsZS9kZXRhaWxzLzQwODk5ODE5" title="https://heyijia.blog.csdn.net/article/details/40899819">Particle Filter Tutorial 粒子滤波：从推导到应用（一）<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oZXlpamlhLmJsb2cuY3Nkbi5uZXQvYXJ0aWNsZS9kZXRhaWxzLzQwOTI5MDk3" title="https://heyijia.blog.csdn.net/article/details/40929097">Particle Filter Tutorial 粒子滤波：从推导到应用（二）<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oZXlpamlhLmJsb2cuY3Nkbi5uZXQvYXJ0aWNsZS9kZXRhaWxzLzQxMTIyMTI1" title="https://heyijia.blog.csdn.net/article/details/41122125">Particle Filter Tutorial 粒子滤波：从推导到应用（三）<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oZXlpamlhLmJsb2cuY3Nkbi5uZXQvYXJ0aWNsZS9kZXRhaWxzLzQxMTQyNjc5" title="https://heyijia.blog.csdn.net/article/details/41142679">Particle Filter Tutorial 粒子滤波：从推导到应用（四）<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93ZW5rdS5iYWlkdS5jb20vdmlldy84ODg5NmQyYjQ1MzYxMDY2MWVkOWY0YjQuaHRtbA==" title="https://wenku.baidu.com/view/88896d2b453610661ed9f4b4.html">百度文库：粒子滤波理论<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9qb2V5b3MuZ2l0aHViLmlvLzIwMTcvMDcvMjAvJUU3JUIyJTkyJUU1JUFEJTkwJUU2JUJCJUE0JUU2JUIzJUEyJUU1JThFJTlGJUU3JTkwJTg2Lw==" title="https://joeyos.github.io/2017/07/20/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%8E%9F%E7%90%86/">粒子滤波原理<i class="fa fa-external-link"></i></span></li>
+<li>《卡尔曼滤波与组合导航原理》（第 3 版）</li>
+<li>《概率机器人》</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZG9jODguY29tL3AtMjkwMTM4Nzg5NDQxMS5odG1s" title="https://www.doc88.com/p-2901387894411.html">Bayesian Signal Processing : Classical, Modern, and Particle Filtering Methods<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ib29rcy5nb29nbGUuY29tL2Jvb2tzP2lkPW1FdVpEZ0FBUUJBSiZhbXA7cGc9UFIzJmFtcDtscGc9UFIzJmFtcDtkcT1Db21wdXRlcitWaXNpb25fUHJpbmNpcGxlc19BbGdvcml0aG1zX0FwcGxpY2F0aW9uc19MZWFybmluZ19GaWZ0aCtFZGl0aW9uJmFtcDtzb3VyY2U9YmwmYW1wO290cz1Gd0szc2pRbl9XJmFtcDtzaWc9QUNmVTNVM3E2SFRJNXI3OENybTZacnNHc2FJNGx5ZGxZQSZhbXA7aGw9ZW4mYW1wO3NhPVgmYW1wO3ZlZD0yYWhVS0V3aWh5cEhUNU5YdUFoWFNsNTRLSGJFQ0N5UVE2QUV3QlhvRUNBZ1FBZyN2PW9uZXBhZ2UmYW1wO3EmYW1wO2Y9ZmFsc2U=" title="https://books.google.com/books?id=mEuZDgAAQBAJ&amp;pg=PR3&amp;lpg=PR3&amp;dq=Computer+Vision_Principles_Algorithms_Applications_Learning_Fifth+Edition&amp;source=bl&amp;ots=FwK3sjQn_W&amp;sig=ACfU3U3q6HTI5r78Crm6ZrsGsaI4lydlYA&amp;hl=en&amp;sa=X&amp;ved=2ahUKEwihypHT5NXuAhXSl54KHbECCyQQ6AEwBXoECAgQAg#v=onepage&amp;q&amp;f=false">Computer Vision - Principles, Algorithms, Applications, Learning (5th)<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5pcmlzYS5mci9hc3BpL2xlZ2xhbmQvcmVmL2dvcmRvbjkzYS5wZGY=" title="http://www.irisa.fr/aspi/legland/ref/gordon93a.pdf">Novel approach to nonlinear/non-Gaussian Bayesian state estimation<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9tc2Vhcy5taXQuZWR1L2dyb3VwL1JlZmVyZW5jZXMvQU1JU1NJT04vU21vb3RoaW5nL2tpdGFnYXdhX21jX2ZpbHRlcl9zbW9vdGhlcl9ub25nYXVzc2lhbl85Ni5wZGY=" title="https://mseas.mit.edu/group/References/AMISSION/Smoothing/kitagawa_mc_filter_smoother_nongaussian_96.pdf">Monte Carlo Filter and Smoother for Non-Gaussian Nonlinear State Space Models<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3Blb3BsZS5pc3kubGl1LnNlL3J0L3NjaG9uL1B1YmxpY2F0aW9ucy9Ib2xTRzIwMDYucGRm" title="http://people.isy.liu.se/rt/schon/Publications/HolSG2006.pdf">On Resampling Algorithms For Particle Filters<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cucmVzZWFyY2hnYXRlLm5ldC9wcm9maWxlL1RpYW5jaGVuZ19MaTMvcHVibGljYXRpb24vMjc0NDA0MTI3X1Jlc2FtcGxpbmdfTWV0aG9kc19mb3JfUGFydGljbGVfRmlsdGVyaW5nX0NsYXNzaWZpY2F0aW9uX2ltcGxlbWVudGF0aW9uX2FuZF9zdHJhdGVnaWVzL2xpbmtzLzU1OThkYjU2MDhhZTc5M2QxMzdlMjFmZi9SZXNhbXBsaW5nLU1ldGhvZHMtZm9yLVBhcnRpY2xlLUZpbHRlcmluZy1DbGFzc2lmaWNhdGlvbi1pbXBsZW1lbnRhdGlvbi1hbmQtc3RyYXRlZ2llcy5wZGY=" title="https://www.researchgate.net/profile/Tiancheng_Li3/publication/274404127_Resampling_Methods_for_Particle_Filtering_Classification_implementation_and_strategies/links/5598db5608ae793d137e21ff/Resampling-Methods-for-Particle-Filtering-Classification-implementation-and-strategies.pdf">Resampling Methods for Particle Filtering-Classification, implementation, and strategies<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL21hdGxhYmNlbnRyYWwvZmlsZWV4Y2hhbmdlLzM1NDY4LXBhcnRpY2xlLWZpbHRlci10dXRvcmlhbD9zX3RpZD1td2Ffb3NhX2E=" title="https://ww2.mathworks.cn/matlabcentral/fileexchange/35468-particle-filter-tutorial?s_tid=mwa_osa_a">MathWorks: Particle filter tutorial<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3VkYWNpdHkvQ2FyTkQtS2lkbmFwcGVkLVZlaGljbGUtUHJvamVjdA==" title="https://github.com/udacity/CarND-Kidnapped-Vehicle-Project">udacity/CarND-Kidnapped-Vehicle-Project<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9jbG91ZC50ZW5jZW50LmNvbS9kZXZlbG9wZXIvYXJ0aWNsZS8xMDE0MTc0" title="https://cloud.tencent.com/developer/article/1014174">粒子滤波简介<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMDcyMjMwMTI=" title="https://zhuanlan.zhihu.com/p/107223012">无人驾驶技术入门（二十）| 手把手教你用粒子滤波实现无人车定位<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9lbi5jcHByZWZlcmVuY2UuY29tL3cvY3BwL251bWVyaWMvcmFuZG9tL3VuaWZvcm1fcmVhbF9kaXN0cmlidXRpb24=" title="https://en.cppreference.com/w/cpp/numeric/random/uniform_real_distribution">std::uniform_real_distribution<i class="fa fa-external-link"></i></span></li>
+<li><a href="https://blog.shipengx.com/archives/b10733db.html">（十二）无人驾驶中的坐标转换</a></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\cfd8b171.html" rel="bookmark">从贝叶斯滤波到无迹卡尔曼滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e0ebe48c.html" rel="bookmark">最小二乘法多项式曲线拟合数学原理及其C++实现</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/f3c9e219.html" title="从贝叶斯滤波到粒子滤波">https://blog.shipengx.com/archives/f3c9e219.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag"><i class="fa fa-tag"></i> 自动驾驶</a>
+              <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i> 数学</a>
+              <a href="/tags/%E6%BB%A4%E6%B3%A2/" rel="tag"><i class="fa fa-tag"></i> 滤波</a>
+              <a href="/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2/" rel="tag"><i class="fa fa-tag"></i> 粒子滤波</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/cfd8b171.html" rel="prev" title="从贝叶斯滤波到无迹卡尔曼滤波">
+      <i class="fa fa-chevron-left"></i> 从贝叶斯滤波到无迹卡尔曼滤波
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/5c20384a.html" rel="next" title="一款图片文件转 Base64 编码的 Python GUI 工具">
+      一款图片文件转 Base64 编码的 Python GUI 工具 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-回顾与引言"><span class="nav-text">0 回顾与引言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-蒙特卡罗方法"><span class="nav-text">1 蒙特卡罗方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-重要性采样"><span class="nav-text">2 重要性采样</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-什么是重要性采样"><span class="nav-text">2.1 什么是重要性采样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-序贯重要性采样"><span class="nav-text">2.2 序贯重要性采样</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-粒子退化问题"><span class="nav-text">3 粒子退化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-概述"><span class="nav-text">3.1 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-什么是粒子退化"><span class="nav-text">3.1.1 什么是粒子退化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-粒子退化程度的度量"><span class="nav-text">3.1.2 粒子退化程度的度量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-建议分布的选择"><span class="nav-text">3.2 建议分布的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-重采样"><span class="nav-text">3.3 重采样</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-几种经典的重采样算法"><span class="nav-text">3.3.1 几种经典的重采样算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-1-多项式重采样"><span class="nav-text">3.3.1.1 多项式重采样</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-2-分层重采样"><span class="nav-text">3.3.1.2 分层重采样</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-3-系统重采样"><span class="nav-text">3.3.1.3 系统重采样</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-4-残差重采样"><span class="nav-text">3.3.1.4 残差重采样</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-重采样的副作用"><span class="nav-text">3.3.2 重采样的副作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-3-基本的粒子滤波器"><span class="nav-text">3.3.3 基本的粒子滤波器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-SIR-滤波器"><span class="nav-text">4 SIR 滤波器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-应用实例——基于粒子滤波的无人车定位"><span class="nav-text">5 应用实例——基于粒子滤波的无人车定位</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-问题描述"><span class="nav-text">5.1 问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-代码实现"><span class="nav-text">5.2 代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-1-初始化"><span class="nav-text">5.2.1 初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-2-预测"><span class="nav-text">5.2.2 预测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-3-更新"><span class="nav-text">5.2.3 更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-4-粒子权重归一化"><span class="nav-text">5.2.4 粒子权重归一化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-5-重采样"><span class="nav-text">5.2.5 重采样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-6-状态估计"><span class="nav-text">5.2.6 状态估计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-总结"><span class="nav-text">6 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

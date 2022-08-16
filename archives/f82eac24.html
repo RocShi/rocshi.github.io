@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer - 第 10 章 泛型算法">
+<meta property="og:url" content="https://blog.shipengx.com/archives/f82eac24.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E5%8F%8D%E5%90%91%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%92%8C%E6%99%AE%E9%80%9A%E8%BF%AD%E4%BB%A3%E5%99%A8%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB.png">
+<meta property="og:image" content="https://image.shipengx.com/%E7%AC%AC%2010%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%881%EF%BC%89.png">
+<meta property="og:image" content="https://image.shipengx.com/%E7%AC%AC%2010%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%882%EF%BC%89.png">
+<meta property="article:published_time" content="2021-12-04T09:26:50.000Z">
+<meta property="article:modified_time" content="2022-05-12T07:49:25.468Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="C++ Primer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E5%8F%8D%E5%90%91%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%92%8C%E6%99%AE%E9%80%9A%E8%BF%AD%E4%BB%A3%E5%99%A8%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/f82eac24.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>C++ Primer - 第 10 章 泛型算法 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/f82eac24.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          C++ Primer - 第 10 章 泛型算法
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-04 17:26:50" itemprop="dateCreated datePublished" datetime="2021-12-04T17:26:50+08:00">2021-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-12 15:49:25" itemprop="dateModified" datetime="2022-05-12T15:49:25+08:00">2022-05-12</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">编码</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AC-Primer%E3%80%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">《C++ Primer》</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/f82eac24.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/f82eac24.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="10-1-概述" class="heading-control"><a href="#10-1-概述" class="headerlink" title="10.1 概述"></a>10.1 概述<a class="heading-anchor" href="#10-1-概述" aria-hidden="true"></a></h1><ol>
+<li><p>标准库的 <a href="http://www.cplusplus.com/reference/algorithm/find/" target="_blank" rel="noopener"><code>find</code></a> 算法可用于查找<strong>输入范围</strong>中是否包含某个指定元素。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class">  <span class="title">InputIterator</span> <span class="title">find</span> (<span class="title">InputIterator</span> <span class="title">first</span>, <span class="title">InputI</span></span></span><br><span class="line"><span class="class">  <span class="title">terator</span> <span class="title">last</span>, <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">val</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">while</span> (first != last) &#123;</span><br><span class="line">    <span class="keyword">if</span> (*first == val) <span class="keyword">return</span> first;</span><br><span class="line">    ++first;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> last;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>标准库的 <a href="http://www.cplusplus.com/reference/algorithm/count/" target="_blank" rel="noopener"><code>count</code></a> 算法可用于查找某个指定元素在输入范围中出现的次数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class">  <span class="title">typename</span> <span class="title">iterator_traits</span>&lt;InputIterator&gt;:</span>:difference_type</span><br><span class="line">    count (InputIterator first, InputIterator last, <span class="keyword">const</span> T&amp; val)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">typename</span> iterator_traits&lt;InputIterator&gt;::difference_type ret = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (first != last) &#123;</span><br><span class="line">    <span class="keyword">if</span> (*first == val) ++ret;</span><br><span class="line">    ++first;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="10-2-初识泛型算法" class="heading-control"><a href="#10-2-初识泛型算法" class="headerlink" title="10.2 初识泛型算法"></a>10.2 初识泛型算法<a class="heading-anchor" href="#10-2-初识泛型算法" aria-hidden="true"></a></h1><ol>
+<li>除了少数例外，标准库算法都对一个范围内的元素进行操作。我们将此元素范围称为“输入范围”。接受输入范围的算法总是使用前两个参数来表示此范围，两个参数分别是指向要处理的第一个元素和尾元素之后位置的迭代器。</li>
+</ol>
+<h2 id="10-2-1-只读算法" class="heading-control"><a href="#10-2-1-只读算法" class="headerlink" title="10.2.1 只读算法"></a>10.2.1 只读算法<a class="heading-anchor" href="#10-2-1-只读算法" aria-hidden="true"></a></h2><ol>
+<li><p>另一个只读算法是 <code>accumulate</code>，它定义在头文件 <code>numeric</code> 中。<code>accumulate</code> 函数接受三个参数，前两个指出了需要求和的元素的范围，第三个参数是和的初值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对 vec 中的元素求和，和的初值是 0</span></span><br><span class="line"><span class="keyword">int</span> sum = accumulate(vec.cbegin(), vec.cend(), <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p>用于连接 <code>string</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> sum = accumulate(v.cbegin(), v.cend(), <span class="built_in">string</span>(<span class="string">""</span>));</span><br></pre></td></tr></table></figure>
+<p>将空串当做一个字符串字面值传递给第三个参数是不可以的，会导致一个编译错误：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误：const char* 上没有定义 + 运算符</span></span><br><span class="line"><span class="built_in">string</span> sum = accumulate(v.cbegin(), v.cend(), <span class="string">""</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>另一个只读算法是 <code>equal</code>，用于确定两个序列是否保存相同的值。它将第一个序列中的每个元素与第二个序列中的对应元素进行比较。如果所有对应元素都相等，则返回 <code>true</code>，否则返回 <code>false</code>。此算法接受三个迭代器：前两个（与以往一样）表示第一个序列中的元素范围，第三个表示第二个序列的首元素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// roster2 中的元素数目应该至少与 roster1 一样多</span></span><br><span class="line">equal(roster1.cbegin(), roster1.cend(), roster2.cbegin());</span><br></pre></td></tr></table></figure>
+<p>由于 <code>equal</code> 利用迭代器完成操作，因此我们可以通过调用 <code>equal</code> 来比较两个不同类型的容器中的元素。而且，元素类型也不必一样，只要我们能用 <code>==</code> 来比较两个元素类型即可。<br>例如，在此例中，roster1 可以是 <code>vector&lt;string&gt;</code>，而 roster2 是 <code>list&lt;const char*&gt;</code>。但是，<strong>equal 基于一个非常重要的假设：它假定第二个序列至少与第一个序列一样长。此算法要处理第一个序列中的每个元素，它假定每个元素在第二个序列中都有一个与之对应的元素</strong>。</p>
+</li>
+</ol>
+<h2 id="10-2-2-写容器元素的算法" class="heading-control"><a href="#10-2-2-写容器元素的算法" class="headerlink" title="10.2.2 写容器元素的算法"></a>10.2.2 写容器元素的算法<a class="heading-anchor" href="#10-2-2-写容器元素的算法" aria-hidden="true"></a></h2><ol>
+<li><p>使用 <code>fill</code> 算法填充容器：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fill(vec.begin(), vec.end(), <span class="number">0</span>); <span class="comment">// 将每个元素重置为 0</span></span><br><span class="line"><span class="comment">// 将容器的一个子序列设置为 10</span></span><br><span class="line">fill(vec.begin(), vec.begin() + vec.size() / <span class="number">2</span>, <span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>fill_n</code> 算法也可用于填充容器，它接受的是一个迭代器、一个计数值和一个值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec; <span class="comment">// 空 vector</span></span><br><span class="line"><span class="comment">// 使用 vec，赋予它不同值</span></span><br><span class="line">fill_n(vec.begin(), vec.size(), <span class="number">0</span>); <span class="comment">// 将所有元素重置为 0</span></span><br></pre></td></tr></table></figure>
+<p>容易犯的错误是在一个空容器上调用 <code>fill_n</code>（或类似的写元素的算法）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec; <span class="comment">// 空向量</span></span><br><span class="line"><span class="comment">// 灾难：修改 vec 中的 10 个（不存在）元素</span></span><br><span class="line">fill_n(vec.begin(), <span class="number">10</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>WARNING：</strong> 向目的位置迭代器写入数据的算法假定目的位置足够大，能容纳要写入的元素。</p>
+</blockquote>
+</li>
+<li><p>一种保证算法有足够元素空间来容纳输出数据的方法是使用<strong>插入迭代器</strong>（insert iterator）。当我们通过一个插入迭代器赋值时，一个与赋值号右侧值相等的元素被添加到容器中。</p>
+</li>
+<li><p>一个典型的插入迭代器是 <strong><code>back_inserter</code></strong>，它定义在头文件 <code>iterator</code> 中。<code>back_inserter</code> 接受一个指向容器的引用，返回一个与该容器绑定的插入迭代器。当我们通过此迭代器赋值时，赋值运算符会调用 <code>push_back</code> 将一个具有给定值的元素添加到容器中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;              <span class="comment">// 空向量</span></span><br><span class="line"><span class="keyword">auto</span> it = back_inserter(vec); <span class="comment">// 通过它赋值会将元素添加到 vec 中</span></span><br><span class="line">*it = <span class="number">42</span>;                     <span class="comment">// vec 中现在有一个元素，值为42</span></span><br></pre></td></tr></table></figure>
+<p>通常使用 <code>back_inserter</code> 来创建一个迭代器，作为算法的目的位置来使用。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec; <span class="comment">// 空向量</span></span><br><span class="line"><span class="comment">// 正确：back_inserter 创建一个插入迭代器，可用来向 vec 添加元素</span></span><br><span class="line">fill_n(back_inserter(vec), <span class="number">10</span>, <span class="number">0</span>); <span class="comment">// 添加 10 个元素到 vec</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以通过 <code>copy</code> 算法实现内置数组的拷贝：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> al[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> a2[<span class="keyword">sizeof</span>(al) / <span class="keyword">sizeof</span>(*al)]; <span class="comment">// a2 与 a1 大小一样</span></span><br><span class="line"><span class="comment">// ret 指向拷贝到 a2 的尾元素之后的位置</span></span><br><span class="line"><span class="keyword">auto</span> ret = copy(begin(al), end(al), a2); <span class="comment">// 把 a1 的内容拷贝给 a2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>replace</code> 算法读入一个序列，并将其中所有等于给定值的元素都改为另一个值。此算法接受 4 个参数：前两个是迭代器，表示输入序列，后两个一个是要搜索的值，另一个是新值。它将所有等于第一个值的元素替换为第二个值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将所有值为 0 的元素改为 42</span></span><br><span class="line">replace(ilst.begin(), ilst.end(), <span class="number">0</span>, <span class="number">42</span>);</span><br></pre></td></tr></table></figure>
+<p>此调用将序列中所有的 0 都替换为 42。如果我们希望保留原序列不变，可以调用 <code>replace_copy</code>。此算法接受额外第三个迭代器参数，指出调整后序列的保存位置：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 back_inserter 按需要增长目标序列</span></span><br><span class="line">replace_copy(ilst.cbegin(), ilst.cend(), back_inserter(ivec), <span class="number">0</span>, <span class="number">42</span>);</span><br></pre></td></tr></table></figure>
+<p>此调用后，ilst 并未改变，ivec 包含 ilst 的一份拷贝，不过原来在 ilst 中值为 0 的元素在 ivec 中都变为 42。</p>
+</li>
+</ol>
+<h2 id="10-2-3-重排容器元素的算法" class="heading-control"><a href="#10-2-3-重排容器元素的算法" class="headerlink" title="10.2.3 重排容器元素的算法"></a>10.2.3 重排容器元素的算法<a class="heading-anchor" href="#10-2-3-重排容器元素的算法" aria-hidden="true"></a></h2><ol>
+<li><p>调用 <a href="http://www.cplusplus.com/reference/algorithm/sort/" target="_blank" rel="noopener"><code>sort</code></a> 会重排输入序列中的元素，使之有序，它是利用元素类型的 <code>&lt;</code> 运算符来实现排序的。</p>
+</li>
+<li><p><strong><a href="http://www.cplusplus.com/reference/algorithm/unique/" target="_blank" rel="noopener"><code>unique</code></a> 算法重排输入序列，将相邻的重复项“消除”，并返回一个指向不重复值范围末尾的迭代器。<code>unique</code> 并不真的删除任何元素，它只是覆盖相邻的重复元素，使得不重复元素出现在序列开始部分。<code>unique</code> 返回的迭代器指向最后一个不重复元素之后的位置，此位置之后的元素仍然存在，但我们不知道它们的值是什么。</strong></p>
+</li>
+</ol>
+<h1 id="10-3-定制操作" class="heading-control"><a href="#10-3-定制操作" class="headerlink" title="10.3 定制操作"></a>10.3 定制操作<a class="heading-anchor" href="#10-3-定制操作" aria-hidden="true"></a></h1><h2 id="10-3-1-向算法传递函数" class="heading-control"><a href="#10-3-1-向算法传递函数" class="headerlink" title="10.3.1 向算法传递函数"></a>10.3.1 向算法传递函数<a class="heading-anchor" href="#10-3-1-向算法传递函数" aria-hidden="true"></a></h2><ol>
+<li><p><code>sort</code> 默认使用 <code>&lt;</code> 运算符进行排序，还可以传给它一个二元比较函数来进行排序，这个二元比较函数称为<strong>谓词</strong>（predicate），标准库算法所使用的谓词分为两类：<strong>一元谓词</strong>（unary predicate，意味着它们只接受单一参数）和<strong>二元谓词</strong>（binary predicate，意味着它们有两个参数）。</p>
+</li>
+<li><p><a href="http://www.cplusplus.com/reference/algorithm/stable_sort/" target="_blank" rel="noopener"><code>stable_sort</code></a> 算法维持相等元素的原有顺序。</p>
+</li>
+<li><p><strong>标准库定义了名为 <a href="http://www.cplusplus.com/reference/algorithm/partition/" target="_blank" rel="noopener"><code>partition</code></a> 的算法，它接受一个谓词，对容器内容进行划分，使得谓词为 true 的值会排在容器的前半部分，而使谓词为 false 的值会排在后半部分。算法返回一个迭代器，指向最后一个使谓词为 true 的元素之后的位置。</strong></p>
+</li>
+</ol>
+<h2 id="10-3-2-lambda-表达式" class="heading-control"><a href="#10-3-2-lambda-表达式" class="headerlink" title="10.3.2 lambda 表达式"></a>10.3.2 lambda 表达式<a class="heading-anchor" href="#10-3-2-lambda-表达式" aria-hidden="true"></a></h2><ol>
+<li><p>标准库的 <a href="http://www.cplusplus.com/reference/algorithm/find_if/" target="_blank" rel="noopener"><code>find_if</code></a> 算法接受一对迭代器，表示一个范围。但与 <code>find</code> 不同的是，<code>find_if</code> 的第三个参数是一个谓词。<code>find_if</code> 算法对输入序列中的每个元素调用给定的这个谓词。它返回第一个使谓词返回非 0 值的元素，如果不存在这样的元素，则返回尾迭代器。</p>
+<blockquote>
+<p>Returns an iterator to the first element in the range [first,last) for which pred returns true. If no such element is found, the function returns last.</p>
+</blockquote>
+</li>
+<li><p><strong>lambda 表达式</strong>（lambda expression）是一个<strong>可调用对象</strong>（callable object）。一个 lambda 表达式表示一个可调用的代码单元。我们可以将其理解为一个未命名的内联函数。与任何函数类似，一个 lambda 具有一个返回类型、一个参数列表和一个函数体。但与函数不同，<strong>lambda 可能定义在函数内部</strong>。一个 lambda 表达式具有如下形式：</p>
+<p>[capture list] (parameter list) -&gt; return type { fiunction body }</p>
+<p>其中，capture list（捕获列表）是一个 lambda 所在函数中定义的局部变量的列表（通常为空）；return type、parameter list 和 function body 与任何普通函数一样，分别表示返回类型、参数列表和函数体。但是，与普通函数不同，lambda 必须使用尾置返回来指定返回类型。<strong>我们可以忽略参数列表和返回类型，但必须永远包含捕获列表和函数体</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> f = [] &#123; <span class="keyword">return</span> <span class="number">42</span>; &#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 lambda 中忽略括号和参数列表等价于指定一个空参数列表。<strong>如果忽略返回类型，lambda 根据函数体中的代码推断出返回类型。如果函数体只是一个 <code>return</code> 语句，则返回类型从返回的表达式的类型推断而来。否则，返回类型为 <code>void</code>。</strong></p>
+<blockquote>
+<p><strong>Note：</strong> 如果 lambda 的函数体包含任何单一 <code>return</code> 语句之外的内容，且未指定返回类型，则返回 <code>void</code>。</p>
+</blockquote>
+</li>
+<li><p>与一个普通函数调用类似，调用一个 lambda 时给定的实参被用来初始化 lambda 的形参。通常，实参和形参的类型必须匹配。但与普通函数不同，<strong>lambda 不能有默认参数</strong>。因此，一个 lambda 调用的实参数目永远与形参数目相等。一旦形参初始化完毕，就可以执行函数体了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[](<span class="keyword">const</span> <span class="built_in">string</span> &amp;a, <span class="keyword">const</span> <span class="built_in">string</span> &amp;b)</span><br><span class="line">&#123; <span class="keyword">return</span> a.size() &lt; b.size(); &#125;</span><br></pre></td></tr></table></figure>
+<p>空捕获列表表明此 lambda 不使用它所在函数中的任何局部变量。</p>
+</li>
+<li><p>虽然一个 lambda 可以出现在一个函数中，使用其局部变量，但它只能使用那些明确指明的变量。一个 lambda 通过将局部变量包含在其捕获列表中来指出将会使用这些变量。捕获列表指引 lambda 在其内部包含访问局部变量所需的信息。</p>
+<blockquote>
+<p><strong>Note：</strong> 一个 lambda 只有在其捕获列表中捕获一个它所在函数中的局部变量，才能在函数体中使用该变量。</p>
+</blockquote>
+</li>
+<li><p><code>for_each</code> 算法接受一个可调用对象，并对输入序列中每个元素调用此对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 打印长度大于等于给定值的单词，每个单词后面接一个空格</span></span><br><span class="line">for_each(wc, words.end(),</span><br><span class="line">         [](<span class="keyword">const</span> <span class="built_in">string</span> &amp;s)</span><br><span class="line">         &#123; <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="string">""</span>; &#125;);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><blockquote>
+<p><strong>Note：捕获列表只用于局部非 <code>static</code> 变量，lambda 可以直接使用局部 <code>static</code> 变量和在它所在函数之外声明的名字。</strong></p>
+</blockquote>
+</li>
+</ol>
+<h2 id="10-3-3-lambda-捕获和返回" class="heading-control"><a href="#10-3-3-lambda-捕获和返回" class="headerlink" title="10.3.3 lambda 捕获和返回"></a>10.3.3 lambda 捕获和返回<a class="heading-anchor" href="#10-3-3-lambda-捕获和返回" aria-hidden="true"></a></h2><ol>
+<li><p>当定义一个 lambda 时，编译器生成一个与 lambda 对应的新的（未命名的）类类型。可以这样理解，当向一个函数传递一个 lambda 时，同时定义了一个新类型和该类型的一个对象：传递的参数就是此编译器生成的类类型的未命名对象。类似的，当使用 <code>auto</code> 定义一个用 lambda 初始化的变量时，定义了一个从 lambda 生成的类型的对象。</p>
+</li>
+<li><p>默认情况下，从 lambda 生成的类都包含一个对应该 lambda 所捕获的变量的数据成员。类似任何普通类的数据成员，lambda 的数据成员也在 lambda 对象创建时被初始化。</p>
+</li>
+<li><p>类似参数传递，变量的捕获方式也可以是值或引用。<strong>与传值参数类似，采用值捕获的前提是变量可以拷贝。与参数不同，被捕获的变量的值是在 lambda 创建时拷贝，而不是调用时拷贝。由于被捕获变量的值是在 lambda 创建时拷贝，因此随后对其修改不会影响到 lambda 内对应的值。</strong></p>
+</li>
+<li><p>一个以引用方式捕获的变量与其他任何类型的引用的行为类似。当我们在 lambda 函数体内使用此变量时，实际上使用的是引用所绑定的对象。<strong>如果我们采用引用方式捕获一个变量，就必须确保被引用的对象在 lambda 执行的时候是存在的。</strong> lambda 捕获的都是局部变量，这些变量在函数结束后就不复存在了。如果 lambda 可能在函数结束后执行，捕获的引用指向的局部变量已经消失。</p>
+</li>
+<li><p>我们也可以从一个函数返回 lambda。函数可以直接返回一个可调用对象，或者返回一个类对象，该类含有可调用对象的数据成员。<strong>如果函数返回一个 lambda，则与函数不能返回一个局部变量的引用类似，此 lambda 也不能包含引用捕获。</strong></p>
+</li>
+<li><blockquote>
+<p><strong>WARNING：当以引用方式捕获一个变量时，必须保证在 lambda 执行时变量是存在的。</strong></p>
+</blockquote>
+</li>
+<li><blockquote>
+<p><strong>建议：尽量保持 lambda 的变量捕获简单化。</strong> 如果我们捕获一个指针或迭代器，或采用引用捕获方式，就必须确保在 lambda 执行时，绑定到迭代器、指针或引用的对象仍然存在。而且，需要保证对象具有预期的值。在 lambda 从创建到它执行的这段时间内，可能有代码改变绑定的对象的值。也就是说，在指针（或引用）被捕获的时刻，绑定的对象的值是我们所期望的，但在 lambda 执行时，该对象的值可能已经完全不同了。一般来说，我们应该尽量减少捕获的数据量，来避免潜在的捕获导致的问题。而且，如果可能的话，应该避免捕获指针或引用。</p>
+</blockquote>
+</li>
+<li><p>除了显式列出我们希望使用的来自所在函数的变量之外，还可以让编译器根据 lambda 体中的代码来推断我们要使用哪些变量。<strong>为了指示编译器推断捕获列表，应在捕获列表中写一个 <code>&amp;</code> 或 <code>=</code>。<code>&amp;</code> 告诉编译器采用捕获引用方式，<code>=</code> 则表示采用值捕获方式。</strong></p>
+</li>
+<li><p>如果我们希望对一部分变量采用值捕获，对其他变量采用引用捕获，可以混合使用隐式捕获和显式捕获：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os 隐式捕获，引用捕获方式；c 显式捕获，值捕获方式</span></span><br><span class="line">for_each(words.begin(), words.end(),</span><br><span class="line">         [&amp;, c](<span class="keyword">const</span> <span class="built_in">string</span> &amp;s)</span><br><span class="line">         &#123; os &lt;&lt; s &lt;&lt; c; &#125;);</span><br><span class="line"><span class="comment">// os 显式捕获，引用捕获方式；c 隐式捕获，值捕获方式</span></span><br><span class="line">for_each(words.begin(), words.end(),</span><br><span class="line">         [=, &amp;os](<span class="keyword">const</span> <span class="built_in">string</span> &amp;s)</span><br><span class="line">         &#123; os &lt;&lt; s &lt;&lt; c; &#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>当我们混合使用隐式捕获和显式捕获时，捕获列表中的第一个元素必须是一个 <code>&amp;</code> 或<code>=</code>。此符号指定了默认捕获方式为引用或值。当混合使用隐式捕获和显式捕获时，显式捕获的变量必须使用与隐式捕获不同的方式。即，如果隐式捕获是引用方式（使用了 <code>&amp;</code>），则显式捕获命名变量必须采用值方式，因此不能在其名字前使用 <code>&amp;</code>。类似的，如果隐式捕获采用的是值方式（使用了 <code>=</code>），则显式捕获命名变量必须采用引用方式，即，在名字前使用 <code>&amp;</code>。</strong></p>
+</li>
+<li><p>lambda 捕获列表：</p>
+<p><style type="text/css"><br>.tg {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-cly1{text-align:left;vertical-align:middle}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="2"><center>lambda 捕获列表</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-cly1">[]</td>
+    <td class="tg-0lax">空捕获列表。lambda 不能使用所在函数中的变量。一个 lambda 只有捕获变量后才能使用它们</td>
+  </tr>
+  <tr>
+    <td class="tg-cly1">[names]</td>
+    <td class="tg-0lax">names 是一个逗号分隔的名字列表，这些名字都是 lambda 所在函数的局部变量。默认情况下，捕获列表中的变量都被拷贝。名字前如果使用了 &amp;，则采用引用捕获方式</td>
+  </tr>
+  <tr>
+    <td class="tg-cly1">[&amp;]</td>
+    <td class="tg-0lax">隐式捕获列表，采用引用捕获方式。lambda 体中所使用的来自所在函数的实体都采用引用方式使用</td>
+  </tr>
+  <tr>
+    <td class="tg-cly1">[=]</td>
+    <td class="tg-0lax">隐式捕获列表，采用值捕获方式。lambda 体将拷贝所使用的来自所在函数的实体的值</td>
+  </tr>
+  <tr>
+    <td class="tg-cly1">[&amp;, identifier_list]</td>
+    <td class="tg-0lax">identifier_list 是一个逗号分隔的列表，包含 0 个或多个来自所在函数的变量。这些变量采用值捕获方式，而任何隐式捕获的变量都采用引用方式捕获。identifier_list 中的名字前面不能使用 &amp;</td>
+  </tr>
+  <tr>
+    <td class="tg-cly1">[=, identifier_list]</td>
+    <td class="tg-0lax">identifier_list 中的变量都采用引用方式捕获，而任何隐式捕获的变量都采用值方式捕获。identifier_list 中的名字不能包括 this，且这些名字之前必须使用 &amp;</td>
+  </tr>
+</tbody>
+</table>
+</li>
+<li><p>默认情况下，对于一个值被拷贝的变量，lambda 不会改变其值。如果我们希望能改变一个被捕获的变量的值，就必须在参数列表首加上关键字 <code>mutable</code>。因此，可变 lambda 能省略参数列表：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fcn3</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> v1 = <span class="number">42</span>; <span class="comment">// 局部变量</span></span><br><span class="line">    <span class="comment">// f 可以改变它所捕获的变量的值</span></span><br><span class="line">    <span class="keyword">auto</span> f = [v1]() <span class="keyword">mutable</span> &#123; <span class="keyword">return</span> ++v1; &#125;;</span><br><span class="line">    v1 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">auto</span> j = f(); <span class="comment">// j 为 43</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个引用捕获的变量是否（如往常一样）可以修改依赖于此引用指向的是一个 <code>const</code> 类型还是一个非 <code>const</code> 类型。</p>
+</li>
+<li><p>默认情况下，如果一个 lambda 体包含 <code>return</code> 之外的任何语句，则编译器假定此 lambda 返回 <code>void</code>。与其他返回 <code>void</code> 的函数类似，被推断返回 <code>void</code> 的 lambda 不能返回值。</p>
+</li>
+<li><p>可以使用标准库 <code>transform</code> 算法和一个 lambda 来将一个序列中的每个负数替换为其绝对值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">transform(vi.begin(), vi.end(), vi.begin(),</span><br><span class="line">          [](<span class="keyword">int</span> i)</span><br><span class="line">          &#123; <span class="keyword">return</span> i &lt; <span class="number">0</span> ? -i : i; &#125;);</span><br></pre></td></tr></table></figure>
+<p>函数 <code>transform</code> 接受三个迭代器和一个可调用对象。前两个迭代器表示输入序列，第三个迭代器表示目的位置。算法对输入序列中每个元素调用可调用对象，并将结果写到目的位置。如本例所示，目的位置迭代器与表示输入序列开始位置的迭代器可以是相同的。当输入迭代器和目的迭代器相同时，<code>transform</code> 将输入序列中每个元素替换为可调用对象操作该元素得到的结果。</p>
+</li>
+<li><p>当我们需要为一个 lambda 定义返回类型时，必须使用尾置返回类型。</p>
+</li>
+<li><p>标准库定义了一个名为 <code>count_if</code> 的算法。类似 <code>find_if</code>，此函数接受一对迭代器，表示一个输入范围，还接受一个谓词，会对输入范围中每个元素执行。<strong><code>count_if</code> 返回一个计数值，表示谓词有多少次为真。</strong></p>
+</li>
+<li><p><strong>练习 10.21：</strong> 编写一个 lambda，捕获一个局部 <code>int</code> 变量，并递减变量值，直至它变为 0。一旦变量变为 0，再调用 lambda 应该不再递减变量。lambda 应该返回一个 <code>bool</code> 值，指出捕获的变量是否为 0。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> func = [&amp;sum]() -&gt; <span class="keyword">bool</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (sum &lt;= <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        --sum;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="10-3-4-参数绑定" class="heading-control"><a href="#10-3-4-参数绑定" class="headerlink" title="10.3.4 参数绑定"></a>10.3.4 参数绑定<a class="heading-anchor" href="#10-3-4-参数绑定" aria-hidden="true"></a></h2><ol>
+<li><p>对于那种只在一两个地方使用的简单操作，lambda 表达式是最有用的。如果我们需要在很多地方使用相同的操作，通常应该定义一个函数，而不是多次编写相同的 lambda 表达式。类似的，如果一个操作需要很多语句才能完成，通常使用函数更好。</p>
+</li>
+<li><p>C++11 引入一个名为 <a href="http://www.cplusplus.com/reference/functional/bind/" target="_blank" rel="noopener"><code>bind</code></a> 的标准库函数，它定义在头文件 <code>functional</code> 中。可以将 <code>bind</code> 函数看作一个通用的函数适配器，它接受一个可调用对象，生成一个新的可调用对象来“适应”原对象的参数列表。调用 <code>bind</code> 的一般形式为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> newCallable = bind(callable, arg_list);</span><br></pre></td></tr></table></figure>
+<p>其中，newCallable 本身是一个可调用对象，arg_list 是一个逗号分隔的参数列表，对应给定的 callable 的参数。即，当我们调用 newCallable 时，newCallable 会调用 callable，并传递给它 arg_list 中的参数。arg_list 中的参数可能包含形如 _n 的名字，其中 n 是一个整数。这些参数是“占位符”，表示 newCallable 的参数，它们占据了传递给 newCallable 的参数的“位置”。数值 n 表示生成的可调用对象中参数的位置：1 为 newCallable 的第一个参数，2 为第二个参数，依此类推。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// check6 是一个可调用对象，接受一个 string 类型的参数</span></span><br><span class="line"><span class="comment">// 并用此 string 和值 6 来调用 check_size</span></span><br><span class="line"><span class="keyword">auto</span> check6 = bind(check_size, _1, <span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+<p>此 <code>bind</code> 调用只有一个占位符，表示 check6 只接受单一参数。占位符出现在 arg_list 的第一个位置，表示 check6 的此参数对应 check_size 的第一个参数。</p>
+</li>
+<li><p>名字 _n 都定义在一个名为 <code>placeholders</code> 的命名空间中，而这个命名空间本身定义在 <code>std</code> 命名空间中。<code>placeholders</code> 命名空间也定义在 <code>functional</code> 头文件中。</p>
+</li>
+<li><p>下面的典型示例说明了 <code>bind</code> 的用法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// g 是一个有两个参数的可调用对象</span></span><br><span class="line"><span class="keyword">auto</span> g = bind(f, a, b, _2, c, _1);</span><br></pre></td></tr></table></figure>
+<p>上述 <code>bind</code> 调用生成一个新的可调用对象，它有两个参数，分别用占位符 _2 和 _1 表示。这个新的可调用对象将它自己的参数作为第三个和第五个参数传递给 f。f 的第一个、第二个和第四个参数分别被绑定到给定的值 a、b 和 c 上。</p>
+<p>传递给 g 的参数按位置绑定到占位符。即，第一个参数绑定到 _1，第二个参数绑定到 _2。因此，当我们调用 g 时，其第一个参数将被传递给 f 作为最后一个参数，第二个参数将被传递给 f 作为第三个参数。实际上，这个 <code>bind</code> 调用会将</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g(_1, _2);</span><br></pre></td></tr></table></figure>
+<p>映射为</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(a, b, _2, c, _1)</span><br></pre></td></tr></table></figure>
+<p>即，对 g 的调用会调用 f，用 g 的参数代替占位符，再加上绑定的参数 a、b 和 c。例如，调用 g(X, Y) 会调用</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(a, b, Y, c, X)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>默认情况下，<code>bind</code> 的那些不是占位符的参数被拷贝到 <code>bind</code> 返回的可调用对象中。但是，与 lambda 类似，有时对有些绑定的参数我们希望以引用方式传递，或是要绑定参数的类型无法拷贝，例如 <code>ostream</code> 类型，我们不能拷贝一个 <code>ostream</code>。如果我们希望传递给 <code>bind</code> 一个对象而又不拷贝它，就必须使用标准库 <strong><code>ref</code></strong> 函数，函数 <code>ref</code> 返回一个对象，包含给定的引用，此对象是可以拷贝的。标准库中还有一个 <code>cref</code> 函数，生成一个保存 <code>const</code> 引用的类。与 <code>bind</code> 一样，函数 <code>ref</code> 和 <code>cref</code> 也定义在头文件 <code>functional</code> 中。</p>
+</li>
+<li><p><strong>练习 10.24：</strong> 给定一个 <code>string</code>，使用 <code>bind</code> 和 <code>check_size</code> 在一个 <code>int</code> 的 <code>vector</code> 中查找第一个大于 <code>string</code> 长度的值。</p>
+<p>注意是要查找第一个大于 <code>string</code> 长度的值，而 <code>check_size</code> 检查的是 <code>sz</code> 是否小于等于 <code>string</code> 长度，所以此处使用 <code>find_if_not</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check_size</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;s, <span class="built_in">string</span>::size_type sz)</span> </span>&#123; <span class="keyword">return</span> s.size() &gt;= sz; &#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> str = <span class="string">"test"</span>;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec = &#123;<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">auto</span> iter = find_if_not(vec.begin(), vec.end(), bind(check_size, str, _1));</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"result is "</span> &lt;&lt; (iter == vec.end() ? <span class="string">"null"</span> : to_string(*iter)) &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="10-4-再探迭代器" class="heading-control"><a href="#10-4-再探迭代器" class="headerlink" title="10.4 再探迭代器"></a>10.4 再探迭代器<a class="heading-anchor" href="#10-4-再探迭代器" aria-hidden="true"></a></h1><ol>
+<li>除了容器迭代器，标准库在头文件 <code>iterator</code> 中还定义了额外几种迭代器：<ul>
+<li><strong>插入迭代器</strong>（insert iterator）：这些迭代器被绑定到一个容器上，可用来向容器插入元素。</li>
+<li><strong>流迭代器</strong>（stream iterator）：这些迭代器被绑定到输入或输出流上，可用来遍历所关联的 IO 流。</li>
+<li><strong>反向迭代器</strong>（reverse iterator）：这些迭代器向后而不是向前移动。除了 <code>forward_list</code> 之外的标准库容器都有反向迭代器。</li>
+<li><strong>移动迭代器</strong>（move iterator）：这些专用的迭代器不是拷贝其中的元素，而是移动它们。</li>
+</ul>
+</li>
+</ol>
+<h2 id="10-4-1-插入迭代器" class="heading-control"><a href="#10-4-1-插入迭代器" class="headerlink" title="10.4.1 插入迭代器"></a>10.4.1 插入迭代器<a class="heading-anchor" href="#10-4-1-插入迭代器" aria-hidden="true"></a></h2><ol>
+<li><p>插入器有三种类型，差异在于元素插入的位置：</p>
+<ul>
+<li><strong><code>back_inserter</code></strong> 创建一个使用 <code>push_back</code> 的迭代器。</li>
+<li><strong><code>front_inserter</code></strong> 创建一个使用 <code>push_front</code> 的迭代器。</li>
+<li><strong><code>inserter</code></strong> 创建一个使用 <code>insert</code> 的迭代器。此函数接受第二个参数，这个参数必须是一个指向给定容器的迭代器。元素将被插入到给定迭代器所表示的元素之前。</li>
+</ul>
+<blockquote>
+<p>只有在容器支持 <code>push_front</code> 的情况下，我们才可以使用 <code>front_inserter</code>。类似的，只有在容器支持 <code>push_back</code> 的情况下，我们才能使用 <code>back_inserter</code>。</p>
+</blockquote>
+</li>
+<li><p>如果 it 是由 <code>inserter</code> 生成的迭代器，则下面这样的赋值语句：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*it = val;</span><br></pre></td></tr></table></figure>
+<p>其效果与下面代码一样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">it = c.insert(it, val); <span class="comment">// it 指向新加入的元素</span></span><br><span class="line">++it;                   <span class="comment">// 递增 it 使它指向原来的元素</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>front_inserter</code> 生成的迭代器的行为与 <code>inserter</code> 生成的迭代器完全不一样。<strong>当我们使用 <code>front_inserter</code> 时，元素总是插入到容器第一个元素之前。即使我们传递给 <code>inserter</code> 的位置原来指向第一个元素，只要我们在此元素之前插入一个新元素，此元素就不再是容器的首元素了</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; lst = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line"><span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; lst2, lst3; <span class="comment">// 空 list</span></span><br><span class="line"><span class="comment">// 拷贝完成之后，lst2 包含 4 3 2 1</span></span><br><span class="line">copy(lst.cbegin(), lst.cend(), front_inserter(lst2));</span><br><span class="line"><span class="comment">// 拷贝完成之后，1st3 包含 1 2 3 4</span></span><br><span class="line">copy(lst.cbegin(), lst.cend(), inserter(lst3, lst3.begin()));</span><br></pre></td></tr></table></figure>
+<p>当调用 <code>front_inserter(c)</code> 时，我们得到一个插入迭代器，接下来会调用 <code>push_front</code>。当每个元素被插入到容器 c 中时，它变为 c 的新的首元素。因此，<code>front_inserter</code> 生成的迭代器会将插入的元素序列的顺序颠倒过来，而 <code>inserter</code> 和 <code>back_inserter</code> 则不会。</p>
+</li>
+<li><p>除了 <code>unique</code> 之外，标准库还定义了名为 <code>unique_copy</code> 的函数，它接受第三个迭代器，表示拷贝不重复元素的目的位置。</p>
+</li>
+</ol>
+<h2 id="10-4-2-iostream-迭代器" class="heading-control"><a href="#10-4-2-iostream-迭代器" class="headerlink" title="10.4.2 iostream 迭代器"></a>10.4.2 iostream 迭代器<a class="heading-anchor" href="#10-4-2-iostream-迭代器" aria-hidden="true"></a></h2><ol>
+<li><p>虽然 <code>iostream</code> 类型不是容器，但标准库定义了可以用于这些 IO 类型对象的迭代器。<code>istream_iterator</code> 读取输入流，<code>ostream_iterator</code> 向一个输出流写数据。这些迭代器将它们对应的流当作一个特定类型的元素序列来处理。通过使用流迭代器，我们可以用泛型算法从流对象读取数据以及向其写入数据。</p>
+</li>
+<li><p>当创建一个流迭代器时，必须指定迭代器将要读写的对象类型。一个 <code>istream_iterator</code> 使用 <code>&gt;&gt;</code> 来读取流。因此，<code>istream_iterator</code> 要读取的类型必须定义了输入运算符。<strong>当创建一个 <code>istream_iterator</code> 时，我们可以将它绑定到一个流。当然，我们还可以默认初始化迭代器，这样就创建了一个可以当作尾后值使用的迭代器。</strong></p>
+</li>
+<li><p>下面是一个用 <code>istream_iterator</code> 从标准输入读取数据，存入一个 <code>vector</code> 的例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">istream_iterator&lt;<span class="keyword">int</span>&gt; <span class="title">in_iter</span><span class="params">(<span class="built_in">cin</span>)</span></span>; <span class="comment">// 从 cin 读取 int</span></span><br><span class="line">istream_iterator&lt;<span class="keyword">int</span>&gt; eof;          <span class="comment">// istream 尾后迭代器</span></span><br><span class="line"><span class="keyword">while</span> (in_iter != eof)              <span class="comment">// 当有数据可供读取时</span></span><br><span class="line">    <span class="comment">// 后置递增运算读取流，返回迭代器的旧值</span></span><br><span class="line">    <span class="comment">// 解引用迭代器，获得从流读取的前一个值</span></span><br><span class="line">    vec.push_back(*in_iter++);</span><br></pre></td></tr></table></figure>
+<p><strong>对于一个绑定到流的迭代器，一旦其关联的流遇到文件尾或遇到 IO 错误，迭代器的值就与尾后迭代器相等。</strong></p>
+</li>
+<li><p>通过 <code>istream_iterator</code> 从 <code>cin</code> 中读取数据，并直接构造 <code>vector</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">istream_iterator&lt;int&gt; in_iter(cin), eof; // 从 cin 读取 int</span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">vec</span><span class="params">(in_iter, eof)</span></span>;           <span class="comment">// 从迭代器范围构造 vec</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>istream_iterator</code> 支持的操作：</p>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="2"><center>istream_iterator 操作</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-lboi">istream_iterator&lt;T&gt; in(is);</td>
+    <td class="tg-0pky">in 从输入流 is 读取类型为 T 的值</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">istream_iterator&lt;T&gt; end;</td>
+    <td class="tg-0pky">读取类型为 T 的值的 istream_iterator 迭代器，表示尾后位置</td>
+  </tr>
+  <tr>
+    <td class="tg-lboi">in1 == in2</td>
+    <td class="tg-lboi" rowspan="2">in1 和 in2 必须读取相同类型。如果它们都是尾后迭代器，或绑定到相同的输入，则两者相等</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">in1 != in2</td>
+  </tr>
+  <tr>
+    <td class="tg-lboi">*in</td>
+    <td class="tg-0pky">返回从流中读取的值</td>
+  </tr>
+  <tr>
+    <td class="tg-lboi">in-&gt;mem</td>
+    <td class="tg-0pky">与 (*in).mem 的含义相同</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">++in，in++</td>
+    <td class="tg-0lax">使用元素类型所定义的 &gt;&gt; 运算符从输入流中读取下一个值。与以往一样，前置版本返回一个指向递增后迭代器的引用，后置版本返回旧值</td>
+  </tr>
+</tbody>
+</table>
+</li>
+<li><p>可以用一对 <code>istream_iterator</code> 来调用 <code>accumulate</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">istream_iterator&lt;int&gt; in(cin), eof;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; accumulate(in, eof, <span class="number">0</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当我们将一个 <code>istream_iterator</code> 绑定到一个流时，标准库并不保证迭代器立即从流读取数据。具体实现可以推迟从流中读取数据，直到我们使用迭代器时才真正读取。标准库中的实现所保证的是，在我们第一次解引用迭代器之前，从流中读取数据的操作已经完成了。对于大多数程序来说，立即读取还是推迟读取没什么差别。但是，如果我们创建了一个 <code>istream_iterator</code>，没有使用就销毁了，或者我们正在从两个不同的对象同步读取同一个流，那么何时读取可能就很重要了。</p>
+</li>
+<li><p>我们可以对任何具有输出运算符（<code>&lt;&lt;</code> 运算符）的类型定义 <code>ostream_iterator</code>。当创建一个 <code>ostream_iterator</code> 时，我们可以提供（可选的）第二参数，它是一个字符串，在输出每个元素后都会打印此字符串。此字符串必须是一个 C 风格字符串（即，一个字符串字面常量或者一个指向以空字符结尾的字符数组的指针）。<strong>必须将 <code>ostream_iterator</code> 绑定到一个指定的流，不允许空的或表示尾后位置的 <code>ostream_iterator</code>。</strong></p>
+</li>
+<li><p><code>ostream_iterator</code> 支持的操作：</p>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="2"><center>ostream_iterator 操作</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-lboi">ostream_iterator out(os);</td>
+    <td class="tg-0pky">out 将类型为 T 的值写到输出流 os 中</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">ostream_iterator out(os, d);</td>
+    <td class="tg-0pky">out 将类型为 T 的值写到输出流 os 中，每个值后面都输出一个 d。d 指向一个空字符结尾的字符数组</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">out = val</td>
+    <td class="tg-0pky">用 &lt;&lt; 运算符将 val 写入到 out 所绑定的 ostream 中。val 的类型必须与 out 可写的类型兼容</td>
+  </tr>
+  <tr>
+    <td class="tg-lboi">*out, ++out, out++</td>
+    <td class="tg-0pky">这些运算符是存在的，但不对 out 做任何事情。每个运算符都返回 out</td>
+  </tr>
+</tbody>
+</table>
+</li>
+<li><p>我们可以用 <code>ostream_iterator</code> 来输出值的序列：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ostream_iterator&lt;<span class="keyword">int</span>&gt; <span class="title">out_iter</span><span class="params">(<span class="built_in">cout</span>, <span class="string">""</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> e : vec)</span><br><span class="line">    *out_iter++ = e; <span class="comment">// 赋值语句实际上将元素写到 cout</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>此程序将 vec 中的每个元素写到 <code>cout</code>，每个元素后加一个空格。每次向 out_iter 赋值时，写操作就会被提交。值得注意的是，当我们向 out_iter 赋值时，可以忽略解引用和递增运算。即，循环可以重写成下面的样子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> e : vec)</span><br><span class="line">    out_iter = e; <span class="comment">// 赋值语句将元素写到 cout</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>运算符 <code>*</code> 和 <code>++</code> 实际上对 <code>ostream_iterator</code> 对象不做任何事情，因此忽略它们对我们的程序没有任何影响。但是，推荐第一种形式。在这种写法中，流迭代器的使用与其他迭代器的使用保持一致。如果想将此循环改为操作其他迭代器类型，修改起来非常容易。而且，对于读者来说，此循环的行为也更为清晰。</p>
+</li>
+<li><p>可以通过调用 <code>copy</code> 来打印 vec 中的元素，这比编写循环更为简单：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">copy(vec.begin(), vec.end(), out_iter);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>我们可以为任何定义了输入运算符（<code>&gt;&gt;</code>）的类型创建 <code>istream_iterator</code> 对象。类似的，只要类型有输出运算符（<code>&lt;&lt;</code>），我们就可以为其定义 <code>ostream_iterator</code>。</p>
+</li>
+</ol>
+<h2 id="10-4-3-反向迭代器" class="heading-control"><a href="#10-4-3-反向迭代器" class="headerlink" title="10.4.3 反向迭代器"></a>10.4.3 反向迭代器<a class="heading-anchor" href="#10-4-3-反向迭代器" aria-hidden="true"></a></h2><ol>
+<li><p>反向迭代器就是在容器中从尾元素向首元素反向移动的迭代器。对于反向迭代器，递增（以及递减）操作的含义会颠倒过来。<strong>递增一个反向迭代器（<code>++it</code>）会移动到前一个元素；递减一个迭代器（<code>--it</code>）会移动到下一个元素。</strong></p>
+</li>
+<li><p>除了 <code>forward_list</code> 之外，其他容器都支持反向迭代器。我们可以通过调用 <code>rbegin</code>、<code>rend</code>、<code>crbegin</code> 和 <code>crend</code> 成员函数来获得反向迭代器。这些成员函数返回指向容器尾元素和首元素之前一个位置的迭代器。与普通迭代器一样，反向迭代器也有 <code>const</code> 和非 <code>const</code> 版本。</p>
+</li>
+<li><p>可以通过向 <code>sort</code> 传递一对反向迭代器来将 <code>vector</code> 整理为递减序。</p>
+</li>
+<li><p>除了 <code>forward_list</code> 之外，标准容器上的其他迭代器都既支持递增运算又支持递减运算。但是，<strong>流迭代器不支持递减运算，因为不可能在一个流中反向移动</strong>。因此，<strong>不可能从一个 <code>forward_list</code> 或一个流迭代器创建反向迭代器</strong>。</p>
+</li>
+<li><p>通过调用 <code>reverse_iterator</code> 的 <code>base</code> 成员函数可以返回其对应的普通迭代器。下图展示了反向迭代器和普通迭代器间的关系：</p>
+<p><img data-src="https://image.shipengx.com/%E5%8F%8D%E5%90%91%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%92%8C%E6%99%AE%E9%80%9A%E8%BF%AD%E4%BB%A3%E5%99%A8%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB.png" alt="反向迭代器和普通迭代器间的关系"></p>
+<p><code>rcomma</code> 和 <code>rcomma.base()</code> 指向不同的元素，<code>line.crbegin</code> 和 <code>line.cend()</code> 也是如此。这些不同保证了元素范围无论是正向处理还是反向处理都是相同的。</p>
+</li>
+<li><blockquote>
+<p><strong>Note：</strong> 反向迭代器的目的是表示元素范围，而这些范围是不对称的，这导致一个重要的结果：<strong>当我们从一个普通迭代器初始化一个反向迭代器，或是给一个反向迭代器赋值时，结果迭代器与原迭代器指向的并不是相同的元素</strong>。</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="10-5-泛型算法结构" class="heading-control"><a href="#10-5-泛型算法结构" class="headerlink" title="10.5 泛型算法结构"></a>10.5 泛型算法结构<a class="heading-anchor" href="#10-5-泛型算法结构" aria-hidden="true"></a></h1><h2 id="10-5-1-5-类迭代器" class="heading-control"><a href="#10-5-1-5-类迭代器" class="headerlink" title="10.5.1 5 类迭代器"></a>10.5.1 5 类迭代器<a class="heading-anchor" href="#10-5-1-5-类迭代器" aria-hidden="true"></a></h2><ol>
+<li><blockquote>
+<p><strong>WARNING：</strong> 对于向一个算法传递错误类别的迭代器的问题，很多编译器不会给出任何警告或提示。</p>
+</blockquote>
+</li>
+<li><p>迭代器有 5 类：</p>
+<ul>
+<li><strong>输入迭代器</strong>（input iterator）。算法 <code>find</code> 和 <code>accumulate</code> 要求输入迭代器；而 <code>istream_iterator</code> 是一种输入迭代器。</li>
+<li><strong>输出迭代器</strong>（output iterator）。<code>copy</code> 函数的第三个参数就是输出迭代器。<code>ostream_iterator</code> 类型也是输出迭代器。</li>
+<li><strong>前向迭代器</strong>（forward iterator）。算法 <code>replace</code> 要求前向迭代器，<code>forward_list</code> 上的迭代器是前向迭代器。</li>
+<li><strong>双向迭代器</strong>（bidirectional iterator）。算法 <code>reverse</code> 要求双向迭代器，除了 <code>forward_list</code> 之外，其他标准库都提供符合双向迭代器要求的迭代器。</li>
+<li><strong>随机访问迭代器</strong>（random-access iterator）。算法 <code>sort</code> 要求随机访问迭代器。<code>array</code>、<code>deque</code>、<code>string</code> 和 <code>vector</code> 的迭代器都是随机访问迭代器，用于访问内置数组元素的指针也是。</li>
+</ul>
+</li>
+</ol>
+<h2 id="10-5-2-算法形参模式" class="heading-control"><a href="#10-5-2-算法形参模式" class="headerlink" title="10.5.2 算法形参模式"></a>10.5.2 算法形参模式<a class="heading-anchor" href="#10-5-2-算法形参模式" aria-hidden="true"></a></h2><ol>
+<li><p>大多数算法具有如下 4 种形式之一：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">alg(beg, end, other args);</span><br><span class="line">alg(beg, end, dest, other args);</span><br><span class="line">alg(beg, end, beg2, other args);</span><br><span class="line">alg(beg, end, beg2, end2, other args);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>WARNING：</strong> 向输出迭代器写入数据的算法都假定目标空间足够容纳写入的数据。</p>
+</blockquote>
+<p>如果 dest 是一个直接指向容器的迭代器，那么算法将输出数据写到容器中已存在的元素内。更常见的情况是，dest 被绑定到一个插入迭代器或是一个 <code>ostream_iterator</code>。插入迭代器会将新元素添加到容器中，因而保证空间是足够的。<code>ostream_iterator</code> 会将数据写入到一个输出流，同样不管要写入多少个元素都没有问题。</p>
+<blockquote>
+<p><strong>WARNING：</strong> 接受单独 beg2 的算法假定从 beg2 开始的序列与 beg 和 end 所表示的范围至少一样大。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="10-5-3-算法命名规范" class="heading-control"><a href="#10-5-3-算法命名规范" class="headerlink" title="10.5.3 算法命名规范"></a>10.5.3 算法命名规范<a class="heading-anchor" href="#10-5-3-算法命名规范" aria-hidden="true"></a></h2><ol>
+<li><p>接受一个元素值的算法通常有另一个不同名的（不是重载的）版本，该版本接受一个谓词代替元素值。接受谓词参数的算法都有附加的 <code>if</code> 前缀：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find(beg, end, val);     <span class="comment">// 查找输入范围中 val 第一次出现的位置</span></span><br><span class="line">find_if(beg, end, pred); <span class="comment">// 查找第一个令 pred 为真的元素</span></span><br></pre></td></tr></table></figure>
+<p>这两个算法都在输入范围中查找特定元素第一次出现的位置。算法 <code>find</code> 查找一个指定值；算法 <code>find_if</code> 查找使得 pred 返回非零值的元素。</p>
+</li>
+<li><p>默认情况下，重排元素的算法将重排后的元素写回给定的输入序列中。这些算法还提供另一个版本，将元素写到一个指定的输出目的位置。如我们所见，写到额外目的空间的算法都在名字后面附加一个 <code>_copy</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reverse(beg, end);            <span class="comment">// 反转输入范围中元素的顺序</span></span><br><span class="line">reverse_copy(beg, end, dest); <span class="comment">// 将元素按逆序拷贝到 dest</span></span><br></pre></td></tr></table></figure>
+<p>一些算法同时提供 <code>_copy</code> 和 <code>_if</code> 版本。这些版本接受一个目的位置迭代器和一个谓词：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 从 v1 中删除奇数元素</span></span><br><span class="line">remove_if(v1.begin(), v1.end(),</span><br><span class="line">          [](<span class="keyword">int</span> i)</span><br><span class="line">          &#123; <span class="keyword">return</span> i % <span class="number">2</span>; &#125;);</span><br><span class="line"><span class="comment">// 将偶数元素从 v1 拷贝到 v2；v1 不变</span></span><br><span class="line">remove_copy_if(v1.begin(), v1.end(), back_inserter(v2),</span><br><span class="line">               [](<span class="keyword">int</span> i)</span><br><span class="line">               &#123; <span class="keyword">return</span> i % <span class="number">2</span>; &#125;);</span><br></pre></td></tr></table></figure>
+<p>两个算法都调用了 lambda 来确定元素是否为奇数。在第一个调用中，我们从输入序列中将奇数元素删除。在第二个调用中，我们将非奇数（亦即偶数）元素从输入范围拷贝到 v2 中。</p>
+</li>
+</ol>
+<h1 id="10-6-特定容器算法" class="heading-control"><a href="#10-6-特定容器算法" class="headerlink" title="10.6 特定容器算法"></a>10.6 特定容器算法<a class="heading-anchor" href="#10-6-特定容器算法" aria-hidden="true"></a></h1><ol>
+<li><p><code>list</code> 和 <code>forward_list</code> 定义了独有的 <code>sort</code>、<code>merge</code>、<code>remove</code>、<code>reverse</code> 和 <code>unique</code>。链表类型定义的其他算法的通用版本可以用于链表，但代价太高。这些算法需要交换输入序列中的元素。一个链表可以通过改变元素间的链接而不是真的交换它们的值来快速“交换”元素。因此，这些链表版本的算法的性能比对应的通用版本好得多。</p>
+<blockquote>
+<p><strong>最佳实践：对于 <code>list</code> 和 <code>forward_list</code>，应该优先使用成员函数版本的算法而不是通用算法。</strong></p>
+</blockquote>
+</li>
+<li><p><code>list</code> 和 <code>forward_list</code> 成员函数版本的算法如下表所示，这些操作都返回 <code>void</code>：</p>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-cly1{text-align:left;vertical-align:middle}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="2"><center>list 和 forward_list 成员函数版本的算法</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-lboi">lst.merge(lst2)</td>
+    <td class="tg-lboi" rowspan="2">将来自 lst2 的元素合并入 lst。lst 和 lst2 都必须是有序的。元素将从 lst2 中删除。在合并之后，lst2 变为空。第一个版本使用 &lt; 运算符；第二个版本使用给定的比较操作</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">lst.merge(lst2, comp)</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">lst.remove(val)</td>
+    <td class="tg-lboi" rowspan="2">调用 erase 删除掉与给定值相等（==）或令一元谓词为真的每个元素</td>
+  </tr>
+  <tr>
+    <td class="tg-lboi">lst.remove_if(pred)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">lst.reverse()</td>
+    <td class="tg-0lax">反转 lst 中元素的顺序</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">lst.sort()</td>
+    <td class="tg-cly1" rowspan="2">使用 &lt; 或给定比较操作排序元素</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">lst.sort(comp)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">lst.unique()</td>
+    <td class="tg-cly1" rowspan="2">调用 erase 删除同一个值的连续拷贝。第一个版本使用 ==；第二个版本使用给定的二元谓词</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">lst.unique(pred)</td>
+  </tr>
+</tbody>
+</table>
+</li>
+<li><p>链表类型还定义了 <code>splice</code> 算法，此算法是链表数据结构所特有的：</p>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-cly1{text-align:left;vertical-align:middle}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="2"><center>list 和 forward_list 的 splice 成员函数的参数</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-lboi" colspan="2">lst.splice(args) 或 flst.splice_after(args)</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">(p, lst2)</td>
+    <td class="tg-0lax">p 是一个指向 lst 中元素的迭代器，或一个指向 flst 首前位置的迭代器。函数将 lst2 的所有元素移动到 lst 中 p 之前的位置或是 flst 中 p 之后的位置。将元素从 lst2 中删除。lst2 的类型必须与 lst 或 flst 相同，且不能是同一个链表</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">(p, lst2, p2)</td>
+    <td class="tg-cly1">p2 是一个指向 lst2 中位置的有效的迭代器。将 p2 指向的元素移动到 lst 中，或将 p2 之后的元素移动到 flst 中。lst2 可以是与 lst 或 flst 相同的链表</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">(p, lst2, b, e)</td>
+    <td class="tg-0lax">b 和 e 必须表示 lst2 中的合法范围。将给定范围中的元素从 lst2 移动到 lst 或 flst。lst2 与 lst（或 flst）可以是相同的链表，但 p 不能指向给定范围中元素</td>
+  </tr>
+</tbody>
+</table>
+</li>
+<li><p>链表特有版本与通用版本间的一个至关重要的区别是链表版本会改变底层的容器。例如，<code>remove</code> 的链表版本会删除指定的元素。<code>unique</code> 的链表版本会删除第二个和后继的重复元素。</p>
+<p>类似的，<code>merge</code> 和 <code>splice</code> 会销毁其参数。例如，通用版本的 <code>merge</code> 将合并的序列写到一个给定的目的迭代器；两个输入序列是不变的。而链表版本的 <code>merge</code> 函数会销毁给定的链表———元素从参数指定的链表中删除，被合并到调用 <code>merge</code> 的链表对象中。在 <code>merge</code> 之后，来自两个链表中的元素仍然存在，但它们都已在同一个链表中。</p>
+</li>
+</ol>
+<h1 id="小结" class="heading-control"><a href="#小结" class="headerlink" title="小结"></a>小结<a class="heading-anchor" href="#小结" aria-hidden="true"></a></h1><h1 id="术语表" class="heading-control"><a href="#术语表" class="headerlink" title="术语表"></a>术语表<a class="heading-anchor" href="#术语表" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%AC%AC%2010%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%881%EF%BC%89.png" alt="第 10 章术语表（1）"></p>
+<p><img data-src="https://image.shipengx.com/%E7%AC%AC%2010%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%882%EF%BC%89.png" alt="第 10 章术语表（2）"></p>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/f82eac24.html" title="C++ Primer - 第 10 章 泛型算法">https://blog.shipengx.com/archives/f82eac24.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"><i class="fa fa-tag"></i> C/C++</a>
+              <a href="/tags/C-Primer/" rel="tag"><i class="fa fa-tag"></i> C++ Primer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/4094be86.html" rel="prev" title="C++ Primer - 第 12 章 动态内存">
+      <i class="fa fa-chevron-left"></i> C++ Primer - 第 12 章 动态内存
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/19565df.html" rel="next" title="C++ Primer - 第 11 章 关联容器">
+      C++ Primer - 第 11 章 关联容器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#10-1-概述"><span class="nav-text">10.1 概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-2-初识泛型算法"><span class="nav-text">10.2 初识泛型算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#10-2-1-只读算法"><span class="nav-text">10.2.1 只读算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-2-2-写容器元素的算法"><span class="nav-text">10.2.2 写容器元素的算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-2-3-重排容器元素的算法"><span class="nav-text">10.2.3 重排容器元素的算法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-3-定制操作"><span class="nav-text">10.3 定制操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#10-3-1-向算法传递函数"><span class="nav-text">10.3.1 向算法传递函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-3-2-lambda-表达式"><span class="nav-text">10.3.2 lambda 表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-3-3-lambda-捕获和返回"><span class="nav-text">10.3.3 lambda 捕获和返回</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-3-4-参数绑定"><span class="nav-text">10.3.4 参数绑定</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-4-再探迭代器"><span class="nav-text">10.4 再探迭代器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#10-4-1-插入迭代器"><span class="nav-text">10.4.1 插入迭代器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-4-2-iostream-迭代器"><span class="nav-text">10.4.2 iostream 迭代器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-4-3-反向迭代器"><span class="nav-text">10.4.3 反向迭代器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-5-泛型算法结构"><span class="nav-text">10.5 泛型算法结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#10-5-1-5-类迭代器"><span class="nav-text">10.5.1 5 类迭代器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-5-2-算法形参模式"><span class="nav-text">10.5.2 算法形参模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-5-3-算法命名规范"><span class="nav-text">10.5.3 算法命名规范</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-6-特定容器算法"><span class="nav-text">10.6 特定容器算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#术语表"><span class="nav-text">术语表</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

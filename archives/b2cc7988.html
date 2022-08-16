@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer - 第 19 章 特殊工具与技术">
+<meta property="og:url" content="https://blog.shipengx.com/archives/b2cc7988.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-22T14:06:12.000Z">
+<meta property="article:modified_time" content="2022-07-18T14:01:45.707Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="C++ Primer">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/b2cc7988.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>C++ Primer - 第 19 章 特殊工具与技术 | 朝花夕拾</title><meta name="robots" content="noindex">
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/b2cc7988.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          C++ Primer - 第 19 章 特殊工具与技术
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-22 22:06:12" itemprop="dateCreated datePublished" datetime="2022-05-22T22:06:12+08:00">2022-05-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-18 22:01:45" itemprop="dateModified" datetime="2022-07-18T22:01:45+08:00">2022-07-18</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">编码</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AC-Primer%E3%80%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">《C++ Primer》</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/b2cc7988.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/b2cc7988.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="19-1-控制内存分配" class="heading-control"><a href="#19-1-控制内存分配" class="headerlink" title="19.1 控制内存分配"></a>19.1 控制内存分配<a class="heading-anchor" href="#19-1-控制内存分配" aria-hidden="true"></a></h1><ol>
+<li>某些应用程序对内存分配有特殊的需求，因此我们无法将标准内存管理机制直接应用于这些程序。它们常常需要自定义内存分配的细节，比如使用关键字 <code>new</code> 将对象放置在特定的内存空间中。为了实现这一目的，应用程序需要重载 <code>new</code> 运算符和 <code>delete</code> 运算符以控制内存分配的过程。</li>
+</ol>
+<h2 id="19-1-1-重载-new-和-delete" class="heading-control"><a href="#19-1-1-重载-new-和-delete" class="headerlink" title="19.1.1 重载 new 和 delete"></a>19.1.1 重载 new 和 delete<a class="heading-anchor" href="#19-1-1-重载-new-和-delete" aria-hidden="true"></a></h2><ol>
+<li><p>当我们使用一条 <code>new</code> 表达式时：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// new 表达式</span></span><br><span class="line"><span class="built_in">string</span> *sp = <span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">"a value"</span>); <span class="comment">// 分配并初始化一个 string 对象</span></span><br><span class="line"><span class="built_in">string</span> *arr = <span class="keyword">new</span> <span class="built_in">string</span>[<span class="number">10</span>];       <span class="comment">// 分配 10 个默认初始化的 string 对象</span></span><br></pre></td></tr></table></figure>
+<p>实际执行了三步操作：</p>
+<ul>
+<li>第一步，<code>new</code> 表达式调用一个名为 <strong><code>operator new</code></strong>（或者 <strong><code>operator new[]</code></strong>）的标准库函数。该函数分配一块足够大的、原始的、未命名的内存空间以便存储特定类型的对象（或者对象的数组）。</li>
+<li>第二步，编译器运行相应的构造函数以构造这些对象，并为其传入初始值。</li>
+<li>第三步，对象被分配了空间并构造完成，返回一个指向该对象的指针。</li>
+</ul>
+<p>当我们使用一条 <code>delete</code> 表达式删除一个动态分配的对象时：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> sp;    <span class="comment">// 销毁 *sp，然后释放 sp 指向的内存空间</span></span><br><span class="line"><span class="keyword">delete</span>[] arr; <span class="comment">// 销毁数组中的元素，然后释放对应的内存空间</span></span><br></pre></td></tr></table></figure>
+<p>实际执行了两步操作：</p>
+<ul>
+<li>第一步，对 <code>sp</code> 所指的对象或者 <code>arr</code> 所指的数组中的元素执行对应的析构函数。</li>
+<li>第二步，编译器调用名为 <strong><code>operator delete</code></strong>（或者 <strong><code>operator delete[]</code></strong>）的标准库函数释放内存空间。</li>
+</ul>
+<p>如果应用程序希望控制内存分配的过程，则它们需要定义自己的 <code>operator new</code> 函数和 <code>operator delete</code> 函数。即使在标准库中已经存在这两个函数的定义，我们仍旧可以定义自己的版本。编译器不会对这种重复的定义提出异议，相反，编译器将使用我们自定义的版本替换标准库定义的版本。</p>
+</li>
+<li><blockquote>
+<p><strong>WARNING：</strong> 当自定义了全局的 <code>operator new</code> 函数和 <code>operator delete</code> 函数后，我们就担负起了控制动态内存分配的职责。这两个函数必须是正确的：因为它们是程序整个处理过程中至关重要的一部分。</p>
+</blockquote>
+</li>
+<li><p><strong>应用程序可以在全局作用域中定义 <code>operator new</code> 函数和 <code>operator delete</code> 函数，也可以将它们定义为成员函数。当编译器发现一条 <code>new</code> 表达式或 <code>delete</code> 表达式后，将在程序中查找可供调用的 <code>operator</code> 函数。如果被分配（释放）的对象是类类型，则编译器首先在类及其基类的作用域中查找。此时如果该类含有 <code>operator new</code> 成员或 <code>operator delete</code> 成员，则相应的表达式将调用这些成员。否则，编译器在全局作用域查找匹配的函数。此时如果编译器找到了用户自定义的版本，则使用该版本执行 <code>new</code> 表达式或 <code>delete</code> 表达式；如果没找到，则使用标准库定义的版本。</strong></p>
+<p><strong>我们可以使用作用域运算符令 <code>new</code> 表达式或 <code>delete</code> 表达式忽略定义在类中的函数，直接执行全局作用域中的版本。例如，<code>::new</code> 只在全局作用域中查找匹配的 <code>operator new</code> 函数，<code>::delete</code> 与之类似。</strong></p>
+</li>
+<li><p>标准库定义了 <code>operator new</code> 函数和 <code>operator delete</code> 函数的 8 个重载版本。其中前 4 个版本可能抛出 <code>bad_alloc</code> 异常，后 4 个版本则不会抛出异常：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// new 表达式</span></span><br><span class="line"><span class="built_in">string</span> *sp = <span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">"a value"</span>); <span class="comment">// 分配并初始化一个 string 对象</span></span><br><span class="line"><span class="built_in">string</span> *arr = <span class="keyword">new</span> <span class="built_in">string</span>[<span class="number">10</span>]; <span class="comment">// 分配 10 个默认初始化的 string 对象</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> sp;    <span class="comment">// 销毁 *sp，然后释放 sp 指向的内存空间</span></span><br><span class="line"><span class="keyword">delete</span>[] arr; <span class="comment">// 销毁数组中的元素，然后释放对应的内存空间</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//这些版本可能抛出异常</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span>)</span></span>;              <span class="comment">// 分配一个对象</span></span><br><span class="line"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="keyword">new</span>[](<span class="keyword">size_t</span>);            <span class="comment">// 分配一个数组</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span>*)</span> <span class="keyword">noexcept</span></span>;   <span class="comment">// 释放一个对象</span></span><br><span class="line"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="keyword">delete</span>[](<span class="keyword">void</span>*) <span class="keyword">noexcept</span>; <span class="comment">// 释放一个数组</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这些版本承诺不会抛出异常</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span>, <span class="keyword">nothrow_t</span>&amp;)</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="keyword">new</span>[](<span class="keyword">size_t</span>, <span class="keyword">nothrow_t</span>&amp;) <span class="keyword">noexcept</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span>*, <span class="keyword">nothrow_t</span>&amp;)</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="keyword">delete</span>[](<span class="keyword">void</span>*, <span class="keyword">nothrow_t</span>&amp;) <span class="keyword">noexcept</span>;</span><br></pre></td></tr></table></figure>
+<p>类型 <code>nothrow_t</code> 是定义在 <code>new</code> 头文件中的一个 <code>struct</code>，在这个类型中不包含任何成员。<code>new</code> 头文件还定义了一个名为 <code>nothrow</code> 的 <code>const</code> 对象，用户可以通过这个对象请求 <code>new</code> 的非抛出版本。<strong>与析构函数类似，<code>operator delete</code> 也不允许抛出异常。当我们重载这些运算符时，必须使用 <code>noexcept</code> 异常说明符指定其不抛出异常。</strong></p>
+<p><strong>应用程序可以自定义上面函数版本中的任意一个，前提是自定义的版本必须位于全局作用域或者类作用域中。当我们将上述运算符函数定义成类的成员时，它们是隐式静态的。我们无须显式地声明 <code>static</code>，当然这么做也不会引发错误。因为 <code>operator new</code> 用在对象构造之前而 <code>operator delete</code> 用在对象销毁之后，所以这两个成员（<code>new</code> 和 <code>delete</code>）必须是静态的，而且它们不能操纵类的任何数据成员。</strong></p>
+<p><strong>对于 <code>operator new</code> 函数或者 <code>operator new[]</code> 函数来说，它的返回类型必须是<code>void*</code>，第一个形参的类型必须是 <code>size_t</code> 且该形参不能含有默认实参。当我们为一个对象分配空间时使用 <code>operator new</code>；为一个数组分配空间时使用 <code>operator new[]</code>。编译器调用 <code>operator new</code> 时，把存储指定类型对象所需的字节数传给 <code>size_t</code> 形参；当调用 <code>operator new[]</code> 时，传入函数的则是存储数组中所有元素所需的空间。</strong></p>
+<p><strong>如果我们想要自定义 <code>operator new</code> 函数，则可以为它提供额外的形参。此时，用到这些自定义函数的 <code>new</code> 表达式必须使用 <code>new</code> 的定位形式将实参传给新增的形参。尽管在一般情况下我们可以自定义具有任何形参的 <code>operator new</code>，但是下面这个函数却无论如何不能被用户重载</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span>, <span class="keyword">void</span>*)</span></span>; <span class="comment">// 不允许重新定义这个版本</span></span><br></pre></td></tr></table></figure>
+<p>这种形式只供标准库使用，不能被用户重新定义。</p>
+<p><strong>对于 <code>operator delete</code> 函数或者 <code>operator delete[]</code> 函数来说，它们的返回类型必须是 <code>void</code>，第一个形参的类型必须是 <code>void*</code>。执行一条 <code>delete</code> 表达式将调用相应的 <code>operator</code> 函数，并用指向待释放内存的指针来初始化 <code>void*</code> 形参。</strong></p>
+<p><strong>当我们将 <code>operator delete</code> 或 <code>operator delete[]</code> 定义成类的成员时，该函数可以包含另外一个类型为 <code>size_t</code> 的形参。此时，该形参的初始值是第一个形参所指对象的字节数。<code>size_t</code> 形参可用于删除继承体系中的对象。如果基类有一个虚析构函数，则传递给 <code>operator delete</code> 的字节数将因待删除指针所指对象的动态类型不同而有所区别。而且，实际运行的 <code>operator delete</code> 函数版本也由对象的动态类型决定。</strong></p>
+</li>
+<li><p>标准库函数 <code>operator new</code> 和 <code>operator delete</code> 的名字容易让人误解。和其他 <code>operator</code> 函数不同（比如 <code>operator=</code>），这两个函数并没有重载 <code>new</code> 表达式或 <code>delete</code> 表达式。<strong>实际上，我们根本无法自定义 <code>new</code> 表达式或 <code>delete</code> 表达式的行为。</strong></p>
+<p><strong>一条 <code>new</code> 表达式的执行过程总是先调用 <code>operator new</code> 函数以获取内存空间，然后在得到的内存空间中构造对象。与之相反，一条 <code>delete</code> 表达式的执行过程总是先销毁对象，然后调用 <code>operator delete</code> 函数释放对象所占的空间。</strong></p>
+<p>我们提供新的 <code>operator new</code> 函数和 <code>operator delete</code> 函数的目的在于改变内存分配的方式，但是不管怎样，我们都不能改变 <code>new</code> 运算符和 <code>delete</code> 运算符的基本含义。</p>
+</li>
+<li><p>当你定义了自己的全局 <code>operator new</code> 和 <code>operator delete</code> 后，这两个函数必须以某种方式执行分配内存与释放内存的操作。也许你的初衷仅仅是使用一个特殊定制的内存分配器，但是这两个函数还应该同时满足某些测试的目的，即检验其分配内存的方式是否与常规方式类似。</p>
+<p>为此，我们可以使用名为 <strong><code>malloc</code></strong> 和 <strong><code>free</code></strong> 的函数，C++ 从 C 语言中继承了这些函数，并将其定义在 <code>cstdlib</code> 头文件中。</p>
+<p><code>malloc</code> 函数接受一个表示待分配字节数的 <code>size_t</code>，返回指向分配空间的指针或者返回 0 以表示分配失败。<code>free</code> 函数接受一个 <code>void*</code>，它是 <code>malloc</code> 返回的指针的副本，<code>free</code> 将相关内存返回给系统。调用 <code>free(0)</code> 没有任何意义。</p>
+<p>如下所示是编写 <code>operator new</code> 和 <code>operator delete</code> 的一种简单方式，其他版本与之类似：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">void</span> *mem = <span class="built_in">malloc</span>(size))</span><br><span class="line">        <span class="keyword">return</span> mem;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">throw</span> bad_alloc();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *mem)</span> <span class="keyword">noexcept</span> </span>&#123; <span class="built_in">free</span>(mem); &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>默认情况下，<code>allocator</code> 类使用 <code>operator new</code> 获取内存空间，然后使用 <code>operator delete</code> 释放它。</strong>（《STL 源码剖析》可以看到——博主注）</p>
+</li>
+</ol>
+<h2 id="19-1-2-定位-new-表达式" class="heading-control"><a href="#19-1-2-定位-new-表达式" class="headerlink" title="19.1.2 定位 new 表达式"></a>19.1.2 定位 new 表达式<a class="heading-anchor" href="#19-1-2-定位-new-表达式" aria-hidden="true"></a></h2><ol>
+<li><p>与 <code>allocator</code> 不同的是，对于 <code>operator new</code> 分配的内存空间来说我们无法使用 <code>construct</code> 函数构造对象。相反，我们应该使用 <code>new</code> 的<strong>定位 <code>new</code></strong>（placement new）形式构造对象。如我们所知，<code>new</code> 的这种形式为分配函数提供了额外的信息。<strong>我们可以使用定位 <code>new</code> 传递一个地址</strong>，此时定位 <code>new</code> 的形式如下所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> (place_address) type</span><br><span class="line"><span class="keyword">new</span> (place_address) type (initializers)</span><br><span class="line"><span class="keyword">new</span> (place_address) type [size]</span><br><span class="line"><span class="keyword">new</span> (place_address) type [size] &#123; braced initializer <span class="built_in">list</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>其中 <code>place_address</code> 必须是一个指针，同时在 <code>initializers</code> 中提供一个（可能为空的）以逗号分隔的初始值列表，该初始值列表将用于构造新分配的对象。</p>
+<p><strong>当仅通过一个地址值调用时，定位 <code>new</code> 使用 <code>operator new(size_t, void*)</code> “分配”它的内存。这是一个我们无法自定义的 <code>operator new</code> 版本。该函数不分配任何内存，它只是简单地返回指针实参；然后由 <code>new</code> 表达式负责在指定的地址初始化对象以完成整个工作。事实上，定位 <code>new</code> 允许我们在一个特定的、预先分配的内存地址上构造对象。</strong></p>
+</li>
+<li><blockquote>
+<p><strong>Note：当只传入一个指针类型的实参时，定位 <code>new</code> 表达式构造对象但是不分配内存。</strong></p>
+</blockquote>
+</li>
+<li><p>尽管在很多时候使用定位 <code>new</code> 与 <code>allocator</code> 的 <code>construct</code> 成员非常相似，但在它们之间也有一个重要的区别。我们<strong>传给 <code>construct</code> 的指针必须指向同一个 <code>allocator</code> 对象分配的空间，但是传给定位 <code>new</code> 的指针无须指向 <code>operator new</code> 分配的内存。实际上，传给定位 <code>new</code> 表达式的指针甚至不需要指向动态内存</strong>。</p>
+</li>
+<li><p>就像定位 <code>new</code> 与使用 <code>allocate</code> 类似一样，对析构函数的显式调用也与使用 <code>destroy</code> 很类似。</p>
+<p>和调用 <code>destroy</code> 类似，调用析构函数可以清除给定的对象但是不会释放该对象所在的空间。如果需要的话，我们可以重新使用该空间。</p>
+<blockquote>
+<p><strong>Note：调用析构函数会销毁对象，但是不会释放内存。</strong></p>
+</blockquote>
+</li>
+</ol>
+<h1 id="19-2-运行时类型识别" class="heading-control"><a href="#19-2-运行时类型识别" class="headerlink" title="19.2 运行时类型识别"></a>19.2 运行时类型识别<a class="heading-anchor" href="#19-2-运行时类型识别" aria-hidden="true"></a></h1><ol>
+<li><p><strong>运行时类型识别</strong>（run-time type identification，RTTI）的功能由两个运算符实现：</p>
+<ul>
+<li><code>typeid</code> 运算符，用于返回表达式的类型。</li>
+<li><strong><code>dynamic_cast</code> 运算符，用于将基类的指针或引用安全地转换成派生类的指针或引用。</strong></li>
+</ul>
+<p>当我们将这两个运算符用于某种类型的指针或引用，并且该类型含有虚函数时，运算符将使用指针或引用所绑定对象的动态类型。</p>
+<p><strong>这两个运算符特别适用于以下情况：我们想使用基类对象的指针或引用执行某个派生类操作并且该操作不是虚函数。一般来说，只要有可能我们应该尽量使用虚函数。当操作被定义成虚函数时，编译器将根据对象的动态类型自动地选择正确的函数版本。</strong></p>
+<p><strong>然而，并非任何时候都能定义一个虚函数。假设我们无法使用虚函数，则可以使用一个 RTTI 运算符。另一方面，与虚成员函数相比，使用 RTTI 运算符蕴含着更多潜在的风险：程序员必须清楚地知道转换的目标类型并且必须检查类型转换是否被成功执行。</strong></p>
+</li>
+<li><blockquote>
+<p><strong>WARNING：</strong> 使用 RTTI 必须要加倍小心。在可能的情况下，最好定义虚函数而非直接接管类型管理的重任。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="19-2-1-dynamic-cast-运算符" class="heading-control"><a href="#19-2-1-dynamic-cast-运算符" class="headerlink" title="19.2.1 dynamic_cast 运算符"></a>19.2.1 dynamic_cast 运算符<a class="heading-anchor" href="#19-2-1-dynamic-cast-运算符" aria-hidden="true"></a></h2><ol>
+<li><p><strong><code>dynamic_cast</code> 运算符</strong>（dynamic_cast operator）的使用形式如下所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dynamic_cast</span>&lt;type*&gt; (e)</span><br><span class="line"><span class="keyword">dynamic_cast</span>&lt;type&amp;&gt; (e)</span><br><span class="line"><span class="keyword">dynamic_cast</span>&lt;type&amp;&amp;&gt; (e)</span><br></pre></td></tr></table></figure>
+<p>其中，<code>type</code> 必须是一个类类型，并且通常情况下该类型应该含有虚函数。在第一种形式中，<code>e</code> 必须是一个有效的指针；在第二种形式中，<code>e</code> 必须是一个左值；在第三种形式中，<code>e</code> 不能是左值。</p>
+<p>在上面的所有形式中，<code>e</code> 的类型必须符合以下三个条件中的任意一个：<code>e</code> 的类型是目标 <code>type</code> 的公有派生类、<code>e</code> 的类型是目标 <code>type</code> 的公有基类或者 <code>e</code> 的类型就是目标 <code>type</code> 的类型。如果符合，则类型转换可以成功。否则，转换失败。如果一条 <code>dynamic_cast</code> 语句的转换目标是指针类型并且失败了，则结果为 0。如果转换目标是引用类型并且失败了，则 <code>dynamic_cast</code> 运算符将抛出一个 <code>bad_cast</code> 异常。</p>
+</li>
+<li><p>举个简单的例子，假定 <code>Base</code> 类至少含有一个虚函数，<code>Derived</code> 是 <code>Base</code> 的公有派生类。如果有一个指向 <code>Base</code> 的指针 <code>bp</code>，则我们可以在运行时将它转换成指向 <code>Derived</code> 的指针，具体代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (Derived *dp = <span class="keyword">dynamic_cast</span>&lt;Derived *&gt;(bp))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 使用 dp 指向的 Derived 对象</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="comment">// bp 指向一个 Base 对象</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 使用 bp 指向的 Base 对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果 <code>bp</code> 指向 <code>Derived</code> 对象，则上述的类型转换初始化 <code>dp</code> 并令其指向 <code>bp</code> 所指的 <code>Derived</code> 对象。此时，<code>if</code> 语句内部使用 <code>Derived</code> 操作的代码是安全的。否则，类型转换的结果为 0，<code>dp</code> 为 0 意味着 <code>if</code> 语句的条件失败，此时 <code>else</code> 子句执行相应的 <code>Base</code> 操作。</p>
+<blockquote>
+<p><strong>Note：</strong> 我们可以对一个空指针执行 <code>dynamic_cast</code>，结果是所需类型的空指针。</p>
+</blockquote>
+<p>值得注意的一点是，我们在条件部分定义了 <code>dp</code>，这样做的好处是可以在一个操作中同时完成类型转换和条件检查两项任务。而且，指针 <code>dp</code> 在 <code>if</code> 语句外部是不可访问的。一旦转换失败，即使后续的代码忘了做相应判断，也不会接触到这个未绑定的指针，从而确保程序是安全的。</p>
+<blockquote>
+<p><strong>Best Practices：在条件部分执行 <code>dynamic_cast</code> 操作可以确保类型转换和结果检查在同一条表达式中完成。</strong></p>
+</blockquote>
+</li>
+<li><p>引用类型的 <code>dynamic_cast</code> 与指针类型的 <code>dynamic_cast</code> 在表示错误发生的方式上略有不同。因为不存在所谓的空引用，所以对于引用类型来说无法使用与指针类型完全相同的错误报告策略。当对引用的类型转换失败时，程序抛出一个名为 <code>std::bad_cast</code> 的异常，该异常定义在 <code>typeinfo</code> 标准库头文件中。</p>
+<p>我们可以按照如下的形式改写之前的程序，令其使用引用类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> Base &amp;b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">const</span> Derived &amp;d = <span class="keyword">dynamic_cast</span>&lt;<span class="keyword">const</span> Derived &amp;&gt;(b);</span><br><span class="line">        <span class="comment">// 使用 b 引用的 Derived 对象</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (bad_cast)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 处理类型转换失败的情况</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="19-2-2-typeid-运算符" class="heading-control"><a href="#19-2-2-typeid-运算符" class="headerlink" title="19.2.2 typeid 运算符"></a>19.2.2 typeid 运算符<a class="heading-anchor" href="#19-2-2-typeid-运算符" aria-hidden="true"></a></h2><h2 id="19-2-3-使用-RTTI" class="heading-control"><a href="#19-2-3-使用-RTTI" class="headerlink" title="19.2.3 使用 RTTI"></a>19.2.3 使用 RTTI<a class="heading-anchor" href="#19-2-3-使用-RTTI" aria-hidden="true"></a></h2><h2 id="19-2-4-type-info-类" class="heading-control"><a href="#19-2-4-type-info-类" class="headerlink" title="19.2.4 type_info 类"></a>19.2.4 type_info 类<a class="heading-anchor" href="#19-2-4-type-info-类" aria-hidden="true"></a></h2><h1 id="19-3-枚举类型" class="heading-control"><a href="#19-3-枚举类型" class="headerlink" title="19.3 枚举类型"></a>19.3 枚举类型<a class="heading-anchor" href="#19-3-枚举类型" aria-hidden="true"></a></h1><h1 id="19-4-类成员指针" class="heading-control"><a href="#19-4-类成员指针" class="headerlink" title="19.4 类成员指针"></a>19.4 类成员指针<a class="heading-anchor" href="#19-4-类成员指针" aria-hidden="true"></a></h1><h2 id="19-4-1-数据成员指针" class="heading-control"><a href="#19-4-1-数据成员指针" class="headerlink" title="19.4.1 数据成员指针"></a>19.4.1 数据成员指针<a class="heading-anchor" href="#19-4-1-数据成员指针" aria-hidden="true"></a></h2><h2 id="19-4-2-成员函数指针" class="heading-control"><a href="#19-4-2-成员函数指针" class="headerlink" title="19.4.2 成员函数指针"></a>19.4.2 成员函数指针<a class="heading-anchor" href="#19-4-2-成员函数指针" aria-hidden="true"></a></h2><h2 id="19-4-3-将成员函数用作可调用对象" class="heading-control"><a href="#19-4-3-将成员函数用作可调用对象" class="headerlink" title="19.4.3 将成员函数用作可调用对象"></a>19.4.3 将成员函数用作可调用对象<a class="heading-anchor" href="#19-4-3-将成员函数用作可调用对象" aria-hidden="true"></a></h2><h1 id="19-5-嵌套类" class="heading-control"><a href="#19-5-嵌套类" class="headerlink" title="19.5 嵌套类"></a>19.5 嵌套类<a class="heading-anchor" href="#19-5-嵌套类" aria-hidden="true"></a></h1><h1 id="19-6-union：一种节省空间的类" class="heading-control"><a href="#19-6-union：一种节省空间的类" class="headerlink" title="19.6 union：一种节省空间的类"></a>19.6 union：一种节省空间的类<a class="heading-anchor" href="#19-6-union：一种节省空间的类" aria-hidden="true"></a></h1><h1 id="19-7-局部类" class="heading-control"><a href="#19-7-局部类" class="headerlink" title="19.7 局部类"></a>19.7 局部类<a class="heading-anchor" href="#19-7-局部类" aria-hidden="true"></a></h1><h1 id="19-8-固有的不可移植的特性" class="heading-control"><a href="#19-8-固有的不可移植的特性" class="headerlink" title="19.8 固有的不可移植的特性"></a>19.8 固有的不可移植的特性<a class="heading-anchor" href="#19-8-固有的不可移植的特性" aria-hidden="true"></a></h1><h2 id="19-8-1-位域" class="heading-control"><a href="#19-8-1-位域" class="headerlink" title="19.8.1 位域"></a>19.8.1 位域<a class="heading-anchor" href="#19-8-1-位域" aria-hidden="true"></a></h2><h2 id="19-8-2-volatile-限定符" class="heading-control"><a href="#19-8-2-volatile-限定符" class="headerlink" title="19.8.2 volatile 限定符"></a>19.8.2 volatile 限定符<a class="heading-anchor" href="#19-8-2-volatile-限定符" aria-hidden="true"></a></h2><h2 id="19-8-3-链接指示：extern-“C”" class="heading-control"><a href="#19-8-3-链接指示：extern-“C”" class="headerlink" title="19.8.3 链接指示：extern “C”"></a>19.8.3 链接指示：extern “C”<a class="heading-anchor" href="#19-8-3-链接指示：extern-“C”" aria-hidden="true"></a></h2><h1 id="小结" class="heading-control"><a href="#小结" class="headerlink" title="小结"></a>小结<a class="heading-anchor" href="#小结" aria-hidden="true"></a></h1><h1 id="术语表" class="heading-control"><a href="#术语表" class="headerlink" title="术语表"></a>术语表<a class="heading-anchor" href="#术语表" aria-hidden="true"></a></h1><hr>
+<!-- flag of hidden posts -->
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/b2cc7988.html" title="C++ Primer - 第 19 章 特殊工具与技术">https://blog.shipengx.com/archives/b2cc7988.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"><i class="fa fa-tag"></i> C/C++</a>
+              <a href="/tags/C-Primer/" rel="tag"><i class="fa fa-tag"></i> C++ Primer</a>
+          </div>
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#19-1-控制内存分配"><span class="nav-text">19.1 控制内存分配</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#19-1-1-重载-new-和-delete"><span class="nav-text">19.1.1 重载 new 和 delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-1-2-定位-new-表达式"><span class="nav-text">19.1.2 定位 new 表达式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#19-2-运行时类型识别"><span class="nav-text">19.2 运行时类型识别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#19-2-1-dynamic-cast-运算符"><span class="nav-text">19.2.1 dynamic_cast 运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-2-2-typeid-运算符"><span class="nav-text">19.2.2 typeid 运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-2-3-使用-RTTI"><span class="nav-text">19.2.3 使用 RTTI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-2-4-type-info-类"><span class="nav-text">19.2.4 type_info 类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#19-3-枚举类型"><span class="nav-text">19.3 枚举类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#19-4-类成员指针"><span class="nav-text">19.4 类成员指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#19-4-1-数据成员指针"><span class="nav-text">19.4.1 数据成员指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-4-2-成员函数指针"><span class="nav-text">19.4.2 成员函数指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-4-3-将成员函数用作可调用对象"><span class="nav-text">19.4.3 将成员函数用作可调用对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#19-5-嵌套类"><span class="nav-text">19.5 嵌套类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#19-6-union：一种节省空间的类"><span class="nav-text">19.6 union：一种节省空间的类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#19-7-局部类"><span class="nav-text">19.7 局部类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#19-8-固有的不可移植的特性"><span class="nav-text">19.8 固有的不可移植的特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#19-8-1-位域"><span class="nav-text">19.8.1 位域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-8-2-volatile-限定符"><span class="nav-text">19.8.2 volatile 限定符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-8-3-链接指示：extern-“C”"><span class="nav-text">19.8.3 链接指示：extern “C”</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#术语表"><span class="nav-text">术语表</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

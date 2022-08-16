@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本系列文章旨在记录学习《Effective C++》过程中的一些书摘及学习笔记，并穿插了一些个人总结。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Effective C++》第三版总结（二）：第 4 - 6 章">
+<meta property="og:url" content="https://blog.shipengx.com/archives/6ef595db.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本系列文章旨在记录学习《Effective C++》过程中的一些书摘及学习笔记，并穿插了一些个人总结。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E3%80%8AEffective%20C%2B%2B%E3%80%8B%EF%BC%88%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%89%E4%B9%A6%E6%91%98%E4%B8%8E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.png">
+<meta property="article:published_time" content="2021-10-24T07:01:54.000Z">
+<meta property="article:modified_time" content="2022-08-13T19:44:10.656Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Effective C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E3%80%8AEffective%20C%2B%2B%E3%80%8B%EF%BC%88%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%89%E4%B9%A6%E6%91%98%E4%B8%8E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/6ef595db.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>《Effective C++》第三版总结（二）：第 4 - 6 章 | 朝花夕拾</title><meta name="robots" content="noindex">
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/6ef595db.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          《Effective C++》第三版总结（二）：第 4 - 6 章
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-24 15:01:54" itemprop="dateCreated datePublished" datetime="2021-10-24T15:01:54+08:00">2021-10-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-14 03:44:10" itemprop="dateModified" datetime="2022-08-14T03:44:10+08:00">2022-08-14</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">编码</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AEffective-C-%E3%80%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">《Effective C++》</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/6ef595db.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/6ef595db.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本系列文章旨在记录学习《Effective C++》过程中的一些书摘及学习笔记，并穿插了一些个人总结。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E3%80%8AEffective%20C%2B%2B%E3%80%8B%EF%BC%88%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%89%E4%B9%A6%E6%91%98%E4%B8%8E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.png" alt="目录-《Effective C++》（第三版）书摘与学习笔记"></p>
+<h1 id="4-设计与声明" class="heading-control"><a href="#4-设计与声明" class="headerlink" title="4 设计与声明"></a>4 设计与声明<a class="heading-anchor" href="#4-设计与声明" aria-hidden="true"></a></h1><h2 id="条款-18：让接口容易被正确使用，不易被误用" class="heading-control"><a href="#条款-18：让接口容易被正确使用，不易被误用" class="headerlink" title="条款 18：让接口容易被正确使用，不易被误用"></a>条款 18：让接口容易被正确使用，不易被误用<a class="heading-anchor" href="#条款-18：让接口容易被正确使用，不易被误用" aria-hidden="true"></a></h2><ol>
+<li><p>设计接口时，返回智能指针可以避免资源泄露。</p>
+</li>
+<li><p><strong>“cross-DLL problem”</strong> 问题发生于“对象在某个动态链接库（DLL）中被 <code>new</code> 创建，却在另一个 DLL 内被 <code>delete</code> 销毁”。在许多平台上，这一类“跨 DLL 之 <code>new</code> / <code>delete</code> 成对运用”会导致运行期错误，而 <code>shared_ptr</code> 没有这个问题，因为它缺省的删除器是来自“<code>shared_ptr</code> 诞生所在的那个 DLL”的 <code>delete</code>。</p>
+</li>
+<li><p>智能指针比普通指针大且慢。</p>
+</li>
+<li><p><code>shared_ptr</code> 支持定制删除器（custom deleter），可以防范 DLL 问题，可被用来自动释放互斥锁等。</p>
+</li>
+</ol>
+<h2 id="条款-19：设计-class-犹如设计-type" class="heading-control"><a href="#条款-19：设计-class-犹如设计-type" class="headerlink" title="条款 19：设计 class 犹如设计 type"></a>条款 19：设计 class 犹如设计 type<a class="heading-anchor" href="#条款-19：设计-class-犹如设计-type" aria-hidden="true"></a></h2><ol>
+<li><p>类成员的初始化不同于赋值。</p>
+</li>
+<li><p>基类的析构函数应该是 <code>virtual</code> 的。（对应“条款 07：为多态基类声明 <code>virtual</code> 析构函数”——博主注）</p>
+</li>
+</ol>
+<h2 id="条款-20：宁以-pass-by-reference-to-const-替换-pass-by-value" class="heading-control"><a href="#条款-20：宁以-pass-by-reference-to-const-替换-pass-by-value" class="headerlink" title="条款 20：宁以 pass-by-reference-to-const 替换 pass-by-value"></a>条款 20：宁以 pass-by-reference-to-const 替换 pass-by-value<a class="heading-anchor" href="#条款-20：宁以-pass-by-reference-to-const-替换-pass-by-value" aria-hidden="true"></a></h2><ol>
+<li><p>缺省情况下，C++ 以 <strong>by value</strong> 方式传递对象至函数，通过调用拷贝构造函数生成实参的副本，从而带来效率问题。</p>
+</li>
+<li><p>以 <strong>by reference</strong> 方式传递参数也可以避免 slicing（对象切割）问题。当一个 derived class 对象以 <strong>by value</strong> 方式传递并被视为一个 base class 对象，base class 的 <strong>copy</strong> 构造函数会被调用，而“造成此对象的行为像个 derived class 对象”的那些特化性质全被切割掉了，仅仅留下一个 base class 对象。</p>
+</li>
+<li><p>所谓多态：基类的指针或引用绑定到派生类对象。</p>
+</li>
+<li><p><strong>references</strong> 往往以指针实现出来，因此 <strong>pass by reference</strong> 通常意味真正传递的是指针。因此如果你有个对象属于内置类型（例如 <code>int</code>），<strong>pass by value</strong> 往往比 <strong>pass by reference</strong> 的效率高些。对内置类型而言，当你有机会选择采用 <strong>pass by value</strong> 或 <strong>pass by reference to const</strong> 时，选择 <strong>pass by value</strong> 并非没有道理。这个忠告也适用于 STL 的迭代器和函数对象，因为习惯上他们都被设计为 <strong>pass by value</strong>。</p>
+</li>
+<li><p>对象小并不意味着其 <strong>copy</strong> 构造函数不昂贵。许多对象——包括大多数 STL 容器——内含的东西只比一个指针多一些，但复制这种对象却需承担“复制那些指针所指的每一样东西”。那将非常昂贵。（深拷贝——博主注）</p>
+</li>
+<li><p>某些编译器对待“内置类型”和“用户自定义类型”的态度截然不同，纵使两者拥有相同的底层表述（underlying representation）。举个例子，某些编译器拒绝把只由一个 <code>double</code> 组成的对象放进缓存器内，却很乐意在一个正规基础上对光秃秃的 <code>double</code>s 那么做。</p>
+</li>
+<li><p>一般而言，你可以合理假设“<strong>pass by value</strong> 并不昂贵”的唯一对象就是内置类型和 STL 的迭代器和函数对象。</p>
+</li>
+<li><p>请记住：</p>
+<ul>
+<li>尽量以 <strong>pass by reference to const</strong> 替换 <strong>pass by value</strong>。前者通常比较高效，并可避免切割问题（slicing problem）。</li>
+<li>以上规则并不适用于内置类型，以及 STL 的迭代器和函数对象。对它们而言，<strong>pass by value</strong> 往往比较适当。</li>
+</ul>
+</li>
+</ol>
+<h2 id="条款-21：必须返回对象时，别妄想返回其-reference" class="heading-control"><a href="#条款-21：必须返回对象时，别妄想返回其-reference" class="headerlink" title="条款 21：必须返回对象时，别妄想返回其 reference"></a>条款 21：必须返回对象时，别妄想返回其 reference<a class="heading-anchor" href="#条款-21：必须返回对象时，别妄想返回其-reference" aria-hidden="true"></a></h2><ol>
+<li><p>函数创建新对象的途径有二：在 stack 空间或在 heap 空间创建之。如果定义一个 local 变量，就是在 stack 空间创建对象。</p>
+</li>
+<li><p>对许多 types 而言，<strong>赋值（assignment）</strong> 操作相当于调用一个析构函数（用以销毁旧值）加上一个构造函数（用以复制新值）。</p>
+</li>
+<li><p>C++ 和所有编程语言一样，允许编译器实现者施行最优化，用以改善产出码的效率却不改变其可观察的行为。因此某些情况下 <code>operator*</code> 返回值的构造和析构可被安全地消除。（RVO 返回值优化，可在编译时添加 <code>-fno-elide-constructors</code> 选项禁止优化——博主注）</p>
+</li>
+<li><p>请记住：</p>
+<ul>
+<li>绝不要返回 pointer 或 reference 指向一个 local stack 对象，或返回 reference 指向一个 heap-allocated 对象，或返回 pointer 或 reference 指向一个 local static 对象而有可能同时需要多个这样的对象。（自 C++11 之后，返回 local static 对象的指针或引用天然具有多线程安全性，意即，Meyers 单例自 C++11 开始具备多线程安全性，可参考<a href="https://blog.shipengx.com/archives/f61b5eee.html">《深入探索单例设计模式：以百度 Apollo 为例》</a>——博主注）</li>
+</ul>
+</li>
+</ol>
+<h2 id="条款-22：将成员变量声明为-private" class="heading-control"><a href="#条款-22：将成员变量声明为-private" class="headerlink" title="条款 22：将成员变量声明为 private"></a>条款 22：将成员变量声明为 private<a class="heading-anchor" href="#条款-22：将成员变量声明为-private" aria-hidden="true"></a></h2><ol>
+<li><p>请记住：</p>
+<ul>
+<li>切记将成员变量声明为 <code>private</code>。</li>
+<li><code>protected</code> 并不比 <code>public</code> 更具封装性。（最起码 class 的实例（对象）不能访问 class 的 <code>protected</code> 成员——博主注）</li>
+</ul>
+</li>
+</ol>
+<h2 id="条款-23：宁以-non-member、non-friend-替换-member-函数" class="heading-control"><a href="#条款-23：宁以-non-member、non-friend-替换-member-函数" class="headerlink" title="条款 23：宁以 non-member、non-friend 替换 member 函数"></a>条款 23：宁以 non-member、non-friend 替换 member 函数<a class="heading-anchor" href="#条款-23：宁以-non-member、non-friend-替换-member-函数" aria-hidden="true"></a></h2><ol>
+<li><p><strong>derived class 无法访问 base class 中被封装的（即 <code>private</code>）成员。</strong></p>
+</li>
+<li><p>请记住：</p>
+<ul>
+<li>宁可拿 non-member non-friend 函数替换 member 函数。这样做可以增加封装性、包裹弹性（packaging flexibility）和机能扩充性。</li>
+</ul>
+</li>
+</ol>
+<h2 id="条款-24：若所有参数皆需类型转换，请为此采用-non-member-函数" class="heading-control"><a href="#条款-24：若所有参数皆需类型转换，请为此采用-non-member-函数" class="headerlink" title="条款 24：若所有参数皆需类型转换，请为此采用 non-member 函数"></a>条款 24：若所有参数皆需类型转换，请为此采用 non-member 函数<a class="heading-anchor" href="#条款-24：若所有参数皆需类型转换，请为此采用-non-member-函数" aria-hidden="true"></a></h2><ol>
+<li><p>隐式类型转换（implicit type conversion）。</p>
+</li>
+<li><p>请记住：</p>
+<ul>
+<li>如果你需要为某个函数的所有参数（包括被 <code>this</code> 指针所指的那个隐喻参数）进行类型转换，那么这个函数必须是个 non-member。</li>
+</ul>
+</li>
+</ol>
+<h2 id="条款-25：考虑写出一个不抛异常的-swap-函数" class="heading-control"><a href="#条款-25：考虑写出一个不抛异常的-swap-函数" class="headerlink" title="条款 25：考虑写出一个不抛异常的 swap 函数"></a>条款 25：考虑写出一个不抛异常的 swap 函数<a class="heading-anchor" href="#条款-25：考虑写出一个不抛异常的-swap-函数" aria-hidden="true"></a></h2><ol>
+<li><p>缺省情况下 <code>swap</code> 动作可由标准程序库提供的 <code>swap</code> 算法完成，其典型实现如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(T &amp;a, T &amp;b)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="function">T <span class="title">temp</span><span class="params">(a)</span></span>;</span><br><span class="line">        a = b;</span><br><span class="line">        b = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>只要类型 <code>T</code> 支持 <strong>copying</strong>（通过 <strong>copy</strong> 构造函数函数和 <strong>copy assignment</strong> 操作符完成），缺省的 <code>swap</code> 实现代码就会帮你置换类型为 <code>T</code> 的对象。</p>
+</li>
+<li><p>假设有一个 <code>WidgetImpl</code> 类类型和一个 <code>Widget</code> 类类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WidgetImpl</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> a, b, c;           <span class="comment">// 可能有许多数据</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; v; <span class="comment">// 意味复制时间很长</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Widget(<span class="keyword">const</span> Widget &amp;rhs);</span><br><span class="line">    Widget &amp;<span class="keyword">operator</span>=(<span class="keyword">const</span> Widget &amp;rhs)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        *pImpl = *(rhs.pImpl); <span class="comment">// 复制 Widget 时，令它复制其 WidgetImpl 对象</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    WidgetImpl *pImpl; <span class="comment">// 指针，所指对象内含 Widget 数据</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>我们可以使用 <code>Widget</code> 类型对 <code>std::swap</code> 进行<strong>全特化</strong>（total template specialization），下面是基本构想，但目前这个形式无法通过编译：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">template</span> &lt;&gt;</span><br><span class="line">    <span class="keyword">void</span> swap&lt;Widget&gt;(Widget &amp;a, Widget &amp;b)</span><br><span class="line">    &#123;</span><br><span class="line">        swap(a.pImpl, b.pImpl);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数一开始的 <code>template &lt;&gt;</code> 表示它是 <code>std::swap</code> 的一个全特化版本，函数名称之后的 <code>&lt;Widget&gt;</code> 表示这一特化版本系针对“<code>T</code> 是 <code>Widget</code>”而设计。换句话说当一般性的 <code>swap</code> template 施行于 <code>Widget</code>s 身上便会启用这个版本。通常我们不能够（不被允许）改变 <code>std</code> 命名空间内的任何东西，但可以（被允许）为标准 templates（如 <code>swap</code>）制造特化版本，使它专属于我们自己的 classes（例如 <code>Widget</code>）。</p>
+</li>
+<li><p>假设上面的 <code>WidgetImpl</code> 和 <code>Widget</code> 都是模板类而非一般的类，且在 <code>Widget</code> 内部声明了一个名为 <code>swap</code> 的 <code>public</code> 成员函数做真正的置换工作。下面的代码企图<strong>偏特化</strong>（partially specialize）<code>std::swap</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="keyword">void</span> swap&lt;Widget&lt;T&gt;&gt;(Widget&lt;T&gt; &amp;a, Widget&lt;T&gt; &amp;b) <span class="comment">// 错误！不合法！</span></span><br><span class="line">    &#123;</span><br><span class="line">        swap(a.swap(b));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>C++ 只允许对 class templates 偏特化，在 function templates 身上偏特化是行不通的。</strong></p>
+</li>
+<li><p>高效率的 <code>swap</code>s 几乎总是基于对内置类型的操作（例如 <strong>pimpl</strong>（pointer to implementation）手法的底层指针），而内置类型上的操作绝不会抛出异常。</p>
+</li>
+<li><p>请记住：</p>
+<ul>
+<li>当 <code>std::swap</code> 对你的类型效率不高时，提供一个 <code>swap</code> 成员函数，并确定这个函数不抛出异常。</li>
+<li>如果你提供一个 member <code>swap</code>，也该提供一个 non-member <code>swap</code> 用来调用前者。对于 classes（而非 templates），也请特化 <code>std::swap</code>。</li>
+<li>调用 <code>swap</code> 时应针对 <code>std::swap</code> 使用 <code>using</code> 声明式，然后调用 <code>swap</code> 并且不带任何“命名空间资格修饰”。</li>
+<li>为“用户定义类型”进行 <code>std</code> templates 全特化是好的，但千万不要尝试在 <code>std</code> 内加入某些对 <code>std</code> 而言全新的东西。</li>
+</ul>
+</li>
+</ol>
+<h1 id="5-实现" class="heading-control"><a href="#5-实现" class="headerlink" title="5 实现"></a>5 实现<a class="heading-anchor" href="#5-实现" aria-hidden="true"></a></h1><ol>
+<li>章节总述：太快定义变量可能造成效率上的拖延；过度使用转型（<code>cast</code>）可能导致代码变慢又难维护，又招来微妙难解的错误；返回对象“内部数据之号码牌（handles）”可能会破坏封装并留给客户虚吊号码牌（dangling handles）；未考虑异常带来的冲击则可能导致资源泄漏和数据败坏；过度热心的 inlining 可能引起代码膨胀；过度耦合（coupling）则可能导致让人不满意的冗长建置时间（build time）。</li>
+</ol>
+<h2 id="条款-26：尽可能延后变量定义式的出现时间" class="heading-control"><a href="#条款-26：尽可能延后变量定义式的出现时间" class="headerlink" title="条款 26：尽可能延后变量定义式的出现时间"></a>条款 26：尽可能延后变量定义式的出现时间<a class="heading-anchor" href="#条款-26：尽可能延后变量定义式的出现时间" aria-hidden="true"></a></h2><ol>
+<li><p>只要你定义了一个变量而其类型带有一个构造函数或析构函数，那么当程序控制流（control flow）到达这个变量定义式时，你便得承受构造成本；当这个变量离开其作用域时，你便得承受析构成本。即使这个变量最终并未被使用，仍需耗费这些成本，所以你应该尽可能避免这种情形。</p>
+</li>
+<li><p>许多时候你该对对象做的第一次事就是给它个值，通常是通过一个赋值动作达成。条款 4 曾解释为什么“通过 <strong>default</strong> 构造函数构造出一个对象然后对它赋值”比“直接在构造时指定初值”效率差。</p>
+</li>
+<li><p>不只应该延后变量的定义，直到非得使用该变量的前一刻为止，甚至应该尝试延后这份定义直到能够给它初值实参为止。如果这样，不仅能够避免构造（和析构）非必要对象，还可以避免无意义的 <strong>default</strong> 构造行为。更深一层说，以“具明显意义之初值”将变量初始化，还可以附带说明变量的目的。</p>
+</li>
+<li><p>请记住：</p>
+<ul>
+<li><strong>尽可能延后变量定义式的出现。</strong> 这样做可增加程序的清晰度并改善程序效率。</li>
+</ul>
+</li>
+</ol>
+<h2 id="条款-27：尽量少做转型动作" class="heading-control"><a href="#条款-27：尽量少做转型动作" class="headerlink" title="条款 27：尽量少做转型动作"></a>条款 27：尽量少做转型动作<a class="heading-anchor" href="#条款-27：尽量少做转型动作" aria-hidden="true"></a></h2><ol>
+<li><p>转型（casts）破坏了类型系统（type system）。</p>
+</li>
+<li><p>C++ 提供四种新式转型（常常被称为 new-style 或 C++-style casts）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const_cast</span>&lt;T&gt;(expression)</span><br><span class="line"><span class="keyword">dynamic_cast</span>&lt;T&gt;(expression)</span><br><span class="line"><span class="keyword">reinterpret_cast</span>&lt;T&gt;(expression)</span><br><span class="line"><span class="keyword">static_cast</span>&lt;T&gt;(expression)</span><br></pre></td></tr></table></figure>
+<p>各有不同的目的：</p>
+<ul>
+<li><code>const_cast</code> 通常被用来将对象的常量性转除（cast away the constness）。它也是唯一有此能力的 C++-style 转型操作符。</li>
+<li><code>dynamic_cast</code> 主要用来执行“安全向下转型”（safe downcasting），也就是用来决定某对象是否归属继承体系中的某个类型。它是唯一无法由旧式语法执行的动作，也是唯一可能耗费重大运行成本的转型动作。</li>
+<li><code>reinterpret_cast</code> 意图执行低级转型，实际动作（及结果）可能取决于编译器，这也就表示它不可移植。例如将一个 <strong>pointer to</strong> <code>int</code> 转型为一个 <code>int</code>。这一类转型在低级代码以外很少见。</li>
+<li><code>static_cast</code> 用来强迫隐式转换（implicit conversions），例如将 <strong>non</strong>-<code>const</code> 对象转为 <code>const</code> 对象，或将 <code>int</code> 转为 <code>double</code> 等等。它也可以用来执行上述多种转换的反向转换，例如将 <code>void *</code> 指针转为 <strong>typed</strong> 指针，将 <strong>pointer to</strong> <code>base</code> 转为 <strong>pointer to</strong> <code>derived</code>。但它无法将 <code>const</code> 转为 <strong>non</strong>-<code>const</code>——这个只有 <code>const_cast</code> 才办得到。</li>
+</ul>
+</li>
+<li><p>任何一个类型转换（不论是通过转型操作而进行的显式转换，或通过编译器完成的隐式转换）往往真的令编译器编译出运行期间执行的码。</p>
+</li>
+<li><p>观察下述代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span> :</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line">Derived d;</span><br><span class="line">Base *pb = &amp;d;</span><br></pre></td></tr></table></figure>
+<p>这里我们不过是建立一个 base class 指针指向一个 derived class 对象，但有时候上述的两个指针并不相同。这种情况下会有个偏移量（offset）在运行期被施行于 <code>Derived *</code> 指针身上，用以取得正确的 <code>Base *</code> 指针值。</p>
+</li>
+<li><p>通常应该避免做出“对象在 C++ 中如何如何布局”的假设。当然更不该以此假设为基础执行任何转型动作。例如，将对象地址转型为 <code>char *</code> 指针然后在它们身上进行指针算术，几乎总是会导致无定义（不明确）行为。</p>
+</li>
+<li><p><strong>对象的布局方式和它们的地址计算方式随编译器的不同而不同，那意味“由于知道对象如何布局”而设计的转型在某一平台行得通，在其他平台并不一定行得通。</strong></p>
+</li>
+<li><p>下述代码看起来对，但实际上错：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Window</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">onResize</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpecialWindow</span> :</span> <span class="keyword">public</span> Window</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">onResize</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">static_cast</span>&lt;Window&gt;(*<span class="keyword">this</span>).onResize();</span><br><span class="line">        <span class="comment">// SpecialWindow 专属行为</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这段程序将 <code>*this</code> 转型为 <code>Window</code>，对函数 <code>onResize</code> 的调用也因此调用了 <code>Window::onResize</code>。但恐怕你没想到，它调用的并不是当前对象上的函数，而是稍早转型动作所建立的一个“<code>*this</code> 对象之 base class 成分”的暂时副本身上的 <code>onResize</code>！（译注：函数就是函数，成员函数只有一份，“调用起哪个对象身上的函数”有什么关系呢？关键在于成员函数都有个隐藏的 <code>this</code> 指针，会因此影响成员函数操作的数据。）再说一次，上述代码并非在当前对象身上调用 <code>Window::onResize</code> 之后又在该对象身上执行 <code>SpecialWindow</code> 专属动作。不，它是在“当前对象之 base class 成分”的副本上调用 <code>Window::onResize</code>，然后在当前对象身上执行 <code>SpecialWindow</code> 专属动作。如果 <code>Window::onResize</code> 修改了对象内容（不能说没有可能性，因为 <code>onResize</code> 是个 <strong>non-</strong><code>const</code> 成员函数），当前对象其实没被改动，改动的是副本。然而 <code>SpecialWindow::onResize</code> 内如果也修改对象，当前对象真的会被改动。这使当前对象进入一种“伤残”状态：其 base class 成分的更改没有落实，而 derived class 成分的更改倒是落实了。</p>
+<p>解决之道是拿掉转型动作：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpecialWindow</span> :</span> <span class="keyword">public</span> Window</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">onResize</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        Window::onResize();</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>dynamic_cast</code> 的许多实现版本执行速度相当慢。</p>
+</li>
+<li><p>请记住：</p>
+<ul>
+<li>如果可以，<strong>尽量避免转型</strong>，特别是在注重效率的代码中避免 <code>dynamic_cast</code>s。如果有个设计需要转型动作，试着发展无需转型的替代设计。</li>
+<li><strong>如果转型是必要的，试着将它隐藏于某个函数背后。</strong> 客户随后可以调用该函数，而不需将转型放进他们自己的代码内。</li>
+<li>宁可使用 C++-style（新式）转型，不要使用旧式转型。</li>
+</ul>
+</li>
+</ol>
+<h2 id="条款-28：避免返回-handles-指向对象内部成分" class="heading-control"><a href="#条款-28：避免返回-handles-指向对象内部成分" class="headerlink" title="条款 28：避免返回 handles 指向对象内部成分"></a>条款 28：避免返回 handles 指向对象内部成分<a class="heading-anchor" href="#条款-28：避免返回-handles-指向对象内部成分" aria-hidden="true"></a></h2><ol>
+<li><p>两个教训：</p>
+<ul>
+<li>第一，成员变量的封装性最多只等于“返回其 reference”的函数的访问级别。</li>
+<li>第二，如果 <code>const</code> 成员函数传出一个 reference，后者所指数据与对象自身有关联，而它又被存储于对象之外，那么这个函数的调用者可以修改那笔数据。这正是 <strong>bitwise constness</strong> 的一个附带结果。</li>
+</ul>
+</li>
+<li><p>上面我们所说的每件事情都是由于“成员函数返回 reference”。如果它们返回的是指针或迭代器，相同的情况还是发生，原因也相同。Reference、指针和迭代器统统都是所谓的 handles（号码牌，用来取得某个对象），而返回一个“代表对象内部数据”的 handle，随之而来的便是“降低对象封装性”的风险。同时，一如稍早所见，它也可能导致“虽然调用 <code>const</code> 成员函数却造成对象状态被更改”。</p>
+</li>
+<li><p>通常我们认为，对象的“内部”就是指它的成员变量，但其实不被公开使用的成员函数（也就是被声明为 <code>protected</code> 或 <code>private</code> 者）也是对象“内部”的一部分。因此也应该留心不要返回它们的 handles。这意味着你绝对不该令成员函数返回一个指针指向“访问级别较低”的成员函数。如果你那么做，后者的实际访问级别就会提高如同前者（访问级别较高者），因为客户可以取得一个指针指向那个“访问级别较低”的函数，然后通过那个指针调用它。</p>
+</li>
+<li><p>解决上述问题其实只要对成员函数的返回类型加上 <code>const</code> 即可。</p>
+</li>
+<li><p>函数如果“返回一个 handle 代表对象内部成分”总是危险的：不论这所谓的 handle 是个指针或迭代器或 reference，也不论这个 handle 是否为 <code>const</code>，也不论那个返回 handle 的成员函数是否为 <code>const</code>。这里唯一的关键是，<strong>有个 handle 被传出去了，一旦如此你就是暴露在“handle 比其所指对象更长寿”的风险下</strong>。</p>
+<p>这并不意味着你绝对不可以让成员函数返回 handle。有时候你必须那么做。例如 <code>operator[]</code> 就允许你“摘采” <code>string</code>s 和 <code>vector</code>s 的个别元素，而这些 <code>operator[]</code>s 就是返回 references 指向“容器内的数据”，那些数据会随着容器被销毁而销毁。尽管如此，这样的函数毕竟是例外，不是常态。</p>
+</li>
+<li><p>请记住：</p>
+<ul>
+<li>避免返回 handles（包括 references、指针、迭代器）指向对象内部。遵守这个条款可增加封装性，帮助 <code>const</code> 成员函数的行为像个 <code>const</code>，并将发生“虚吊号码牌”（dangling handles）的可能性降至最低。</li>
+</ul>
+</li>
+</ol>
+<h2 id="条款-29：为“异常安全”而努力是值得的" class="heading-control"><a href="#条款-29：为“异常安全”而努力是值得的" class="headerlink" title="条款 29：为“异常安全”而努力是值得的"></a>条款 29：为“异常安全”而努力是值得的<a class="heading-anchor" href="#条款-29：为“异常安全”而努力是值得的" aria-hidden="true"></a></h2><p>1.</p>
+<h2 id="条款-30：透彻了解-inlining-的里里外外" class="heading-control"><a href="#条款-30：透彻了解-inlining-的里里外外" class="headerlink" title="条款 30：透彻了解 inlining 的里里外外"></a>条款 30：透彻了解 inlining 的里里外外<a class="heading-anchor" href="#条款-30：透彻了解-inlining-的里里外外" aria-hidden="true"></a></h2><h2 id="条款-31：将文件间的编译依存关系降至最低" class="heading-control"><a href="#条款-31：将文件间的编译依存关系降至最低" class="headerlink" title="条款 31：将文件间的编译依存关系降至最低"></a>条款 31：将文件间的编译依存关系降至最低<a class="heading-anchor" href="#条款-31：将文件间的编译依存关系降至最低" aria-hidden="true"></a></h2><h1 id="6-继承与面向对象设计" class="heading-control"><a href="#6-继承与面向对象设计" class="headerlink" title="6 继承与面向对象设计"></a>6 继承与面向对象设计<a class="heading-anchor" href="#6-继承与面向对象设计" aria-hidden="true"></a></h1><h2 id="条款-32：确定你的-public-继承塑膜出-is-a-关系" class="heading-control"><a href="#条款-32：确定你的-public-继承塑膜出-is-a-关系" class="headerlink" title="条款 32：确定你的 public 继承塑膜出 is-a 关系"></a>条款 32：确定你的 public 继承塑膜出 is-a 关系<a class="heading-anchor" href="#条款-32：确定你的-public-继承塑膜出-is-a-关系" aria-hidden="true"></a></h2><h2 id="条款-33：避免遮掩继承而来的名称" class="heading-control"><a href="#条款-33：避免遮掩继承而来的名称" class="headerlink" title="条款 33：避免遮掩继承而来的名称"></a>条款 33：避免遮掩继承而来的名称<a class="heading-anchor" href="#条款-33：避免遮掩继承而来的名称" aria-hidden="true"></a></h2><h2 id="条款-34：区分接口继承和实现继承" class="heading-control"><a href="#条款-34：区分接口继承和实现继承" class="headerlink" title="条款 34：区分接口继承和实现继承"></a>条款 34：区分接口继承和实现继承<a class="heading-anchor" href="#条款-34：区分接口继承和实现继承" aria-hidden="true"></a></h2><h2 id="条款-35：考虑-virtual-函数以外的其他选择" class="heading-control"><a href="#条款-35：考虑-virtual-函数以外的其他选择" class="headerlink" title="条款 35：考虑 virtual 函数以外的其他选择"></a>条款 35：考虑 virtual 函数以外的其他选择<a class="heading-anchor" href="#条款-35：考虑-virtual-函数以外的其他选择" aria-hidden="true"></a></h2><h2 id="条款-36：绝不重新定义继承而来的-non-virtual-函数" class="heading-control"><a href="#条款-36：绝不重新定义继承而来的-non-virtual-函数" class="headerlink" title="条款 36：绝不重新定义继承而来的 non-virtual 函数"></a>条款 36：绝不重新定义继承而来的 non-virtual 函数<a class="heading-anchor" href="#条款-36：绝不重新定义继承而来的-non-virtual-函数" aria-hidden="true"></a></h2><h2 id="条款-37：绝不重新定义继承而来的缺省参数值" class="heading-control"><a href="#条款-37：绝不重新定义继承而来的缺省参数值" class="headerlink" title="条款 37：绝不重新定义继承而来的缺省参数值"></a>条款 37：绝不重新定义继承而来的缺省参数值<a class="heading-anchor" href="#条款-37：绝不重新定义继承而来的缺省参数值" aria-hidden="true"></a></h2><h2 id="条款-38：通过复合塑膜出-has-a-或“根据某物实现出”" class="heading-control"><a href="#条款-38：通过复合塑膜出-has-a-或“根据某物实现出”" class="headerlink" title="条款 38：通过复合塑膜出 has-a 或“根据某物实现出”"></a>条款 38：通过复合塑膜出 has-a 或“根据某物实现出”<a class="heading-anchor" href="#条款-38：通过复合塑膜出-has-a-或“根据某物实现出”" aria-hidden="true"></a></h2><h2 id="条款-39：明智而审慎地使用-private-继承" class="heading-control"><a href="#条款-39：明智而审慎地使用-private-继承" class="headerlink" title="条款 39：明智而审慎地使用 private 继承"></a>条款 39：明智而审慎地使用 private 继承<a class="heading-anchor" href="#条款-39：明智而审慎地使用-private-继承" aria-hidden="true"></a></h2><h2 id="条款-40：明智而审慎地使用多重继承" class="heading-control"><a href="#条款-40：明智而审慎地使用多重继承" class="headerlink" title="条款 40：明智而审慎地使用多重继承"></a>条款 40：明智而审慎地使用多重继承<a class="heading-anchor" href="#条款-40：明智而审慎地使用多重继承" aria-hidden="true"></a></h2><hr>
+<!-- flag of hidden posts -->
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\cc0b7731.html" rel="bookmark">《Effective C++》第三版总结（一）：第 0 - 3 章</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/6ef595db.html" title="《Effective C++》第三版总结（二）：第 4 - 6 章">https://blog.shipengx.com/archives/6ef595db.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"><i class="fa fa-tag"></i> C/C++</a>
+              <a href="/tags/Effective-C/" rel="tag"><i class="fa fa-tag"></i> Effective C++</a>
+          </div>
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-设计与声明"><span class="nav-text">4 设计与声明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-18：让接口容易被正确使用，不易被误用"><span class="nav-text">条款 18：让接口容易被正确使用，不易被误用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-19：设计-class-犹如设计-type"><span class="nav-text">条款 19：设计 class 犹如设计 type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-20：宁以-pass-by-reference-to-const-替换-pass-by-value"><span class="nav-text">条款 20：宁以 pass-by-reference-to-const 替换 pass-by-value</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-21：必须返回对象时，别妄想返回其-reference"><span class="nav-text">条款 21：必须返回对象时，别妄想返回其 reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-22：将成员变量声明为-private"><span class="nav-text">条款 22：将成员变量声明为 private</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-23：宁以-non-member、non-friend-替换-member-函数"><span class="nav-text">条款 23：宁以 non-member、non-friend 替换 member 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-24：若所有参数皆需类型转换，请为此采用-non-member-函数"><span class="nav-text">条款 24：若所有参数皆需类型转换，请为此采用 non-member 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-25：考虑写出一个不抛异常的-swap-函数"><span class="nav-text">条款 25：考虑写出一个不抛异常的 swap 函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-实现"><span class="nav-text">5 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-26：尽可能延后变量定义式的出现时间"><span class="nav-text">条款 26：尽可能延后变量定义式的出现时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-27：尽量少做转型动作"><span class="nav-text">条款 27：尽量少做转型动作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-28：避免返回-handles-指向对象内部成分"><span class="nav-text">条款 28：避免返回 handles 指向对象内部成分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-29：为“异常安全”而努力是值得的"><span class="nav-text">条款 29：为“异常安全”而努力是值得的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-30：透彻了解-inlining-的里里外外"><span class="nav-text">条款 30：透彻了解 inlining 的里里外外</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-31：将文件间的编译依存关系降至最低"><span class="nav-text">条款 31：将文件间的编译依存关系降至最低</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-继承与面向对象设计"><span class="nav-text">6 继承与面向对象设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-32：确定你的-public-继承塑膜出-is-a-关系"><span class="nav-text">条款 32：确定你的 public 继承塑膜出 is-a 关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-33：避免遮掩继承而来的名称"><span class="nav-text">条款 33：避免遮掩继承而来的名称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-34：区分接口继承和实现继承"><span class="nav-text">条款 34：区分接口继承和实现继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-35：考虑-virtual-函数以外的其他选择"><span class="nav-text">条款 35：考虑 virtual 函数以外的其他选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-36：绝不重新定义继承而来的-non-virtual-函数"><span class="nav-text">条款 36：绝不重新定义继承而来的 non-virtual 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-37：绝不重新定义继承而来的缺省参数值"><span class="nav-text">条款 37：绝不重新定义继承而来的缺省参数值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-38：通过复合塑膜出-has-a-或“根据某物实现出”"><span class="nav-text">条款 38：通过复合塑膜出 has-a 或“根据某物实现出”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-39：明智而审慎地使用-private-继承"><span class="nav-text">条款 39：明智而审慎地使用 private 继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条款-40：明智而审慎地使用多重继承"><span class="nav-text">条款 40：明智而审慎地使用多重继承</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

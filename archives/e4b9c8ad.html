@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本文旨在详细记录 Apollo 6.0 在 Ubuntu 18.04 中的完整安装及运行过程，并会阐述在虚拟机和物理机中进行安装时的细微区别。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apollo 6.0 安装完全指南">
+<meta property="og:url" content="https://blog.shipengx.com/archives/e4b9c8ad.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本文旨在详细记录 Apollo 6.0 在 Ubuntu 18.04 中的完整安装及运行过程，并会阐述在虚拟机和物理机中进行安装时的细微区别。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/Apollo%206.0%20%E5%AE%89%E8%A3%85%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97.png">
+<meta property="og:image" content="https://image.shipengx.com/%E9%85%8D%E7%BD%AE%20Ubuntu%20%E8%BD%AF%E4%BB%B6%E4%BB%93%E5%BA%93.png">
+<meta property="og:image" content="https://image.shipengx.com/%E6%88%90%E5%8A%9F%E5%90%AF%E5%8A%A8%20Apollo%20docker%20%E5%BC%80%E5%8F%91%E5%AE%B9%E5%99%A8.png">
+<meta property="og:image" content="https://image.shipengx.com/%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%20Apollo%20docker%20%E5%BC%80%E5%8F%91%E5%AE%B9%E5%99%A8.png">
+<meta property="og:image" content="https://image.shipengx.com/%E8%BF%9B%E5%85%A5%20Apollo%20docker%20%E5%BC%80%E5%8F%91%E5%AE%B9%E5%99%A8.png">
+<meta property="og:image" content="https://image.shipengx.com/Apollo%20%E6%9E%84%E5%BB%BA%E6%88%90%E5%8A%9F.png">
+<meta property="og:image" content="https://image.shipengx.com/DreamView%20%E7%95%8C%E9%9D%A2.png">
+<meta property="og:image" content="https://image.shipengx.com/DreamView%20%E4%B8%AD%E9%80%89%E6%8B%A9%E9%A9%BE%E9%A9%B6%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%9C%B0%E5%9B%BE.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%9B%9E%E6%94%BE%20Log%20%E6%97%B6%E7%9A%84%20DreamView%20%E7%95%8C%E9%9D%A2.png">
+<meta property="article:published_time" content="2021-07-24T07:10:53.000Z">
+<meta property="article:modified_time" content="2022-05-12T07:29:10.656Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="自动驾驶">
+<meta property="article:tag" content="Apollo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/Apollo%206.0%20%E5%AE%89%E8%A3%85%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/e4b9c8ad.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>Apollo 6.0 安装完全指南 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/e4b9c8ad.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Apollo 6.0 安装完全指南
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-24 15:10:53" itemprop="dateCreated datePublished" datetime="2021-07-24T15:10:53+08:00">2021-07-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-12 15:29:10" itemprop="dateModified" datetime="2022-05-12T15:29:10+08:00">2022-05-12</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">自动驾驶</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/Apollo/" itemprop="url" rel="index">
+                    <span itemprop="name">Apollo</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/e4b9c8ad.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/e4b9c8ad.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本文旨在详细记录 Apollo 6.0 在 Ubuntu 18.04 中的完整安装及运行过程，并会阐述在虚拟机和物理机中进行安装时的细微区别。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img data-src="https://image.shipengx.com/Apollo%206.0%20%E5%AE%89%E8%A3%85%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97.png" alt="Apollo 6.0 安装完全指南"></p>
+<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0Fwb2xsb0F1dG8vYXBvbGxv" title="https://github.com/ApolloAuto/apollo">Apollo<i class="fa fa-external-link"></i></span> 是优秀的自动驾驶开发框架，出自百度之手，目前已更新到 6.0 版本，本文旨在详细记录 Apollo 6.0 在 Ubuntu 18.04 中的完整安装及运行过程，并会阐述在虚拟机和物理机中进行安装时的细微区别。</p>
+<h1 id="1-前置依赖软件安装" class="heading-control"><a href="#1-前置依赖软件安装" class="headerlink" title="1 前置依赖软件安装"></a>1 前置依赖软件安装<a class="heading-anchor" href="#1-前置依赖软件安装" aria-hidden="true"></a></h1><ul>
+<li>安装 Ubuntu 18.04</li>
+<li>安装 NVIDIA 显卡驱动</li>
+<li>安装 Docker 引擎</li>
+<li>安装 NVIDIA 容器工具包</li>
+</ul>
+<h2 id="1-1-安装-Ubuntu-18-04" class="heading-control"><a href="#1-1-安装-Ubuntu-18-04" class="headerlink" title="1.1 安装 Ubuntu 18.04"></a>1.1 安装 Ubuntu 18.04<a class="heading-anchor" href="#1-1-安装-Ubuntu-18-04" aria-hidden="true"></a></h2><p><strong>系统安装</strong></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9yZWxlYXNlcy51YnVudHUuY29tLzE4LjA0LjUv" title="https://releases.ubuntu.com/18.04.5/">Ubuntu 18.04.5 LTS (Bionic Beaver)<i class="fa fa-external-link"></i></span> 是官方推荐版本，笔者此处使用的即为该版本。下载系统镜像，使用 <span class="exturl" data-url="aHR0cDovL3J1ZnVzLmllL3poLw==" title="http://rufus.ie/zh/">Rufus<i class="fa fa-external-link"></i></span> 开源工具制作安装启动盘，在虚拟机环境或物理机环境（单系统 or 双系统）中安装系统。关于 VMWare 虚拟机的安装配置可以参考此前的文章<a href="https://blog.shipengx.com/archives/5103b2eb.html">《Win 10 中通过 VMWare 16 在 UEFI 引导模式下安装 Ubuntu 18.04 虚拟机并自定义分区》</a>。</p>
+<p><strong>更新和升级</strong></p>
+<p>完成系统安装后，配置 Ubuntu 软件仓库，并选择国内更稳定的镜像源，例如清华源：<span class="exturl" data-url="aHR0cHM6Ly9taXJyb3JzLnR1bmEudHNpbmdodWEuZWR1LmNuL3VidW50dS8=" title="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/<i class="fa fa-external-link"></i></span></p>
+<p><img data-src="https://image.shipengx.com/%E9%85%8D%E7%BD%AE%20Ubuntu%20%E8%BD%AF%E4%BB%B6%E4%BB%93%E5%BA%93.png" alt="配置 Ubuntu 软件仓库"></p>
+<p>随后，进行更新和升级：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+<h2 id="1-2-安装-NVIDIA-显卡驱动" class="heading-control"><a href="#1-2-安装-NVIDIA-显卡驱动" class="headerlink" title="1.2 安装 NVIDIA 显卡驱动"></a>1.2 安装 NVIDIA 显卡驱动<a class="heading-anchor" href="#1-2-安装-NVIDIA-显卡驱动" aria-hidden="true"></a></h2><p>如果是在物理机中安装的 Ubuntu，且机器配有 NVIDIA 显卡，需要安装对应驱动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-add-repository multiverse</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install nvidia-driver-455</span><br></pre></td></tr></table></figure>
+<p>随后，可以通过在终端中执行 <code>nvidia-smi</code> 命令来查看 NVIDIA 显卡工作是否正常（完成驱动安装后可能需要重启），正常情况下终端将显示下面的信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Prompt&gt; nvidia-smi</span><br><span class="line">Mon Jan 25 15:51:08 2021</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 460.27.04    Driver Version: 460.27.04    CUDA Version: 11.2     |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan  Temp  Perf  Pwr:Usage&#x2F;Cap|         Memory-Usage | GPU-Util  Compute M. |</span><br><span class="line">|                               |                      |               MIG M. |</span><br><span class="line">|&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;|</span><br><span class="line">|   0  GeForce RTX 3090    On   | 00000000:65:00.0  On |                  N&#x2F;A |</span><br><span class="line">| 32%   29C    P8    18W &#x2F; 350W |    682MiB &#x2F; 24234MiB |      7%      Default |</span><br><span class="line">|                               |                      |                  N&#x2F;A |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line"></span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| Processes:                                                                  |</span><br><span class="line">|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |</span><br><span class="line">|        ID   ID                                                   Usage      |</span><br><span class="line">|&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;|</span><br><span class="line">|    0   N&#x2F;A  N&#x2F;A      1286      G   &#x2F;usr&#x2F;lib&#x2F;xorg&#x2F;Xorg                 40MiB |</span><br><span class="line">|    0   N&#x2F;A  N&#x2F;A      1517      G   &#x2F;usr&#x2F;bin&#x2F;gnome-shell              120MiB |</span><br><span class="line">|    0   N&#x2F;A  N&#x2F;A      1899      G   &#x2F;usr&#x2F;lib&#x2F;xorg&#x2F;Xorg                342MiB |</span><br><span class="line">|    0   N&#x2F;A  N&#x2F;A      2037      G   &#x2F;usr&#x2F;bin&#x2F;gnome-shell               69MiB |</span><br><span class="line">|    0   N&#x2F;A  N&#x2F;A      4148      G   ...gAAAAAAAAA --shared-files      105MiB |</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注意：</strong> 如果是在虚拟机中安装的 Ubuntu 或物理机没有配置 NVIDIA 显卡，此步务必跳过，否则将导致后续步骤中启动 Apollo 开发容器时失败。虚拟机情况下这样做的根本原因是，虚拟机中无法虚拟 NVIDIA 显卡。</p>
+</blockquote>
+<h2 id="1-3-安装-Docker-引擎" class="heading-control"><a href="#1-3-安装-Docker-引擎" class="headerlink" title="1.3 安装 Docker 引擎"></a>1.3 安装 Docker 引擎<a class="heading-anchor" href="#1-3-安装-Docker-引擎" aria-hidden="true"></a></h2><p>Apollo 6.0 需要 Docker 19.03 及以上版本，在终端中直接执行下述命令即可完成 Docker 社区版的安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl https://get.docker.com | sh</span><br><span class="line">sudo systemctl start docker &amp;&amp; sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
+<p>重启 Docker 守护进程以使改动生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<p>完成 Docker 安装后，在终端中执行下述命令并重启系统，这样可以免去每次执行 Docker 命令时需要添加 <code>sudo</code> 的繁琐：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker</span><br><span class="line">sudo usermod -aG docker your_username</span><br></pre></td></tr></table></figure>
+<h2 id="1-4-安装-NVIDIA-容器工具包" class="heading-control"><a href="#1-4-安装-NVIDIA-容器工具包" class="headerlink" title="1.4 安装 NVIDIA 容器工具包"></a>1.4 安装 NVIDIA 容器工具包<a class="heading-anchor" href="#1-4-安装-NVIDIA-容器工具包" aria-hidden="true"></a></h2><p>如果是在物理机中安装的 Ubuntu，且机器配有 NVIDIA 显卡，在安装了驱动的前提下，还需要安装 NVIDIA 容器工具包以运行 Apollo Docker 镜像中的 CUDA：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">distribution=$(. /etc/os-release;<span class="built_in">echo</span> <span class="variable">$ID</span><span class="variable">$VERSION_ID</span>)</span><br><span class="line">curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -</span><br><span class="line">curl -s -L https://nvidia.github.io/nvidia-docker/<span class="variable">$distribution</span>/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list</span><br><span class="line">sudo apt-get -y update</span><br><span class="line">sudo apt-get install -y nvidia-docker2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注意：</strong> 如果是在虚拟机中安装的 Ubuntu 或物理机没有配置 NVIDIA 显卡，此步同样需要跳过。</p>
+</blockquote>
+<h1 id="2-克隆-Apollo-源码" class="heading-control"><a href="#2-克隆-Apollo-源码" class="headerlink" title="2 克隆 Apollo 源码"></a>2 克隆 Apollo 源码<a class="heading-anchor" href="#2-克隆-Apollo-源码" aria-hidden="true"></a></h1><p>通过 SSH 方式或 HTTPS 方式克隆 Apollo 源码仓库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 SSH 的方式</span></span><br><span class="line">git <span class="built_in">clone</span> git@github.com:ApolloAuto/apollo.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 HTTPS 的方式</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/ApolloAuto/apollo.git</span><br></pre></td></tr></table></figure>
+<p>GitHub 在国内访问速度可能很慢，可以使用 Gitee 替代：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 SSH 的方式</span></span><br><span class="line">git <span class="built_in">clone</span> git@gitee.com:ApolloAuto/apollo.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 HTTPS 的方式</span></span><br><span class="line">git <span class="built_in">clone</span> https://gitee.com/ApolloAuto/apollo.git</span><br></pre></td></tr></table></figure>
+<h1 id="3-启动-Apollo-Docker-开发容器" class="heading-control"><a href="#3-启动-Apollo-Docker-开发容器" class="headerlink" title="3 启动 Apollo Docker 开发容器"></a>3 启动 Apollo Docker 开发容器<a class="heading-anchor" href="#3-启动-Apollo-Docker-开发容器" aria-hidden="true"></a></h1><p>进入到 Apollo 源码根目录，打开终端，执行下述命令以启动 Apollo Docker 开发容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./docker/scripts/dev_start.sh</span><br></pre></td></tr></table></figure>
+<p>不出意外得话，启动成功后将得到下面信息：</p>
+<p><img data-src="https://image.shipengx.com/%E6%88%90%E5%8A%9F%E5%90%AF%E5%8A%A8%20Apollo%20docker%20%E5%BC%80%E5%8F%91%E5%AE%B9%E5%99%A8.png" alt="成功启动 Apollo docker 开发容器"></p>
+<p>如果是在虚拟机中安装的 Ubuntu 或物理机没有配置 NVIDIA 显卡，但却又安装了 NVIDIA 驱动，则在执行上述启动容器的操作时将遇到下面的报错：</p>
+<p><img data-src="https://image.shipengx.com/%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%20Apollo%20docker%20%E5%BC%80%E5%8F%91%E5%AE%B9%E5%99%A8.png" alt="无法启动 Apollo docker 开发容器"></p>
+<p>解决方法是直接卸载 NVIDIA 相关安装项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt purge nvidia*</span><br></pre></td></tr></table></figure>
+<h1 id="4-进入-Apollo-Docker-开发容器" class="heading-control"><a href="#4-进入-Apollo-Docker-开发容器" class="headerlink" title="4 进入 Apollo Docker 开发容器"></a>4 进入 Apollo Docker 开发容器<a class="heading-anchor" href="#4-进入-Apollo-Docker-开发容器" aria-hidden="true"></a></h1><p>启动 Apollo Docker 开发容器后，执行下述命令进入容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./docker/scripts/dev_into.sh</span><br></pre></td></tr></table></figure>
+<p>可以发现，进入容器后终端信息发生了相应变化，后面的操作都将在容器中进行：</p>
+<p><img data-src="https://image.shipengx.com/%E8%BF%9B%E5%85%A5%20Apollo%20docker%20%E5%BC%80%E5%8F%91%E5%AE%B9%E5%99%A8.png" alt="进入 Apollo docker 开发容器"></p>
+<blockquote>
+<p>笔者是在 VMWare 虚拟机中进行的上述所有步骤，所以会看到上面黄色的 WARNING 信息。</p>
+</blockquote>
+<h1 id="5-在容器中构建-Apollo" class="heading-control"><a href="#5-在容器中构建-Apollo" class="headerlink" title="5 在容器中构建 Apollo"></a>5 在容器中构建 Apollo<a class="heading-anchor" href="#5-在容器中构建-Apollo" aria-hidden="true"></a></h1><p>进入 Apollo Docker 开发容器后，在容器终端中执行下述命令构建 Apollo：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./apollo.sh build</span><br></pre></td></tr></table></figure>
+<p>构建成功后将得到下面的信息：</p>
+<p><img data-src="https://image.shipengx.com/Apollo%20%E6%9E%84%E5%BB%BA%E6%88%90%E5%8A%9F.png" alt="Apollo 构建成功"></p>
+<blockquote>
+<p>如果报无权限创建目录的问题，在命令前加 <code>sudo</code> 即可。</p>
+</blockquote>
+<h1 id="6-运行-Apollo" class="heading-control"><a href="#6-运行-Apollo" class="headerlink" title="6 运行 Apollo"></a>6 运行 Apollo<a class="heading-anchor" href="#6-运行-Apollo" aria-hidden="true"></a></h1><h2 id="6-1-启动-Apollo" class="heading-control"><a href="#6-1-启动-Apollo" class="headerlink" title="6.1 启动 Apollo"></a>6.1 启动 Apollo<a class="heading-anchor" href="#6-1-启动-Apollo" aria-hidden="true"></a></h2><p>完成 Apollo 构建后，在容器终端中执行下述命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/bootstrap.sh start</span><br></pre></td></tr></table></figure>
+<p>上述命令会启动 DreamView 并使能模块监控机制，在浏览器中访问 <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo4ODg4" title="http://localhost:8888">http://localhost:8888<i class="fa fa-external-link"></i></span> 来显示 DreamView 界面：</p>
+<p><img data-src="https://image.shipengx.com/DreamView%20%E7%95%8C%E9%9D%A2.png" alt="DreamView 界面"></p>
+<h2 id="6-2-选择驾驶模式和地图" class="heading-control"><a href="#6-2-选择驾驶模式和地图" class="headerlink" title="6.2 选择驾驶模式和地图"></a>6.2 选择驾驶模式和地图<a class="heading-anchor" href="#6-2-选择驾驶模式和地图" aria-hidden="true"></a></h2><p>在 DreamView 界面的对应下拉框中选择驾驶模式为“Mkz Standard Debug”，选择地图为“Sunnyvale with Two Offices”：</p>
+<p><img data-src="https://image.shipengx.com/DreamView%20%E4%B8%AD%E9%80%89%E6%8B%A9%E9%A9%BE%E9%A9%B6%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%9C%B0%E5%9B%BE.png" alt="DreamView 中选择驾驶模式和地图"></p>
+<h2 id="6-3-回放-Demo-数据" class="heading-control"><a href="#6-3-回放-Demo-数据" class="headerlink" title="6.3 回放 Demo 数据"></a>6.3 回放 Demo 数据<a class="heading-anchor" href="#6-3-回放-Demo-数据" aria-hidden="true"></a></h2><p>在容器终端中执行下述命令下载 demo 数据：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> docs/demo_guide/</span><br><span class="line">python3 record_helper.py demo_3.5.record</span><br></pre></td></tr></table></figure>
+<p>由于网络原因，下载可能失败，可以点击<a href="https://blog.shipengx.com/download/demo_3.5.record">这里</a>手动下载并将数据放到 <code>apollo/docs/demo_guide/</code> 目录下。继续在容器终端中执行下述命令来播放数据，<code>-l</code> 表示循环播放（loop）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cyber_recorder play -f demo_3.5.record -l</span><br></pre></td></tr></table></figure>
+<p>至此，DreamView 界面中将呈现出自车规划轨迹、他车预测轨迹、路网等各种信息：</p>
+<p><img data-src="https://image.shipengx.com/%E5%9B%9E%E6%94%BE%20Log%20%E6%97%B6%E7%9A%84%20DreamView%20%E7%95%8C%E9%9D%A2.png" alt="回放 Log 时的 DreamView 界面"></p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRlZS5jb20vQXBvbGxvQXV0by9hcG9sbG8vYmxvYi9tYXN0ZXIvZG9jcy9zcGVjcy9wcmVyZXF1aXNpdGVfc29mdHdhcmVfaW5zdGFsbGF0aW9uX2d1aWRlLm1k" title="https://gitee.com/ApolloAuto/apollo/blob/master/docs/specs/prerequisite_software_installation_guide.md">Pre-requisite Software Installation Guide<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRlZS5jb20vQXBvbGxvQXV0by9hcG9sbG8vYmxvYi9tYXN0ZXIvZG9jcy9xdWlja3N0YXJ0L2Fwb2xsb19zb2Z0d2FyZV9pbnN0YWxsYXRpb25fZ3VpZGVfY24ubWQ=" title="https://gitee.com/ApolloAuto/apollo/blob/master/docs/quickstart/apollo_software_installation_guide_cn.md">Apollo 软件安装指南<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRlZS5jb20vQXBvbGxvQXV0by9hcG9sbG8vYmxvYi9tYXN0ZXIvZG9jcy9ob3d0by9ob3dfdG9fbGF1bmNoX2FuZF9ydW5fYXBvbGxvLm1kI3J1bi1hcG9sbG8=" title="https://gitee.com/ApolloAuto/apollo/blob/master/docs/howto/how_to_launch_and_run_apollo.md#run-apollo">How to Launch and Run Apollo<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxMTI5MTkxNzY3MC9hcnRpY2xlL2RldGFpbHMvMTE1MDEzODQ5" title="https://blog.csdn.net/qq1291917670/article/details/115013849">在虚拟机上安装运行百度 Apollo 6.0<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNTcwMDYyMTU=" title="https://zhuanlan.zhihu.com/p/357006215">在 vmware 上跑 apollo 6.0 (无 GPU)<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e8e6ccc3.html" rel="bookmark">Apollo 6.0 Perception 模块 Fusion 组件（一）：构建与启动流程分析</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\46155f38.html" rel="bookmark">Apollo 6.0 Perception 模块 Fusion 组件（二）：主体算法流程分析</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f969107a.html" rel="bookmark">ROS 1 安装——从手动到自动：以 Ubuntu 18.04 + ROS Melodic 为例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/e4b9c8ad.html" title="Apollo 6.0 安装完全指南">https://blog.shipengx.com/archives/e4b9c8ad.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag"><i class="fa fa-tag"></i> 自动驾驶</a>
+              <a href="/tags/Apollo/" rel="tag"><i class="fa fa-tag"></i> Apollo</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/f61b5eee.html" rel="prev" title="深入探索单例设计模式：以百度 Apollo 为例">
+      <i class="fa fa-chevron-left"></i> 深入探索单例设计模式：以百度 Apollo 为例
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/e8e6ccc3.html" rel="next" title="Apollo 6.0 Perception 模块 Fusion 组件（一）：构建与启动流程分析">
+      Apollo 6.0 Perception 模块 Fusion 组件（一）：构建与启动流程分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-前置依赖软件安装"><span class="nav-text">1 前置依赖软件安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-安装-Ubuntu-18-04"><span class="nav-text">1.1 安装 Ubuntu 18.04</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-安装-NVIDIA-显卡驱动"><span class="nav-text">1.2 安装 NVIDIA 显卡驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-安装-Docker-引擎"><span class="nav-text">1.3 安装 Docker 引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-安装-NVIDIA-容器工具包"><span class="nav-text">1.4 安装 NVIDIA 容器工具包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-克隆-Apollo-源码"><span class="nav-text">2 克隆 Apollo 源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-启动-Apollo-Docker-开发容器"><span class="nav-text">3 启动 Apollo Docker 开发容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-进入-Apollo-Docker-开发容器"><span class="nav-text">4 进入 Apollo Docker 开发容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-在容器中构建-Apollo"><span class="nav-text">5 在容器中构建 Apollo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-运行-Apollo"><span class="nav-text">6 运行 Apollo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-启动-Apollo"><span class="nav-text">6.1 启动 Apollo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-选择驾驶模式和地图"><span class="nav-text">6.2 选择驾驶模式和地图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-回放-Demo-数据"><span class="nav-text">6.3 回放 Demo 数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

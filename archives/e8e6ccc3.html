@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本文从 Apollo Cyber​​ RT 框架、Perception 模块、DreamView 模块的构建着手，旨在详细分析 Perception 模块及其 Fusion 组件的启动流程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apollo 6.0 Perception 模块 Fusion 组件（一）：构建与启动流程分析">
+<meta property="og:url" content="https://blog.shipengx.com/archives/e8e6ccc3.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本文从 Apollo Cyber​​ RT 框架、Perception 模块、DreamView 模块的构建着手，旨在详细分析 Perception 模块及其 Fusion 组件的启动流程。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-Apollo%206.0%20Perception%20%E6%A8%A1%E5%9D%97%20Fusion%20%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E4%B8%8E%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90.png">
+<meta property="og:image" content="https://image.shipengx.com/DreamView%20Module%20Controller.png">
+<meta property="article:published_time" content="2021-07-30T01:36:01.000Z">
+<meta property="article:modified_time" content="2022-05-12T07:46:20.887Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="自动驾驶">
+<meta property="article:tag" content="Apollo">
+<meta property="article:tag" content="多传感器信息融合">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-Apollo%206.0%20Perception%20%E6%A8%A1%E5%9D%97%20Fusion%20%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E4%B8%8E%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/e8e6ccc3.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>Apollo 6.0 Perception 模块 Fusion 组件（一）：构建与启动流程分析 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/e8e6ccc3.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Apollo 6.0 Perception 模块 Fusion 组件（一）：构建与启动流程分析
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-30 09:36:01" itemprop="dateCreated datePublished" datetime="2021-07-30T09:36:01+08:00">2021-07-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-12 15:46:20" itemprop="dateModified" datetime="2022-05-12T15:46:20+08:00">2022-05-12</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">自动驾驶</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/Apollo/" itemprop="url" rel="index">
+                    <span itemprop="name">Apollo</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/e8e6ccc3.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/e8e6ccc3.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本文从 Apollo Cyber​​ RT 框架、Perception 模块、DreamView 模块的构建着手，旨在详细分析 Perception 模块及其 Fusion 组件的启动流程。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-Apollo%206.0%20Perception%20%E6%A8%A1%E5%9D%97%20Fusion%20%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E4%B8%8E%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90.png" alt="目录-Apollo 6.0 Perception 模块 Fusion 组件构建与启动流程分析"></p>
+<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>关于 Apollo Perception 模块 Fusion 组件的分析文章已经有很多了，但大多集中在从 Fusion 组件的 <code>Init</code> 方法和 <code>Proc</code> 方法开始解析组件内部的算法流程，对于 <code>Init</code> 和 <code>Proc</code> 是在何时被谁调用的却鲜有提及，至多顺便提下通过 DAG（Directed Acyclic Graph，有向无环图）文件或 Launch 文件启动模块，对于模块的具体启动流程以及模块与组件间的关系仍然模棱两可，这显然不利于对 Apollo 框架的整体把握。知其然，更要知其所以然。</p>
+<p>本文从 Apollo Cyber​​ RT 框架、Perception 模块、DreamView 模块的构建着手，旨在详细分析 Perception 模块及其 Fusion 组件的启动流程，并回答上文提到的 <code>Init</code> 和 <code>Proc</code> 方法的调用时机及调用对象问题。</p>
+<h1 id="1-构建" class="heading-control"><a href="#1-构建" class="headerlink" title="1 构建"></a>1 构建<a class="heading-anchor" href="#1-构建" aria-hidden="true"></a></h1><p>Apollo 使用 <span class="exturl" data-url="aHR0cHM6Ly9iYXplbC5idWlsZC8=" title="https://bazel.build/">Bazel<i class="fa fa-external-link"></i></span> 进行代码构建，Bazel 是由 Google 开源的一款高效的软件构建工具。使用 Bazel 时，我们需要为每个参与构建的目录创建一个 BUILD 文件来定义一些构建规则，BUILD 文件使用类似 Python 的语法，我们看下 Apollo 代码仓库根目录下的 BUILD 文件（只列出关键部分，下同）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">install(</span><br><span class="line">    name = <span class="string">"install"</span>,</span><br><span class="line">    deps = [</span><br><span class="line">        <span class="string">"//cyber:install"</span>,</span><br><span class="line">        <span class="string">"//cyber/examples:install"</span>,</span><br><span class="line">        <span class="string">"//docker/scripts:install"</span>,</span><br><span class="line">        <span class="string">"//docs:install"</span>,</span><br><span class="line">        <span class="string">"//modules/audio:install"</span>,</span><br><span class="line">        <span class="string">"//modules/bridge:install"</span>,</span><br><span class="line">        <span class="string">"//modules/canbus:install"</span>,</span><br><span class="line">        <span class="string">"//modules/common:install"</span>,</span><br><span class="line">        <span class="string">"//modules/contrib/cyber_bridge:install"</span>,</span><br><span class="line">        <span class="string">"//modules/control:install"</span>,</span><br><span class="line">        <span class="string">"//modules/dreamview:install"</span>,</span><br><span class="line">        <span class="string">"//modules/drivers:install"</span>,</span><br><span class="line">        <span class="string">"//modules/guardian:install"</span>,</span><br><span class="line">        <span class="string">"//modules/localization:install"</span>,</span><br><span class="line">        <span class="string">"//modules/map:install"</span>,</span><br><span class="line">        <span class="string">"//modules/monitor:install"</span>,</span><br><span class="line">        <span class="string">"//modules/perception:install"</span>,</span><br><span class="line">        <span class="string">"//modules/planning:install"</span>,</span><br><span class="line">        <span class="string">"//modules/prediction:install"</span>,</span><br><span class="line">        <span class="string">"//modules/routing:install"</span>,</span><br><span class="line">        <span class="string">"//modules/storytelling:install"</span>,</span><br><span class="line">        <span class="string">"//modules/task_manager:install"</span>,</span><br><span class="line">        <span class="string">"//modules/third_party_perception:install"</span>,</span><br><span class="line">        <span class="string">"//modules/tools:install"</span>,</span><br><span class="line">        <span class="string">"//modules/transform:install"</span>,</span><br><span class="line">        <span class="string">"//modules/v2x:install"</span>,</span><br><span class="line">        <span class="string">"//scripts:install"</span>,</span><br><span class="line">    ],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>这里我们只关注 <code>deps</code> 参数中与本文有关的三个字段：</p>
+<ul>
+<li><code>&quot;//cyber:install&quot;</code></li>
+<li><code>&quot;//modules/perception:install&quot;</code></li>
+<li><code>&quot;//modules/dreamview:install&quot;</code></li>
+</ul>
+<p>从字面意思不难猜想到，上面三个字段分别引用了 Apollo 对应目录下其它 BUILD 文件的 <code>Install</code> 规则，我们依次进行说明。</p>
+<h2 id="1-1-Cyber-RT-构建" class="heading-control"><a href="#1-1-Cyber-RT-构建" class="headerlink" title="1.1 Cyber RT 构建"></a>1.1 Cyber RT 构建<a class="heading-anchor" href="#1-1-Cyber-RT-构建" aria-hidden="true"></a></h2><p><span class="exturl" data-url="aHR0cHM6Ly9hcG9sbG8uYXV0by9kb2N1bWVudF9jbi5odG1sP2RvbWFpbj1BcG9sbG8tSG9tZXBhZ2UtRG9jdW1lbnQmYW1wO3JlcG89QXBvbGxvX0RvY19DTl82XzAmYW1wO2ZpbGVwYXRoPS8=" title="https://apollo.auto/document_cn.html?domain=Apollo-Homepage-Document&amp;repo=Apollo_Doc_CN_6_0&amp;filepath=/">Cyber​​ RT<i class="fa fa-external-link"></i></span> 是百度开源的一款源于 ROS 的、专为自动驾驶场景而设计的高性能运行时框架，并针对自动驾驶的高并发、低延迟、高吞吐量进行了大幅优化。Cyber RT 自 Apollo 3.5 版本开始启用，此处我们不展开细节，接上文直接看下 <code>apollo/cyber/</code> 目录下 BUILD 文件的主要内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">install(</span><br><span class="line">    name = <span class="string">"install"</span>,</span><br><span class="line">    data = [</span><br><span class="line">        <span class="string">":.release.bash"</span>,</span><br><span class="line">        <span class="string">":cyber_conf"</span>,</span><br><span class="line">        <span class="string">"//cyber/python/cyber_py3:runtime_files"</span>,</span><br><span class="line">    ],</span><br><span class="line">    rename = &#123;</span><br><span class="line">        <span class="string">"cyber/.release.bash"</span>: <span class="string">"setup.bash"</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    deps = [</span><br><span class="line">        <span class="string">":pb_cyber"</span>,</span><br><span class="line">        <span class="string">"//cyber/mainboard:install"</span>,</span><br><span class="line">        <span class="string">"//cyber/python/internal:install"</span>,</span><br><span class="line">        <span class="string">"//cyber/tools:install"</span>,</span><br><span class="line">    ],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>根据 <code>deps</code> 参数中的 <code>&quot;//cyber/mainboard:install&quot;</code> 字段，我们看下 <code>apollo/cyber/mainboard/</code> 目录下 BUILD 文件的主要内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cc_binary(</span><br><span class="line">    name = <span class="string">"mainboard"</span>,</span><br><span class="line">    srcs = [</span><br><span class="line">        <span class="string">"mainboard.cc"</span>,</span><br><span class="line">        <span class="string">"module_argument.cc"</span>,</span><br><span class="line">        <span class="string">"module_argument.h"</span>,</span><br><span class="line">        <span class="string">"module_controller.cc"</span>,</span><br><span class="line">        <span class="string">"module_controller.h"</span>,</span><br><span class="line">    ],</span><br><span class="line">    linkopts = [<span class="string">"-pthread"</span>],</span><br><span class="line">    linkstatic = <span class="literal">False</span>,</span><br><span class="line">    deps = [</span><br><span class="line">        <span class="string">"//cyber:cyber_core"</span>,</span><br><span class="line">        <span class="string">"//cyber/proto:dag_conf_cc_proto"</span>,</span><br><span class="line">    ],</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">install(</span><br><span class="line">    name = <span class="string">"install"</span>,</span><br><span class="line">    targets = [<span class="string">":mainboard"</span>],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>从 <code>install</code> 规则的 <code>targets</code> 参数我们可以知道，Cyber RT 最终会被编译成名为 <code>mainboard</code> 的可执行文件，从 <code>cc_binary</code> 规则的 <code>srcs</code> 参数我们又可以知道，<code>mainboard</code> 编译了五个文件，其中的 <code>mainboard.cc</code> 极有可能是主入口文件（这一点对于我们后面的分析很重要）。</p>
+<h2 id="1-2-Perception-模块构建" class="heading-control"><a href="#1-2-Perception-模块构建" class="headerlink" title="1.2 Perception 模块构建"></a>1.2 Perception 模块构建<a class="heading-anchor" href="#1-2-Perception-模块构建" aria-hidden="true"></a></h2><p>延续上面的分析思路，我们看下 <code>apollo/modules/perception/</code> 目录下 BUILD 文件的主要内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">install(</span><br><span class="line">    name = <span class="string">"install"</span>,</span><br><span class="line">    deps = [</span><br><span class="line">        <span class="string">":pb_perception"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/data:install"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/onboard/component:install"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/production:install"</span>,</span><br><span class="line">    ],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>根据 <code>deps</code> 参数中的 <code>&quot;//modules/perception/onboard/component:install&quot;</code> 字段，我们看下 <code>apollo/modules/perception/onboard/component/</code> 目录下 BUILD 文件的主要内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">install(</span><br><span class="line">    name = <span class="string">"install"</span>,</span><br><span class="line">    targets = [</span><br><span class="line">        <span class="string">":libperception_component_camera.so"</span>,</span><br><span class="line">        <span class="string">":libperception_component_lidar.so"</span>,</span><br><span class="line">    ],</span><br><span class="line">    deps = [</span><br><span class="line">        <span class="string">"//cyber:install"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/production:install"</span>,</span><br><span class="line">    ],</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">cc_binary(</span><br><span class="line">    name = <span class="string">"libperception_component_lidar.so"</span>,</span><br><span class="line">    linkshared = <span class="literal">True</span>,</span><br><span class="line">    linkstatic = <span class="literal">False</span>,</span><br><span class="line">    deps = [<span class="string">":perception_component_inner_lidar"</span>],</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">cc_library(</span><br><span class="line">    name = <span class="string">"perception_component_inner_lidar"</span>,</span><br><span class="line">    copts = [</span><br><span class="line">        <span class="string">'-DMODULE_NAME=\\"perception\\"'</span>,</span><br><span class="line">    ],</span><br><span class="line">    deps = [</span><br><span class="line">        <span class="string">":detection_component"</span>,</span><br><span class="line">        <span class="string">":fusion_component"</span>,</span><br><span class="line">        <span class="string">":radar_detection_component"</span>,</span><br><span class="line">        <span class="string">":recognition_component"</span>,</span><br><span class="line">    ],</span><br><span class="line">    alwayslink = <span class="literal">True</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">cc_library(</span><br><span class="line">    name = <span class="string">"fusion_component"</span>,</span><br><span class="line">    srcs = [<span class="string">"fusion_component.cc"</span>],</span><br><span class="line">    hdrs = [<span class="string">"fusion_component.h"</span>],</span><br><span class="line">    deps = [</span><br><span class="line">        <span class="string">"//cyber/time:clock"</span>,</span><br><span class="line">        <span class="string">"//modules/common/util:perf_util"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/base"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/fusion/app:obstacle_multi_sensor_fusion"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/fusion/lib/dummy:dummy_algorithms"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/fusion/lib/fusion_system/probabilistic_fusion"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/fusion/lib/interface"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/fusion/lib/interface:base_multisensor_fusion"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/lib/registerer"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/lidar/lib/classifier/fused_classifier"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/lidar/lib/classifier/fused_classifier:ccrf_type_fusion"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/map/hdmap:hdmap_input"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/onboard/common_flags"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/onboard/inner_component_messages"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/onboard/msg_serializer"</span>,</span><br><span class="line">        <span class="string">"//modules/perception/onboard/proto:fusion_component_config_cc_proto"</span>,</span><br><span class="line">        <span class="string">"@eigen"</span>,</span><br><span class="line">    ],</span><br><span class="line">    alwayslink = <span class="literal">True</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>从 <code>install</code> 规则的 <code>targets</code> 参数我们得到一个很重要的事实：Perception 模块最终被编译成了两个分别命名为 <code>libperception_component_camera.so</code> 和 <code>libperception_component_lidar.so</code> 的动态库文件。意即，整个 Perception 功能模块被划分为 Camera 感知和 Lidar 感知。</p>
+<p>到这里，可能会有疑问：Radar 呢？Fusion 呢？我们继续看 <code>install</code> 下面的规则会发现，<code>libperception_component_lidar.so</code> 存在下面这样的层次依赖关系：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">libperception_component_lidar.so</span><br><span class="line">└── perception_component_inner_lidar</span><br><span class="line">    ├── detection_component</span><br><span class="line">    ├── fusion_component</span><br><span class="line">    ├── radar_detection_component</span><br><span class="line">    └── recognition_component</span><br></pre></td></tr></table></figure>
+<p>所以，最终 Radar 和 Fusion 等组件会被集成到 <code>libperception_component_lidar.so</code> 中。从 <code>fusion_component</code> 的 <code>cc_library</code> 规则我们又可以知道，Fusion 组件的入口在 <code>fusion_component.h</code> 和 <code>fusion_component.cc</code> 中，这两个文件包含了 Fusion 组件类的声明及定义。</p>
+<h2 id="1-3-DreamView-模块构建" class="heading-control"><a href="#1-3-DreamView-模块构建" class="headerlink" title="1.3 DreamView 模块构建"></a>1.3 DreamView 模块构建<a class="heading-anchor" href="#1-3-DreamView-模块构建" aria-hidden="true"></a></h2><p>我们继续看 <code>apollo/modules/dreamview/</code> 目录下 BUILD 文件的主要内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">cc_binary(</span><br><span class="line">    name = <span class="string">"dreamview"</span>,</span><br><span class="line">    srcs = [<span class="string">"main.cc"</span>],</span><br><span class="line">    copts = DREAMVIEW_COPTS + copts_if_teleop(),</span><br><span class="line">    data = [</span><br><span class="line">        <span class="string">":frontend"</span>,</span><br><span class="line">    ],</span><br><span class="line">    deps = [</span><br><span class="line">        <span class="string">"//modules/dreamview/backend"</span>,</span><br><span class="line">    ],</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">install(</span><br><span class="line">    name = <span class="string">"install"</span>,</span><br><span class="line">    data = [</span><br><span class="line">        <span class="string">":dreamview_conf"</span>,</span><br><span class="line">        <span class="string">":frontend"</span>,</span><br><span class="line">    ],</span><br><span class="line">    targets = [<span class="string">"dreamview"</span>],</span><br><span class="line">    deps = [</span><br><span class="line">        <span class="string">"//cyber:install"</span>,</span><br><span class="line">    ],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>从 <code>install</code> 规则的 <code>targets</code> 参数可以知道，DreamView 模块最终会被编译成名为 <code>dreamview</code> 的可执行文件；从 <code>cc_binary</code> 规则的 <code>srcs</code> 参数又可以知道，<code>dreamview</code> 可执行文件的入口在 <code>main.cc</code> 中。</p>
+<h1 id="2-启动-Perception-模块" class="heading-control"><a href="#2-启动-Perception-模块" class="headerlink" title="2 启动 Perception 模块"></a>2 启动 Perception 模块<a class="heading-anchor" href="#2-启动-Perception-模块" aria-hidden="true"></a></h1><h2 id="2-1-从-DAG-文件启动" class="heading-control"><a href="#2-1-从-DAG-文件启动" class="headerlink" title="2.1 从 DAG 文件启动"></a>2.1 从 DAG 文件启动<a class="heading-anchor" href="#2-1-从-DAG-文件启动" aria-hidden="true"></a></h2><h3 id="2-1-1-DAG-文件的组织形式" class="heading-control"><a href="#2-1-1-DAG-文件的组织形式" class="headerlink" title="2.1.1 DAG 文件的组织形式"></a>2.1.1 DAG 文件的组织形式<a class="heading-anchor" href="#2-1-1-DAG-文件的组织形式" aria-hidden="true"></a></h3><p>DAG 文件是模块拓扑关系的配置文件，可以在 DAG 文件中定义各模块所使用的组件，及各组件对应的配置文件路径、上游/下游通道（channel）等信息。例如，Perception 模块对应的 DAG 文件为 <code>apollo/modules/perception/production/dag/dag_streaming_perception.dag</code>，我们看下其包含的具体内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">module_config &#123;</span><br><span class="line">  module_library : <span class="string">"/apollo/bazel-bin/modules/perception/onboard/component/libperception_component_camera.so"</span></span><br><span class="line">  components &#123;</span><br><span class="line">    class_name : <span class="string">"FusionCameraDetectionComponent"</span></span><br><span class="line">    config &#123;</span><br><span class="line">      name: <span class="string">"FusionCameraComponent"</span></span><br><span class="line">      config_file_path: <span class="string">"/apollo/modules/perception/production/conf/perception/camera/fusion_camera_detection_component.pb.txt"</span></span><br><span class="line">      flag_file_path: <span class="string">"/apollo/modules/perception/production/conf/perception/perception_common.flag"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">module_config &#123;</span><br><span class="line">  module_library : <span class="string">"/apollo/bazel-bin/modules/perception/onboard/component/libperception_component_lidar.so"</span></span><br><span class="line"></span><br><span class="line">  components &#123;</span><br><span class="line">    class_name : <span class="string">"DetectionComponent"</span></span><br><span class="line">    config &#123;</span><br><span class="line">      name: <span class="string">"Velodyne128Detection"</span></span><br><span class="line">      config_file_path: <span class="string">"/apollo/modules/perception/production/conf/perception/lidar/velodyne128_detection_conf.pb.txt"</span></span><br><span class="line">      flag_file_path: <span class="string">"/apollo/modules/perception/production/conf/perception/perception_common.flag"</span></span><br><span class="line">      readers &#123;</span><br><span class="line">        channel: <span class="string">"/apollo/sensor/lidar128/compensator/PointCloud2"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  components &#123;</span><br><span class="line">    class_name : <span class="string">"RecognitionComponent"</span></span><br><span class="line">    config &#123;</span><br><span class="line">      name: <span class="string">"RecognitionComponent"</span></span><br><span class="line">      config_file_path: <span class="string">"/apollo/modules/perception/production/conf/perception/lidar/recognition_conf.pb.txt"</span></span><br><span class="line">      readers &#123;</span><br><span class="line">        channel: <span class="string">"/perception/inner/DetectionObjects"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  components &#123;</span><br><span class="line">    class_name: <span class="string">"RadarDetectionComponent"</span></span><br><span class="line">    config &#123;</span><br><span class="line">      name: <span class="string">"FrontRadarDetection"</span></span><br><span class="line">      config_file_path: <span class="string">"/apollo/modules/perception/production/conf/perception/radar/front_radar_component_conf.pb.txt"</span></span><br><span class="line">      flag_file_path: <span class="string">"/apollo/modules/perception/production/conf/perception/perception_common.flag"</span></span><br><span class="line">      readers &#123;</span><br><span class="line">        channel: <span class="string">"/apollo/sensor/radar/front"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  components &#123;</span><br><span class="line">    class_name: <span class="string">"RadarDetectionComponent"</span></span><br><span class="line">    config &#123;</span><br><span class="line">      name: <span class="string">"RearRadarDetection"</span></span><br><span class="line">      config_file_path: <span class="string">"/apollo/modules/perception/production/conf/perception/radar/rear_radar_component_conf.pb.txt"</span></span><br><span class="line">      flag_file_path: <span class="string">"/apollo/modules/perception/production/conf/perception/perception_common.flag"</span></span><br><span class="line">      readers &#123;</span><br><span class="line">        channel: <span class="string">"/apollo/sensor/radar/rear"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  components &#123;</span><br><span class="line">    class_name: <span class="string">"FusionComponent"</span></span><br><span class="line">    config &#123;</span><br><span class="line">      name: <span class="string">"SensorFusion"</span></span><br><span class="line">      config_file_path: <span class="string">"/apollo/modules/perception/production/conf/perception/fusion/fusion_component_conf.pb.txt"</span></span><br><span class="line">      readers &#123;</span><br><span class="line">        channel: <span class="string">"/perception/inner/PrefusedObjects"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">module_config &#123;</span><br><span class="line">  module_library : <span class="string">"/apollo/bazel-bin/modules/v2x/fusion/apps/libv2x_fusion_component.so"</span></span><br><span class="line"></span><br><span class="line">  components &#123;</span><br><span class="line">    class_name : <span class="string">"V2XFusionComponent"</span></span><br><span class="line">    config &#123;</span><br><span class="line">      name : <span class="string">"v2x_fusion"</span></span><br><span class="line">      flag_file_path : <span class="string">"/apollo/modules/v2x/conf/v2x_fusion_tracker.conf"</span></span><br><span class="line">      readers: [</span><br><span class="line">        &#123;</span><br><span class="line">          channel: <span class="string">"/perception/vehicle/obstacles"</span></span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面这个 DAG 文件虽然冗长，但分析起来很简单，它包含了三个子功能模块：</p>
+<ul>
+<li><code>libperception_component_camera.so</code></li>
+<li><code>libperception_component_lidar.so</code></li>
+<li><code>libv2x_fusion_component.so</code></li>
+</ul>
+<p>我们着重看所关心的 Lidar 部分，<code>libperception_component_lidar.so</code> 子功能模块下包含了四类组件及各自对应的配置文件路径和输入 channel：</p>
+<ul>
+<li><code>DetectionComponent</code></li>
+<li><code>RecognitionComponent</code></li>
+<li><code>RadarDetectionComponent</code></li>
+<li><code>FusionComponent</code></li>
+</ul>
+<p>如果细心得话可以发现，<code>RadarDetectionComponent</code> 被包含了两次，这其实表示得是 <code>RadarDetectionComponent</code> 组件类会被创建两个实例，一个用于处理前毫米波雷达数据，另一个用于处理后毫米波雷达数据。</p>
+<h3 id="2-1-2-加载-DAG-文件并启动功能模块" class="heading-control"><a href="#2-1-2-加载-DAG-文件并启动功能模块" class="headerlink" title="2.1.2 加载 DAG 文件并启动功能模块"></a>2.1.2 加载 DAG 文件并启动功能模块<a class="heading-anchor" href="#2-1-2-加载-DAG-文件并启动功能模块" aria-hidden="true"></a></h3><p>所有的功能模块都在 Cyber RT 框架下进行任务调度和通信，上文中我们已经提到，Cyber RT 最终会被编译成名为 <code>mainboard</code> 的可执行文件，我们可以在 Apollo 源码仓库的根目录下执行下述命令来加载上述的 DAG 文件并启动其中包含的子功能模块与组件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mainboard -d modules/perception/production/dag/dag_streaming_perception.dag</span><br></pre></td></tr></table></figure>
+<p><code>-d</code> 选项后面跟的是 DAG 文件路径，我们可以像下面这样为 <code>mainboard</code> 传入多个 DAG 文件，<code>mainboard</code> 会循环处理每个 DAG 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mainboard -d a.dag -d b.dag -d c.dag</span><br></pre></td></tr></table></figure>
+<p>mainboard 还有两个参数选项：</p>
+<ul>
+<li><code>-p</code>：进程所在命名空间</li>
+<li><code>-s</code>：进程所使用的调度策略</li>
+</ul>
+<p>那 <code>mainboard</code> 具体是如何启动的 DAG 文件中包含的子功能模块与相应组件的呢？根据 1.1 章节中的结论，我们打开 <code>apollo/cyber/mainboard/mainboard.cc</code> 文件，发现其中包含了 <code>mainboard</code> 的 <code>main</code> 入口函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// parse the argument</span></span><br><span class="line">  ModuleArgument module_args;</span><br><span class="line">  module_args.ParseArgument(argc, argv);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// initialize cyber</span></span><br><span class="line">  apollo::cyber::Init(argv[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// start module</span></span><br><span class="line">  <span class="function">ModuleController <span class="title">controller</span><span class="params">(module_args)</span></span>;</span><br><span class="line">  <span class="keyword">if</span> (!controller.Init()) &#123;</span><br><span class="line">    controller.Clear();</span><br><span class="line">    AERROR &lt;&lt; <span class="string">"module start error."</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  apollo::cyber::WaitForShutdown();</span><br><span class="line">  controller.Clear();</span><br><span class="line">  AINFO &lt;&lt; <span class="string">"exit mainboard."</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该入口函数主要做了三件事：</p>
+<ol>
+<li>解析传入参数</li>
+<li>初始化 Cyber RT</li>
+<li>实例化模块控制器类（<code>ModuleController</code>），并进行初始化</li>
+</ol>
+<p>我们进入模块控制器初始化方法 <code>ModuleController::Init</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">bool</span> <span class="title">ModuleController::Init</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> LoadAll(); &#125;</span><br></pre></td></tr></table></figure>
+<p><code>ModuleController::Init</code> 会间接调用 <code>ModuleController::LoadAll</code>，<code>LoadAll</code> 的核心任务是循环处理我们为 <code>mainboard</code> 传入的每个 DAG 文件，并针对每个 DAG 文件最终调用 <code>ModuleController::LoadModule</code> 方法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ModuleController::LoadModule</span><span class="params">(<span class="keyword">const</span> DagConfig&amp; dag_config)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> work_root = common::WorkRoot();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">auto</span> module_config : dag_config.module_config()) &#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> load_path;</span><br><span class="line">    <span class="keyword">if</span> (module_config.module_library().front() == <span class="string">'/'</span>) &#123;</span><br><span class="line">      load_path = module_config.module_library();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      load_path =</span><br><span class="line">          common::GetAbsolutePath(work_root, module_config.module_library());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!common::PathExists(load_path)) &#123;</span><br><span class="line">      AERROR &lt;&lt; <span class="string">"Path does not exist: "</span> &lt;&lt; load_path;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class_loader_manager_.LoadLibrary(load_path);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; component : module_config.components()) &#123;</span><br><span class="line">      <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; class_name = component.class_name();</span><br><span class="line">      <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;ComponentBase&gt; base =</span><br><span class="line">          class_loader_manager_.CreateClassObj&lt;ComponentBase&gt;(class_name);</span><br><span class="line">      <span class="keyword">if</span> (base == <span class="literal">nullptr</span> || !base-&gt;Initialize(component.config())) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      component_list_.emplace_back(<span class="built_in">std</span>::move(base));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; component : module_config.timer_components()) &#123;</span><br><span class="line">      <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; class_name = component.class_name();</span><br><span class="line">      <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;ComponentBase&gt; base =</span><br><span class="line">          class_loader_manager_.CreateClassObj&lt;ComponentBase&gt;(class_name);</span><br><span class="line">      <span class="keyword">if</span> (base == <span class="literal">nullptr</span> || !base-&gt;Initialize(component.config())) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      component_list_.emplace_back(<span class="built_in">std</span>::move(base));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>ModuleController::LoadModule</code> 方法并不复杂，其主要做了三件事，下面我们依次展开。</p>
+<h4 id="2-1-2-1-加载子功能模块并注册其中的各个组件" class="heading-control"><a href="#2-1-2-1-加载子功能模块并注册其中的各个组件" class="headerlink" title="2.1.2.1 加载子功能模块并注册其中的各个组件"></a>2.1.2.1 加载子功能模块并注册其中的各个组件<a class="heading-anchor" href="#2-1-2-1-加载子功能模块并注册其中的各个组件" aria-hidden="true"></a></h4><p><code>ModuleController::LoadModule</code> 方法通过 <code>ClassLoaderManager::LoadLibrary</code> 方法间接调用 Linux 底层的 <code>dlopen</code> 函数来加载 DAG 文件中各个子功能模块的 <code>.so</code> 动态库文件，具体细节不再展开。</p>
+<p>每个子功能模块的组件注册过程是随着模块 <code>.so</code> 动态库文件的加载一同进行的，以 Fusion 组件为例，为分析其注册过程我们需要先看下对应组件类的定义。如上文所述，Fusion 组件的入口在 <code>fusion_component.h</code> 中，我们打开 <code>apollo/modules/perception/onboard/component/fusion_component.h</code> 一探究竟：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FusionComponent</span> :</span> <span class="keyword">public</span> cyber::Component&lt;SensorFrameMessage&gt; &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  FusionComponent() = <span class="keyword">default</span>;</span><br><span class="line">  ~FusionComponent() = <span class="keyword">default</span>;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">Init</span><span class="params">()</span> <span class="keyword">override</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">Proc</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;SensorFrameMessage&gt;&amp; message)</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">InitAlgorithmPlugin</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">InternalProc</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;SensorFrameMessage <span class="keyword">const</span>&gt;&amp; in_message,</span></span></span><br><span class="line"><span class="function"><span class="params">                    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;PerceptionObstacles&gt; out_message,</span></span></span><br><span class="line"><span class="function"><span class="params">                    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;SensorFrameMessage&gt; viz_message)</span></span>;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">std</span>::mutex s_mutex_;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">uint32_t</span> s_seq_num_;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">string</span> fusion_name_;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">string</span> fusion_method_;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; fusion_main_sensors_;</span><br><span class="line">  <span class="keyword">bool</span> object_in_roi_check_ = <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">double</span> radius_for_roi_object_check_ = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;fusion::BaseMultiSensorFusion&gt; fusion_;</span><br><span class="line">  <span class="built_in">map</span>::HDMapInput* hdmap_input_ = <span class="literal">nullptr</span>;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;apollo::cyber::Writer&lt;PerceptionObstacles&gt;&gt; writer_;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;apollo::cyber::Writer&lt;SensorFrameMessage&gt;&gt; inner_writer_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">CYBER_REGISTER_COMPONENT(FusionComponent);</span><br></pre></td></tr></table></figure>
+<p>望文生义，最下面的 <code>CYBER_REGISTER_COMPONENT</code> 宏就是用于组件注册的，我们层层递进，看看最后发生了什么：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CYBER_REGISTER_COMPONENT(FusionComponent);</span><br></pre></td></tr></table></figure>
+<script type="math/tex; mode=display">
+\Downarrow</script><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CYBER_REGISTER_COMPONENT(name) \</span></span><br><span class="line">  CLASS_LOADER_REGISTER_CLASS(name, apollo::cyber::ComponentBase)</span><br></pre></td></tr></table></figure>
+<script type="math/tex; mode=display">
+\Downarrow</script><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CLASS_LOADER_REGISTER_CLASS(Derived, Base) \</span></span><br><span class="line">  CLASS_LOADER_REGISTER_CLASS_INTERNAL_1(Derived, Base, __COUNTER__)</span><br></pre></td></tr></table></figure>
+<script type="math/tex; mode=display">
+\Downarrow</script><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CLASS_LOADER_REGISTER_CLASS_INTERNAL_1(Derived, Base, UniqueID) \</span></span><br><span class="line">  CLASS_LOADER_REGISTER_CLASS_INTERNAL(Derived, Base, UniqueID)</span><br></pre></td></tr></table></figure>
+<script type="math/tex; mode=display">
+\Downarrow</script><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CLASS_LOADER_REGISTER_CLASS_INTERNAL(Derived, Base, UniqueID)     \</span></span><br><span class="line">  <span class="keyword">namespace</span> &#123;                                                             \</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">ProxyType</span>##<span class="title">UniqueID</span> &#123;</span>                                            \</span><br><span class="line">    ProxyType##UniqueID() &#123;                                               \</span><br><span class="line">      apollo::cyber::class_loader::utility::RegisterClass&lt;Derived, Base&gt;( \</span><br><span class="line">          #Derived, #Base);                                               \</span><br><span class="line">    &#125;                                                                     \</span><br><span class="line">  &#125;;                                                                      \</span><br><span class="line">  <span class="keyword">static</span> ProxyType##UniqueID g_register_class_##UniqueID;                 \</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<script type="math/tex; mode=display">
+\Downarrow</script><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Derived, <span class="keyword">typename</span> Base&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RegisterClass</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; class_name,</span></span></span><br><span class="line"><span class="function"><span class="params">                   <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; base_class_name)</span> </span>&#123;</span><br><span class="line">  AINFO &lt;&lt; <span class="string">"registerclass:"</span> &lt;&lt; class_name &lt;&lt; <span class="string">","</span> &lt;&lt; base_class_name &lt;&lt; <span class="string">","</span></span><br><span class="line">        &lt;&lt; GetCurLoadingLibraryName();</span><br><span class="line"></span><br><span class="line">  utility::AbstractClassFactory&lt;Base&gt;* new_class_factory_obj =</span><br><span class="line">      <span class="keyword">new</span> utility::ClassFactory&lt;Derived, Base&gt;(class_name, base_class_name);</span><br><span class="line">  new_class_factory_obj-&gt;AddOwnedClassLoader(GetCurActiveClassLoader());</span><br><span class="line">  new_class_factory_obj-&gt;SetRelativeLibraryPath(GetCurLoadingLibraryName());</span><br><span class="line"></span><br><span class="line">  GetClassFactoryMapMapMutex().lock();</span><br><span class="line">  ClassClassFactoryMap&amp; factory_map =</span><br><span class="line">      GetClassFactoryMapByBaseClass(<span class="keyword">typeid</span>(Base).name());</span><br><span class="line">  factory_map[class_name] = new_class_factory_obj;</span><br><span class="line">  GetClassFactoryMapMapMutex().unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将 <code>FusionComponent</code> 和 <code>apollo::cyber::ComponentBase</code> 代入模板函数 <code>RegisterClass</code>，其内部将使用工厂方法模式为 <code>FusionComponent</code> 组件类创建对应的类工厂对象，并为类工厂对象添加类加载器，设置动态库路径，最后将 <code>FusionComponent</code> 及其类工厂对象的映射关系添加到 <code>factory_map</code> 中。后续 <code>FusionComponent</code> 的实例化步骤将依赖 <code>factory_map</code> 中的注册结果。</p>
+<h4 id="2-1-2-2-实例化具体组件类" class="heading-control"><a href="#2-1-2-2-实例化具体组件类" class="headerlink" title="2.1.2.2 实例化具体组件类"></a>2.1.2.2 实例化具体组件类<a class="heading-anchor" href="#2-1-2-2-实例化具体组件类" aria-hidden="true"></a></h4><p>我们跳回到前面的 <code>ModuleController::LoadModule</code> 方法，找到其中循环处理子功能模块中每个组件的代码段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span>&amp; component : module_config.components()) &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; class_name = component.class_name();</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;ComponentBase&gt; base =</span><br><span class="line">      class_loader_manager_.CreateClassObj&lt;ComponentBase&gt;(class_name);</span><br><span class="line">  <span class="keyword">if</span> (base == <span class="literal">nullptr</span> || !base-&gt;Initialize(component.config())) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  component_list_.emplace_back(<span class="built_in">std</span>::move(base));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们将 <code>FusionComponent</code> 作为一次轮询代入上面这个 <code>for</code> 循环，其中下面的语句完成了组件类的实例化：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;ComponentBase&gt; base =</span><br><span class="line">    class_loader_manager_.CreateClassObj&lt;ComponentBase&gt;(FusionComponent);</span><br></pre></td></tr></table></figure>
+<p><code>CreateClassObj</code> 方法的实现并不复杂，细节不再展开，其最后主要是在上文组件注册过程中提及的 <code>factory_map</code> 中查找 <code>FusionComponent</code> 对应的类工厂对象，并通过该类工厂对象最终向 <code>base</code> 返回一个 <code>FusionComponent</code> 指针。看到这里应该可以发现，<code>base</code> 的静态类型是一个指向 <code>ComponentBase</code> 的共享智能指针，但却动态绑定到了一个派生类对象上，这意味着后面很有可能会发生多态调用。</p>
+<h4 id="2-1-2-3-初始化具体组件实例，进入组件内部算法流程" class="heading-control"><a href="#2-1-2-3-初始化具体组件实例，进入组件内部算法流程" class="headerlink" title="2.1.2.3 初始化具体组件实例，进入组件内部算法流程"></a>2.1.2.3 初始化具体组件实例，进入组件内部算法流程<a class="heading-anchor" href="#2-1-2-3-初始化具体组件实例，进入组件内部算法流程" aria-hidden="true"></a></h4><p><strong>第一次多态调用</strong></p>
+<p>完成 Fusion 组件类 <code>FusionComponent</code> 的实例化后，紧接着调用了 <code>base</code> 的 <code>Initialize</code> 方法，<code>Initialize</code> 是 <code>FusionComponent</code> 的间接基类 <code>ComponentBase</code> 中的 <code>virtual</code> 函数，此时会按照继承体系多态调用 <code>FusionComponent</code> 直接基类 <code>Component&lt;SensorFrameMessage&gt;</code>（只接受一个消息类型参数的 <code>Component</code> 类）中的版本：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> M0&gt;</span><br><span class="line"><span class="keyword">bool</span> Component&lt;M0, NullType, NullType, NullType&gt;::Initialize(</span><br><span class="line">    <span class="keyword">const</span> ComponentConfig&amp; config) &#123;</span><br><span class="line">  node_.reset(<span class="keyword">new</span> Node(config.name()));</span><br><span class="line">  LoadConfigFiles(config);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (config.readers_size() &lt; <span class="number">1</span>) &#123;</span><br><span class="line">    AERROR &lt;&lt; <span class="string">"Invalid config file: too few readers."</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!Init()) &#123;</span><br><span class="line">    AERROR &lt;&lt; <span class="string">"Component Init() failed."</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">bool</span> is_reality_mode = GlobalData::Instance()-&gt;IsRealityMode();</span><br><span class="line"></span><br><span class="line">  ReaderConfig reader_cfg;</span><br><span class="line">  reader_cfg.channel_name = config.readers(<span class="number">0</span>).channel();</span><br><span class="line">  reader_cfg.qos_profile.CopyFrom(config.readers(<span class="number">0</span>).qos_profile());</span><br><span class="line">  reader_cfg.pending_queue_size = config.readers(<span class="number">0</span>).pending_queue_size();</span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::weak_ptr&lt;Component&lt;M0&gt;&gt; self =</span><br><span class="line">      <span class="built_in">std</span>::dynamic_pointer_cast&lt;Component&lt;M0&gt;&gt;(shared_from_this());</span><br><span class="line">  <span class="keyword">auto</span> func = [self](<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;M0&gt;&amp; msg) &#123;</span><br><span class="line">    <span class="keyword">auto</span> ptr = self.lock();</span><br><span class="line">    <span class="keyword">if</span> (ptr) &#123;</span><br><span class="line">      ptr-&gt;Process(msg);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      AERROR &lt;&lt; <span class="string">"Component object has been destroyed."</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Reader&lt;M0&gt;&gt; reader = <span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (cyber_likely(is_reality_mode)) &#123;</span><br><span class="line">    reader = node_-&gt;CreateReader&lt;M0&gt;(reader_cfg);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    reader = node_-&gt;CreateReader&lt;M0&gt;(reader_cfg, func);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (reader == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">    AERROR &lt;&lt; <span class="string">"Component create reader failed."</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  readers_.emplace_back(<span class="built_in">std</span>::move(reader));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (cyber_unlikely(!is_reality_mode)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  data::VisitorConfig conf = &#123;readers_[<span class="number">0</span>]-&gt;ChannelId(),</span><br><span class="line">                              readers_[<span class="number">0</span>]-&gt;PendingQueueSize()&#125;;</span><br><span class="line">  <span class="keyword">auto</span> dv = <span class="built_in">std</span>::make_shared&lt;data::DataVisitor&lt;M0&gt;&gt;(conf);</span><br><span class="line">  croutine::RoutineFactory factory =</span><br><span class="line">      croutine::CreateRoutineFactory&lt;M0&gt;(func, dv);</span><br><span class="line">  <span class="keyword">auto</span> sched = scheduler::Instance();</span><br><span class="line">  <span class="keyword">return</span> sched-&gt;CreateTask(factory, node_-&gt;Name());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>第二次多态调用</strong></p>
+<p><code>Initialize</code> 方法首先会创建一个与 DAG 文件中 <code>FusionComponent</code> 的 <code>config.name</code> 参数（SensorFusion）同名的节点，然后会调用 <code>Init</code> 方法，这是 <code>ComponentBase</code> 中的一个 <code>pure virtual</code> 函数，且 <code>ComponentBase</code> 的直接派生类 <code>Component</code> 未对 <code>Init</code> 进行重写，所以最终会按照继承体系多态调用 <code>ComponentBase</code> 间接派生类 <code>FusionComponent</code> 中的版本，至此，Fusion 组件的初始化完成了！</p>
+<p><strong>第三次多态调用</strong></p>
+<p><code>Initialize</code> 方法后面又会创建一个 lambda 函数对象 <code>func</code>，<code>func</code> 中会调用 <code>Component</code> 类的 <code>Process</code> 方法，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> M0&gt;</span><br><span class="line"><span class="keyword">bool</span> Component&lt;M0, NullType, NullType, NullType&gt;::Process(</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;M0&gt;&amp; msg) &#123;</span><br><span class="line">  <span class="keyword">if</span> (is_shutdown_.load()) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> Proc(msg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Process</code> 方法中调用的 <code>Proc</code> 方法是 <code>Component</code> 类的一个 <code>pure virtual</code> 函数，因此会按照继承体系多态调用 <code>Component</code> 派生类 <code>FusionComponent</code> 中的版本，但 <code>func</code> 对象最终又是在哪里被调用的呢？继续看 <code>Initialize</code> 方法后面的代码不难发现，<code>func</code> 的调用流程是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">创建协程工厂，并将 func 对象绑定到该协程工厂 --&gt;</span><br><span class="line"></span><br><span class="line">为 Initialize 方法最开始创建的 SensorFusion 节点创建调度任务 --&gt;</span><br><span class="line"></span><br><span class="line">使用协程工厂创建协程，并将其分配给调度任务 --&gt;</span><br><span class="line"></span><br><span class="line">分发调度任务 --&gt;</span><br><span class="line"></span><br><span class="line">组件对应 channel 上的消息回调触发调度器进行任务调度</span><br></pre></td></tr></table></figure>
+<p>最终，<code>FusionComponent</code> 中的 <code>Proc</code> 方法将成为对应 channel 上消息的回调函数。至此，进入了 Fusion 组件的内部算法流程！文章最开始的问题得到圆满解答。同时，根据上面的分析过程，我们还可以得出一个拓展结论：<strong>每个组件最终会分别对应一个协程</strong>。</p>
+<h2 id="2-2-从-Launch-文件启动" class="heading-control"><a href="#2-2-从-Launch-文件启动" class="headerlink" title="2.2 从 Launch 文件启动"></a>2.2 从 Launch 文件启动<a class="heading-anchor" href="#2-2-从-Launch-文件启动" aria-hidden="true"></a></h2><p>Launch 文件只是对 DAG 文件进行了又一次封装，方便我们更灵活地组织工作。Perception 模块对应的 Launch 文件为 <code>apollo/modules/perception/production/launch/perception.launch</code>，我们看下其包含的具体内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--this file list the modules which will be loaded dynamicly and</span></span><br><span class="line"><span class="comment">    their process name to be running in --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">cyber</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">desc</span>&gt;</span>cyber modules list config<span class="tag">&lt;/<span class="name">desc</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- sample module config, and the files should have relative path like</span></span><br><span class="line"><span class="comment">         ./bin/cyber_launch</span></span><br><span class="line"><span class="comment">         ./bin/mainboard</span></span><br><span class="line"><span class="comment">         ./conf/dag_streaming_0.conf --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>perception_lidar<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dag_conf</span>&gt;</span>/apollo/modules/perception/production/dag/dag_streaming_perception.dag<span class="tag">&lt;/<span class="name">dag_conf</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- if not set, use default process --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">process_name</span>&gt;</span>perception_lidar<span class="tag">&lt;/<span class="name">process_name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>motion_service<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dag_conf</span>&gt;</span>/apollo/modules/perception/production/dag/dag_motion_service.dag<span class="tag">&lt;/<span class="name">dag_conf</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- if not set, use default process --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">process_name</span>&gt;</span>motion_service<span class="tag">&lt;/<span class="name">process_name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">cyber</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ul>
+<li><code>module</code> 字段用于区分不同的模块</li>
+<li><code>name</code> 字段表示模块名称</li>
+<li><code>dag_conf</code> 字段为对应的 DAG 文件路径</li>
+<li><code>process_name</code> 字段表示为模块开辟的进程名</li>
+</ul>
+<p>我们可以在 Apollo 源码仓库的根目录下执行下述命令来加载上述 Launch 文件并启动其中包含的 DAG 文件中的子功能模块和相关组件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cyber_launch start modules/perception/production/launch/perception.launch</span><br></pre></td></tr></table></figure>
+<p><code>cyber_launch</code> 其实对应的是一个 Python 脚本 <code>apollo/cyber/tools/cyber_launch/cyber_launch.py</code>，上述语句最终会通过调用 Python <code>subprocess</code> 库的 <code>Popen</code> 函数为 Launch 文件中的每个 DAG 文件创建一个独立线程，并像 2.1 章节中描述的那样执行对应的 <code>mainboard</code> 启动语句，此处不再赘述。</p>
+<h2 id="2-3-从-DreamView-启动" class="heading-control"><a href="#2-3-从-DreamView-启动" class="headerlink" title="2.3 从 DreamView 启动"></a>2.3 从 DreamView 启动<a class="heading-anchor" href="#2-3-从-DreamView-启动" aria-hidden="true"></a></h2><p>在此前的文章<a href="https://blog.shipengx.com/archives/e4b9c8ad.html">《Apollo 6.0 安装完全指南》</a>中我们已经知道，通过下面的命令行我们可以启动 DreamView GUI 界面：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/bootstrap.sh start</span><br></pre></td></tr></table></figure>
+<p>在 GUI 界面上我们可以进行各种操作，无需通过前文介绍的 <code>mainboard</code> 或 <code>cyber_launch</code> 的方式单独启动模块，这是怎么做到的呢？如果我们打开 <code>apollo/scripts/bootstrap.sh</code>，并层层递进，会发现最终调用了 <code>apollo/scripts/apollo_base.sh</code> 中的 <code>start_customized_path</code> 函数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">start_customized_path</span></span>() &#123;</span><br><span class="line">  MODULE_PATH=<span class="variable">$1</span></span><br><span class="line">  MODULE=<span class="variable">$2</span></span><br><span class="line">  <span class="built_in">shift</span> 2</span><br><span class="line"></span><br><span class="line">  is_stopped_customized_path <span class="string">"<span class="variable">$&#123;MODULE_PATH&#125;</span>"</span> <span class="string">"<span class="variable">$&#123;MODULE&#125;</span>"</span></span><br><span class="line">  <span class="keyword">if</span> [ $? -eq 1 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">eval</span> <span class="string">"nohup cyber_launch start <span class="variable">$&#123;APOLLO_ROOT_DIR&#125;</span>/modules/<span class="variable">$&#123;MODULE_PATH&#125;</span>/launch/<span class="variable">$&#123;MODULE&#125;</span>.launch &amp;"</span></span><br><span class="line">    sleep 0.5</span><br><span class="line">    is_stopped_customized_path <span class="string">"<span class="variable">$&#123;MODULE_PATH&#125;</span>"</span> <span class="string">"<span class="variable">$&#123;MODULE&#125;</span>"</span></span><br><span class="line">    <span class="keyword">if</span> [ $? -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">      ok <span class="string">"Launched module <span class="variable">$&#123;MODULE&#125;</span>."</span></span><br><span class="line">      <span class="built_in">return</span> 0</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      error <span class="string">"Could not launch module <span class="variable">$&#123;MODULE&#125;</span>. Is it already built?"</span></span><br><span class="line">      <span class="built_in">return</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    info <span class="string">"Module <span class="variable">$&#123;MODULE&#125;</span> is already running - skipping."</span></span><br><span class="line">    <span class="built_in">return</span> 2</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关键的是其中的 <code>eval</code> 这条语句，我们显示地给出语句中的变量值，则最终下面这条语句会被执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup cyber_launch start apollo/modules/dream/launch/dream.launch &amp;</span><br></pre></td></tr></table></figure>
+<p>这条语句表示无挂断地（<code>nohup</code>）在后台（<code>&amp;</code>）执行 <code>cyber_launch</code> 脚本，命令参数是 <code>start</code> 和 <code>apollo/modules/dream/launch/dream.launch</code>，我们看下 Launch 文件中的内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">cyber</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dreamview<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dag_conf</span>&gt;</span><span class="tag">&lt;/<span class="name">dag_conf</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">type</span>&gt;</span>binary<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">process_name</span>&gt;</span></span><br><span class="line">           /apollo/bazel-bin/modules/dreamview/dreamview --flagfile=/apollo/modules/common/data/global_flagfile.txt</span><br><span class="line">        <span class="tag">&lt;/<span class="name">process_name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exception_handler</span>&gt;</span>respawn<span class="tag">&lt;/<span class="name">exception_handler</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">cyber</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>由于 <code>type</code> 属性为 <code>binary</code>，<code>cyber_launch</code> 脚本直接调用 Python <code>subprocess</code> 库的 <code>Popen</code> 函数来执行下面的语句：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/apollo/bazel-bin/modules/dreamview/dreamview --flagfile=/apollo/modules/common/data/global_flagfile.txt</span><br></pre></td></tr></table></figure>
+<p>前文曾提到，DreamView 模块最终会被编译成名为 <code>dreamview</code> 的可执行文件，所以上面的语句会启动 <code>dreamview</code> 程序，我们打开 <code>apollo/modules/dreamview/main.cc</code> 文件，看下 <code>dreamview</code> 的 <code>main</code> 入口函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">  google::ParseCommandLineFlags(&amp;argc, &amp;argv, <span class="literal">true</span>);</span><br><span class="line">  <span class="comment">// Added by caros to improve dv performance</span></span><br><span class="line">  apollo::cyber::GlobalData::Instance()-&gt;SetProcessGroup(<span class="string">"dreamview_sched"</span>);</span><br><span class="line">  apollo::cyber::Init(argv[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">  apollo::dreamview::Dreamview dreamview;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">bool</span> init_success = dreamview.Init().ok() &amp;&amp; dreamview.Start().ok();</span><br><span class="line">  <span class="keyword">if</span> (!init_success) &#123;</span><br><span class="line">    AERROR &lt;&lt; <span class="string">"Failed to initialize dreamview server"</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  apollo::cyber::WaitForShutdown();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该入口函数主要做了三件事：</p>
+<ol>
+<li>解析传入参数</li>
+<li>初始化 Cyber RT</li>
+<li>实例化 <code>Dreamview</code> 类，并进行初始化和启动</li>
+</ol>
+<p>这里我们只需要关注 <code>Dreamview::Init</code> 方法内部间接发生的两个事实：</p>
+<p><strong>1. 加载 HMI 模式</strong></p>
+<p>在<a href="https://blog.shipengx.com/archives/e4b9c8ad.html">《Apollo 6.0 安装完全指南》</a>中我们提到，需要在 DreamView 界面的对应下拉框中选择驾驶模式为“Mkz Standard Debug”，这里的驾驶模式其实对应了 <code>apollo/modules/dreamview/conf/hmi_modes/mkz_standard_debug.pb.txt</code> 模式配置文件，该文件描述了“Mkz Standard Debug”驾驶模式下需要启动哪些功能模块，我们看下其中与 Perception 模块对应的字段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cyber_modules &#123;</span><br><span class="line">  key: &quot;Perception&quot;</span><br><span class="line">  value: &#123;</span><br><span class="line">    dag_files: &quot;&#x2F;apollo&#x2F;modules&#x2F;perception&#x2F;production&#x2F;dag&#x2F;dag_streaming_perception.dag&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>cyber_modules</code> 表示功能模组，是比功能模块更大一级的概念，一个 <code>cyber_modules</code> 可以包含多个功能模块；<code>key</code> 表示 <code>cyber_modules</code> 的名称；<code>value</code> 包含 <code>cyber_modules</code> 依赖的所有 DAG 文件与 <code>cyber_modules</code> 所在的进程组 <code>process_group</code>（此处未显式给出，为空）。<code>Dreamview::Init</code> 方法间接调用 <code>apollo/modules/dreamview/backend/hmi/hmi_worker.cc</code> 中的 <code>HMIWorker::LoadMode</code> 方法来处理模式配置文件：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">HMIMode <span class="title">HMIWorker::LoadMode</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; mode_config_path)</span> </span>&#123;</span><br><span class="line">  HMIMode mode;</span><br><span class="line">  ACHECK(cyber::common::GetProtoFromFile(mode_config_path, &amp;mode))</span><br><span class="line">      &lt;&lt; <span class="string">"Unable to parse HMIMode from file "</span> &lt;&lt; mode_config_path;</span><br><span class="line">  <span class="comment">// Translate cyber_modules to regular modules.</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; iter : mode.cyber_modules()) &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; module_name = iter.first;</span><br><span class="line">    <span class="keyword">const</span> CyberModule&amp; cyber_module = iter.second;</span><br><span class="line">    <span class="comment">// Each cyber module should have at least one dag file.</span></span><br><span class="line">    ACHECK(!cyber_module.dag_files().empty())</span><br><span class="line">        &lt;&lt; <span class="string">"None dag file is provided for "</span> &lt;&lt; module_name &lt;&lt; <span class="string">" module in "</span></span><br><span class="line">        &lt;&lt; mode_config_path;</span><br><span class="line"></span><br><span class="line">    Module&amp; <span class="keyword">module</span> = LookupOrInsert(mode.mutable_modules(), module_name, &#123;&#125;);</span><br><span class="line">    <span class="keyword">module</span>.set_required_for_safety(cyber_module.required_for_safety());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Construct start_command:</span></span><br><span class="line">    <span class="comment">//     nohup mainboard -p &lt;process_group&gt; -d &lt;dag&gt; ... &amp;</span></span><br><span class="line">    <span class="keyword">module</span>.set_start_command(<span class="string">"nohup mainboard"</span>);</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; process_group = cyber_module.process_group();</span><br><span class="line">    <span class="keyword">if</span> (!process_group.empty()) &#123;</span><br><span class="line">      absl::StrAppend(<span class="keyword">module</span>.mutable_start_command(), <span class="string">" -p "</span>, process_group);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; dag : cyber_module.dag_files()) &#123;</span><br><span class="line">      absl::StrAppend(<span class="keyword">module</span>.mutable_start_command(), <span class="string">" -d "</span>, dag);</span><br><span class="line">    &#125;</span><br><span class="line">    absl::StrAppend(<span class="keyword">module</span>.mutable_start_command(), <span class="string">" &amp;"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Construct stop_command: pkill -f '&lt;dag[0]&gt;'</span></span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; first_dag = cyber_module.dag_files(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">module</span>.set_stop_command(absl::StrCat(<span class="string">"pkill -f \""</span>, first_dag, <span class="string">"\""</span>));</span><br><span class="line">    <span class="comment">// Construct process_monitor_config.</span></span><br><span class="line">    <span class="keyword">module</span>.mutable_process_monitor_config()-&gt;add_command_keywords(<span class="string">"mainboard"</span>);</span><br><span class="line">    <span class="keyword">module</span>.mutable_process_monitor_config()-&gt;add_command_keywords(first_dag);</span><br><span class="line">  &#125;</span><br><span class="line">  mode.clear_cyber_modules();</span><br><span class="line">  AINFO &lt;&lt; <span class="string">"Loaded HMI mode: "</span> &lt;&lt; mode.DebugString();</span><br><span class="line">  <span class="keyword">return</span> mode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>HMIWorker::LoadMode</code> 方法实现并不复杂，它读取模式配置文件，为每一个 <code>cyber_modules</code> 功能模组生成对应的启动命令 <code>start_command</code>，<code>cyber_modules</code> 中 <code>value</code> 项下的每一个 <code>dag_files</code> 对应启动命令中的一个 <code>-d</code> 选项，例如会为上面提到的 <code>apollo/modules/dreamview/conf/hmi_modes/mkz_standard_debug.pb.txt</code> 中的 Perception 模块字段生成下面的 <code>start_command</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup mainboard -d /apollo/modules/perception/production/dag/dag_streaming_perception.dag &amp;</span><br></pre></td></tr></table></figure>
+<p>模式配置文件中所有的 <code>cyber_modules</code> 最终会显示在 DreamView 的 Module Controller 界面上：</p>
+<p><img data-src="https://image.shipengx.com/DreamView%20Module%20Controller.png" alt="DreamView Module Controller"></p>
+<p><strong>2. 启动功能模块</strong></p>
+<p>通过 DreamView Module Controller 前端界面上的滑动按钮可以打开或关闭对应模块，当我们滑动某个模块的按钮至开启状态时，相应动作会通过 WebSocket 由前端传递至后端并触发执行 <code>apollo/modules/dreamview/backend/hmi/hmi_worker.cc</code> 中的 <code>HMIWorker::StartModule</code> 方法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HMIWorker::StartModule</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; <span class="keyword">module</span>)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Module* module_conf = FindOrNull(current_mode_.modules(), <span class="keyword">module</span>);</span><br><span class="line">  <span class="keyword">if</span> (module_conf != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">    System(module_conf-&gt;start_command());</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    AERROR &lt;&lt; <span class="string">"Cannot find module "</span> &lt;&lt; <span class="keyword">module</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">module</span> == <span class="string">"Recorder"</span>) &#123;</span><br><span class="line">    <span class="keyword">auto</span>* monitors = FuelMonitorManager::Instance()-&gt;GetCurrentMonitors();</span><br><span class="line">    <span class="keyword">if</span> (monitors != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">      <span class="keyword">auto</span> iter = monitors-&gt;find(FLAGS_data_collection_monitor_name);</span><br><span class="line">      <span class="keyword">if</span> (iter != monitors-&gt;end()) &#123;</span><br><span class="line">        <span class="keyword">auto</span>* data_collection_monitor = iter-&gt;second.get();</span><br><span class="line">        <span class="keyword">if</span> (data_collection_monitor-&gt;IsEnabled() &amp;&amp; record_count_ == <span class="number">0</span>) &#123;</span><br><span class="line">          data_collection_monitor-&gt;Restart();</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      ++record_count_;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>HMIWorker::StartModule</code> 方法将来自前端的被触发模块的 <code>start_command</code> 传入 <code>System</code> 函数并执行：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">System</span><span class="params">(<span class="built_in">std</span>::string_view cmd)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">int</span> ret = <span class="built_in">std</span>::system(cmd.data());</span><br><span class="line">  <span class="keyword">if</span> (ret == <span class="number">0</span>) &#123;</span><br><span class="line">    AINFO &lt;&lt; <span class="string">"SUCCESS: "</span> &lt;&lt; cmd;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    AERROR &lt;&lt; <span class="string">"FAILED("</span> &lt;&lt; ret &lt;&lt; <span class="string">"): "</span> &lt;&lt; cmd;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>System</code> 函数最终会通过标准库函数 <code>std::system</code> 执行 <code>start_command</code> 中的命令行语句。至此，又回到了 2.1 章节中叙述的启动方式。</p>
+<h1 id="3-总结" class="heading-control"><a href="#3-总结" class="headerlink" title="3 总结"></a>3 总结<a class="heading-anchor" href="#3-总结" aria-hidden="true"></a></h1><p>概括全文，我们可以得到以下结论：</p>
+<p><strong>1)</strong> Cyber RT 被构建成名为 <code>mainboard</code> 的可执行文件，Perception 模块被构建成两个分别命名为 <code>libperception_component_camera.so</code> 和 <code>libperception_component_lidar.so</code> 的动态库文件，DreamView 模块被构建成名为 <code>dreamview</code> 的可执行文件；</p>
+<p><strong>2)</strong> 对于模块启动，可以使用 <code>mainboard</code> 直接从 DAG 文件启动，也可以使用 <code>cyber_launch</code> 脚本从 Launch 文件间接启动，或者通过 DreamView Module Controller 前端界面进行启动，后面两种方式根本上也是通过 <code>mainboard</code> 读入了相应 DAG 文件进行启动；</p>
+<p><strong>3)</strong> 使用 <code>mainboard</code> 从 DAG 文件启动相应功能模块时，主要发生了三件事：</p>
+<ul>
+<li><strong>加载子功能模块并注册其中的各个组件。</strong> 通过 <code>ClassLoaderManager::LoadLibrary</code> 函数间接调用 Linux 底层的 <code>dlopen</code> 函数来加载 DAG 文件中的各个子功能模块的 <code>.so</code> 动态库文件，每个子功能模块的组件注册过程随着模块 <code>.so</code> 动态库文件的加载一同进行，最终通过 <code>CYBER_REGISTER_COMPONENT</code> 宏来实现组件注册；</li>
+<li><strong>实例化具体组件类。</strong> 在 <code>factory_map</code> 中查找各个具体组件类注册过程中生成的对应的类工厂对象，并通过该类工厂对象返回一个具体组件类的指针；</li>
+<li><strong>初始化具体组件实例，进入组件内部算法流程。</strong> 每个具体组件类的 <code>Init</code> 方法会在 <code>Component</code> 类的 <code>Initialize</code> 方法中被多态调用一次，而每个具体组件类的 <code>Proc</code> 方法将成为对应 channel 上的消息回调函数，最终，每个组件会对应一个协程。</li>
+</ul>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9hcG9sbG8uYXV0by9kb2N1bWVudF9jbi5odG1sP2RvbWFpbj1BcG9sbG8tSG9tZXBhZ2UtRG9jdW1lbnQmYW1wO3JlcG89QXBvbGxvX0RvY19DTl82XzAmYW1wO2ZpbGVwYXRoPS8=" title="https://apollo.auto/document_cn.html?domain=Apollo-Homepage-Document&amp;repo=Apollo_Doc_CN_6_0&amp;filepath=/">CyberRT 介绍<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2RhdmlkaG9wcGVyL2FydGljbGUvZGV0YWlscy84NTI0ODc5OQ==" title="https://blog.csdn.net/davidhopper/article/details/85248799">Apollo 3.5 各功能模块的启动过程解析<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNTAzNTU4Nzg=" title="https://zhuanlan.zhihu.com/p/350355878">apollo 介绍之 cyber 启动(十九)<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\46155f38.html" rel="bookmark">Apollo 6.0 Perception 模块 Fusion 组件（二）：主体算法流程分析</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e4b9c8ad.html" rel="bookmark">Apollo 6.0 安装完全指南</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e7b86cce.html" rel="bookmark">当我们谈融合时我们在谈些什么？</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f969107a.html" rel="bookmark">ROS 1 安装——从手动到自动：以 Ubuntu 18.04 + ROS Melodic 为例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/e8e6ccc3.html" title="Apollo 6.0 Perception 模块 Fusion 组件（一）：构建与启动流程分析">https://blog.shipengx.com/archives/e8e6ccc3.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag"><i class="fa fa-tag"></i> 自动驾驶</a>
+              <a href="/tags/Apollo/" rel="tag"><i class="fa fa-tag"></i> Apollo</a>
+              <a href="/tags/%E5%A4%9A%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BF%A1%E6%81%AF%E8%9E%8D%E5%90%88/" rel="tag"><i class="fa fa-tag"></i> 多传感器信息融合</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/e4b9c8ad.html" rel="prev" title="Apollo 6.0 安装完全指南">
+      <i class="fa fa-chevron-left"></i> Apollo 6.0 安装完全指南
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/46155f38.html" rel="next" title="Apollo 6.0 Perception 模块 Fusion 组件（二）：主体算法流程分析">
+      Apollo 6.0 Perception 模块 Fusion 组件（二）：主体算法流程分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-构建"><span class="nav-text">1 构建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Cyber-RT-构建"><span class="nav-text">1.1 Cyber RT 构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-Perception-模块构建"><span class="nav-text">1.2 Perception 模块构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-DreamView-模块构建"><span class="nav-text">1.3 DreamView 模块构建</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-启动-Perception-模块"><span class="nav-text">2 启动 Perception 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-从-DAG-文件启动"><span class="nav-text">2.1 从 DAG 文件启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-DAG-文件的组织形式"><span class="nav-text">2.1.1 DAG 文件的组织形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-加载-DAG-文件并启动功能模块"><span class="nav-text">2.1.2 加载 DAG 文件并启动功能模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-1-加载子功能模块并注册其中的各个组件"><span class="nav-text">2.1.2.1 加载子功能模块并注册其中的各个组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-2-实例化具体组件类"><span class="nav-text">2.1.2.2 实例化具体组件类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-3-初始化具体组件实例，进入组件内部算法流程"><span class="nav-text">2.1.2.3 初始化具体组件实例，进入组件内部算法流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-从-Launch-文件启动"><span class="nav-text">2.2 从 Launch 文件启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-从-DreamView-启动"><span class="nav-text">2.3 从 DreamView 启动</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-总结"><span class="nav-text">3 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

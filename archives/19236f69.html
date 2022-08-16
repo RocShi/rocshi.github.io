@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本文主要介绍了在 Ubuntu 中使用 gperftools CPU profiler 进行 C++ 代码性能分析的基本步骤。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 gperftools 进行 C++ 代码性能分析">
+<meta property="og:url" content="https://blog.shipengx.com/archives/19236f69.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本文主要介绍了在 Ubuntu 中使用 gperftools CPU profiler 进行 C++ 代码性能分析的基本步骤。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E4%BD%BF%E7%94%A8%20gperftools%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%9B%BE%E5%BD%A2%E5%8C%96%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A.png">
+<meta property="article:published_time" content="2022-06-21T03:34:31.000Z">
+<meta property="article:modified_time" content="2022-08-13T19:52:47.616Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E4%BD%BF%E7%94%A8%20gperftools%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/19236f69.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>使用 gperftools 进行 C++ 代码性能分析 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/19236f69.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          使用 gperftools 进行 C++ 代码性能分析
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-06-21 11:34:31" itemprop="dateCreated datePublished" datetime="2022-06-21T11:34:31+08:00">2022-06-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-14 03:52:47" itemprop="dateModified" datetime="2022-08-14T03:52:47+08:00">2022-08-14</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">编码</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/19236f69.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/19236f69.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本文主要介绍了在 Ubuntu 中使用 gperftools CPU profiler 进行 C++ 代码性能分析的基本步骤。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E4%BD%BF%E7%94%A8%20gperftools%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90.png" alt="使用 gperftools 进行 C++ 代码性能分析"></p>
+<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>在进行模块的负载优化时，使用到了 Google 开发的 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dwZXJmdG9vbHMvZ3BlcmZ0b29scw==" title="https://github.com/gperftools/gperftools">gperftools<i class="fa fa-external-link"></i></span> 工具来进行代码性能分析。正如 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dwZXJmdG9vbHMvZ3BlcmZ0b29scw==" title="https://github.com/gperftools/gperftools">gperftools wiki<i class="fa fa-external-link"></i></span> 中所描述的：</p>
+<blockquote>
+<p>gperftools is a collection of a high-performance multi-threaded <code>malloc()</code> implementation, plus some pretty nifty performance analysis tools.</p>
+<p>gperftools 是一系列高性能多线程 <code>malloc()</code> 实现的集合，同时添加了一些精巧的性能分析工具。</p>
+</blockquote>
+<p>gperftools 性能分析工具主要包含五部分：</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ncGVyZnRvb2xzLmdpdGh1Yi5pby9ncGVyZnRvb2xzL3RjbWFsbG9jLmh0bWw=" title="https://gperftools.github.io/gperftools/tcmalloc.html">TC Malloc<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ncGVyZnRvb2xzLmdpdGh1Yi5pby9ncGVyZnRvb2xzL2hlYXBfY2hlY2tlci5odG1s" title="https://gperftools.github.io/gperftools/heap_checker.html">Heap Checker<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ncGVyZnRvb2xzLmdpdGh1Yi5pby9ncGVyZnRvb2xzL2hlYXBwcm9maWxlLmh0bWw=" title="https://gperftools.github.io/gperftools/heapprofile.html">Heap Profiler<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ncGVyZnRvb2xzLmdpdGh1Yi5pby9ncGVyZnRvb2xzL2NwdXByb2ZpbGUuaHRtbA==" title="https://gperftools.github.io/gperftools/cpuprofile.html">CPU Profiler<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ncGVyZnRvb2xzLmdpdGh1Yi5pby9ncGVyZnRvb2xzL3Bwcm9mX3JlbW90ZV9zZXJ2ZXJzLmh0bWw=" title="https://gperftools.github.io/gperftools/pprof_remote_servers.html">pprof<i class="fa fa-external-link"></i></span></li>
+</ul>
+<p>本文中将使用 CPU Profiler 和 pprof 进行代码性能分析。其中，CPU Profiler 用于生成后缀为 <code>.prof</code> 的 profile 性能描述文件，pprof 是用于解析 profile 文件的 perl 脚本工具。</p>
+<h1 id="1-安装" class="heading-control"><a href="#1-安装" class="headerlink" title="1 安装"></a>1 安装<a class="heading-anchor" href="#1-安装" aria-hidden="true"></a></h1><h2 id="1-1-基础软件" class="heading-control"><a href="#1-1-基础软件" class="headerlink" title="1.1 基础软件"></a>1.1 基础软件<a class="heading-anchor" href="#1-1-基础软件" aria-hidden="true"></a></h2><p>在命令行中通过 <code>apt</code> 安装 autoconf、automake、libtool：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install autoconf automake libtool</span><br></pre></td></tr></table></figure>
+<h2 id="1-2-libunwind" class="heading-control"><a href="#1-2-libunwind" class="headerlink" title="1.2 libunwind"></a>1.2 libunwind<a class="heading-anchor" href="#1-2-libunwind" aria-hidden="true"></a></h2><p>gperftools 在 64 位操作系统下需要 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xpYnVud2luZC9saWJ1bndpbmQ=" title="https://github.com/libunwind/libunwind">libunwind<i class="fa fa-external-link"></i></span> 库的支持，libunwind 提供了可用于分析程序调用栈的 API，可直接执行下述命令行进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">wget https://github.com/libunwind/libunwind/releases/download/v1.6.2/libunwind-1.6.2.tar.gz</span><br><span class="line">tar -zxvf libunwind-1.6.2.tar.gz</span><br><span class="line"><span class="built_in">cd</span> libunwind-1.6.2</span><br><span class="line">./configure</span><br><span class="line">make -j8</span><br><span class="line">sudo make install</span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">rm -rf libunwind-1.6.2.tar.gz libunwind-1.6.2</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-graphviz" class="heading-control"><a href="#1-3-graphviz" class="headerlink" title="1.3 graphviz"></a>1.3 graphviz<a class="heading-anchor" href="#1-3-graphviz" aria-hidden="true"></a></h2><p>gperftools 使用 <span class="exturl" data-url="aHR0cDovL3d3dy5ncmFwaHZpei5vcmcv" title="http://www.graphviz.org/">graphviz<i class="fa fa-external-link"></i></span> 将代码性能分析结果进行图形化显示。graphviz 是一个由 AT&amp;T 实验室开发的开源工具包，用于绘制 DOT 语言脚本描述的图形，Ubuntu 中可通过 <code>apt</code> 直接安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install graphviz</span><br></pre></td></tr></table></figure>
+<h2 id="1-4-gperftools" class="heading-control"><a href="#1-4-gperftools" class="headerlink" title="1.4 gperftools"></a>1.4 gperftools<a class="heading-anchor" href="#1-4-gperftools" aria-hidden="true"></a></h2><p>gperftools 可直接执行下述命令行进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">wget https://github.com/gperftools/gperftools/releases/download/gperftools-2.10/gperftools-2.10.tar.gz</span><br><span class="line">tar -zxvf gperftools-2.10.tar.gz</span><br><span class="line"><span class="built_in">cd</span> gperftools-2.10</span><br><span class="line">./configure</span><br><span class="line">make -j8</span><br><span class="line">sudo make install</span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">rm -rf gperftools-2.10.tar.gz gperftools-2.10</span><br></pre></td></tr></table></figure>
+<h1 id="2-使用" class="heading-control"><a href="#2-使用" class="headerlink" title="2 使用"></a>2 使用<a class="heading-anchor" href="#2-使用" aria-hidden="true"></a></h1><p>下文中将使用的 C++ 工程 Demo 可点击<a href="/download/cpp_demo.zip">这里</a>下载。</p>
+<h2 id="2-1-代码插桩" class="heading-control"><a href="#2-1-代码插桩" class="headerlink" title="2.1 代码插桩"></a>2.1 代码插桩<a class="heading-anchor" href="#2-1-代码插桩" aria-hidden="true"></a></h2><p>在使用 gperftools 进行代码性能分析前，需要进行代码插桩：</p>
+<ul>
+<li><p>插入头文件：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gperftools/profiler.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在待分析的代码块前插入 Profiler 开始语句：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ProfilerStart(<span class="string">"file_name.prof"</span>);</span><br></pre></td></tr></table></figure>
+<p><code>file_name.prof</code> 表示 <code>.prof</code> 文件的文件名。</p>
+</li>
+<li><p>在待分析的代码块后插入 Profiler 结束语句：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ProfilerStop();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>完整的插桩示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"inc/func.hpp"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gperftools/profiler.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ProfilerStart(<span class="string">"cpp_demo_perf.prof"</span>);</span><br><span class="line"></span><br><span class="line">    PrintString(<span class="string">"This's a demo."</span>);</span><br><span class="line">    Func();</span><br><span class="line"></span><br><span class="line">    ProfilerStop();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-2-编译链接" class="heading-control"><a href="#2-2-编译链接" class="headerlink" title="2.2 编译链接"></a>2.2 编译链接<a class="heading-anchor" href="#2-2-编译链接" aria-hidden="true"></a></h2><p>编译时我们需要将 profiler 库和 libunwind 库链接到可执行程序，对应的 CMakeLists 文件中的语句为：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> profiler unwind)</span><br></pre></td></tr></table></figure>
+<h2 id="2-3-运行可执行程序" class="heading-control"><a href="#2-3-运行可执行程序" class="headerlink" title="2.3 运行可执行程序"></a>2.3 运行可执行程序<a class="heading-anchor" href="#2-3-运行可执行程序" aria-hidden="true"></a></h2><p>找到编译得到的可执行程序，并在终端中运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./cpp_demo</span><br></pre></td></tr></table></figure>
+<p>正常情况下，会生成一个我们上文中所提到的 <code>.prof</code> 文件，如果报动态链接库找不到的问题，手动执行下动态链接库的管理命令 <code>ldconfig</code> 即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ldconfig</span><br></pre></td></tr></table></figure>
+<p><code>ldconfig</code> 可执行程序存放在 <code>/sbin</code> 目录下，通常在系统启动时运行，而当用户安装了一个新的动态链接库时，需要手动运行这个命令。运行 <code>ldconfig</code> 会刷新动态装入程序 <code>ld.so</code> 所需的链接和缓存文件 <code>/etc/ld.so.cache</code>（此文件保存了已排好序的动态链接库名字列表），实现动态链接库为系统所共享。</p>
+<h2 id="2-4-生成图形化分析报告" class="heading-control"><a href="#2-4-生成图形化分析报告" class="headerlink" title="2.4 生成图形化分析报告"></a>2.4 生成图形化分析报告<a class="heading-anchor" href="#2-4-生成图形化分析报告" aria-hidden="true"></a></h2><p>最后，通过上文提到的 pprof 解析 <code>.prof</code> 文件。pprof 有多种使用方法，下面的命令行将 <code>.prof</code> 文件解析为 <code>.pdf</code> 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pprof --pdf cpp_demo cpp_demo_perf.prof &gt; cpp_demo_perf.pdf</span><br></pre></td></tr></table></figure>
+<p>解析得到的 <code>.pdf</code> 文件中保存了图形化的代码性能分析结果，从中我们可以查找代码的性能瓶颈：</p>
+<p><img data-src="https://image.shipengx.com/%E5%9B%BE%E5%BD%A2%E5%8C%96%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A.png" alt="图形化性能分析报告"></p>
+<p>每一个方框表示一个进程，有向边表示进程间的调用关系。方框越大，表示该进程耗时越高，这里我们可以发现，<code>Func2</code> 函数占了程序总耗时的 67%，是程序的性能瓶颈。需要注意的是，gperftools 的 CPU Profiler 是通过采样的方式工作的，如果程序运行时间太短，会导致样本不足从而造成分析结果不准确。</p>
+<p>关于图形化分析结果更详细的解释，可以参考<span class="exturl" data-url="aHR0cHM6Ly9ncGVyZnRvb2xzLmdpdGh1Yi5pby9ncGVyZnRvb2xzL2NwdXByb2ZpbGUuaHRtbA==" title="https://gperftools.github.io/gperftools/cpuprofile.html">这里<i class="fa fa-external-link"></i></span>。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dwZXJmdG9vbHMvZ3BlcmZ0b29scw==" title="https://github.com/gperftools/gperftools">gperftools wiki<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ncGVyZnRvb2xzLmdpdGh1Yi5pby9ncGVyZnRvb2xzL2NwdXByb2ZpbGUuaHRtbA==" title="https://gperftools.github.io/gperftools/cpuprofile.html">gperftools CPU profiler<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xpYnVud2luZC9saWJ1bndpbmQ=" title="https://github.com/libunwind/libunwind">libunwind<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5ncmFwaHZpei5vcmcv" title="http://www.graphviz.org/">graphviz<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9saW51eDI2NS5jb20vY291cnNlL2xpbnV4LWNvbW1hbmQtbGRjb25maWcuaHRtbA==" title="https://linux265.com/course/linux-command-ldconfig.html">ldconfig 命令<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/19236f69.html" title="使用 gperftools 进行 C++ 代码性能分析">https://blog.shipengx.com/archives/19236f69.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"><i class="fa fa-tag"></i> C/C++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/5029459.html" rel="prev" title="C++ Primer - 第 18 章 用于大型程序的工具">
+      <i class="fa fa-chevron-left"></i> C++ Primer - 第 18 章 用于大型程序的工具
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-安装"><span class="nav-text">1 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-基础软件"><span class="nav-text">1.1 基础软件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-libunwind"><span class="nav-text">1.2 libunwind</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-graphviz"><span class="nav-text">1.3 graphviz</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-gperftools"><span class="nav-text">1.4 gperftools</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-使用"><span class="nav-text">2 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-代码插桩"><span class="nav-text">2.1 代码插桩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-编译链接"><span class="nav-text">2.2 编译链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-运行可执行程序"><span class="nav-text">2.3 运行可执行程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-生成图形化分析报告"><span class="nav-text">2.4 生成图形化分析报告</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

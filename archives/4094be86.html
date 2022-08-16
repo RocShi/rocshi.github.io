@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer - 第 12 章 动态内存">
+<meta property="og:url" content="https://blog.shipengx.com/archives/4094be86.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E7%AC%AC%2012%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8.png">
+<meta property="article:published_time" content="2021-12-04T09:20:00.000Z">
+<meta property="article:modified_time" content="2022-05-12T07:55:25.673Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="C++ Primer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E7%AC%AC%2012%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/4094be86.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>C++ Primer - 第 12 章 动态内存 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/4094be86.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          C++ Primer - 第 12 章 动态内存
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-04 17:20:00" itemprop="dateCreated datePublished" datetime="2021-12-04T17:20:00+08:00">2021-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-12 15:55:25" itemprop="dateModified" datetime="2022-05-12T15:55:25+08:00">2022-05-12</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">编码</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AC-Primer%E3%80%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">《C++ Primer》</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/4094be86.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/4094be86.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ol>
+<li><p>全局对象在程序启动时分配，在程序结束时销毁。对于局部自动对象，当我们进入其定义所在的程序块时被创建，在离开块时销毁。局部 <code>static</code> 对象在第一次使用前分配，在程序结束时销毁。</p>
+</li>
+<li><p>静态内存用来保存局部 <code>static</code> 对象、类 <code>static</code> 数据成员以及定义在任何函数之外的变量。栈内存用来保存定义在函数内的非 <code>static</code> 对象。分配在静态或栈内存中的对象由编译器自动创建和销毁。对于栈对象，仅在其定义的程序块运行时才存在；<code>static</code> 对象在使用之前分配，在程序结束时销毁。</p>
+</li>
+<li><p>除了静态内存和栈内存，每个程序还拥有一个内存池。这部分内存被称作<strong>自由空间</strong>（free store）或<strong>堆</strong>（heap）。程序用堆来存储<strong>动态分配</strong>（dynamically allocate）的对象——即，那些在程序运行时分配的对象。</p>
+</li>
+</ol>
+<h1 id="12-1-动态内存与智能指针" class="heading-control"><a href="#12-1-动态内存与智能指针" class="headerlink" title="12.1 动态内存与智能指针"></a>12.1 动态内存与智能指针<a class="heading-anchor" href="#12-1-动态内存与智能指针" aria-hidden="true"></a></h1><ol>
+<li><p><strong><code>new</code></strong>，在动态内存中为对象分配空间并返回一个指向该对象的指针，我们可以选择对对象进行初始化；<strong><code>delete</code></strong>，接受一个动态对象的指针，销毁该对象，并释放与之关联的内存。</p>
+</li>
+<li><p>智能指针的行为类似常规指针，重要的区别是它负责自动释放所指向的对象。新标准库提供的两种智能指针的区别在于管理底层指针的方式：<strong><code>shared_ptr</code></strong> 允许多个指针指向同一个对象；<strong><code>unicue_ptr</code></strong> 则“独占”所指向的对象。标准库还定义了一个名为 <strong><code>weak_ptr</code></strong> 的伴随类，它是一种弱引用，指向 <code>shared_ptr</code> 所管理的对象。这三种类型都定义在 <code>memory</code> 头文件中。</p>
+</li>
+</ol>
+<h2 id="12-1-1-shared-ptr-类" class="heading-control"><a href="#12-1-1-shared-ptr-类" class="headerlink" title="12.1.1 shared_ptr 类"></a>12.1.1 shared_ptr 类<a class="heading-anchor" href="#12-1-1-shared-ptr-类" aria-hidden="true"></a></h2><ol>
+<li><p>类似 <code>vector</code>，智能指针也是模板。因此，当我们创建一个智能指针时，必须提供额外的信息——指针可以指向的类型。与 <code>vector</code> 一样，我们在尖括号内给出类型，之后是所定义的这种智能指针的名字：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="built_in">string</span>&gt; p1;    <span class="comment">// shared_ptr，可以指向 string</span></span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;&gt; p2; <span class="comment">// shared ptr，可以指向 int 的 list</span></span><br></pre></td></tr></table></figure>
+<p>默认初始化的智能指针中保存着一个空指针。</p>
+</li>
+<li><p>解引用一个智能指针返回它指向的对象。如果在一个条件判断中使用智能指针，效果就是检测它是否为空。</p>
+</li>
+<li><p>以下操作同时适用于 <code>shared_ptr</code> 和 <code>unique_ptr</code>：</p>
+<p> <style type="text/css"><br> .tg  {border-collapse:collapse;border-spacing:0;}<br> .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>   overflow:hidden;padding:10px 5px;word-break:normal;}<br> .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>   font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br> .tg .tg-cly1{text-align:left;vertical-align:middle}<br> .tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}<br> .tg .tg-0lax{text-align:left;vertical-align:top}<br> .tg .tg-nrix{text-align:center;vertical-align:middle}
+ </style></p>
+ <table class="tg">
+ <thead>
+   <tr>
+     <th class="tg-amwm" colspan="2"><center>shared_ptr 和 unique_ptr 都支持的操作</center></th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td class="tg-0lax">shared_ptr&lt;T&gt; sp</td>
+     <td class="tg-nrix" rowspan="2">空智能指针，可以指向类型为 T 的对象</td>
+   </tr>
+   <tr>
+     <td class="tg-0lax">unique_ptr&lt;T&gt; up</td>
+   </tr>
+   <tr>
+     <td class="tg-0lax">p</td>
+     <td class="tg-0lax">将 p 用作一个条件判断，若 p 指向一个对象，则为 true</td>
+   </tr>
+   <tr>
+     <td class="tg-0lax">*p</td>
+     <td class="tg-0lax">解引用 p，获得它指向的对象</td>
+   </tr>
+   <tr>
+     <td class="tg-0lax">p-&gt;mem</td>
+     <td class="tg-0lax">等价于 (*p).mem</td>
+   </tr>
+   <tr>
+     <td class="tg-0lax">p.get()</td>
+     <td class="tg-0lax">返回 p 中保存的指针。要小心使用，若智能指针释放了其对象，返回的指针所指向的对象也就消失了</td>
+   </tr>
+   <tr>
+     <td class="tg-0lax">swap(p, q)</td>
+     <td class="tg-cly1" rowspan="2">交换 p 和 q 中的指针</td>
+   </tr>
+   <tr>
+     <td class="tg-0lax">p.swap(q)</td>
+   </tr>
+ </tbody>
+ </table>
+
+<p>以下操作则仅适用于 <code>shared_ptr</code>：</p>
+<p> <style type="text/css"><br> .tg  {border-collapse:collapse;border-spacing:0;}<br> .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br> overflow:hidden;padding:10px 5px;word-break:normal;}<br> .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br> .tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}<br> .tg .tg-0lax{text-align:left;vertical-align:top}
+ </style></p>
+ <table class="tg">
+ <thead>
+   <tr>
+     <th class="tg-amwm" colspan="2"><center>shared_ptr 独有的操作</center></th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td class="tg-0lax">make_shared&lt;T&gt; (args)</td>
+     <td class="tg-0lax">返回一个 shared_ptr，指向一个动态分配的类型为 T 的对象。使用 args 初始化此对象</td>
+   </tr>
+   <tr>
+     <td class="tg-0lax">shared_ptr&lt;T&gt; p(q)</td>
+     <td class="tg-0lax">p 是 shared_ptr q 的拷贝；此操作会递增 q 中的计数器。q 中的指针必须能转换为 T*</td>
+   </tr>
+   <tr>
+     <td class="tg-0lax">p = q</td>
+     <td class="tg-0lax">p 和 q 都是 shared_ptr，所保存的指针必须能相互转换。此操作会递减 p 的引用计数，递增 q 的引用计数；若 p 的引用计数变为 0，则将其管理的原内存释放</td>
+   </tr>
+   <tr>
+     <td class="tg-0lax">p-&gt;mem</td>
+     <td class="tg-0lax">等价于 (*p).mem</td>
+   </tr>
+   <tr>
+     <td class="tg-0lax">p.unique()</td>
+     <td class="tg-0lax">若 p.use_count() 为 1，返回 true；否则返回 false</td>
+   </tr>
+   <tr>
+     <td class="tg-0lax">p.use_count()</td>
+     <td class="tg-0lax">返回与 p 共享对象的智能指针数量；可能很慢，主要用于调试</td>
+   </tr>
+ </tbody>
+ </table>
+</li>
+<li><p>最安全的分配和使用动态内存的方法是调用一个名为 <code>make_shared</code> 的标准库函数。此函数在动态内存中分配一个对象并初始化它，返回指向此对象的 <code>shared_ptr</code>。与智能指针一样，<code>make_shared</code> 也定义在头文件 <code>memory</code> 中。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 指向一个值为 42 的 int 的 shared_ptr</span></span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; p3 = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">42</span>);</span><br><span class="line"><span class="comment">// p4 指向一个值为“9999999999"的 string</span></span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="built_in">string</span>&gt; p4 = make_shared&lt;<span class="built_in">string</span>&gt;(<span class="number">10</span>, <span class="string">'9'</span>);</span><br><span class="line"><span class="comment">// p5 指向一个值初始化的 int，即，值为 0</span></span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; p5 = make_shared&lt;<span class="keyword">int</span>&gt;();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>之我见。make_shared 做的三件事：<br>1、申请分配动态内存；<br>2、在动态内存上调用模板参数类型对应的构造函数进行对象构造；<br>3、返回指向新分配动态内存的 shared_ptr 对象。</p>
+</blockquote>
+</li>
+<li><p>通常用 <code>auto</code> 定义一个对象来保存 <code>make_shared</code> 的结果：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// p6 指向一个动态分配的空 vector&lt;string&gt;</span></span><br><span class="line"><span class="keyword">auto</span> p6 = make_shared&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt;();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当进行拷贝或赋值操作时，每个 <code>shared_ptr</code> 都会记录有多少个其他 <code>shared_ptr</code> 指向相同的对象。可以认为每个 <code>shared_ptr</code> 都有一个关联的计数器，通常称其为<strong>引用计数</strong>（reference count）。无论何时我们拷贝一个 <code>shared_ptr</code>，计数器都会递增。例如，<strong>当用一个 <code>shared_ptr</code> 初始化另一个 <code>shared_ptr</code>，或将它作为参数传递给一个函数以及作为函数的返回值时，它所关联的计数器就会递增</strong>。当我们<strong>给 <code>shared_ptr</code> 赋予一个新值或是 <code>shared_ptr</code> 被销毁（例如一个局部的 <code>shared_ptr</code> 离开其作用域）时，计数器就会递减</strong>。一旦一个 <code>shared_ptr</code> 的计数器变为 0，它就会自动释放自己所管理的对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> r = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">42</span>); <span class="comment">// r 指向的 int 只有一个引用者</span></span><br><span class="line">r = q;                         <span class="comment">// 给 r 赋值，令它指向另一个地址</span></span><br><span class="line">                               <span class="comment">// 递增 q 指向的对象的引用计数</span></span><br><span class="line">                               <span class="comment">// 递减 r 原来指向的对象的引用计数</span></span><br><span class="line">                               <span class="comment">// r 原来指向的对象已没有引用者，会自动释放</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当指向一个对象的最后一个 <code>shared_ptr</code> 被销毁时，<code>shared_ptr</code> 类会自动销毁此对象。<code>shared_ptr</code> 的析构函数会递减它所指向的对象的引用计数。如果引用计数变为 0，<code>shared_ptr</code> 的析构函数就会销毁对象，并释放它占用的内存。</p>
+</li>
+<li><p>由于在最后一个 <code>shared_ptr</code> 销毁前内存都不会释放，保证 <code>shared_ptr</code> 在无用之后不再保留就非常重要了。<strong>如果你忘记了销毁程序不再需要的 <code>shared_ptr</code>，程序仍会正确执行，但会浪费内存。</strong> <code>share_ptr</code> 在无用之后仍然保留的一种可能情况是，你将 <code>shared_ptr</code> 存放在一个容器中，随后重排了容器，从而不再需要某些元素。在这种情况下，你应该确保用 <code>erase</code> 删除那些不再需要的 <code>shared_ptr</code> 元素。</p>
+<blockquote>
+<p><strong>Note：</strong> 如果你将 <code>shared_ptr</code> 存放于一个容器中，而后不再需要全部元素，而只使用其中一部分，要记得用 <code>erase</code> 删除不再需要的那些元素。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p><strong>Note：</strong> 使用动态内存的一个常见原因是允许多个对象共享相同的状态。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="12-1-2-直接管理内存" class="heading-control"><a href="#12-1-2-直接管理内存" class="headerlink" title="12.1.2 直接管理内存"></a>12.1.2 直接管理内存<a class="heading-anchor" href="#12-1-2-直接管理内存" aria-hidden="true"></a></h2><ol>
+<li><p>在自由空间分配的内存是无名的，因此 <code>new</code> 无法为其分配的对象命名，而是返回一个指向该对象的指针。<strong>默认情况下，动态分配的对象是默认初始化的，这意味着内置类型或组合类型的对象的值将是未定义的，而类类型对象将用默认构造函数进行初始化。</strong></p>
+</li>
+<li><p>初始化动态分配的对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *pi = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">1024</span>);          <span class="comment">// pi 指向的对象的值为 1024</span></span><br><span class="line"><span class="built_in">string</span> *ps = <span class="keyword">new</span> <span class="built_in">string</span>(<span class="number">10</span>, <span class="string">'9'</span>); <span class="comment">// *ps 为 "9999999999"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// vector 有 10 个元素，值依次从 0 到 9</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; *pv = <span class="keyword">new</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> *ps1 = <span class="keyword">new</span> <span class="built_in">string</span>;  <span class="comment">// 默认初始化为空 string</span></span><br><span class="line"><span class="built_in">string</span> *ps = <span class="keyword">new</span> <span class="built_in">string</span>(); <span class="comment">// 值初始化为空 string</span></span><br><span class="line"><span class="keyword">int</span> *pi1 = <span class="keyword">new</span> <span class="keyword">int</span>;        <span class="comment">// 默认初始化；*pi1 的值未定义</span></span><br><span class="line"><span class="keyword">int</span> *pi2 = <span class="keyword">new</span> <span class="keyword">int</span>();      <span class="comment">// 值初始化为 0；*pi2 为 0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><blockquote>
+<p><strong>最佳实践：</strong> 出于与变量初始化相同的原因，对动态分配的对象进行初始化通常是个好主意。</p>
+</blockquote>
+</li>
+<li><p>如果我们提供了一个括号包围的初始化器，就可以使用 <code>auto</code> 从此初始化器来推断我们想要分配的对象的类型。但是，由于编译器要用初始化器的类型来推断要分配的类型，只有当括号中仅有单一初始化器时才可以使用 <code>auto</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> pl = <span class="keyword">new</span> <span class="keyword">auto</span>(obj);      <span class="comment">// p 指向一个与 obj 类型相同的对象</span></span><br><span class="line">                              <span class="comment">// 该对象用 obj 进行初始化</span></span><br><span class="line"><span class="keyword">auto</span> p2 = <span class="keyword">new</span> <span class="keyword">auto</span> &#123;a, b, c&#125;; <span class="comment">// 错误：括号中只能有单个初始化器</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用 <code>new</code> 分配 <code>const</code> 对象是合法的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 分配并初始化一个 const int</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *pci = <span class="keyword">new</span> <span class="keyword">const</span> <span class="keyword">int</span>(<span class="number">1024</span>);</span><br><span class="line"><span class="comment">// 分配并默认初始化一个 const 的空 string</span></span><br><span class="line"><span class="keyword">const</span> <span class="built_in">string</span> *pcs = <span class="keyword">new</span> <span class="keyword">const</span> <span class="built_in">string</span>;</span><br></pre></td></tr></table></figure>
+<p>类似其他任何 <code>const</code> 对象，一个动态分配的 <code>const</code> 对象必须进行初始化。对于一个定义了默认构造函数的类类型，其 <code>const</code> 动态对象可以隐式初始化，而其他类型的对象就必须显式初始化。由于分配的对象是 <code>const</code> 的，<code>new</code> 返回的指针是一个指向 <code>const</code> 的指针。</p>
+</li>
+<li><p>如果 <code>new</code> 不能分配所要求的内存空间，它会抛出一个类型为 <code>bad_alloc</code> 的异常。我们可以改变使用 <code>new</code> 的方式来阻止它抛出异常：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p1 = <span class="keyword">new</span> <span class="keyword">int</span>;           <span class="comment">// 如果分配失败，new 抛出 std::bad_alloc</span></span><br><span class="line"><span class="keyword">int</span> *p2 = <span class="keyword">new</span> (nothrow) <span class="keyword">int</span>; <span class="comment">// 如果分配失败，new 返回一个空指针</span></span><br></pre></td></tr></table></figure>
+<p>称这种形式的 <code>new</code> 为<strong>定位 <code>new</code></strong>（placement new），定位 <code>new</code> 表达式允许我们向 <code>new</code> 传递额外的参数。<code>bad_alloc</code> 和 <code>nothrow</code> 都定义在头文件 <code>new</code> 中。</p>
+</li>
+<li><p><strong>我们传递给 <code>delete</code> 的指针必须指向动态分配的内存，或者是一个空指针。释放一块并非 <code>new</code> 分配的内存，或者将相同的指针值释放多次，其行为是未定义的。</strong></p>
+</li>
+<li><p>通常情况下，编译器不能分辨一个指针指向的是静态还是动态分配的对象。类似的，编译器也不能分辨一个指针所指向的内存是否已经被释放了。对于这些 <code>delete</code> 表达式，大多数编译器会编译通过，尽管它们是错误的。</p>
+</li>
+<li><p>虽然一个 <code>const</code> 对象的值不能被改变，但它本身是可以被销毁的。如同任何其他动态对象一样，想要释放一个 <code>const</code> 动态对象，只要 <code>delete</code> 指向它的指针即可。</p>
+</li>
+<li><blockquote>
+<p><strong>WARNING：</strong> 由内置指针（而不是智能指针）管理的动态内存在被显式释放前一直都会存在。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>使用 <code>new</code> 和 <code>delete</code> 管理动态内存存在三个常见问题：</p>
+<ol>
+<li>忘记 <code>delete</code> 内存；</li>
+<li>使用已经释放掉的对象；</li>
+<li>同一块内存释放两次。</li>
+</ol>
+</blockquote>
+</li>
+<li><blockquote>
+<p><strong>最佳实践：</strong> 坚持只使用智能指针。</p>
+</blockquote>
+</li>
+<li><p><code>new</code> 出来的动态内存在 <code>delete</code> 之后应将相应的指针变量赋值为 <code>nullptr</code>。</p>
+</li>
+</ol>
+<h2 id="12-1-3-shared-ptr-和-new-结合使用" class="heading-control"><a href="#12-1-3-shared-ptr-和-new-结合使用" class="headerlink" title="12.1.3 shared_ptr 和 new 结合使用"></a>12.1.3 shared_ptr 和 new 结合使用<a class="heading-anchor" href="#12-1-3-shared-ptr-和-new-结合使用" aria-hidden="true"></a></h2><ol>
+<li><p>接受指针参数的智能指针构造函数是 <code>explicit</code> 的。因此，我们不能将一个内置指针隐式转换为一个智能指针，必须使用直接初始化形式来初始化一个智能指针：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; p1 = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">1024</span>); <span class="comment">// 错误：必须使用直接初始化形式</span></span><br><span class="line"><span class="function"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; <span class="title">p2</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">1024</span>))</span></span>;  <span class="comment">// 正确：使用了直接初始化形式</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义和改变 <code>shared_ptr</code> 的其他方法：</p>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-9wq8{border-color:inherit;text-align:center;vertical-align:middle}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="2"><center>定义和改变 shared_ptr 的其他方法</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">shared_ptr&lt;T&gt; p(q)</td>
+    <td class="tg-lboi">p 管理内置指针 q 所指向的对象；q 必须指向 new 分配的内存，且能够转换为 T* 类型</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">shared_ptr&lt;T&gt; p(u)</td>
+    <td class="tg-lboi">p 从 unique_ptr u 那里接管了对象的所有权；将 u 置为空</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">shared_ptr&lt;T&gt; p(q, d)</td>
+    <td class="tg-lboi">p 接管了内置指针 q 所指向的对象的所有权。q 必须能转换为 T* 类型。p 将使用可调用对象 d 来代替 delete</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">shared_ptr&lt;T&gt; p(p2, d)</td>
+    <td class="tg-lboi">p 是 shared_ptr p2 的拷贝，唯一的区别是 p 将用可调用对象 d 来代替 delete</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">p.reset()</td>
+    <td class="tg-lboi" rowspan="3">若 p 是唯一指向其对象的 shared_ptr，reset 会释放此对象。若传递了可选的参数内置指针 q，会令 p 指向 q，否则会将 p 置为空。若还传递了参数 d，将会调用 d 而不是 delete 来释放 q</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">p.reset(q)</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">p.reset(q, d)</td>
+  </tr>
+</tbody>
+</table>
+</li>
+<li><p>假设我们有这样一个 <code>process</code> 函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">process</span><span class="params">(<span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; ptr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 使用 ptr</span></span><br><span class="line">&#125; <span class="comment">// ptr 离开作用域，被销毁</span></span><br></pre></td></tr></table></figure>
+<p><code>process</code> 函数的参数传递方式为传值，在其内部会创建所传入的 <code>shared_ptr</code> 实参的副本，增加对所使用的动态内存的引用计数（至少为 2），<code>process</code> 结束时，方才使用的动态内存的引用计数会递减，但不会变为 0，因此不会被释放，正确使用 <code>process</code> 函数的方式是传递给它一个 <code>shared_ptr</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; <span class="title">p</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">42</span>))</span></span>; <span class="comment">// 引用计数为 1</span></span><br><span class="line">process(p);                     <span class="comment">// 拷贝 p 会递增它的引用计数；在 process 中引用计数值为 2</span></span><br><span class="line"><span class="keyword">int</span> i = *p;                     <span class="comment">// 正确：引用计数值为 1</span></span><br></pre></td></tr></table></figure>
+<p>向 <code>process</code> 传入一个由内置指针显式构造的临时的 <code>shared_ptr</code> 可能会引发错误：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> *<span class="title">x</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">1024</span>))</span></span>;       <span class="comment">// 危险：x是一个普通指针，不是一个智能指针</span></span><br><span class="line">process(x);                  <span class="comment">// 错误：不能将 int* 转换为一个 shared_ptr&lt;int&gt;</span></span><br><span class="line">process(<span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt;(x)); <span class="comment">// 合法的，但内存会被释放！</span></span><br><span class="line"><span class="keyword">int</span> j = *x;                  <span class="comment">// 未定义的：x 是一个空悬指针！</span></span><br></pre></td></tr></table></figure>
+<p>在上面的调用中，我们将一个临时 <code>shared_ptr</code> 传递给 <code>process</code>。当这个调用所在的表达式结束时，这个临时对象就被销毁了。销毁这个临时变量会递减引用计数，此时引用计数就变为 0 了。因此，当临时对象被销毁时，它所指向的内存会被释放。但 x 继续指向（已经释放的）内存，从而变成一个空悬指针。如果试图使用 x 的值，其行为是未定义的。</p>
+</li>
+<li><p>当将一个 <code>shared_ptr</code> 绑定到一个普通指针时，我们就将内存的管理责任交给了这个 <code>shared_ptr</code>。一旦这样做了，我们就不应该再使用内置指针来访问 <code>shared_ptr</code> 所指向的内存了。</p>
+</li>
+<li><blockquote>
+<p><strong>WARNING：</strong> 使用一个内置指针来访问一个智能指针所负责的对象是很危险的，因为我们无法知道对象何时会被销毁。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p><strong>WARNING：</strong> <code>get</code> 用来将指针的访问权限传递给代码，你只有在确定代码不会 <code>delete</code> 指针的情况下，才能使用 <code>get</code>。特别是，永远不要用 <code>get</code> 初始化另一个智能指针或者为另一个智能指针赋值。</p>
+</blockquote>
+</li>
+<li><p><code>reset</code> 成员经常与 <code>unique</code> 一起使用，来控制多个 <code>shared_ptr</code> 共享的对象。在改变底层对象之前，我们检查自己是否是当前对象仅有的用户。如果不是，在改变之前要制作一份新的拷贝：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!p.unique())</span><br><span class="line">    p.reset(<span class="keyword">new</span> <span class="built_in">string</span>(*p)); <span class="comment">// 我们不是唯一用户；分配新的拷贝</span></span><br><span class="line">*p += newVal;                <span class="comment">// 现在我们知道自己是唯一的用户，可以改变对象的值</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>练习 12.10：</strong> 下面的代码调用了上文中定义的 <code>process</code> 函数，解释此调用是否正确。如果不正确，应如何修改？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; <span class="title">p</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">42</span>))</span></span>;</span><br><span class="line">process(<span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt;(p));</span><br></pre></td></tr></table></figure>
+<p>答：正确，创建 p 的临时拷贝，p 中的引用计数会增加。</p>
+</li>
+<li><p><strong>练习 12.11：</strong> 如果我们像下面这样调用 <code>process</code>，会发生什么？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">process(<span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt;(p.get()));</span><br></pre></td></tr></table></figure>
+<p>答：<code>p.get()</code> 返回 p 所管理的动态内存的内置指针，使用该指针初始化一个临时的 <code>shared_ptr</code>，离开 <code>process</code> 后动态内存会被释放，后面对 p 的使用存在危险。</p>
+</li>
+<li><p><strong>练习 12.12：</strong> p 和 q 的定义如下，对于接下来的对 <code>process</code> 的每个调用，如果合法，解释它做了什么，如果不合法，解释错误原因：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p = <span class="keyword">new</span> <span class="keyword">int</span>();</span><br><span class="line"><span class="keyword">auto</span> sp = make_shared&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line">(a) process(sp);</span><br><span class="line">(b) process(<span class="keyword">new</span> <span class="keyword">int</span>());</span><br><span class="line">(c) process(p);</span><br><span class="line">(d) process(<span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt;(p));</span><br></pre></td></tr></table></figure>
+<p>答：（a）合法，创建一个 sp 的临时拷贝，<code>process</code> 内 sp 的引用计数加 1，离开 <code>process</code> 后 sp 的引用计数恢复；（b）不合法，不存在内置指针向 <code>shared_ptr</code> 的隐式转换；（c）不合法，同（b）；（d）合法，创建临时的 <code>shared_ptr</code> 管理 p 所指向的内存，离开 <code>process</code> 后内存会被释放，p 将继续指向已不再可用的内存，虽然合法，但是危险。</p>
+</li>
+<li><p><strong>练习 12.13：</strong> 如果执行下面的代码，会发生什么？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> sp = make_shared&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line"><span class="keyword">auto</span> p = sp.get();</span><br><span class="line"><span class="keyword">delete</span> p;</span><br></pre></td></tr></table></figure>
+<p>答：sp 管理一块动态内存，p 通过 <code>sp.get()</code> 获得这块动态内存的访问权限，随后 <code>delete</code> 释放了内存，但 sp 的引用计数并未随之减 1，后续 sp 析构时会再次释放内存。</p>
+</li>
+</ol>
+<h2 id="12-1-4-智能指针和异常" class="heading-control"><a href="#12-1-4-智能指针和异常" class="headerlink" title="12.1.4 智能指针和异常"></a>12.1.4 智能指针和异常<a class="heading-anchor" href="#12-1-4-智能指针和异常" aria-hidden="true"></a></h2><ol>
+<li><p>如果使用内置指针管理内存，且在 <code>new</code> 之后在对应的 <code>delete</code> 之前发生了异常，则内存不会被释放。</p>
+</li>
+<li><p>当一个 <code>shared_ptr</code> 被销毁时，它默认地对它管理的指针进行 <code>delete</code> 操作。当我们创建一个 <code>shared_ptr</code> 时，可以传递一个（可选的）指向删除器函数的参数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(destination &amp;d <span class="comment">/* 其他参数 */</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    connection c = connect(&amp;d);</span><br><span class="line">    <span class="function"><span class="built_in">shared_ptr</span>&lt;connection&gt; <span class="title">p</span><span class="params">(&amp;c, end_connection)</span></span>;</span><br><span class="line">    <span class="comment">// 使用连接</span></span><br><span class="line">    <span class="comment">// 当 f 退出时（即使是由于异常而退出），connection 会被正确关闭</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>为了正确使用智能指针，我们必须坚持一些基本规范：</p>
+<ul>
+<li>不使用相同的内置指针值初始化（或 <code>reset</code>）多个智能指针；</li>
+<li>不 <code>delete</code> <code>get()</code> 返回的指针；</li>
+<li>不使用 <code>get()</code> 初始化或 <code>reset</code> 另一个智能指针；</li>
+<li>如果你使用 <code>get()</code> 返回的指针，记住当最后一个对应的智能指针销毁后，你的指针就变为无效了；</li>
+<li>如果你使用智能指针管理的资源不是 <code>new</code> 分配的内存，记住传递给它一个删除器。</li>
+</ul>
+</li>
+</ol>
+<h2 id="12-1-5-unique-ptr" class="heading-control"><a href="#12-1-5-unique-ptr" class="headerlink" title="12.1.5 unique_ptr"></a>12.1.5 unique_ptr<a class="heading-anchor" href="#12-1-5-unique-ptr" aria-hidden="true"></a></h2><ol>
+<li><p>一个 <code>unique_ptr</code>“拥有”它所指向的对象。与 <code>shared_ptr</code> 不同，某个时刻只能有一个 <code>unique_ptr</code> 指向一个给定对象。当 <code>unique_ptr</code> 被销毁时，它所指向的对象也被销毁。</p>
+</li>
+<li><p>与 <code>shared_ptr</code> 不同，没有类似 <code>make_shared</code> 的标准库函数返回一个 <code>unique_ptr</code>。当我们定义一个 <code>unique_ptr</code> 时，需要将其绑定到一个 <code>new</code> 返回的指针上。</p>
+</li>
+<li><p>由于一个 <code>unique_ptr</code> 拥有它指向的对象，因此 <code>unique_ptr</code> 不支持普通的拷贝或赋值操作。</p>
+</li>
+<li><p><code>unituq_ptr</code> 支持的操作：</p>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-cly1{text-align:left;vertical-align:middle}<br>.tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-amwm" colspan="2"><center>unique_ptr 支持的操作</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">unique_ptr&lt;T&gt; u1</td>
+    <td class="tg-cly1" rowspan="2">空 unique_ptr，可以指向类型为 T 的对象。u1 会使用 delete 来释放它的指针；u2 会使用一个类型为 D 的可调用对象来释放它的指针</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">unique_ptr&lt;T, D&gt; u2</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">unique_ptr&lt;T, D&gt; u(d)</td>
+    <td class="tg-0lax">空 unique_ptr，指向类型为 T 的对象，用类型为 D 的对象 d 代替 delete</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">u = nullptr</td>
+    <td class="tg-0lax">释放 u 指向的对象，将 u 置为空</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">u.release()</td>
+    <td class="tg-0lax">u 放弃对指针的控制权，返回指针，并将 u 置为空</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">u.reset()</td>
+    <td class="tg-0lax">释放 u 指向的对象</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">u.reset(q)</td>
+    <td class="tg-cly1" rowspan="2">如果提供了内置指针 q，令 u 指向这个对象；否则将 u 置为空</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">u.reset(nullptr)</td>
+  </tr>
+</tbody>
+</table>
+</li>
+<li><p>虽然我们不能拷贝或赋值 <code>unique_ptr</code>，但可以通过调用 <code>release</code> 或 <code>reset</code> 将指针的所有权从一个（非 <code>const</code>）<code>unique_ptr</code> 转移给另一个 <code>unique_ptr</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将所有权从 p1 转移给 p2</span></span><br><span class="line"><span class="function"><span class="built_in">unique_ptr</span>&lt;<span class="built_in">string</span>&gt; <span class="title">p2</span><span class="params">(p1.release())</span></span>; <span class="comment">// release 将 p1 置为空</span></span><br><span class="line"><span class="function"><span class="built_in">unique_ptr</span>&lt;<span class="built_in">string</span>&gt; <span class="title">p3</span><span class="params">(<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">"Trex"</span>))</span></span>;</span><br><span class="line"><span class="comment">// 将所有权从 p3 转移给 p2</span></span><br><span class="line">p2.reset(p3.release()); <span class="comment">// reset 释放了 p2 原来指向的内存</span></span><br></pre></td></tr></table></figure>
+<p><code>release</code> 成员返回 <code>unique_ptr</code> 当前保存的指针并将其置为空。调用 <code>release</code> 会切断 <code>unique_ptr</code> 和它原来管理的对象间的联系。<code>release</code> 返回的指针通常被用来初始化另一个智能指针或给另一个智能指针赋值。在本例中，管理内存的责任简单地从一个智能指针转移给另一个。但是，如果我们不用另一个智能指针来保存 <code>release</code> 返回的指针，我们的程序就要负责资源的释放。</p>
+</li>
+<li><p>不能拷贝 <code>unique_ptr</code> 的规则有一个例外：<strong>我们可以拷贝或赋值一个将要被销毁的 <code>unique_ptr</code></strong>。最常见的例子是从函数返回一个 <code>unique_ptr</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>&gt; <span class="title">clone</span><span class="params">(<span class="keyword">int</span> p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 正确：从 int* 创建一个 unique_ptr&lt;int&gt;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>&gt;(<span class="keyword">new</span> <span class="keyword">int</span>(p));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还可以返回一个局部对象的拷贝：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>&gt; <span class="title">clone</span><span class="params">(<span class="keyword">int</span> p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function"><span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>&gt; <span class="title">ret</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(p))</span></span>;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于两段代码，编译器都知道要返回的对象将要被销毁。在此情况下，编译器执行一种特殊的“拷贝”。</p>
+</li>
+<li><p><strong>向后兼容：<code>auto_ptr</code>。</strong> 标准库的较早版本包含了一个名为 <code>auto_ptr</code> 的类，它具有 <code>unique_ptr</code> 的部分特性，但不是全部。特别是，我们不能在容器中保存 <code>auto_ptr</code>，也不能从函数中返回 <code>auto_ptr</code>。虽然 <code>auto_ptr</code> 仍是标准库的一部分，但编写程序时应该使用 <code>unique_ptr</code>。</p>
+<blockquote>
+<p>《Effective C++》第三版中使用的仍然是 <code>auto_ptr</code>。</p>
+</blockquote>
+</li>
+<li><p>为 <code>unique_ptr</code> 对象指定删除器的方式与 <code>shared_ptr</code> 有所不同：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// p 指向一个类型为 objT 的对象，并使用一个类型为 delT 的对象释放 objT 对象</span></span><br><span class="line"><span class="comment">// 它会调用一个名为 fcn 的 delT 类型对象</span></span><br><span class="line">unique_ptr&lt;objT, delT&gt; p(new objT, fcn);</span><br></pre></td></tr></table></figure>
+<p>我们使用 <code>unique_ptr</code> 代替 <code>shared_ptr</code> 重写前面的连接程序：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(destination &amp;d <span class="comment">/* 其他需要的参数 */</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    connectionc = connect(&amp;d); <span class="comment">// 打开连接</span></span><br><span class="line">    <span class="comment">// 当 p 被销毁时，连接将会关闭</span></span><br><span class="line">    unique_ptr&lt;connection, decltype(end_connection) *&gt; p(&amp;c, end_connection);</span><br><span class="line">    <span class="comment">// 使用连接</span></span><br><span class="line">    <span class="comment">// 当 f 退出时（即使是由于异常而退出），connection 会被正确关闭</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>练习 12.17：</strong> 下面的 <code>unique_ptr</code> 声明中，哪些是合法的，哪些可能导致后续的程序错误？解释每个错误的问题在哪里。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ix = <span class="number">1024</span>, *pi = &amp;ix, *pi2 = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">2048</span>);</span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>&gt; IntP;</span><br><span class="line"></span><br><span class="line">(a) <span class="function">IntP <span class="title">p0</span><span class="params">(ix)</span></span>;</span><br><span class="line">(b) <span class="function">IntP <span class="title">p1</span><span class="params">(pi)</span></span>;</span><br><span class="line">(c) <span class="function">IntP <span class="title">p2</span><span class="params">(pi2)</span></span>;</span><br><span class="line">(d) <span class="function">IntP <span class="title">p3</span><span class="params">(&amp;ix)</span></span>;</span><br><span class="line">(e) <span class="function">IntP <span class="title">p4</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">2048</span>))</span></span>;</span><br><span class="line">(f) <span class="function">IntP <span class="title">p5</span><span class="params">(p2.get())</span></span>;</span><br></pre></td></tr></table></figure>
+<p>答：（a）不合法，<code>unique_ptr</code> 对象需要用指针进行初始化；（b）合法，但 pi 是个栈区地址；（c）合法，但很危险，因为通过 <code>unique_ptr</code> 和 pi2 都可以操作内存，有可能出现一方释放了内存，但另一方仍在使用内存；（d）合法，但存在和（b）相同的问题；（e）合法，且安全；（f）合法，但两个 <code>unique_ptr</code> 共享对一块内存的拥有权，应使用 <code>release</code> 方法。</p>
+</li>
+</ol>
+<h2 id="12-1-6-weak-ptr" class="heading-control"><a href="#12-1-6-weak-ptr" class="headerlink" title="12.1.6 weak_ptr"></a>12.1.6 weak_ptr<a class="heading-anchor" href="#12-1-6-weak-ptr" aria-hidden="true"></a></h2><ol>
+<li><p><code>weak_ptr</code> 是一种不控制所指向对象生存期的智能指针，它指向由一个 <code>shared_ptr</code> 管理的对象。将一个 <code>weak_ptr</code> 绑定到一个 <code>shared_ptr</code> 不会改变 <code>shared_ptr</code> 的引用计数。一旦最后一个指向对象的 <code>shared_ptr</code> 被销毁，对象就会被释放。即使有 <code>weak_ptr</code> 指向对象，对象也还是会被释放。</p>
+</li>
+<li><p><code>weak_ptr</code> 支持的操作：</p>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="2"><center>weak_ptr</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">weak_ptr&lt;T&gt; w</td>
+    <td class="tg-0pky">空 weak_ptr 可以指向类型为 T 的对象</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">weak_ptr&lt;T&gt; w(sp)</td>
+    <td class="tg-0pky">与 shared_ptr sp 指向相同对象的 weak_ptr。T 必须能转换为 sp 指向的类型</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">w = p</td>
+    <td class="tg-0pky">p 可以是一个 shared_ptr 或一个 weak_ptr。赋值后 w 与 p 共享对象</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">w.reset()</td>
+    <td class="tg-0pky">将 w 置为空</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">w.use_count()</td>
+    <td class="tg-0pky">与 w 共享对象的 shared_ptr 的数量</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">w.expired()</td>
+    <td class="tg-lboi">若 w.use_count() 为 0，返回 true，否则返回 false</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">w.lock()</td>
+    <td class="tg-0pky">如果 expired 为 true，返回一个空 shared_ptr；否则返回一个指向 w 的对象的 shared_ptr</td>
+  </tr>
+</tbody>
+</table>
+
+</li>
+</ol>
+<h1 id="12-2-动态数组" class="heading-control"><a href="#12-2-动态数组" class="headerlink" title="12.2 动态数组"></a>12.2 动态数组<a class="heading-anchor" href="#12-2-动态数组" aria-hidden="true"></a></h1><ol>
+<li><blockquote>
+<p><strong>最佳实践：</strong> 大多数应用应该使用标准库容器而不是动态分配的数组。使用容器更为简单、更不容易出现内存管理错误并且可能有更好的性能。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="12-2-1-new-和数组" class="heading-control"><a href="#12-2-1-new-和数组" class="headerlink" title="12.2.1 new 和数组"></a>12.2.1 new 和数组<a class="heading-anchor" href="#12-2-1-new-和数组" aria-hidden="true"></a></h2><ol>
+<li><p>在下例中，<code>new</code> 分配要求数量的对象并（假定分配成功后）返回指向第一个对象的指针：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 调用 get_size 确定分配多少个 int</span></span><br><span class="line"><span class="keyword">int</span> *pia = <span class="keyword">new</span> <span class="keyword">int</span>[get_size()]; <span class="comment">// pia 指向第一个 int</span></span><br></pre></td></tr></table></figure>
+<p>方括号中的大小必须是整型，但不必是常量。</p>
+</li>
+<li><p>也可以用一个表示数组类型的类型别名来分配一个数组，这样，<code>new</code> 表达式中就不需要方括号了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> arrT[<span class="number">42</span>]; <span class="comment">// arrT 表示 42 个 int 的数组类型</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> arrT;    <span class="comment">// 分配一个 42 个 int 的数组；p 指向第一个 int</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当用 <code>new</code> 分配一个数组时，我们并未得到一个数组类型的对象，而是得到一个数组元素类型的指针。即使我们使用类型别名定义了一个数组类型，<code>new</code> 也不会分配一个数组类型的对象。由于分配的内存并不是一个数组类型，因此不能对动态数组调用 <code>begin</code> 或 <code>end</code>，这些函数使用数组维度来返回指向首元素和尾后元素的指针。出于相同的原因，也不能用范围 <code>for</code> 语句来处理（所谓的）动态数组中的元素。</p>
+</li>
+<li><blockquote>
+<p><strong>WARNING：</strong> 动态数组并不是数组类型。</p>
+</blockquote>
+</li>
+<li><p>默认情况下，<code>new</code> 分配的对象，不管是单个分配的还是数组中的，都是默认初始化的。可以对数组中的元素进行值初始化，方法是在大小之后跟一对空括号。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *pia = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];          <span class="comment">// 10 个未初始化的 int</span></span><br><span class="line"><span class="keyword">int</span> *pia2 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]();       <span class="comment">// 10 个值初始化为 0 的 int</span></span><br><span class="line"><span class="built_in">string</span> *psa = <span class="keyword">new</span> <span class="built_in">string</span>[<span class="number">10</span>];    <span class="comment">// 10 个空 string</span></span><br><span class="line"><span class="built_in">string</span> *psa2 = <span class="keyword">new</span> <span class="built_in">string</span>[<span class="number">10</span>](); <span class="comment">// 10 个空 string</span></span><br></pre></td></tr></table></figure>
+<p>在新标准中，我们还可以提供一个元素初始化器的花括号列表：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 10 个 int 分别用列表中对应的初始化器初始化</span></span><br><span class="line"><span class="keyword">int</span> *pia3 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line"><span class="comment">// 10 个 string，前 4 个用给定的初始化器初始化，剩余的进行值初始化</span></span><br><span class="line"><span class="built_in">string</span> *psa3 = <span class="keyword">new</span> <span class="built_in">string</span>[<span class="number">10</span>]&#123;<span class="string">"a"</span>, <span class="string">"an"</span>, <span class="string">"the"</span>, <span class="built_in">string</span>(<span class="number">3</span>, <span class="string">'x'</span>)&#125;;</span><br></pre></td></tr></table></figure>
+<p>与内置数组对象的列表初始化一样，初始化器会用来初始化动态数组中开始部分的元素。如果初始化器数目小于元素数目，剩余元素将进行值初始化。如果初始化器数目大于元素数目，则 <code>new</code> 表达式失败，不会分配任何内存。</p>
+</li>
+<li><p><strong>动态分配一个空数组是合法的。</strong> 当我们用 <code>new</code> 分配一个大小为 0 的数组时，<code>new</code> 返回一个合法的非空指针。此指针保证与 <code>new</code> 返回的其他任何指针都不相同。对于零长度的数组来说，此指针就像尾后指针一样，我们可以像使用尾后迭代器一样使用这个指针。可以用此指针进行比较操作。可以向此指针加上（或从此指针减去）0，也可以从此指针减去自身从而得到 0。但此指针不能解引用——毕竟它不指向任何元素。</p>
+</li>
+<li><p>释放动态数组：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span>[] pa; <span class="comment">// pa 必须指向一个动态分配的数组或为空</span></span><br></pre></td></tr></table></figure>
+<p>数组中的元素按逆序销毁，即，最后一个元素首先被销毁，然后是倒数第二个，依此类推。其中的 <code>[]</code> 是必须的，即使是用 <code>typedef</code> 定义的数组类型别名申请的动态内存：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> arrT[<span class="number">42</span>]; <span class="comment">// arrT 是 42 个 int 的数组的类型别名</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> arrT;    <span class="comment">// 分配一个 42 个 int 的数组；p 指向第一个元素</span></span><br><span class="line"><span class="keyword">delete</span>[] p;           <span class="comment">// 方括号是必需的，因为我们当初分配的是一个数组</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对应《Effective C++》第三版条款 16。</p>
+</blockquote>
+</li>
+<li><p>可以使用 <code>unique_ptr</code> 方便地管理动态数组：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// up 指向一个包含 10 个未初始化 int 的数组</span></span><br><span class="line">unique_ptr&lt;int[]&gt; up(new int[10]);</span><br><span class="line">up.release(); <span class="comment">// 自动用 delete[] 销毁其指针</span></span><br></pre></td></tr></table></figure>
+<p>由于 up 指向一个数组，当 up 销毁它管理的指针时，会自动使用 <code>delete[]</code>。</p>
+</li>
+<li><p>当一个 <code>unique_ptr</code> 指向一个数组时，我们不能使用点和箭头成员运算符，可以使用下标运算符来访问数组中的元素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i != <span class="number">10</span>; ++i)</span><br><span class="line">    up[i] = i; <span class="comment">// 为每个元素赋予一个新值</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>与 <code>unique_ptr</code> 不同，<code>shared_ptr</code> 不直接支持管理动态数组。<strong>如果希望使用 <code>shared_ptr</code> 管理一个动态数组，必须提供自己定义的删除器</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 为了使用 shared_ptr，必须提供一个删除器</span></span><br><span class="line"><span class="function"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; <span class="title">sp</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>], [](<span class="keyword">int</span> *p) &#123; <span class="keyword">delete</span>[] p; &#125;)</span></span>;</span><br><span class="line">sp.reset(); <span class="comment">// 使用我们提供的 lambda 释放数组，它使用 delete[]</span></span><br></pre></td></tr></table></figure>
+<p>如果未提供删除器，这段代码将是未定义的。默认情况下，<code>shared_ptr</code> 使用 <code>delete</code> 销毁它指向的对象。如果此对象是一个动态数组，对其使用 <code>delete</code> 所产生的问题与释放一个动态数组指针时忘记 <code>[]</code> 产生的问题一样。</p>
+</li>
+<li><p><code>shared_ptr</code> 不直接支持动态数组管理这一特性会影响我们如何访问数组中的元素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shared_ptr 未定义下标运算符，并且不支持指针的算术运算</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i != <span class="number">10</span>; ++i)</span><br><span class="line">    *(sp.get() + i) = i; <span class="comment">// 使用 get 获取一个内置指针</span></span><br></pre></td></tr></table></figure>
+<p><code>shared_ptr</code> 未定义下标运算符，而且智能指针类型不支持指针算术运算。因此，为了访问数组中的元素，必须用 <code>get</code> 获取一个内置指针，然后用它来访问数组元素。</p>
+</li>
+</ol>
+<h2 id="12-2-2-allocator-类" class="heading-control"><a href="#12-2-2-allocator-类" class="headerlink" title="12.2.2 allocator 类"></a>12.2.2 allocator 类<a class="heading-anchor" href="#12-2-2-allocator-类" aria-hidden="true"></a></h2><ol>
+<li><p>标准库 <code>allocator</code> 类定义在头文件 <code>memory</code> 中，它帮助我们将内存分配和对象构造分离开采。它提供一种类型感知的内存分配方法，它分配的内存是原始的、未构造的。</p>
+</li>
+<li><p><code>allocator</code> 是一个模板，当一个 <code>allocator</code> 对象分配内存时，它会根据给定的对象类型来确定恰当的内存大小和对齐位置：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">allocator&lt;<span class="built_in">string</span>&gt; alloc;          <span class="comment">// 可以分配 string 的 allocator 对象</span></span><br><span class="line"><span class="keyword">auto</span> <span class="keyword">const</span> p = alloc.allocate(n); <span class="comment">// 分配 n 个未初始化的 string</span></span><br></pre></td></tr></table></figure>
+<p>这个 <code>allocate</code> 调用为 n 个 <code>string</code> 分配了内存。</p>
+</li>
+<li><p><code>allocator</code> 支持的操作：</p>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="2"><center>标准库 allocator 类及其算法</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">allocator&lt;T&gt; a</td>
+    <td class="tg-0pky">定义了一个名为 a 的 allocator 对象，它可以为类型为 T 的对象分配内存</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">a.allocate(n)</td>
+    <td class="tg-0lax">分配一段原始的、未构造的内存，保存 n 个类型为 T 的对象</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">a.deallocate(p, n)</td>
+    <td class="tg-0lax">释放从 T* 指针 p 中地址开始的内存，这块内存保存了 n 个类型为 T 的对象；p 必须是一个先前由 allocate 返回的指针，且 n&nbsp;&nbsp;必须是 p 创建时所要求的大小。在调用 deallocate 之前，用户必须对每个在这块内存中创建的对象调用 destroy</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">a.construct(p, args)</td>
+    <td class="tg-0lax">p 必须是一个类型为 T* 的指针，指向一块原始内存；arg 被传递给类型为 T 的构造函数，用来在 p 指向的内存中构造一个对象</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">a.destroy(p)</td>
+    <td class="tg-0lax">p 为 T* 类型的指针，此算法对 p 指向的对象执行析构函数</td>
+  </tr>
+</tbody>
+</table>
+</li>
+<li><blockquote>
+<p><strong>WARNING：</strong> 为了使用 <code>allocate</code> 返回的内存，我们必须用 <code>construct</code> 构造对象。使用未构造的内存，其行为是未定义的。</p>
+</blockquote>
+</li>
+<li><p>标准库还为 <code>allocator</code> 类定义了两个伴随算法，可以在未初始化内存中创建对象，它们都定义在头文件 <code>memory</code> 中：</p>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7btt" colspan="2"><center>allocator 算法</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">uninitialized_copy(b, e, b2)</td>
+    <td class="tg-0pky">从迭代器 b 和 e 指出的输入范围中拷贝元素到迭代器 b2 指定的未构造的原始内存中。b2 指向的内存必须足够大，能容纳输入序列中元素的拷贝</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">uninitialized_copy_n(b, n, b2)</td>
+    <td class="tg-0lax">从迭代器 b 指向的元素开始，拷贝 n 个元素到 b2 开始的内存中</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">uninitialized_fill(b, e, t)</td>
+    <td class="tg-0lax">在迭代器 b 和 e 指定的原始内存范围中创建对象，对象的值均为 t 的拷贝</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">uninitialized_fill_n(b, n, t)</td>
+    <td class="tg-0lax">从迭代器 b 指向的内存地址开始创建 n 个对象。b 必须指向足够大的未构造的原始内存，能够容纳给定数量的对象</td>
+  </tr>
+</tbody>
+</table>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 分配比 vi 中元素所占用空间大一倍的动态内存</span></span><br><span class="line"><span class="keyword">auto</span> p = alloc.allocate(vi.size() * <span class="number">2</span>);</span><br><span class="line"><span class="comment">// 通过拷贝 vi 中的元素来构造从 p 开始的元素</span></span><br><span class="line"><span class="keyword">auto</span> q = uninitialized_copy(vi.begin(), vi.end(), p);</span><br><span class="line"><span class="comment">// 将剩余元素初始化为 42</span></span><br><span class="line">uninitialized_fill_n(q, vi.size(), <span class="number">42</span>);</span><br></pre></td></tr></table></figure>
+<p>类似 <code>copy</code>，<code>uninitialized_copy</code> 返回（递增后的）目的位置迭代器。因此，一次 <code>uninitialized_copy</code> 调用会返回一个指针，指向最后一个构造的元素之后的位置。</p>
+</li>
+</ol>
+<h1 id="12-3-使用标准库：文本查询程序" class="heading-control"><a href="#12-3-使用标准库：文本查询程序" class="headerlink" title="12.3 使用标准库：文本查询程序"></a>12.3 使用标准库：文本查询程序<a class="heading-anchor" href="#12-3-使用标准库：文本查询程序" aria-hidden="true"></a></h1><h2 id="12-3-1-文本查询程序设计" class="heading-control"><a href="#12-3-1-文本查询程序设计" class="headerlink" title="12.3.1 文本查询程序设计"></a>12.3.1 文本查询程序设计<a class="heading-anchor" href="#12-3-1-文本查询程序设计" aria-hidden="true"></a></h2><h2 id="12-3-2-文本查询程序类的定义" class="heading-control"><a href="#12-3-2-文本查询程序类的定义" class="headerlink" title="12.3.2 文本查询程序类的定义"></a>12.3.2 文本查询程序类的定义<a class="heading-anchor" href="#12-3-2-文本查询程序类的定义" aria-hidden="true"></a></h2><h1 id="小结" class="heading-control"><a href="#小结" class="headerlink" title="小结"></a>小结<a class="heading-anchor" href="#小结" aria-hidden="true"></a></h1><h1 id="术语表" class="heading-control"><a href="#术语表" class="headerlink" title="术语表"></a>术语表<a class="heading-anchor" href="#术语表" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%AC%AC%2012%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8.png" alt="第 12 章术语表"></p>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/4094be86.html" title="C++ Primer - 第 12 章 动态内存">https://blog.shipengx.com/archives/4094be86.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"><i class="fa fa-tag"></i> C/C++</a>
+              <a href="/tags/C-Primer/" rel="tag"><i class="fa fa-tag"></i> C++ Primer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/c97041d4.html" rel="prev" title="初识 Docker">
+      <i class="fa fa-chevron-left"></i> 初识 Docker
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/f82eac24.html" rel="next" title="C++ Primer - 第 10 章 泛型算法">
+      C++ Primer - 第 10 章 泛型算法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#12-1-动态内存与智能指针"><span class="nav-text">12.1 动态内存与智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#12-1-1-shared-ptr-类"><span class="nav-text">12.1.1 shared_ptr 类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-1-2-直接管理内存"><span class="nav-text">12.1.2 直接管理内存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-1-3-shared-ptr-和-new-结合使用"><span class="nav-text">12.1.3 shared_ptr 和 new 结合使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-1-4-智能指针和异常"><span class="nav-text">12.1.4 智能指针和异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-1-5-unique-ptr"><span class="nav-text">12.1.5 unique_ptr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-1-6-weak-ptr"><span class="nav-text">12.1.6 weak_ptr</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-2-动态数组"><span class="nav-text">12.2 动态数组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#12-2-1-new-和数组"><span class="nav-text">12.2.1 new 和数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-2-2-allocator-类"><span class="nav-text">12.2.2 allocator 类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-3-使用标准库：文本查询程序"><span class="nav-text">12.3 使用标准库：文本查询程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#12-3-1-文本查询程序设计"><span class="nav-text">12.3.1 文本查询程序设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-3-2-文本查询程序类的定义"><span class="nav-text">12.3.2 文本查询程序类的定义</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#术语表"><span class="nav-text">术语表</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

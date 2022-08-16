@@ -1,0 +1,229 @@
+
+
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 2022-02-13 11:49:21 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+
+
+[1;33m[WARNING][0m You have installed ros kinetic in your machine. Are you sure to continue? (yes/no) [no] 
+
+
+[1;32m[INFO][0m Your current system information is as follows:
+NAME="Ubuntu"
+VERSION="16.04.7 LTS (Xenial Xerus)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 16.04.7 LTS"
+VERSION_ID="16.04"
+HOME_URL="http://www.ubuntu.com/"
+SUPPORT_URL="http://help.ubuntu.com/"
+BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
+VERSION_CODENAME=xenial
+UBUNTU_CODENAME=xenial
+
+
+[1;32m[INFO][0m The ros-kinetic will be installed next. 
+
+Hit:1 http://mirrors.tuna.tsinghua.edu.cn/ubuntu xenial InRelease
+Hit:2 http://mirrors.tuna.tsinghua.edu.cn/ubuntu xenial-updates InRelease
+Hit:3 http://mirrors.tuna.tsinghua.edu.cn/ubuntu xenial-backports InRelease
+Hit:4 http://mirrors.tuna.tsinghua.edu.cn/ubuntu xenial-security InRelease
+Ign:5 http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu xenial InRelease
+Hit:6 http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu xenial Release
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Calculating upgrade...
+The following packages have been kept back:
+  apt apt-utils dpkg libapt-pkg5.0 ubuntu-advantage-tools update-notifier
+  update-notifier-common
+The following packages will be upgraded:
+  python-catkin-pkg python-catkin-pkg-modules
+2 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.
+Need to get 45.9 kB of archives.
+After this operation, 0 B of additional disk space will be used.
+Get:1 http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu xenial/main amd64 python-catkin-pkg-modules all 0.4.24-1 [42.3 kB]
+Get:2 http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu xenial/main amd64 python-catkin-pkg all 0.4.24-100 [3,532 B]
+Fetched 45.9 kB in 20s (2,188 B/s)
+(Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 288754 files and directories currently installed.)
+Preparing to unpack .../python-catkin-pkg-modules_0.4.24-1_all.deb ...
+Unpacking python-catkin-pkg-modules (0.4.24-1) over (0.4.23-1) ...
+Preparing to unpack .../python-catkin-pkg_0.4.24-100_all.deb ...
+Unpacking python-catkin-pkg (0.4.24-100) over (0.4.23-100) ...
+Setting up python-catkin-pkg-modules (0.4.24-1) ...
+Setting up python-catkin-pkg (0.4.24-100) ...
+[1;32m[GOOD][0m The source has been updated and all softwares have been graded. 
+
+[1;32m[GOOD][0m ROS source has been added. 
+
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.47.0-1ubuntu2.19).
+0 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.
+OK
+[1;32m[GOOD][0m Keys have been set up. 
+
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Hit:1 http://mirrors.tuna.tsinghua.edu.cn/ubuntu xenial InRelease
+Hit:2 http://mirrors.tuna.tsinghua.edu.cn/ubuntu xenial-updates InRelease
+Hit:3 http://mirrors.tuna.tsinghua.edu.cn/ubuntu xenial-backports InRelease
+Hit:4 http://mirrors.tuna.tsinghua.edu.cn/ubuntu xenial-security InRelease
+Ign:5 http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu xenial InRelease
+Hit:6 http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu xenial Release
+Reading package lists...
+Building dependency tree...
+Reading state information...
+7 packages can be upgraded. Run 'apt list --upgradable' to see them.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+ros-kinetic-desktop-full is already the newest version (1.3.2-0xenial-20210503-172314-0800).
+0 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.
+[1;32m[GOOD][0m The ros-kinetic-desktop-full has been installed. 
+
+[1;32m[GOOD][0m Environment has been set up. 
+
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+build-essential is already the newest version (12.1ubuntu2).
+python-rosdep is already the newest version (0.21.0-1).
+python-rosinstall is already the newest version (0.7.8-1).
+python-rosinstall-generator is already the newest version (0.1.22-1).
+python-wstool is already the newest version (0.1.17-1).
+0 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.
+[1;32m[GOOD][0m Some dependencies for building packages have been installed. 
+
+ERROR: cannot download default sources list from:
+https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/sources.list.d/20-default.list
+Website may be down.
+[1;33m[WARNING][0m Could not execute [rosdep init] online, I will do this using rosdistro repository. 
+
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+unzip is already the newest version (6.0-20ubuntu1.1).
+wget is already the newest version (1.17.1-1ubuntu1.5).
+0 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.
+
+[1;32m[INFO][0m Trying to download the latest rosdistro repository from github... 
+
+--2022-02-13 11:50:45--  https://github.com/ros/rosdistro/archive/refs/heads/master.zip
+Resolving github.com (github.com)... 20.205.243.166
+Connecting to github.com (github.com)|20.205.243.166|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://codeload.github.com/ros/rosdistro/zip/refs/heads/master [following]
+--2022-02-13 11:50:46--  https://codeload.github.com/ros/rosdistro/zip/refs/heads/master
+Resolving codeload.github.com (codeload.github.com)... 20.205.243.165
+Connecting to codeload.github.com (codeload.github.com)|20.205.243.165|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [application/zip]
+Saving to: ‘master.zip’
+
+     0K .......... .......... .......... .......... .......... 80.4K
+    50K .......... .......... .......... .......... ..........  171K
+   100K .......... .......... .......... .......... ..........  162K
+   150K .......... .......... .......... .......... ..........  104K
+   200K .......... .......... .......... .......... ..........  152K
+   250K .......... .......... .......... .......... ..........  143K
+   300K .......... .......... .......... .......... ..........  121K
+   350K .......... .......... .......... .......... ..........  133K
+   400K .......... .......... .......... .......... ..........  207K
+   450K .......... .......... .......... .......... ..........  115K
+   500K .......... .......... .......... .......... ..........  215K
+   550K .......... .......... .......... .......... ..........  134K
+   600K .......... .......... .......... .......... ..........  259K
+   650K .......... .......... ....                              153K=4.8s
+
+2022-02-13 11:50:52 (140 KB/s) - ‘master.zip’ saved [690910]
+
+[1;32m[INFO][0m Trying to unzip downloaded rosdistro repository... 
+
+[1;32m[INFO][0m Yaml files from the latest rosdistro repository will be used. 
+
+[1;32m[GOOD][0m [rosdep init] was executed using rosdistro repository successfully. 
+
+ERROR: unable to process source [https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/osx-homebrew.yaml]:
+	<urlopen error [Errno 111] Connection refused> (https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/osx-homebrew.yaml)
+ERROR: unable to process source [https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/base.yaml]:
+	<urlopen error [Errno 111] Connection refused> (https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/base.yaml)
+ERROR: unable to process source [https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/python.yaml]:
+	<urlopen error [Errno 111] Connection refused> (https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/python.yaml)
+ERROR: unable to process source [https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/ruby.yaml]:
+	<urlopen error [Errno 111] Connection refused> (https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/ruby.yaml)
+ERROR: unable to process source [https://raw.githubusercontent.com/ros/rosdistro/master/releases/fuerte.yaml]:
+	Failed to download target platform data for gbpdistro:
+	<urlopen error [Errno 111] Connection refused>
+ERROR: error loading sources list:
+	<urlopen error <urlopen error [Errno 111] Connection refused> (https://raw.githubusercontent.com/ros/rosdistro/master/index-v4.yaml)>
+reading in sources list data from /etc/ros/rosdep/sources.list.d
+Query rosdistro index https://raw.githubusercontent.com/ros/rosdistro/master/index-v4.yaml
+[1;33m[WARNING][0m Could not execute [rosdep update] online, I will do this using rosdistro repository. 
+
+reading in sources list data from /etc/ros/rosdep/sources.list.d
+Hit file:///home/shipeng/Desktop/rostaller/rosdistro-master/rosdep/osx-homebrew.yaml
+Hit file:///home/shipeng/Desktop/rostaller/rosdistro-master/rosdep/base.yaml
+Hit file:///home/shipeng/Desktop/rostaller/rosdistro-master/rosdep/python.yaml
+Hit file:///home/shipeng/Desktop/rostaller/rosdistro-master/rosdep/ruby.yaml
+Hit file:///home/shipeng/Desktop/rostaller/rosdistro-master/releases/fuerte.yaml
+Query rosdistro index file:///home/shipeng/Desktop/rostaller/rosdistro-master/index-v4.yaml
+Skip end-of-life distro "ardent"
+Skip end-of-life distro "bouncy"
+Skip end-of-life distro "crystal"
+Skip end-of-life distro "dashing"
+Skip end-of-life distro "eloquent"
+Add distro "foxy"
+Add distro "galactic"
+Skip end-of-life distro "groovy"
+Skip end-of-life distro "hydro"
+Skip end-of-life distro "indigo"
+Skip end-of-life distro "jade"
+Skip end-of-life distro "kinetic"
+Skip end-of-life distro "lunar"
+Add distro "melodic"
+Add distro "noetic"
+Add distro "rolling"
+updated cache in /home/shipeng/.ros/rosdep/sources.cache
+[1;32m[GOOD][0m [rosdep update] was executed using rosdistro repository successfully. 
+
+[1;32m[GOOD][0m Good job, bro., all tasks have been done! Run demo now? (yes/no) [yes] 
+
+
+Bye! 
+
+

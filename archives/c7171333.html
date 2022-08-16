@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer - 第 5 章 语句">
+<meta property="og:url" content="https://blog.shipengx.com/archives/c7171333.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-30T11:31:30.000Z">
+<meta property="article:modified_time" content="2021-06-25T14:26:16.711Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="C++ Primer">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/c7171333.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>C++ Primer - 第 5 章 语句 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/c7171333.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          C++ Primer - 第 5 章 语句
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-30 19:31:30" itemprop="dateCreated datePublished" datetime="2020-05-30T19:31:30+08:00">2020-05-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-25 22:26:16" itemprop="dateModified" datetime="2021-06-25T22:26:16+08:00">2021-06-25</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">编码</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AC-Primer%E3%80%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">《C++ Primer》</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/c7171333.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/c7171333.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ol>
+<li><p>一个表达式，末尾加上分号就变成了<strong>表达式语句</strong>（expression statement）。表达式语句的作用是执行表达式并丢弃掉求值结果。最简单的语句是<strong>空语句</strong>（null statement），空语句中只含有一个单独的分号。如果在程序的某个地方，语法上需要一条语句但是逻辑上不需要，此时应该使用空语句。一种常见的情况是，当循环的全部工作在条件部分就可以完成时，我们通常会用到空语句。例如，我们想读取输入流的内容直到遇到一个特定的值为止，除此之外什么事情也不做：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 重复读入数据直至到达文件末尾或某次输入的值等于 sought</span></span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; s &amp;&amp; s != sought)</span><br><span class="line">    ;  <span class="comment">// 空语句</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用空语句时应该加上注释，从而令读这段代码的人知道该语句是有意省略。</p>
+</blockquote>
+<p>下面的片段包含两条语句：表达式语句和空语句。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ival = v1 + v2;;  <span class="comment">// 正确：第二个分号表示一条多余的空语句</span></span><br></pre></td></tr></table></figure>
+<p>多余的空语句一般来说是无害的，但是如果在 <code>if</code>或者 <code>while</code> 的条件后面跟了一个额外的分号就可能完全改变我们的初衷。例如，下面的代码将无休止地循环下去：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 出现了糟糕的情况：额外的分号，循环体是那条空语句</span></span><br><span class="line"><span class="keyword">while</span> (iter != svec.end()) ;  <span class="comment">// while 循环体是那条空语句</span></span><br><span class="line">    ++iter;                   <span class="comment">// 递增运算不属于循环的一部分</span></span><br></pre></td></tr></table></figure>
+<p>虽然从形式上来看执行递增运算的语句前面有缩进，但它并不是循环的一部分。循环条件后面跟着的分号构成了一条空语句，它才是真正的循环体。</p>
+<blockquote>
+<p>多余的空语句并非总是无害的。</p>
+</blockquote>
+</li>
+<li><p><strong>复合语句</strong>（compound statement）是指用花括号括起来的（可能为空的）语句和声明的序列，复合语句也被称作<strong>块</strong>（block）。<strong>一个块就是一个作用域，在块中引入的名字只能在块内部以及嵌套在块中的子块里访问。</strong> 通常，名字在有限的区域内可见，该区域从名字定义处开始，到名字所在的（最内层）块的结尾为止。所谓空块，是指内部没有任何语句的一对花括号。空块的作用等价于空语句，空语句显然没有空块更加直白。</p>
+</li>
+<li><p>定义在控制结构当中的变量只在相应语句的内部可见，一旦语句结束，变量也就超出其作用范围了，如果其他代码也需要访问控制变量，则变量必须定义在语句的外部。</p>
+</li>
+<li><p>C++ 为解决<strong>悬垂 <code>else</code></strong>（dangling else）问题，规定 <code>else</code> 与离它最近的尚未匹配的 <code>if</code> 匹配，从而消除了程序的二义性。</p>
+</li>
+<li><p><code>switch</code> 语句首先对括号里的表达式求值，该表达式紧跟在关键字 <code>switch</code> 的后面，可以是一个初始化的变量声明。表达式的值转换成整数类型，然后与每个 <code>case</code> 标签的值比较。</p>
+</li>
+<li><p><code>case</code> 关键字和它对应的值一起被称为 <strong><code>case</code> 标签</strong>（case label）。<code>case</code> 标签必须是整型常量表达式。任何两个 <code>case</code> 标签的值不能相同，否则就会引发错误。另外，<code>default</code> 也是一种特殊的 <code>case</code> 标签。</p>
+</li>
+<li><p><strong>如果某个 <code>case</code> 标签匹配成功，将从该标签开始往后顺序执行所有 <code>case</code> 分支，除非程序显式地中断了这一过程，否则直到 <code>switch</code> 的结尾处才会停下来。</strong>要想避免执行后续 <code>case</code> 分支的代码，我们必须显式地告诉编译器终止执行过程。大多数情况下，在下一个 <code>case</code> 标签之前应该有一条 <code>break</code> 语句。每个 <code>case</code> 标签只能对应一个值，但是有时候我们希望两个或更多个值共享同一组操作。此时，我们就故意省略掉 <code>break</code> 语句，使得程序能够连续执行若干个 <code>case</code> 标签。例如，我们想统计所有元音字母出现的总次数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> vowelCnt = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">switch</span> (ch)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 出现了 a、e、i、o 或 u 中的任意一个都会将 vowelCnt 的值加 1</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">'a'</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'e'</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'i'</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'o'</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'u'</span>:</span><br><span class="line">        ++vowelCnt;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码片段中 <code>switch</code> 语句还可以写成下面这种较为简洁的形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (ch)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'a'</span>: <span class="keyword">case</span> <span class="string">'e'</span>: <span class="keyword">case</span> <span class="string">'i'</span>: <span class="keyword">case</span> <span class="string">'o'</span>: <span class="keyword">case</span> <span class="string">'u'</span>:</span><br><span class="line">        ++vowelCnt;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一般不要省略 <code>case</code> 分支最后的 <code>break</code> 语句。如果没写 <code>break</code> 语句，最好加一段注释说清楚程序的逻辑。尽管 <code>switch</code> 语句不是非得在最后一个标签后面写上<code>break</code>，但是为了安全起见，最好这么做。因为这样的话，即使以后再增加新的 <code>case</code> 分支，也不用再在前面补充 <code>break</code> 语句了。</p>
+</blockquote>
+</li>
+<li><p>如果没有任何一个 <code>case</code> 标签能匹配上 <code>switch</code> 表达式的值，程序将执行紧跟在 <strong><code>default</code>标签</strong>（default label）后面的语句。</p>
+<blockquote>
+<p>即使不准备在 <code>default</code> 标签下做任何工作，定义一个 <code>default</code> 标签也是有用的。其目的在于告诉程序的读者，我们已经考虑到了默认的情况，只是目前什么也没做。</p>
+</blockquote>
+</li>
+<li><p>如果在某处一个带有初值的变量位于作用域之外，在另一处该变量位于作用域之内，则从前一处跳转到后一处的行为是非法行为。<strong>C++ 语言规定，不允许跨过变量的初始化语句直接跳转到该变量作用域内的另一个位置。如果需要为某个 <code>case</code> 分支定义并初始化一个变量，我们应该把变量定义在块内，从而确保后面的所有 <code>case</code> 标签都在变量的作用域之外。</strong></p>
+</li>
+<li><p>在 <strong><code>while</code> 语句</strong>（while statement）中，定义在 <code>while</code> 条件部分或者 <code>while</code> 循环体内的变量每次选代都经历从创建到销毁的过程。</p>
+</li>
+<li><p><strong><code>for</code> 语句</strong>中对循环控制变量的修改发生在每次循环迭代之后。</p>
+</li>
+<li><p><code>for</code> 语句头中定义的对象只在 <code>for</code> 循环体内可见。</p>
+</li>
+<li><p>和其他的声明一样，<code>for</code> 语句的 init_statement 也可以定义多个对象。但是 init_statement 只能有一条声明语句，因此，所有变量的基础类型必须相同。举个例子，我们用下面的循环把 <code>vector</code> 的元素拷贝一份添加到原来的元素后面：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 记录 v 的大小，当到达原来的最后一个元素后结束循环</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">decltype</span>(v.size()) i = <span class="number">0</span>, sz = v.size(); i != sz; ++i)</span><br><span class="line">    v.push_back(v[i]);</span><br></pre></td></tr></table></figure>
+<p>在这个循环中，我们在 init_statement 里同时定义了索引 i 和循环控制变量 sz。</p>
+</li>
+<li><p><code>for</code> 语句头能省略掉 <code>init_statement</code>、<code>condition</code> 和 <code>expression</code> 中的任何一个（或者全部），省略掉 expression 时，就要求条件部分或者循环体必须改变迭代变量的值。</p>
+</li>
+<li><p><strong>范围 <code>for</code> 语句</strong>（range for statement）的语法形式是：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (declaration : expression)</span><br><span class="line">    statement</span><br></pre></td></tr></table></figure>
+<p>expression 表示的必须是一个序列，比如用花括号括起来的初始值列表、数组或者 <code>vector</code> 或 <code>string</code> 等类型的对象，这些类型的共同特点时拥有能返回迭代器 <code>begin</code> 和 <code>end</code> 成员。declaration 定义一个变量，序列中的每个元素都得能转换成该变量的类型，确保类型相容最简单的办法是使用 <code>auto</code> 类型说明符，这个关键字可以令编译器帮助我们指定合适的类型。<strong>如果需要对序列中的元素执行写操作，循环变量必须声明成引用类型。</strong> 每次迭代都会重新定义循环控制变量，并将其初始化成序列中的下一个值，之后才会执行 statement。</p>
+</li>
+<li><p>不能通过范围 <code>for</code> 语句增加 <code>vector</code> 对象（或者其他容器）的元素，因为在范围 <code>for</code> 语句中，预存了 <code>end()</code> 的值。一旦在序列中添加（删除）元素，<code>end</code> 函数的值就可能变得无效了。</p>
+</li>
+<li><p><code>do while</code>语句应该在括号包围起来的条件后面用一个分号表示语句结束。</p>
+</li>
+<li><p><strong><code>break</code> 语句</strong>（break statement）负责终止离它最近的 <code>while</code>、<code>do while</code>、<code>for</code> 或 <code>switch</code> 语句，并从这些语句之后的第一条语句开始继续执行。<strong><code>break</code> 语句只能出现在迭代语句或者 <code>switch</code> 语句内部（包括嵌套在此类循环里的语句或块的内部）。</strong><code>break</code> 语句的作用范围仅限于最近的循环或者 <code>switch</code>。</p>
+</li>
+<li><p><strong><code>continue</code> 语句</strong>（continue statement）终止最近的循环中的当前迭代并立即开始下一次迭代。<code>continue</code> 语句只能出现在 <code>for</code>、<code>while</code> 和 <code>do while</code> 循环的内部，或者嵌套在此类循环里的语句或块的内部。<strong>和 <code>break</code> 语句类似的是，出现在嵌套循环中的 <code>continue</code> 语句也仅作用于离它最近的循环。和 <code>break</code> 语句不同的是，只有当 <code>switch</code> 语句嵌套在迭代语句内部时，才能在 <code>switch</code> 里使用 <code>continue</code>。</strong><code>continue</code> 语句中断当前的迭代，但是仍然继续执行循环。<strong>对于 <code>while</code> 或者 <code>do while</code> 语句来说，继续判断条件的值；对于传统的 <code>for</code> 循环来说，继续执行 <code>for</code> 语句头的 <code>expression</code>；而对于范围 <code>for</code> 语句来说，则是用序列中的下一个元素初始化循环控制变量。</strong></p>
+</li>
+<li><p><strong><code>goto</code> 语句</strong>（goto statement）的作用是从 <code>goto</code> 语句无条件跳转到<strong>同一函数</strong>内的另一条语句。</p>
+</li>
+<li><p><code>goto</code> 语句的语法形式是：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">goto</span> label;</span><br></pre></td></tr></table></figure>
+<p>其中，label 是用于标识一条语句的标示符。<strong>带标签语句</strong>（labeled statement）是一种特殊的语句，在它之前有一个标示符以及一个冒号：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">end: <span class="keyword">return</span>;  <span class="comment">// 带标签语句，可以作为 goto 的目标</span></span><br></pre></td></tr></table></figure>
+<p><strong>标签标示符独立于变量或其他标示符的名字，因此，标签标示符可以和程序中其他实体的标示符使用同一个名字而不会相互干扰。</strong><code>goto</code> 语句和控制权转向的那条带标签的语句必须位于同一个函数之内。<strong>和 <code>switch</code> 语句类似，<code>goto</code> 语句也不能将程序的控制权从变量的作用域之外转移到作用域之内</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">goto</span> end;</span><br><span class="line">    <span class="keyword">int</span> ix = <span class="number">10</span>;  <span class="comment">// 错误：goto 语句绕过了一个带初始化的变量定义</span></span><br><span class="line">end:</span><br><span class="line">    <span class="comment">// 错误：此处的代码需要使用 ix，但是 goto 语句绕过了它的声明</span></span><br><span class="line">    ix = <span class="number">42</span>;</span><br></pre></td></tr></table></figure>
+<p>向后跳过一个已经执行的定义是合法的。跳回到变量定义之前意味着系统将销毁该变量，然后重新创建它：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 向后跳过一个带初始化的变量定义是合法的</span></span><br><span class="line">begin:</span><br><span class="line">    <span class="keyword">int</span> sz = get_size();</span><br><span class="line">    <span class="keyword">if</span> (sz &lt;= <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">goto</span> begin;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的代码中，<code>goto</code> 语句执行后将销毁 sz。因为跳回到 begin 的动作跨过了 sz 的定义语句，所以 sz 将重新定义并初始化。</p>
+</li>
+<li><p>在 C++ 语言中，异常处理包括：</p>
+<ul>
+<li><strong><code>throw</code> 表达式</strong>（throw expression），异常检测部分使用 <code>throw</code> 表达式来表示它遇到了无法处理的问题。我们说 <code>throw</code> <strong>引发</strong>（raise）了异常。</li>
+<li><strong><code>try</code> 语句块</strong>（try block），异常处理部分使用 <code>try</code> 语句块处理异常。<code>try</code> 语句块以关键字 <code>try</code> 开始，并以一个或多个 <strong><code>catch</code> 子句</strong>（catch clause）结束。<code>try</code> 语句块中代码抛出的异常通常会被某个 <code>catch</code> 子句处理。因为<code>catch</code>子句“处理”异常，所以它们也被称作<strong>异常处理代码</strong>（exception handler）。</li>
+<li>一套<strong>异常类</strong>（exception class），用于在 <code>throw</code> 表达式和相关的 <code>catch</code> 子句之间传递异常的具体信息。<br><br></li>
+</ul>
+</li>
+<li><p>程序的异常检测部分使用 <code>throw</code> 表达式引发一个异常。<code>throw</code> 表达式包含关键字 <code>throw</code> 和紧随其后的一个表达式，其中表达式的类型就是抛出的异常类型。<code>throw</code> 表达式后面通常紧跟一个分号，从而构成一条表达式语句。</p>
+</li>
+<li><p>类型 <code>runtime_error</code> 是标准库异常类型的一种，定义在 <code>stdexcept</code> 头文件中。必须初始化<code>runtime_error</code> 的对象，方式是给它提供一个 <code>string</code> 对象或者一个 C 风格的字符串，例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> runtime_error(<span class="string">"Data must refer to same ISBN"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>try</code> 语句块的通用语法形式是：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    program-statements</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (exception-declaration)</span><br><span class="line">&#123;</span><br><span class="line">    handler-statements</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (exception-declaration)</span><br><span class="line">&#123;</span><br><span class="line">    handler-statements</span><br><span class="line">&#125;  <span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<p>跟在 <code>try</code> 块之后的是一个或多个 <code>catch</code> 子句。<code>catch</code> 子句包括三部分：关键字 <code>catch</code>、括号内一个（可能未命名的）对象的声明（称作<strong>异常声明</strong>，exception declaration）以及一个块。当选中了某个 <code>catch</code> 子句处理异常之后，执行与之对应的块。<code>catch</code> 一旦完成，程序跳转到 <code>try</code> 语句块最后一个 <code>catch</code> 子句之后的那条语句继续执行。<strong><code>try</code> 语句块内声明的变量在外部无法访问，特别是在 <code>catch</code> 子句内也无法访问。</strong></p>
+</li>
+<li><p>每个标准库异常类都定义了名为 <code>what</code> 的成员函数，这些函数没有参数，返回值是 C 风格字符串（即 <code>const char*</code>）。其中，<code>runtime_error</code> 的 <code>what</code> 成员返回的是初始化一个具体对象时所用的 <code>string</code> 对象的副本。</p>
+</li>
+<li><p>寻找处理代码的过程与函数调用链刚好相反。当异常被抛出时，首先搜索抛出该异常的函数。如果没找到匹配的 <code>catch</code> 子句，终止该函数，并在调用该函数的函数中继续寻找。如果还是没有找到匹配的 <code>catch</code> 子句，这个新的函数也被终止，继续搜索调用它的函数。以此类推，沿着程序的执行路径逐层回退，直到找到适当类型的 <code>catch</code> 子句为止。如果最终还是没能找到任何匹配的 <code>catch</code> 子句，程序转到名为 <strong><code>terminate</code></strong> 的标准库函数。该函数的行为与系统有关，一般情况下，执行该函数将导致程序非正常退出。对于那些没有任何 <code>try</code> 语句块定义的异常，也按照类似的方式处理：毕竟，没有 <code>try</code> 语句块也就意味着没有匹配的 <code>catch</code> 子句。如果一段程序没有 <code>try</code> 语句块且发生了异常，系统会调用 <code>terminate</code> 函数并终止当前程序的执行。</p>
+</li>
+<li><p>C++ 标准库定义了一组类，用于报告标准库函数遇到的问题，它们分别定义在 4 个头文件中：</p>
+<ul>
+<li><code>exception</code> 头文件定义了最通用的异常类 <code>exception</code>。它只报告异常的发生，不提供任何额外信息。</li>
+<li><code>stdexcept</code> 头文件定义了几种常用的异常类，如下表所示。</li>
+<li><code>new</code> 头文件定义了 <code>bad_alloc</code> 异常类型。</li>
+<li><code>type_info</code> 头文件定义了 <code>bad_cast</code> 异常类型。<br><br></li>
+</ul>
+<table>
+<tbody>
+<tr>
+    <td colspan="2"><b><center>&lt;stdexcept&gt;定义的异常类</center></b></td>
+</tr>
+<tr>
+    <td>exception</td>
+    <td>最常见的问题</td>
+</tr>
+<tr>
+    <td>runtime_error</td>
+    <td>只有在运行时才能检测出的问题</td>
+</tr>
+<tr>
+    <td>range_error</td>
+    <td>运行时错误：生成的结果超出了有意义的值域范围</td>
+</tr>
+<tr>
+    <td>overflow_error</td>
+    <td>运行时错误：计算上溢</td>
+</tr>
+<tr>
+    <td>underflow_error</td>
+    <td>运行时错误：计算下溢</td>
+</tr>
+<tr>
+    <td>logic_error</td>
+    <td>程序逻辑错误</td>
+</tr>
+<tr>
+    <td>domain_error</td>
+    <td>逻辑错误：参数对应的结果值不存在</td>
+</tr>
+<tr>
+    <td>invalid_argument</td>
+    <td>逻辑错误：无效参数</td>
+</tr>
+<tr>
+    <td>length_error</td>
+    <td>逻辑错误：试图创建一个超出该类型最大长度的对象</td>
+</tr>
+<tr>
+    <td>out_of_range</td>
+    <td>逻辑错误：使用一个超出有效范围的值</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>标准库异常类只定义了几种运算，包括创建或接贝异常类型的对象，以及为异常类型的对象赋值。只能以默认初始化的方式初始化 <code>exception</code>、<code>bad_alloc</code> 和 <code>bad_cast</code> 对象，不允许为这些对象提供初始值。其他异常类型的行为则恰好相反：应该使用 <code>string</code> 对象或者 C 风格字符串初始化这些类型的对象，但是不允许使用默认初始化的方式。当创建此类对象时，必须提供初始值，该初始值含有错误相关的信息。异常类型只定义了一个名为 <code>what</code> 的成员函数，该函数没有任何参数，返回值是一个指向 C 风格字符串的 <code>const char*</code>。该字符串的目的是提供关于异常的一些文本信息。<code>what</code> 函数返回的 C 风格字符串的内容与异常对象的类型有关。如果异常类型有一个字符串初始值，则 <code>what</code> 返回该字符串。对于其他无初始值的异常类型来说，<code>what</code> 返回的内容由编译器决定。</p>
+</li>
+<li><p>编写一段程序，从标准输入读取两个整数，当第二个数是 0 时抛出异常，使用 <code>try</code> 语句块捕获异常，<code>catch</code> 子句为用户输出一条提示信息，询问是否输入新数并重新执行 <code>try</code> 语句块的内容。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a, b;</span><br><span class="line"><span class="function"><span class="built_in">std</span>::invalid_argument <span class="title">err</span><span class="params">(<span class="string">"Wrong input for the 2nd argument!"</span>)</span></span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="number">0</span> == b)</span><br><span class="line">            <span class="keyword">throw</span> err;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"a/b = "</span> &lt;&lt; a / b;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (<span class="keyword">const</span> <span class="built_in">std</span>::invalid_argument &amp;e)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; e.what() &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Try again? Enter y or n"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">char</span> c;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; c;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">cin</span> || <span class="string">'n'</span> == c)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/c7171333.html" title="C++ Primer - 第 5 章 语句">https://blog.shipengx.com/archives/c7171333.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"><i class="fa fa-tag"></i> C/C++</a>
+              <a href="/tags/C-Primer/" rel="tag"><i class="fa fa-tag"></i> C++ Primer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/208a7c66.html" rel="prev" title="使用Python + Matplotlib绘制双柱状图">
+      <i class="fa fa-chevron-left"></i> 使用Python + Matplotlib绘制双柱状图
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/fb22e988.html" rel="next" title="C++ Primer - 第 6 章 函数">
+      C++ Primer - 第 6 章 函数 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Hexo搭建的博客站点部署在GitHub Pages访问速度感人，迁移到腾讯云VPS访问速度得到质的提升。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="将Hexo搭建的博客站点从GitHub Pages迁移到腾讯云VPS">
+<meta property="og:url" content="https://blog.shipengx.com/archives/3955f5ec.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="Hexo搭建的博客站点部署在GitHub Pages访问速度感人，迁移到腾讯云VPS访问速度得到质的提升。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/VPS%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="https://image.shipengx.com/Welcome%20to%20nginx!.png">
+<meta property="article:published_time" content="2020-02-07T05:38:19.000Z">
+<meta property="article:modified_time" content="2022-05-12T06:08:44.088Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Blog">
+<meta property="article:tag" content="VPS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/VPS%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/3955f5ec.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>将Hexo搭建的博客站点从GitHub Pages迁移到腾讯云VPS | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/3955f5ec.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          将Hexo搭建的博客站点从GitHub Pages迁移到腾讯云VPS
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-07 13:38:19" itemprop="dateCreated datePublished" datetime="2020-02-07T13:38:19+08:00">2020-02-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-12 14:08:44" itemprop="dateModified" datetime="2022-05-12T14:08:44+08:00">2022-05-12</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BB%BA%E7%AB%99/" itemprop="url" rel="index">
+                    <span itemprop="name">建站</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/3955f5ec.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/3955f5ec.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">Hexo搭建的博客站点部署在GitHub Pages访问速度感人，迁移到腾讯云VPS访问速度得到质的提升。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
+<p>在上一篇文章<a href="https://blog.shipengx.com/archives/208e6058.html">《使用 Hexo + GitHub Pages 搭建个人博客站点》</a>中我们介绍了如何使用 Hexo 搭建自己的个人博客站点并部署到 GitHub Pages。将个人站点部署到 GitHub Pages 的显著优点是便捷、免费，但由于 GitHub 服务器位于国外，所以多数情况下，你访问你的 GitHub Pages 的速度将非常缓慢。为提升访问速度，将个人站点部署到腾讯云、阿里云或其它国内云服务提供商的云服务器上是一个很好的选择。当然，你也可以通过树莓派 + 内网穿透搭建自己的私有云服务器。</p>
+</blockquote>
+<h1 id="2-原理" class="heading-control"><a href="#2-原理" class="headerlink" title="2 原理"></a>2 原理<a class="heading-anchor" href="#2-原理" aria-hidden="true"></a></h1><p>使用 VPS 部署博客的原理如下图所示（图片来自<span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxNjEwNjU4NA==" title="https://segmentfault.com/a/1190000016106584">这里<i class="fa fa-external-link"></i></span>）：</p>
+<p><img data-src="https://image.shipengx.com/VPS%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="VPS搭建Hexo博客原理示意图"></p>
+<p>使用 VPS 部署博客的主要思路分为四步：</p>
+<ul>
+<li><code>hexo -g</code>将 source/_posts 目录下的 markdown 文件渲染为静态资源，并将静态资源放置到 public 目录下；</li>
+<li><code>hexo deploy</code>通过 git 将 public 目录下的博客静态资源推送到 VPS 的远程仓库中；</li>
+<li>推送更新触发 Git Hooks 将仓库内的静态资源克隆到网站根目录下；</li>
+<li>使用 nginx 作为 Web 服务器提供对博客的 HTTP 或 HTTPS 访问。</li>
+</ul>
+<p>本文基于腾讯云 Ubuntu 18.04 实现 Hexo 静态博客的 VPS 自动部署。</p>
+<h1 id="3-配置" class="heading-control"><a href="#3-配置" class="headerlink" title="3 配置"></a>3 配置<a class="heading-anchor" href="#3-配置" aria-hidden="true"></a></h1><h2 id="3-1-VPS-端配置——Git" class="heading-control"><a href="#3-1-VPS-端配置——Git" class="headerlink" title="3.1 VPS 端配置——Git"></a>3.1 VPS 端配置——Git<a class="heading-anchor" href="#3-1-VPS-端配置——Git" aria-hidden="true"></a></h2><h3 id="3-1-1-安装" class="heading-control"><a href="#3-1-1-安装" class="headerlink" title="3.1.1 安装"></a>3.1.1 安装<a class="heading-anchor" href="#3-1-1-安装" aria-hidden="true"></a></h3><p>通常情况下，购买了 VPS 后 Git 是默认已经安装的，若未安装，可通过终端命令进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
+<h3 id="3-1-2-配置本地端-SSH-登录-VPS" class="heading-control"><a href="#3-1-2-配置本地端-SSH-登录-VPS" class="headerlink" title="3.1.2 配置本地端 SSH 登录 VPS"></a>3.1.2 配置本地端 SSH 登录 VPS<a class="heading-anchor" href="#3-1-2-配置本地端-SSH-登录-VPS" aria-hidden="true"></a></h3><p>关于 SSH 登录配置，主要包含两步：SSH key 的本地生成和远端添加，可参考<a href="https://blog.shipengx.com/archives/296a9967.html">《在腾讯云上搭建个人 Git 服务器》</a>的<strong>2.2 创建证书登录</strong>，此处不再赘述。</p>
+<h3 id="3-1-3-创建-Git-仓库" class="heading-control"><a href="#3-1-3-创建-Git-仓库" class="headerlink" title="3.1.3 创建 Git 仓库"></a>3.1.3 创建 Git 仓库<a class="heading-anchor" href="#3-1-3-创建-Git-仓库" aria-hidden="true"></a></h3><p>创建适当的目录并将其初始化为 Git 裸库，用于存放 Hexo 博客静态资源：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/blog/shipengx.git</span><br><span class="line"><span class="built_in">cd</span> ~/blog/shipengx.git</span><br><span class="line">git init --bare</span><br></pre></td></tr></table></figure>
+<h3 id="3-1-4-配置-Git-Hooks" class="heading-control"><a href="#3-1-4-配置-Git-Hooks" class="headerlink" title="3.1.4 配置 Git Hooks"></a>3.1.4 配置 Git Hooks<a class="heading-anchor" href="#3-1-4-配置-Git-Hooks" aria-hidden="true"></a></h3><p>此时 VPS 上的远程仓库只是一个裸仓库，无法用于搭建站点服务器，需要在推送更新的同时触发 Git Hooks，以将远程仓库中的博客资源放到 Nginx Web 服务器根目录下。</p>
+<ul>
+<li><p>创建 Nginx Web 根目录，并修改属主与属组</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /var/wwww/blog</span><br><span class="line">sudo chown ubuntu:ubuntu -R /var/wwww/blog</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建钩子文件，并添加可执行权限<br>进入远程仓库的 hook 目录下，新建钩子文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/blog/shipengx.git/hooks</span><br><span class="line">vim post-receive</span><br></pre></td></tr></table></figure>
+<p>添加如下代码并保存，注意，<code>GIT_REPO</code> <code>TMP_GIT_CLONE</code> <code>PUBLIC_WWW</code> 的值视个人情况而定：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"post-receive hook is running..."</span></span><br><span class="line"></span><br><span class="line">GIT_REPO=/home/ubuntu/blog/shipengx.git</span><br><span class="line">TMP_GIT_CLONE=/tmp/blog.shipengx</span><br><span class="line">PUBLIC_WWW=/var/www/blog</span><br><span class="line"></span><br><span class="line">rm -rf <span class="variable">$TMP_GIT_CLONE</span></span><br><span class="line">git <span class="built_in">clone</span> <span class="variable">$GIT_REPO</span> <span class="variable">$TMP_GIT_CLONE</span></span><br><span class="line">rm -rf <span class="variable">$&#123;PUBLIC_WWW&#125;</span>/*</span><br><span class="line">cp -rf <span class="variable">$&#123;TMP_GIT_CLONE&#125;</span>/* <span class="variable">$&#123;PUBLIC_WWW&#125;</span>/</span><br></pre></td></tr></table></figure>
+<p>为钩子文件添加可执行权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x post-receive</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="3-2-VPS-端配置——Nginx" class="heading-control"><a href="#3-2-VPS-端配置——Nginx" class="headerlink" title="3.2 VPS 端配置——Nginx"></a>3.2 VPS 端配置——Nginx<a class="heading-anchor" href="#3-2-VPS-端配置——Nginx" aria-hidden="true"></a></h2><h3 id="3-2-1-安装-Nginx" class="heading-control"><a href="#3-2-1-安装-Nginx" class="headerlink" title="3.2.1 安装 Nginx"></a>3.2.1 安装 Nginx<a class="heading-anchor" href="#3-2-1-安装-Nginx" aria-hidden="true"></a></h3><p>直接通过终端命令进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
+<p>安装完成后，在浏览器中输入 VPS 公网 IP，出现如下页面即表示安装成功：</p>
+<p><img data-src="https://image.shipengx.com/Welcome%20to%20nginx!.png" alt="Welcome to nginx!"></p>
+<p>安装成功后，可通过<code>nginx -v</code>命令查看版本信息，本文中所使用版本为 1.14.0；可通过 <code>service nginx status</code>或<code>systemctl status nginx</code>命令来查看 Nginx 运行状态；可通过<code>nginx -V</code>命令查看安装的 Nginx 所包含组件。</p>
+<h3 id="3-1-2-配置-Nginx" class="heading-control"><a href="#3-1-2-配置-Nginx" class="headerlink" title="3.1.2 配置 Nginx"></a>3.1.2 配置 Nginx<a class="heading-anchor" href="#3-1-2-配置-Nginx" aria-hidden="true"></a></h3><p>Nginx 安装成功后，所有配置文件将位于/etc/nginx 目录下，/etc/nginx/nginx.conf 是主配置文件。本文中对 Nginx 的配置主要做了以下五件事：</p>
+<ul>
+<li>监听 80 端口，以提供正常的 http 访问；</li>
+<li>配置 SSL，以开启网站对 https 访问的支持（需进行 SSL 证书申请与工信部 ICP 备案）；</li>
+<li>IP 访问重定向到域名访问；</li>
+<li>http 访问重定向到 https 访问；</li>
+<li>自定义 404 页面。</li>
+</ul>
+<blockquote>
+<p>购买了 VPS 后一般可申请免费的 SSL 证书，若你的 VPS 是在腾讯云购买的，可以到<span class="exturl" data-url="aHR0cHM6Ly9jb25zb2xlLmNsb3VkLnRlbmNlbnQuY29tL3NzbC9hcHBseQ==" title="https://console.cloud.tencent.com/ssl/apply">这里<i class="fa fa-external-link"></i></span>申请有效期一年的免费 SSL 证书，快到期时需要提前重新申请，证书下发速度很快；对于配置 SSL，工信部 ICP 备案也是必要的，若一级域名未进行备案，则极有可能出现配置做好了域名 http 访问也正常但 https 访问总是被重置的情况，所以最好在购得域名后马上进行 ICP 备案以作备用（对于个人博客站点，网安备案不是必须的），若你的 VPS 是在腾讯云购买的，可以到<span class="exturl" data-url="aHR0cHM6Ly9jb25zb2xlLmNsb3VkLnRlbmNlbnQuY29tL2JlaWFu" title="https://console.cloud.tencent.com/beian">这里<i class="fa fa-external-link"></i></span>进行 ICP 备案申请，备案地与身份证相同的话一般速度比较快，完成备案后记得将备案号填写至站点配置文件的相应位置，以在网页底部展示备案状态（强制要求）。</p>
+</blockquote>
+<p>下面进行具体的配置操作（假设你已经完成 SSL 证书的申请与下载）。</p>
+<p><strong>首先</strong>，在/etc/nginx 目录下创建 ssl 目录用于存放 SSL 证书与配置文件，并将对应 Nginx 的 SSL 证书通过<span class="exturl" data-url="aHR0cHM6Ly93aW5zY3AubmV0L2VuZy9kb2NzL2xhbmc6Y2hz" title="https://winscp.net/eng/docs/lang:chs">WinSCP<i class="fa fa-external-link"></i></span>工具传输至/etc/nginx/ssl 目录下；</p>
+<p><strong>然后</strong>，在本地博客目录 hexo/source 下新建 404.html 文件，粘贴以下腾讯公益 404 页面代码后保存（homepageurl 修改为你的站点域名。更多的 404 模板可以到<span class="exturl" data-url="aHR0cHM6Ly80MDQubGlmZQ==" title="https://404.life">这里<i class="fa fa-external-link"></i></span>查看）：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>404 - Page Not Found<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"description"</span> <span class="attr">content</span>=<span class="string">"404错误，页面不存在！"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"content-type"</span> <span class="attr">content</span>=<span class="string">"text/html;charset=utf-8;"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"IE=edge,chrome=1"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"robots"</span> <span class="attr">content</span>=<span class="string">"all"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"robots"</span> <span class="attr">content</span>=<span class="string">"index,follow"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span></span></span><br><span class="line"><span class="tag">      <span class="attr">type</span>=<span class="string">"text/javascript"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">"//qzonestyle.gtimg.cn/qzone/hybrid/app/404/search_children.js"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">charset</span>=<span class="string">"utf-8"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">homepageurl</span>=<span class="string">"https://blog.shipengx.com"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">homepagename</span>=<span class="string">"返回到博客首页"</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">      !(<span class="function"><span class="keyword">function</span> <span class="params">(o)</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> i = <span class="built_in">Array</span>.prototype.slice.call(</span></span><br><span class="line"><span class="javascript">          <span class="built_in">document</span>.querySelectorAll(<span class="string">"img[data-original]"</span>)</span></span><br><span class="line">        );</span><br><span class="line"><span class="actionscript">        <span class="function"><span class="keyword">function</span> <span class="title">c</span><span class="params">(t, e)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">          <span class="keyword">var</span> n = <span class="keyword">new</span> Image(),</span></span><br><span class="line"><span class="actionscript">            o = t.getAttribute(<span class="string">"data-original"</span>);</span></span><br><span class="line"><span class="actionscript">          (n.onload = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span></span><br><span class="line">            (t.src = o), e &amp;&amp; e();</span><br><span class="line">          &#125;),</span><br><span class="line">            (n.src = o);</span><br><span class="line">        &#125;</span><br><span class="line"><span class="actionscript">        <span class="function"><span class="keyword">function</span> <span class="title">n</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">          <span class="keyword">for</span> (<span class="keyword">var</span> t = <span class="number">0</span>; t &lt; i.length; t++)</span></span><br><span class="line">            (e = i[t]),</span><br><span class="line"><span class="actionscript">              <span class="keyword">void</span> <span class="number">0</span>,</span></span><br><span class="line"><span class="handlebars"><span class="xml">              0 <span class="tag">&lt;<span class="name">=</span> (<span class="attr">n</span> = <span class="string">e.getBoundingClientRect()).top</span> &amp;&amp;</span></span></span></span><br><span class="line">                0 &lt;= n.left &amp;&amp;</span><br><span class="line">                n.top &lt;=</span><br><span class="line"><span class="javascript">                  (o.innerHeight || <span class="built_in">document</span>.documentElement.clientHeight) &amp;&amp;</span></span><br><span class="line"><span class="actionscript">                c(i[t], <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span></span><br><span class="line">                  i.splice(t, t);</span><br><span class="line">                &#125;);</span><br><span class="line"><span class="actionscript">          <span class="keyword">var</span> e, n;</span></span><br><span class="line"><span class="javascript">          <span class="built_in">console</span>.log(<span class="string">"trigger"</span>);</span></span><br><span class="line">        &#125;</span><br><span class="line">        n(),</span><br><span class="line"><span class="actionscript">          o.addEventListener(<span class="string">"scroll"</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">            <span class="keyword">var</span> t, e;</span></span><br><span class="line">            (t = n),</span><br><span class="line">              (e = o),</span><br><span class="line">              clearTimeout(t.tId),</span><br><span class="line"><span class="actionscript">              (t.tId = setTimeout(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span></span><br><span class="line">                t.call(e);</span><br><span class="line">              &#125;, 500));</span><br><span class="line">          &#125;);</span><br><span class="line"><span class="actionscript">      &#125;)(<span class="keyword">this</span>);</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>其次</strong>，在/etc/nginx/ssl 目录下通过<code>sudo vim ssl.conf</code>命令新建 SSL 配置文件，添加如下内容（对于不同版本的 Nginx，SSL 配置内容稍有区别）后保存并退出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">     #SSL 访问端口号为 443</span><br><span class="line">     listen 443;</span><br><span class="line">     #填写绑定证书的域名</span><br><span class="line">     server_name blog.shipengx.com;</span><br><span class="line">     #开启ssl</span><br><span class="line">     ssl on;</span><br><span class="line">     #证书文件名称</span><br><span class="line">     ssl_certificate ssl&#x2F;1_blog.shipengx.com_bundle.crt;</span><br><span class="line">     #私钥文件名称</span><br><span class="line">     ssl_certificate_key ssl&#x2F;2_blog.shipengx.com.key;</span><br><span class="line">     ssl_session_timeout 5m;</span><br><span class="line">     #请按照以下协议配置</span><br><span class="line">     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">     #请按照以下套件配置，配置加密套件，写法遵循 openssl 标准。</span><br><span class="line">     ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;</span><br><span class="line">     ssl_prefer_server_ciphers on;</span><br><span class="line">     #自定义404页面</span><br><span class="line">     error_page 404 &#x2F;404.html;</span><br><span class="line">     location &#x2F; &#123;</span><br><span class="line">         #网站主页路径。此路径仅供参考，具体请您按照实际目录操作。</span><br><span class="line">         root &#x2F;var&#x2F;www&#x2F;blog;</span><br><span class="line">         index  index.html index.htm;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编辑主配置文件/etc/nginx/nginx.conf 为以下内容后保存并退出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">user www-data;</span><br><span class="line">worker_processes auto;</span><br><span class="line">pid &#x2F;run&#x2F;nginx.pid;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">  worker_connections  768;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">  include  mime.types;</span><br><span class="line">  default_type  application&#x2F;octet-stream;</span><br><span class="line"></span><br><span class="line">  sendfile on;</span><br><span class="line">  server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name blog.shipengx.com;</span><br><span class="line">    #自定义404页面</span><br><span class="line">    error_page 404 &#x2F;404.html;</span><br><span class="line">    root &#x2F;var&#x2F;www&#x2F;blog;</span><br><span class="line">    #IP访问强制定向到域名访问</span><br><span class="line">    rewrite ^(.*)$ https:&#x2F;&#x2F;blog.shipengx.com;</span><br><span class="line">    #http访问强制定向到https访问</span><br><span class="line">    return 301 https:&#x2F;&#x2F;blog.shipengx.com$request_uri;</span><br><span class="line">  &#125;</span><br><span class="line">  #加载ssl配置文件</span><br><span class="line">  include &#x2F;etc&#x2F;nginx&#x2F;ssl&#x2F;*.conf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>最后</strong>，通过重新加载配置文件，并设置 Nginx 开机启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo nginx -s reload</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> nginx</span><br></pre></td></tr></table></figure>
+<h2 id="3-3-本地端-Hexo-站点配置" class="heading-control"><a href="#3-3-本地端-Hexo-站点配置" class="headerlink" title="3.3 本地端 Hexo 站点配置"></a>3.3 本地端 Hexo 站点配置<a class="heading-anchor" href="#3-3-本地端-Hexo-站点配置" aria-hidden="true"></a></h2><p>将站点配置文件中的<code>deploy</code>项修改为如下内容，实现本地端向 GitHub 和 VPS 的双远端推送：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/deployment.html</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">"git"</span></span><br><span class="line">  <span class="attr">repository:</span></span><br><span class="line">    <span class="attr">github:</span> <span class="string">git@github.com:RocShi/rocshi.github.io.git</span></span><br><span class="line">    <span class="attr">vps:</span> <span class="string">ubuntu@118.25.111.221:/home/ubuntu/blog/shipengx.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+<p>github 对应着你的 GitHub Pages 项目地址，vps 对应着你的 VPS 远程仓库的地址，记得修改！</p>
+<p><strong>假如你已经完成了域名 ICP 备案，并完成了本文第 3 章节的所有配置，在本地端的博客目录下执行常规的部署操作后在浏览器中输入域名应该就可以成功访问了，而且是支持 https 的！</strong></p>
+<h1 id="4-参考" class="heading-control"><a href="#4-参考" class="headerlink" title="4 参考"></a>4 参考<a class="heading-anchor" href="#4-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9mbHVuZ2dnLmNuL2FyY2hpdmVzL2Y0MTg1M2M0Lmh0bWw=" title="https://flunggg.cn/archives/f41853c4.html">快速搭建博客：优化博客<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MTgwMDg4NC9hcnRpY2xlL2RldGFpbHMvMTAzNTQ1MTMw" title="https://blog.csdn.net/weixin_41800884/article/details/103545130">服务器部署网站后，公网 ip 可以访问，域名不能访问问题<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3llYXJpdG8uY24vcG9zdHMvaGV4by1kZXBsb3ktdG8tVlBTLmh0bWw=" title="http://yearito.cn/posts/hexo-deploy-to-VPS.html">Hexo 搭建个人博客系列：部署上线篇<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9jbG91ZC50ZW5jZW50LmNvbS9kb2N1bWVudC9wcm9kdWN0LzQwMC8zNTI0NA==" title="https://cloud.tencent.com/document/product/400/35244">Nginx 服务器证书安装<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\208e6058.html" rel="bookmark">使用Hexo + GitHub Pages搭建个人博客站点</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\31218470.html" rel="bookmark">基于Hexo的个人博客站点高级自定义设置——使用NexT主题</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/3955f5ec.html" title="将Hexo搭建的博客站点从GitHub Pages迁移到腾讯云VPS">https://blog.shipengx.com/archives/3955f5ec.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"><i class="fa fa-tag"></i> Hexo</a>
+              <a href="/tags/Blog/" rel="tag"><i class="fa fa-tag"></i> Blog</a>
+              <a href="/tags/VPS/" rel="tag"><i class="fa fa-tag"></i> VPS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/208e6058.html" rel="prev" title="使用Hexo + GitHub Pages搭建个人博客站点">
+      <i class="fa fa-chevron-left"></i> 使用Hexo + GitHub Pages搭建个人博客站点
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/3fc34abb.html" rel="next" title="C++ Primer - 第 1 章 开始">
+      C++ Primer - 第 1 章 开始 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-背景"><span class="nav-text">1 背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-原理"><span class="nav-text">2 原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-配置"><span class="nav-text">3 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-VPS-端配置——Git"><span class="nav-text">3.1 VPS 端配置——Git</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-安装"><span class="nav-text">3.1.1 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-配置本地端-SSH-登录-VPS"><span class="nav-text">3.1.2 配置本地端 SSH 登录 VPS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-3-创建-Git-仓库"><span class="nav-text">3.1.3 创建 Git 仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-4-配置-Git-Hooks"><span class="nav-text">3.1.4 配置 Git Hooks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-VPS-端配置——Nginx"><span class="nav-text">3.2 VPS 端配置——Nginx</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-安装-Nginx"><span class="nav-text">3.2.1 安装 Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-配置-Nginx"><span class="nav-text">3.1.2 配置 Nginx</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-本地端-Hexo-站点配置"><span class="nav-text">3.3 本地端 Hexo 站点配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-参考"><span class="nav-text">4 参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

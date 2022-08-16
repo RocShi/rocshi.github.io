@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="近期有 ROS 使用需求，本文旨在记录 ROS 1 的手动安装过程以及通过 rostaller 进行自动化安装的过程，安装环境为 Ubuntu 18.04 + ROS Melodic。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS 1 安装——从手动到自动：以 Ubuntu 18.04 + ROS Melodic 为例">
+<meta property="og:url" content="https://blog.shipengx.com/archives/f969107a.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="近期有 ROS 使用需求，本文旨在记录 ROS 1 的手动安装过程以及通过 rostaller 进行自动化安装的过程，安装环境为 Ubuntu 18.04 + ROS Melodic。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/ROS-1-%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E4%BB%8E%E6%89%8B%E5%8A%A8%E5%88%B0%E8%87%AA%E5%8A%A8%EF%BC%9A%E4%BB%A5-Ubuntu-18-04-ROS-Melodic-%E4%B8%BA%E4%BE%8B.png">
+<meta property="og:image" content="https://image.shipengx.com/%E9%85%8D%E7%BD%AE%20Ubuntu%20%E8%BD%AF%E4%BB%B6%E4%BB%93%E5%BA%93.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%B0%8F%E6%B5%B7%E9%BE%9F.png">
+<meta property="article:published_time" content="2021-07-11T05:02:00.000Z">
+<meta property="article:modified_time" content="2022-05-12T08:14:58.831Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="自动驾驶">
+<meta property="article:tag" content="ROS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/ROS-1-%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E4%BB%8E%E6%89%8B%E5%8A%A8%E5%88%B0%E8%87%AA%E5%8A%A8%EF%BC%9A%E4%BB%A5-Ubuntu-18-04-ROS-Melodic-%E4%B8%BA%E4%BE%8B.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/f969107a.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>ROS 1 安装——从手动到自动：以 Ubuntu 18.04 + ROS Melodic 为例 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/f969107a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          ROS 1 安装——从手动到自动：以 Ubuntu 18.04 + ROS Melodic 为例
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-11 13:02:00" itemprop="dateCreated datePublished" datetime="2021-07-11T13:02:00+08:00">2021-07-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-12 16:14:58" itemprop="dateModified" datetime="2022-05-12T16:14:58+08:00">2022-05-12</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">自动驾驶</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/ROS/" itemprop="url" rel="index">
+                    <span itemprop="name">ROS</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/f969107a.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/f969107a.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">近期有 ROS 使用需求，本文旨在记录 ROS 1 的手动安装过程以及通过 rostaller 进行自动化安装的过程，安装环境为 Ubuntu 18.04 + ROS Melodic。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img data-src="https://image.shipengx.com/ROS-1-%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E4%BB%8E%E6%89%8B%E5%8A%A8%E5%88%B0%E8%87%AA%E5%8A%A8%EF%BC%9A%E4%BB%A5-Ubuntu-18-04-ROS-Melodic-%E4%B8%BA%E4%BE%8B.png" alt="ROS-1-安装——从手动到自动：以-Ubuntu-18-04-ROS-Melodic-为例"></p>
+<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>近期在 Ubuntu 18.04 下安装 ROS 1 Melodic 的过程中遇到 <code>rosdep init</code> 和 <code>rosdep update</code> 报错的问题，手动解决不免繁琐，而且 <code>rosdistro</code> 库会时常更新，如果 <code>rosdep update</code> 时使用了旧版的 <code>YAML</code> 文件，有可能导致后期安装其它 ROS 组件时出现问题，为此开发了完全一键安装开源工具 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9yb3N0YWxsZXI=" title="https://github.com/RocShi/rostaller">rostaller<i class="fa fa-external-link"></i></span>。</p>
+<h1 id="1-手动安装" class="heading-control"><a href="#1-手动安装" class="headerlink" title="1 手动安装"></a>1 手动安装<a class="heading-anchor" href="#1-手动安装" aria-hidden="true"></a></h1><h2 id="1-1-配置-Ubuntu-软件仓库" class="heading-control"><a href="#1-1-配置-Ubuntu-软件仓库" class="headerlink" title="1.1 配置 Ubuntu 软件仓库"></a>1.1 配置 Ubuntu 软件仓库<a class="heading-anchor" href="#1-1-配置-Ubuntu-软件仓库" aria-hidden="true"></a></h2><p>确保 restricted、universe 和 multiverse 被勾选，选择国内更稳定的镜像源，例如清华源：<span class="exturl" data-url="aHR0cHM6Ly9taXJyb3JzLnR1bmEudHNpbmdodWEuZWR1LmNuL3VidW50dS8=" title="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/<i class="fa fa-external-link"></i></span></p>
+<p><img data-src="https://image.shipengx.com/%E9%85%8D%E7%BD%AE%20Ubuntu%20%E8%BD%AF%E4%BB%B6%E4%BB%93%E5%BA%93.png" alt="配置 Ubuntu 软件仓库"></p>
+<h2 id="1-2-添加-ros-源" class="heading-control"><a href="#1-2-添加-ros-源" class="headerlink" title="1.2 添加 ros 源"></a>1.2 添加 ros 源<a class="heading-anchor" href="#1-2-添加-ros-源" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh -c <span class="string">'. /etc/lsb-release &amp;&amp; echo "deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main" &gt; /etc/apt/sources.list.d/ros-latest.list'</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-3-设置密钥" class="heading-control"><a href="#1-3-设置密钥" class="headerlink" title="1.3 设置密钥"></a>1.3 设置密钥<a class="heading-anchor" href="#1-3-设置密钥" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install curl</span><br><span class="line">curl -sSL <span class="string">'http://keyserver.ubuntu.com/pks/lookup?op=get&amp;search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654'</span> | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+<h2 id="1-4-安装-ROS" class="heading-control"><a href="#1-4-安装-ROS" class="headerlink" title="1.4 安装 ROS"></a>1.4 安装 ROS<a class="heading-anchor" href="#1-4-安装-ROS" aria-hidden="true"></a></h2><p>这里以 ROS Melodic 桌面完全版为例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install ros-melodic-desktop-full</span><br></pre></td></tr></table></figure>
+<h2 id="1-5-配置环境" class="heading-control"><a href="#1-5-配置环境" class="headerlink" title="1.5 配置环境"></a>1.5 配置环境<a class="heading-anchor" href="#1-5-配置环境" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"source /opt/ros/melodic/setup.bash"</span> &gt;&gt;~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<h2 id="1-6-安装构建包所需依赖" class="heading-control"><a href="#1-6-安装构建包所需依赖" class="headerlink" title="1.6 安装构建包所需依赖"></a>1.6 安装构建包所需依赖<a class="heading-anchor" href="#1-6-安装构建包所需依赖" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential</span><br></pre></td></tr></table></figure>
+<h2 id="1-7-初始化-rosdep" class="heading-control"><a href="#1-7-初始化-rosdep" class="headerlink" title="1.7 初始化 rosdep"></a>1.7 初始化 rosdep<a class="heading-anchor" href="#1-7-初始化-rosdep" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rosdep init</span><br></pre></td></tr></table></figure>
+<p>由于域名污染，这一步往往会报下面的错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ERROR: cannot download default sources list from:</span><br><span class="line">https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;sources.list.d&#x2F;20-default.list</span><br><span class="line">Website may be down.</span><br></pre></td></tr></table></figure>
+<p>为解决该问题，首先，克隆 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3Jvcy9yb3NkaXN0cm8=" title="https://github.com/ros/rosdistro">rosdistro<i class="fa fa-external-link"></i></span> 仓库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ros/rosdistro.git</span><br></pre></td></tr></table></figure>
+<p>然后，本地新建对应目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/ros/rosdep/sources.list.d</span><br></pre></td></tr></table></figure>
+<p>最后，将克隆下来的 <code>rosdistro</code> 仓库中的 <code>list</code> 文件拷贝到上述目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> rosdistro</span><br><span class="line">sudo cp rosdep/sources.list.d/20-default.list /etc/ros/rosdep/sources.list.d/</span><br></pre></td></tr></table></figure>
+<h2 id="1-8-更新本地-rosdep-数据库" class="heading-control"><a href="#1-8-更新本地-rosdep-数据库" class="headerlink" title="1.8 更新本地 rosdep 数据库"></a>1.8 更新本地 rosdep 数据库<a class="heading-anchor" href="#1-8-更新本地-rosdep-数据库" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosdep update</span><br></pre></td></tr></table></figure>
+<p>同样是由于域名污染，这一步往往会报下面的错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">reading in sources list data from &#x2F;etc&#x2F;ros&#x2F;rosdep&#x2F;sources.list.d</span><br><span class="line">ERROR: unable to process source [https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;osx-homebrew.yaml]:</span><br><span class="line">	&lt;urlopen error [Errno 111] Connection refused&gt; (https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;osx-homebrew.yaml)</span><br><span class="line">ERROR: unable to process source [https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;base.yaml]:</span><br><span class="line">	&lt;urlopen error [Errno 111] Connection refused&gt; (https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;base.yaml)</span><br><span class="line">ERROR: unable to process source [https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;python.yaml]:</span><br><span class="line">	&lt;urlopen error [Errno 111] Connection refused&gt; (https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;python.yaml)</span><br><span class="line">ERROR: unable to process source [https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;ruby.yaml]:</span><br><span class="line">	&lt;urlopen error [Errno 111] Connection refused&gt; (https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;rosdep&#x2F;ruby.yaml)</span><br><span class="line">ERROR: unable to process source [https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;releases&#x2F;fuerte.yaml]:</span><br><span class="line">	Failed to download target platform data for gbpdistro:</span><br><span class="line">	&lt;urlopen error [Errno 111] Connection refused&gt;</span><br><span class="line">Query rosdistro index https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;index-v4.yaml</span><br><span class="line">ERROR: error loading sources list:</span><br><span class="line">	&lt;urlopen error &lt;urlopen error [Errno 111] Connection refused&gt; (https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;ros&#x2F;rosdistro&#x2F;master&#x2F;index-v4.yaml)&gt;</span><br></pre></td></tr></table></figure>
+<p>假设已经解决上面步骤中 <code>rosdep init</code> 遇到的问题，现在需要编辑以下四个文件（<strong>做好备份</strong>）：</p>
+<ul>
+<li><code>/etc/ros/rosdep/sources.list.d/20-default.list</code></li>
+<li><code>/usr/lib/python2.7/dist-packages/rosdep2/gbpdistro_support.py</code></li>
+<li><code>/usr/lib/python2.7/dist-packages/rosdep2/rep3.py</code></li>
+<li><code>/usr/lib/python2.7/dist-packages/rosdistro/__init__.py</code></li>
+</ul>
+<p>搜索文件中的 <code>https://raw.githubusercontent.com/ros/rosdistro/master</code> 字段，将其替换为本地 <code>rosdistro</code> 仓库的绝对地址，例如本示例中为 <code>file:///home/shipeng/Desktop/rosdistro</code>。编辑后的 <code>list</code> 文件如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># os-specific listings first</span><br><span class="line">yaml file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;osx-homebrew.yaml osx</span><br><span class="line"></span><br><span class="line"># generic</span><br><span class="line">yaml file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;base.yaml</span><br><span class="line">yaml file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;python.yaml</span><br><span class="line">yaml file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;ruby.yaml</span><br><span class="line">gbpdistro file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;releases&#x2F;fuerte.yaml fuerte</span><br><span class="line"></span><br><span class="line"># newer distributions (Groovy, Hydro, ...) must not be listed anymore, they are being fetched from the rosdistro index.yaml instead</span><br></pre></td></tr></table></figure>
+<p>然后重新执行 <code>rosdep update</code> 命令即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">reading in sources list data from &#x2F;etc&#x2F;ros&#x2F;rosdep&#x2F;sources.list.d</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;osx-homebrew.yaml</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;base.yaml</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;python.yaml</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;rosdep&#x2F;ruby.yaml</span><br><span class="line">Hit file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;releases&#x2F;fuerte.yaml</span><br><span class="line">Query rosdistro index file:&#x2F;&#x2F;&#x2F;home&#x2F;shipeng&#x2F;Desktop&#x2F;rosdistro&#x2F;index-v4.yaml</span><br><span class="line">Skip end-of-life distro &quot;ardent&quot;</span><br><span class="line">Skip end-of-life distro &quot;bouncy&quot;</span><br><span class="line">Skip end-of-life distro &quot;crystal&quot;</span><br><span class="line">Skip end-of-life distro &quot;dashing&quot;</span><br><span class="line">Skip end-of-life distro &quot;eloquent&quot;</span><br><span class="line">Add distro &quot;foxy&quot;</span><br><span class="line">Add distro &quot;galactic&quot;</span><br><span class="line">Skip end-of-life distro &quot;groovy&quot;</span><br><span class="line">Skip end-of-life distro &quot;hydro&quot;</span><br><span class="line">Skip end-of-life distro &quot;indigo&quot;</span><br><span class="line">Skip end-of-life distro &quot;jade&quot;</span><br><span class="line">Skip end-of-life distro &quot;kinetic&quot;</span><br><span class="line">Skip end-of-life distro &quot;lunar&quot;</span><br><span class="line">Add distro &quot;melodic&quot;</span><br><span class="line">Add distro &quot;noetic&quot;</span><br><span class="line">Add distro &quot;rolling&quot;</span><br><span class="line">updated cache in &#x2F;home&#x2F;shipeng&#x2F;.ros&#x2F;rosdep&#x2F;sources.cache</span><br></pre></td></tr></table></figure>
+<h2 id="1-8-运行小海龟示例" class="heading-control"><a href="#1-8-运行小海龟示例" class="headerlink" title="1.8 运行小海龟示例"></a>1.8 运行小海龟示例<a class="heading-anchor" href="#1-8-运行小海龟示例" aria-hidden="true"></a></h2><p>打开终端，执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">roscore</span><br></pre></td></tr></table></figure>
+<p>另开新的终端，执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun turtlesim turtlesim_node</span><br></pre></td></tr></table></figure>
+<p>弹出小海龟界面：</p>
+<p><img data-src="https://image.shipengx.com/%E5%B0%8F%E6%B5%B7%E9%BE%9F.png" alt="小海龟"></p>
+<p>另开新的终端，执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun turtle_teleop_key</span><br></pre></td></tr></table></figure>
+<p>保持该终端中的光标处于激活状态，通过方向键即可控制小海龟的移动。</p>
+<h1 id="2-自动化安装——使用-rostaller" class="heading-control"><a href="#2-自动化安装——使用-rostaller" class="headerlink" title="2 自动化安装——使用 rostaller"></a>2 自动化安装——使用 rostaller<a class="heading-anchor" href="#2-自动化安装——使用-rostaller" aria-hidden="true"></a></h1><p>上述手动安装的步骤中，处理 <code>rosdep init</code> 和 <code>rosdep update</code> 报错问题的方法操作起来不免繁琐，而且 <code>rosdistro</code> 库会时常更新，如果 <code>rosdep update</code> 时使用了旧版的 <code>YAML</code> 文件，有可能导致后期安装其它 ROS 组件时出现问题，为此开发了 Ubuntu 18.04 下 ROS 1 Melodic 完全一键安装的开源工具 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9yb3N0YWxsZXI=" title="https://github.com/RocShi/rostaller">rostaller<i class="fa fa-external-link"></i></span>，再也不用纠结 <code>rosdep init</code> 和 <code>rosdep update</code> 报错的问题，工具执行时会尝试在线更新 <code>YAML</code> 文件，后面可能会增加对 ROS 1 其它版本及 ROS 2 的支持。欢迎使用 + star，欢迎提 issue，欢迎 folk + pull request。工具使用方法：</p>
+<ul>
+<li><p>克隆仓库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/RocShi/rostaller.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入本地仓库目录，为脚本添加可执行权限（仅首次执行需要）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x run.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行脚本，一键安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./run.sh</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>Enjoy!</strong></p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cDovL3dpa2kucm9zLm9yZy9jbi9tZWxvZGljL0luc3RhbGxhdGlvbi9VYnVudHU=" title="http://wiki.ros.org/cn/melodic/Installation/Ubuntu">在 Ubuntu 中安装 ROS Melodic<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3dpa2kucm9zLm9yZy9tZWxvZGljL0luc3RhbGxhdGlvbi9VYnVudHU=" title="http://wiki.ros.org/melodic/Installation/Ubuntu">Ubuntu install of ROS Melodic<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzMxMTkyMC9hcnRpY2xlL2RldGFpbHMvMTE0Nzk2NzQ4P3V0bV9zb3VyY2U9YXBwJmFtcDthcHBfdmVyc2lvbj00LjUuNA==" title="https://blog.csdn.net/weixin_43311920/article/details/114796748?utm_source=app&amp;app_version=4.5.4">rosdep init/update 解决方法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU4NDkxNy9hcnRpY2xlL2RldGFpbHMvMTE0NDQ4MzU1" title="https://blog.csdn.net/weixin_42584917/article/details/114448355">ROS rosdep init/update 报错终极解决方法<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e8e6ccc3.html" rel="bookmark">Apollo 6.0 Perception 模块 Fusion 组件（一）：构建与启动流程分析</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e4b9c8ad.html" rel="bookmark">Apollo 6.0 安装完全指南</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/f969107a.html" title="ROS 1 安装——从手动到自动：以 Ubuntu 18.04 + ROS Melodic 为例">https://blog.shipengx.com/archives/f969107a.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag"><i class="fa fa-tag"></i> 自动驾驶</a>
+              <a href="/tags/ROS/" rel="tag"><i class="fa fa-tag"></i> ROS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/af0e9080.html" rel="prev" title="带有大文件的 GitHub 项目的创建与拉取——使用 Git Large File Storage (LFS)">
+      <i class="fa fa-chevron-left"></i> 带有大文件的 GitHub 项目的创建与拉取——使用 Git Large File Storage (LFS)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/f61b5eee.html" rel="next" title="深入探索单例设计模式：以百度 Apollo 为例">
+      深入探索单例设计模式：以百度 Apollo 为例 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-手动安装"><span class="nav-text">1 手动安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-配置-Ubuntu-软件仓库"><span class="nav-text">1.1 配置 Ubuntu 软件仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-添加-ros-源"><span class="nav-text">1.2 添加 ros 源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-设置密钥"><span class="nav-text">1.3 设置密钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-安装-ROS"><span class="nav-text">1.4 安装 ROS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-配置环境"><span class="nav-text">1.5 配置环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-安装构建包所需依赖"><span class="nav-text">1.6 安装构建包所需依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-初始化-rosdep"><span class="nav-text">1.7 初始化 rosdep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-更新本地-rosdep-数据库"><span class="nav-text">1.8 更新本地 rosdep 数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-运行小海龟示例"><span class="nav-text">1.8 运行小海龟示例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-自动化安装——使用-rostaller"><span class="nav-text">2 自动化安装——使用 rostaller</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

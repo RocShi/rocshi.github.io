@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="贝叶斯滤波通过上一时刻的状态及当前时刻的控制输入，对当前时刻的状态作出预测，并通过当前时刻的观测对预测作出更新（也可称为纠正），最终实现对当前时刻状态的估计。贝叶斯滤波思想是卡尔曼滤波、粒子滤波等滤波算法的基础。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从概率到贝叶斯滤波">
+<meta property="og:url" content="https://blog.shipengx.com/archives/9fb25cec.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="贝叶斯滤波通过上一时刻的状态及当前时刻的控制输入，对当前时刻的状态作出预测，并通过当前时刻的观测对预测作出更新（也可称为纠正），最终实现对当前时刻状态的估计。贝叶斯滤波思想是卡尔曼滤波、粒子滤波等滤波算法的基础。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E6%A6%82%E7%8E%87%E5%88%B0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2.png">
+<meta property="og:image" content="https://image.shipengx.com/%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png">
+<meta property="og:image" content="https://image.shipengx.com/%E7%A6%BB%E6%95%A3%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png">
+<meta property="og:image" content="https://image.shipengx.com/%E8%BF%9E%E7%BB%AD%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png">
+<meta property="article:published_time" content="2020-08-16T10:22:26.000Z">
+<meta property="article:modified_time" content="2022-05-12T06:05:41.238Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="自动驾驶">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="滤波">
+<meta property="article:tag" content="贝叶斯滤波">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E6%A6%82%E7%8E%87%E5%88%B0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/9fb25cec.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>从概率到贝叶斯滤波 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/9fb25cec.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          从概率到贝叶斯滤波
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-16 18:22:26" itemprop="dateCreated datePublished" datetime="2020-08-16T18:22:26+08:00">2020-08-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-12 14:05:41" itemprop="dateModified" datetime="2022-05-12T14:05:41+08:00">2022-05-12</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">自动驾驶</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/%E5%A4%9A%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BF%A1%E6%81%AF%E8%9E%8D%E5%90%88/" itemprop="url" rel="index">
+                    <span itemprop="name">多传感器信息融合</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/9fb25cec.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/9fb25cec.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">贝叶斯滤波通过上一时刻的状态及当前时刻的控制输入，对当前时刻的状态作出预测，并通过当前时刻的观测对预测作出更新（也可称为纠正），最终实现对当前时刻状态的估计。贝叶斯滤波思想是卡尔曼滤波、粒子滤波等滤波算法的基础。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E6%A6%82%E7%8E%87%E5%88%B0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2.png" alt="目录-从概率到贝叶斯滤波"></p>
+<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><strong>贝叶斯滤波</strong>基于贝叶斯公式，通过上一时刻的状态及当前时刻的输入，对当前时刻的状态作出预测，并通过当前时刻的观测对预测作出更新（也可称为纠正），最终实现对当前时刻状态的估计。贝叶斯滤波思想是卡尔曼滤波、粒子滤波等算法的基础。本文从概率基础概念出发，逐步进行贝叶斯滤波的推导。</p>
+<h1 id="1-概率基础概念拾遗" class="heading-control"><a href="#1-概率基础概念拾遗" class="headerlink" title="1 概率基础概念拾遗"></a>1 概率基础概念拾遗<a class="heading-anchor" href="#1-概率基础概念拾遗" aria-hidden="true"></a></h1><h2 id="1-1-随机变量" class="heading-control"><a href="#1-1-随机变量" class="headerlink" title="1.1 随机变量"></a>1.1 随机变量<a class="heading-anchor" href="#1-1-随机变量" aria-hidden="true"></a></h2><h3 id="1-1-1-定义" class="heading-control"><a href="#1-1-1-定义" class="headerlink" title="1.1.1 定义"></a>1.1.1 定义<a class="heading-anchor" href="#1-1-1-定义" aria-hidden="true"></a></h3><p>定义在样本空间 $\Omega$ 上的实值函数：</p>
+<script type="math/tex; mode=display">
+X = X(\omega), \omega \in \Omega</script><p>被称为<strong>随机变量</strong>（random variable），如下图所示。$\omega$ 表示样本空间 $\Omega$ 里的随机事件，可能与数量有关（如传感器随机测得的前方障碍物的距离值，随机掷骰子得到的点数），也可能与数量无关（如随机掷硬币的结果可能为正面或反面）。</p>
+<p><img data-src="https://image.shipengx.com/%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png" alt="随机变量"></p>
+<p>随机变量表示随机试验各种结果的实值单值函数。随机事件不论与数量是否直接有关，都可以数量化，即都能用数量化的方式表达。</p>
+<p>“随机变量 $X$ 的取值为 $x$ ”就是满足等式 $X(\omega)=x$ 的一切 $\omega$ 组成的集合，简记为“ $X=x$”，这是 $\Omega$ 的一个子集，即：</p>
+<script type="math/tex; mode=display">
+“X=x”=\{\omega:X(\omega)=x\} \subset \Omega</script><p>类似地，有：</p>
+<script type="math/tex; mode=display">
+“X\leqslant x”=\{\omega:X(\omega)\leqslant x\} \subset \Omega</script><h3 id="1-1-2-离散型随机变量" class="heading-control"><a href="#1-1-2-离散型随机变量" class="headerlink" title="1.1.2 离散型随机变量"></a>1.1.2 离散型随机变量<a class="heading-anchor" href="#1-1-2-离散型随机变量" aria-hidden="true"></a></h3><p>如果随机变量的函数值是实数轴上孤立的点（有限个或者无限个），则称为<strong>离散型随机变量</strong>：</p>
+<p><img data-src="https://image.shipengx.com/%E7%A6%BB%E6%95%A3%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png" alt="离散型随机变量"></p>
+<h3 id="1-1-3-连续型随机变量" class="heading-control"><a href="#1-1-3-连续型随机变量" class="headerlink" title="1.1.3 连续型随机变量"></a>1.1.3 连续型随机变量<a class="heading-anchor" href="#1-1-3-连续型随机变量" aria-hidden="true"></a></h3><p>如果随机变量的函数值是实数轴上某个区间上所有的值（也可以是 $(-\infty, +\infty)$ 区间），则称为<strong>连续型随机变量</strong>：</p>
+<p><img data-src="https://image.shipengx.com/%E8%BF%9E%E7%BB%AD%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png" alt="连续型随机变量"></p>
+<h2 id="1-2-累积分布函数" class="heading-control"><a href="#1-2-累积分布函数" class="headerlink" title="1.2 累积分布函数"></a>1.2 累积分布函数<a class="heading-anchor" href="#1-2-累积分布函数" aria-hidden="true"></a></h2><p>设 $X$ 为一个随机变量，对于任意实数 $x$，称：</p>
+<script type="math/tex; mode=display">
+F(x)=P(X\le x)</script><p>为随机变量 $X$ 的<strong>累积分布函数</strong>（Cumulative Distribution Function，CDF），又称概率分布函数，简称<strong>分布函数</strong>。</p>
+<p>若 $X$ 为离散型随机变量，存在函数 $f_X(x)$，使其分布函数满足：</p>
+<script type="math/tex; mode=display">
+F(x)=P(X\le x)=\sum_{u \le x}f_X(u)</script><p>若 $X$ 为连续型随机变量，存在函数 $f_X(x)$，使其分布函数满足：</p>
+<script type="math/tex; mode=display">
+F(x)=P(X\le x)= \int_{-\infty}^{x}f_X(u)\mathrm{d}u</script><p>分布函数满足单调性、有界性和右连续性：</p>
+<ul>
+<li>单调性<br>对任意 $x_1\le x_2$，有 $F(x_1)\le F(x_2)$</li>
+<li>有界性<br>对任意 $x$，有：<script type="math/tex; mode=display">
+0\le F(x)\le 1</script>且有：<script type="math/tex; mode=display">
+\lim_{x\to -\infty}F(x)=0,\quad \lim_{x\to +\infty}F(x)=1</script></li>
+<li>右连续性<br>对任意 $x_0$，有：<script type="math/tex; mode=display">
+\lim_{x\to x_0^+}F(x)=F(x_0)</script></li>
+</ul>
+<h2 id="1-3-概率质量函数" class="heading-control"><a href="#1-3-概率质量函数" class="headerlink" title="1.3 概率质量函数"></a>1.3 概率质量函数<a class="heading-anchor" href="#1-3-概率质量函数" aria-hidden="true"></a></h2><p>假设 $X$ 为离散型随机变量，其全部可能取值为 $x_1, x_2, x_3, ···$ ，其<strong>概率分布列</strong>可表述为：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$X$</th>
+<th style="text-align:center">$x_1$</th>
+<th style="text-align:center">$x_2$</th>
+<th style="text-align:center">$x_3$</th>
+<th style="text-align:center">···</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$P$</td>
+<td style="text-align:center">$p(x_1)$</td>
+<td style="text-align:center">$p(x_2)$</td>
+<td style="text-align:center">$p(x_3)$</td>
+<td style="text-align:center">···</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>则称：</p>
+<script type="math/tex; mode=display">
+f_X(x)=
+\begin{cases}
+    p(x)=P(X=x), \quad x \in \{x_i\}, i=1, 2, 3, ··· \\
+    0, \quad 其它
+\end{cases}</script><p>为离散型随机变量 $X$ 的<strong>概率质量函数</strong>（Probability Mass Function，PMF）。</p>
+<p>也可采用如下的表示方法：</p>
+<script type="math/tex; mode=display">
+X\sim p(x)</script><p>读作 $X$ 服从 $p(x)$ 的概率分布。</p>
+<p>概率质量函数表征了离散型随机变量在各特定取值上的概率，其满足<strong>非负性</strong>、<strong>规范性</strong>和<strong>可加性</strong>：</p>
+<ul>
+<li>非负性<script type="math/tex; mode=display">
+f_X(x_i) \ge 0</script></li>
+<li>规范性和可加性<script type="math/tex; mode=display">
+\sum_{i=1}^{\infty}f_X(x_i)=1</script></li>
+</ul>
+<p><strong>离散型随机变量概率质量函数的叠加得到了离散型随机变量的累积分布函数。</strong></p>
+<h2 id="1-4-概率密度函数" class="heading-control"><a href="#1-4-概率密度函数" class="headerlink" title="1.4 概率密度函数"></a>1.4 概率密度函数<a class="heading-anchor" href="#1-4-概率密度函数" aria-hidden="true"></a></h2><p>假设 $X$ 为连续型随机变量，存在函数 $f_X(x)$，且满足：</p>
+<ul>
+<li>非负性<script type="math/tex; mode=display">
+f_X(x) \ge 0</script></li>
+<li>规范性和可加性<script type="math/tex; mode=display">
+\int_{-\infty}^{+\infty}f_X(x)\mathrm{d}x=1</script></li>
+</ul>
+<p>则称函数 $f_X(x)$ 为连续型随机变量 $X$ 的<strong>概率密度函数</strong>（Probability Density Function，PDF），<strong>连续型随机变量概率密度函数的积分得到了连续型随机变量的累积分布函数</strong>。</p>
+<p>概率密度函数表征了连续型随机变量的输出值在某个确定的取值点<strong>附近</strong>的可能性。连续型随机变量的输出值在某个确定的取值点上的概率为 0，但并不代表该事件不会发生。</p>
+<h2 id="1-5-联合概率" class="heading-control"><a href="#1-5-联合概率" class="headerlink" title="1.5 联合概率"></a>1.5 联合概率<a class="heading-anchor" href="#1-5-联合概率" aria-hidden="true"></a></h2><h3 id="1-5-1-二维离散型随机变量的联合概率质量函数" class="heading-control"><a href="#1-5-1-二维离散型随机变量的联合概率质量函数" class="headerlink" title="1.5.1 二维离散型随机变量的联合概率质量函数"></a>1.5.1 二维离散型随机变量的联合概率质量函数<a class="heading-anchor" href="#1-5-1-二维离散型随机变量的联合概率质量函数" aria-hidden="true"></a></h3><p>若二维离散型随机变量 $(X,Y)$ 所有可能的取值为</p>
+<script type="math/tex; mode=display">
+(x_i, y_j), i, j=1, 2, 3, \cdots</script><p>且存在函数 $f_{X,Y}(x,y)$：</p>
+<script type="math/tex; mode=display">
+f_{X,Y}(x,y)=p(x,y)=P(X=x,Y=y), \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>函数 $f_{X,Y}(x,y)$ 满足如下性质（即概率的三大公理）：</p>
+<ul>
+<li><p>非负性</p>
+<script type="math/tex; mode=display">
+f_{X,Y}(x_i, y_i) \ge 0</script></li>
+<li><p>规范性和可加性</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^{\infty}\sum_{j=1}^{\infty}f_{X,Y}(x_i, y_i)=1</script></li>
+</ul>
+<p>则称函数 $f_{X,Y}(x,y)$ 为 $(X,Y)$ 的<strong>联合概率质量函数</strong>（Joint Probability Mass Function），又称联合分布列，此定义可以推广到多维离散型随机变量。</p>
+<p><strong>二维离散型随机变量联合概率质量函数的叠加得到了二维离散型随机变量的联合累积分布函数（Joint Cumulative Distribution Function）</strong>：</p>
+<script type="math/tex; mode=display">
+F_{X,Y}(x,y)=P(X\le x, Y\le y)=\sum_{u\le x}\sum_{v\le y}f_{X,Y}(u, v)</script><h3 id="1-5-2-二维连续型随机变量的联合概率密度函数" class="heading-control"><a href="#1-5-2-二维连续型随机变量的联合概率密度函数" class="headerlink" title="1.5.2 二维连续型随机变量的联合概率密度函数"></a>1.5.2 二维连续型随机变量的联合概率密度函数<a class="heading-anchor" href="#1-5-2-二维连续型随机变量的联合概率密度函数" aria-hidden="true"></a></h3><p>若对于二维连续型随机变量 $(X,Y)$，存在二元函数 $f_{X,Y}(x,y)$ 满足：</p>
+<ul>
+<li><p>非负性</p>
+<script type="math/tex; mode=display">
+f_{X,Y}(x,y) \ge 0</script></li>
+<li><p>规范性和可加性</p>
+<script type="math/tex; mode=display">
+\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}f_{X,Y}(x,y)\mathrm{d}x\mathrm{d}y=1</script></li>
+</ul>
+<p>则称函数 $f_{X,Y}(x,y)$ 为 $(X,Y)$ 的<strong>联合概率密度函数</strong>（Joint Probability Density Function），此定义可以推广到多维连续型随机变量。</p>
+<p><strong>二维连续型随机变量联合概率密度函数的积分得到了二维连续型随机变量的联合累积分布函数</strong>：</p>
+<script type="math/tex; mode=display">
+F_{X,Y}(x,y)=P(X\le x, Y\le y)=\int_{-\infty}^{x}\int_{-\infty}^{y}f_{X,Y}(u,v)\mathrm{d}v\mathrm{d}u</script><h2 id="1-6-边缘概率" class="heading-control"><a href="#1-6-边缘概率" class="headerlink" title="1.6 边缘概率"></a>1.6 边缘概率<a class="heading-anchor" href="#1-6-边缘概率" aria-hidden="true"></a></h2><h3 id="1-6-1-二维离散型随机变量的边缘概率质量函数" class="heading-control"><a href="#1-6-1-二维离散型随机变量的边缘概率质量函数" class="headerlink" title="1.6.1 二维离散型随机变量的边缘概率质量函数"></a>1.6.1 二维离散型随机变量的边缘概率质量函数<a class="heading-anchor" href="#1-6-1-二维离散型随机变量的边缘概率质量函数" aria-hidden="true"></a></h3><p>若二维离散型随机变量 $(X,Y)$ 所有可能的取值为</p>
+<script type="math/tex; mode=display">
+(x_i, y_j), i, j=1, 2, 3, \cdots</script><p>且联合概率质量函数 $f_{X,Y}(x,y)$ 为：</p>
+<script type="math/tex; mode=display">
+f_{X,Y}(x,y)=p(x,y)=P(X=x,Y=y), \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>对 $j$ 求和所得的函数：</p>
+<script type="math/tex; mode=display">
+f_X(x)=\sum_{j=1}^{\infty}f_{X,Y}(x,y_j)=\sum_{j=1}^{\infty}P(X=x,Y=y_j)=P(X=x), \quad x \in \{x_i\}, i=1, 2, 3, ···</script><p>称为 $X$ 的<strong>边缘概率质量函数</strong>（Marginal Probability Mass Function），又称边缘分布列。</p>
+<p>类似的对 $i$ 求和所得的函数：</p>
+<script type="math/tex; mode=display">
+f_Y(y)=\sum_{i=1}^{\infty}f_{X,Y}(x_i,y)=\sum_{i=1}^{\infty}P(X=x_i,Y=y)=P(Y=y), \quad y \in \{y_j\}, j=1, 2, 3, ···</script><p>称为 $Y$ 的边缘概率质量函数。</p>
+<p><strong>二维离散型随机变量边缘概率质量函数的叠加得到了二维离散型随机变量的边缘累积分布函数（Marginal Cumulative Distribution Function）</strong>：</p>
+<script type="math/tex; mode=display">
+F_X(x)=P(X\le x)=\sum_{u\le x}f_X(u)=\sum_{u\le x}\sum_{j=1}^{\infty}P(X=u,Y=y_j)=\sum_{u\le x}P(X=u) \\
+F_Y(y)=P(Y\le y)=\sum_{v\le y}f_Y(v)=\sum_{v\le y}\sum_{i=1}^{\infty}P(Y=v,X=x_i)=\sum_{v\le y}P(Y=v)</script><h3 id="1-6-2-二维连续型随机变量的边缘概率密度函数" class="heading-control"><a href="#1-6-2-二维连续型随机变量的边缘概率密度函数" class="headerlink" title="1.6.2 二维连续型随机变量的边缘概率密度函数"></a>1.6.2 二维连续型随机变量的边缘概率密度函数<a class="heading-anchor" href="#1-6-2-二维连续型随机变量的边缘概率密度函数" aria-hidden="true"></a></h3><p>若二维连续型随机变量 $(X,Y)$ 的联合概率密度函数为 $f_{X,Y}(x,y)$，则：</p>
+<script type="math/tex; mode=display">
+f_X(x)=\int_{-\infty}^{+\infty}f_{X,Y}(x,y)\mathrm{d}y</script><p>称为 $X$ 的<strong>边缘概率密度函数</strong>（Marginal Probability Density Function）。</p>
+<p>类似的：</p>
+<script type="math/tex; mode=display">
+f_Y(y)=\int_{-\infty}^{+\infty}f_{X,Y}(x,y)\mathrm{d}x</script><p>称为 $Y$ 的边缘概率密度函数。</p>
+<p><strong>二维连续型随机变量边缘概率密度函数的积分得到了二维连续型随机变量的边缘累积分布函数</strong>：</p>
+<script type="math/tex; mode=display">
+F_X(x)=P(X\le x)=\int_{-\infty}^xf_X(u)\mathrm{d}u=\int_{-\infty}^x\int_{-\infty}^{+\infty}f_{X,Y}(u,y)\mathrm{d}y\mathrm{d}u \\
+F_Y(y)=P(Y\le y)=\int_{-\infty}^yf_Y(v)\mathrm{d}v=\int_{-\infty}^y\int_{-\infty}^{+\infty}f_{X,Y}(x,v)\mathrm{d}x\mathrm{d}v</script><h2 id="1-7-条件概率" class="heading-control"><a href="#1-7-条件概率" class="headerlink" title="1.7 条件概率"></a>1.7 条件概率<a class="heading-anchor" href="#1-7-条件概率" aria-hidden="true"></a></h2><h3 id="1-7-1-二维离散型随机变量的条件概率质量函数" class="heading-control"><a href="#1-7-1-二维离散型随机变量的条件概率质量函数" class="headerlink" title="1.7.1 二维离散型随机变量的条件概率质量函数"></a>1.7.1 二维离散型随机变量的条件概率质量函数<a class="heading-anchor" href="#1-7-1-二维离散型随机变量的条件概率质量函数" aria-hidden="true"></a></h3><p>若 $(X,Y)$ 是二维离散型随机变量，对于固定的 $j$，若 $P(Y=y_j) &gt; 0$ ，则称：</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x \ | \ y)=P(X=x \ | \ Y=y)=\frac{P(X=x, Y=y)}{P(Y=y)}=\frac{f_{X,Y}(x,y)}{f_Y(y)}, \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>为 $Y=y$ 条件下离散型随机变量 $X$ 的<strong>条件概率质量函数</strong>（Conditional Probability Mass Function）。</p>
+<p>同样的，对于固定的 $i$，若 $P(X=x_i) &gt; 0$，则称：</p>
+<script type="math/tex; mode=display">
+f_{Y|X}(y \ | \ x)=P(Y=y \ | \ X=x)=\frac{P(X=x, Y=y)}{P(X=x)}=\frac{f_{X,Y}(x,y)}{f_X(x)}, \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>为 $X=x$ 条件下离散型随机变量 $Y$ 的条件概率质量函数。</p>
+<p>简言之，对于二维离散型随机变量：</p>
+<script type="math/tex; mode=display">
+条件概率质量函数=\frac{联合概率质量函数}{边缘概率质量函数}</script><p><strong>二维离散型随机变量条件概率质量函数的叠加得到了二维离散型随机变量的条件累积分布函数（Conditional Cumulative Distribution Function）</strong>：</p>
+<script type="math/tex; mode=display">
+F_{X|Y}(x \ | \ y)=P(X\le x \ | \ Y=y)=\sum_{u\le x}f_{X|Y}(u \ | \ y)=\sum_{u\le x}\frac{f_{X,Y}(u,y)}{f_Y(y)} \\
+F_{Y|X}(y \ | \ x)=P(Y\le y \ | \ X=x)=\sum_{v\le y}f_{Y|X}(v \ | \ x)=\sum_{v\le y}\frac{f_{X,Y}(x,v)}{f_X(x)}</script><h3 id="1-7-2-二维连续型随机变量的条件概率密度函数" class="heading-control"><a href="#1-7-2-二维连续型随机变量的条件概率密度函数" class="headerlink" title="1.7.2 二维连续型随机变量的条件概率密度函数"></a>1.7.2 二维连续型随机变量的条件概率密度函数<a class="heading-anchor" href="#1-7-2-二维连续型随机变量的条件概率密度函数" aria-hidden="true"></a></h3><p>假设二维连续型随机变量 $(X,Y)$ 的联合概率密度函数为 $f_{X,Y}(x,y)$，若对于固定的 $Y=y$，有边缘概率密度函数 $f_Y(y) &gt; 0$，则称函数：</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x\ | \ y)=\frac{f_{X,Y}(x,y)}{f_Y(y)}</script><p>为随机变量 $X$ 在 $Y=y$ 条件下的<strong>条件概率密度函数</strong>（Conditional Probability Density Function）。</p>
+<p>若对于固定的 $X=x$，有边缘概率密度函数 $f_X(x) &gt; 0$，则称函数：</p>
+<script type="math/tex; mode=display">
+f_{Y|X}(y\ | \ x)=\frac{f_{X,Y}(x,y)}{f_X(x)}</script><p>为随机变量 $Y$ 在 $X=x$ 条件下的条件概率密度函数。</p>
+<p>简言之，对于二维连续型随机变量：</p>
+<script type="math/tex; mode=display">
+条件概率密度函数=\frac{联合概率密度函数}{边缘概密度函数}</script><p><strong>二维连续型随机变量条件概率密度函数的积分得到了二维连续型随机变量的条件累积分布函数</strong>：</p>
+<script type="math/tex; mode=display">
+F_{X|Y}(x\ |\ y)=P(X \le x \ | \ Y=y)=\int_{-\infty}^{x}f_{X|Y}(u\ | \ y)\mathrm{d}u=\int_{-\infty}^{x}\frac{f_{X,Y}(u,y)}{f_Y(y)}\mathrm{d}u \\
+F_{Y|X}(y\ |\ x)=P(Y \le y \ | \ X=x)=\int_{-\infty}^{y}f_{Y|X}(v\ | \ x)\mathrm{d}v=\int_{-\infty}^{y}\frac{f_{X,Y}(x,v)}{f_X(x)}\mathrm{d}v</script><h2 id="1-8-全概率" class="heading-control"><a href="#1-8-全概率" class="headerlink" title="1.8 全概率"></a>1.8 全概率<a class="heading-anchor" href="#1-8-全概率" aria-hidden="true"></a></h2><h3 id="1-8-1-二维离散型随机变量的全概率公式" class="heading-control"><a href="#1-8-1-二维离散型随机变量的全概率公式" class="headerlink" title="1.8.1 二维离散型随机变量的全概率公式"></a>1.8.1 二维离散型随机变量的全概率公式<a class="heading-anchor" href="#1-8-1-二维离散型随机变量的全概率公式" aria-hidden="true"></a></h3><p>对于二维离散型随机变量 $(X,Y)$，已知条件概率质量函数：</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x \ | \ y)=\frac{f_{X,Y}(x,y)}{f_Y(y)}, \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ··· \\
+f_{Y|X}(y \ | \ x)=\frac{f_{X,Y}(x,y)}{f_X(x)}, \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>容易得到二维离散型随机变量联合概率质量函数的等价形式：</p>
+<script type="math/tex; mode=display">
+f_{X,Y}(x,y)=f_{X|Y}(x \ | \ y)f_Y(y)=f_{Y|X}(y \ | \ x)f_X(x)</script><p>由边缘概率质量函数与联合概率质量函数间的数量关系，得到二维离散型随机变量的全概率公式：</p>
+<script type="math/tex; mode=display">
+f_X(x)=\sum_{j=1}^{\infty}f_{X,Y}(x,y_j)=\sum_{j=1}^{\infty}f_{X|Y}(x \ | \ y_j)f_Y(y_j) \\
+f_Y(y)=\sum_{i=1}^{\infty}f_{X,Y}(x_i,y)=\sum_{i=1}^{\infty}f_{Y|X}(y \ | \ x_i)f_X(x_i)</script><h3 id="1-8-2-二维连续型随机变量的全概率公式" class="heading-control"><a href="#1-8-2-二维连续型随机变量的全概率公式" class="headerlink" title="1.8.2 二维连续型随机变量的全概率公式"></a>1.8.2 二维连续型随机变量的全概率公式<a class="heading-anchor" href="#1-8-2-二维连续型随机变量的全概率公式" aria-hidden="true"></a></h3><p>对于二维连续型随机变量 $(X,Y)$，已知条件概率密度函数：</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x\ | \ y)=\frac{f_{X,Y}(x,y)}{f_Y(y)} \\
+f_{Y|X}(y\ | \ x)=\frac{f_{X,Y}(x,y)}{f_X(x)}</script><p>容易得到二维连续型随机变量联合概率密度函数的等价形式：</p>
+<script type="math/tex; mode=display">
+f_{X,Y}(x,y)=f_{X|Y}(x \ | \ y)f_Y(y)=f_{Y|X}(y \ | \ x)f_X(x)</script><p>由边缘概率密度函数与联合概率密度函数间的数量关系，得到二维连续型随机变量的全概率公式：</p>
+<script type="math/tex; mode=display">
+f_X(x)=\int_{-\infty}^{+\infty}f_{X|Y}(x \ | \ y)f_Y(y)\mathrm{d}y \\
+f_Y(y)=\int_{-\infty}^{+\infty}f_{Y|X}(y \ | \ x)f_X(x)\mathrm{d}x</script><h2 id="1-9-随机过程" class="heading-control"><a href="#1-9-随机过程" class="headerlink" title="1.9 随机过程"></a>1.9 随机过程<a class="heading-anchor" href="#1-9-随机过程" aria-hidden="true"></a></h2><p><strong>随机过程</strong>（Stochastic Process）是定义在 $\Omega \times T$ 上的二元函数 $X(\omega, t)$，简单的定义为一组随机变量的集合，即指定一参数集 $T$ （又称指标集，通常为时间集），其中：</p>
+<ul>
+<li>对于固定的时间 $t$，$X(\omega, t)$ 为随机变量，简记为 $X(t)$ 或 $X_t$；</li>
+<li>对于固定的 $\omega$（即固定每一时刻对应的随机变量的取值），$X(\omega, t)$ 为时间 $t$ 的一般函数，称为<strong>样本函数</strong>（Sample Function）或样本轨道（Sample Path），简记为 $x(t)$。随机过程也可定义为一组样本函数的集合。</li>
+</ul>
+<p>注意：随机变量 $X(t)$ 或 $X_t$ 并不是时间 $t$ 的函数，它只表示所有样本函数 $x(t)$ 在 $t$ 时刻的取值。</p>
+<p>依据随机变量和参数集的连续离散情况，随机过程有以下四种类型：</p>
+<ul>
+<li><strong>连续型随机过程</strong>：随机变量连续，参数连续；</li>
+<li><strong>离散型随机过程</strong>：随机变量离散，参数连续；</li>
+<li><strong>连续型随机序列</strong>：随机变量连续，参数离散；</li>
+<li><strong>离散型随机序列</strong>：随机变量离散，参数离散。</li>
+</ul>
+<p>不同于确定过程，<strong>随机过程中的随机变量彼此间不独立</strong>。应该理解，<strong>贝叶斯滤波处理的是一个随机过程</strong>，而且往往是一个连续型随机过程。</p>
+<h1 id="2-贝叶斯滤波" class="heading-control"><a href="#2-贝叶斯滤波" class="headerlink" title="2 贝叶斯滤波"></a>2 贝叶斯滤波<a class="heading-anchor" href="#2-贝叶斯滤波" aria-hidden="true"></a></h1><h2 id="2-1-贝叶斯公式" class="heading-control"><a href="#2-1-贝叶斯公式" class="headerlink" title="2.1 贝叶斯公式"></a>2.1 贝叶斯公式<a class="heading-anchor" href="#2-1-贝叶斯公式" aria-hidden="true"></a></h2><h3 id="2-1-1-二维离散型随机变量的贝叶斯公式" class="heading-control"><a href="#2-1-1-二维离散型随机变量的贝叶斯公式" class="headerlink" title="2.1.1 二维离散型随机变量的贝叶斯公式"></a>2.1.1 二维离散型随机变量的贝叶斯公式<a class="heading-anchor" href="#2-1-1-二维离散型随机变量的贝叶斯公式" aria-hidden="true"></a></h3><p>对于二维离散型随机变量 $(X, Y)$，由其条件概率质量函数与全概率公式，容易得到其贝叶斯公式：</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x \ | \ y)=\frac{f_{X,Y}(x,y)}{f_Y(y)}=\frac{f_{Y|X}(y \ | \ x)f_X(x)}{\sum\limits_{i=1}^{\infty}f_{Y|X}(y \ | \ x_i)f_X(x_i)}, \quad (x,y) \in \{x_i,y_j\}, i,j=1, 2, 3, ···</script><p>二维离散型随机变量的贝叶斯公式可通过作图的方式轻松证得。</p>
+<h3 id="2-1-2-二维连续型随机变量的贝叶斯公式" class="heading-control"><a href="#2-1-2-二维连续型随机变量的贝叶斯公式" class="headerlink" title="2.1.2 二维连续型随机变量的贝叶斯公式"></a>2.1.2 二维连续型随机变量的贝叶斯公式<a class="heading-anchor" href="#2-1-2-二维连续型随机变量的贝叶斯公式" aria-hidden="true"></a></h3><p><strong>(1) 结论</strong></p>
+<p>对于二维连续型随机变量 $(X, Y)$，由其条件概率密度函数与全概率公式，容易得到其贝叶斯公式：</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x \ | \ y)=\frac{f_{X,Y}(x,y)}{f_Y(y)}=\frac{f_{Y|X}(y \ | \ x)f_X(x)}{\int_{-\infty}^{+\infty}f_{Y|X}(y \ | \ x)f_X(x)\mathrm{d}x}</script><p><strong>(2) 推导</strong></p>
+<p>二维连续型随机变量的贝叶斯公式无法通过作图的方式推得，下面进行公式推导，首先计算二维连续型随机变量的条件累积分布函数：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    F_{X|Y}(x\ |\ y) & = P(X \le x \ | \ Y=y) \\
+    & = \sum_{u=-\infty}^xP(X=u \ | \ Y=y) \quad \Rightarrow \color{red}{化连续为离散无穷小的累加} \\
+    & = \sum_{u=-\infty}^x\frac{P(Y=y \ | \ X=u)P(X=u)}{P(Y=y)} \quad \Rightarrow \color{red}{二维离散型随机变量的贝叶斯公式} \\
+    & = \lim_{\epsilon \to 0}\sum_{u=-\infty}^x\frac{P(y \le Y \le y+\epsilon \ | \ X=u)P(u \le X \le u+\epsilon)}{P(y \le Y \le y+\epsilon)} \quad \Rightarrow \color{red}{化无穷小为极限形式} \\
+    & = \lim_{\epsilon \to 0}\sum_{u=-\infty}^x\frac{[F_{Y|X}(y+\epsilon \ |\ u)-F_{Y|X}(y \ |\ u)][F_X(u+\epsilon)-F_X(u)]}{F_Y(y+\epsilon)-F_Y(y)} \quad \Rightarrow \color{red}{分布函数性质} \\
+    & = \lim_{\epsilon \to 0}\sum_{u=-\infty}^x\frac{[f_{Y|X}(\xi_1 \ | \ u)·\epsilon][f_X(\xi_2)·\epsilon]}{f_Y(\xi_3)·\epsilon} \quad \Rightarrow \color{red}{拉格朗日中值定理，\xi_1, \xi_3 \in (y, y+\epsilon)，\xi_2 \in (u, u+\epsilon)} \\
+    & = \lim_{\epsilon \to 0}\sum_{u=-\infty}^x\frac{f_{Y|X}(y \ | \ u)f_X(u)}{f_Y(y)}·\epsilon \quad \Rightarrow \color{red}{\epsilon \to 0 \ 时，\xi_1 \to y，\xi_2 \to u，\xi_3 \to y} \\
+    & = \int_{-\infty}^x\frac{f_{Y|X}(y \ | \ u)f_X(u)}{f_Y(y)}\mathrm{d}u \quad \Rightarrow \color{red}{积分定义} \\
+    & = \int_{-\infty}^x\frac{f_{Y|X}(y \ | \ x)f_X(x)}{f_Y(y)}\mathrm{d}x \quad \Rightarrow \color{red}{替换自变量符号u为x}
+\end{aligned}</script><p>故，二维连续型随机变量的条件概率密度函数为：</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x\ |\ y)=\frac{\mathrm{d}F_{X|Y}(x\ |\ y)}{\mathrm{d}x}=\frac{f_{Y|X}(y \ | \ x)f_X(x)}{f_Y(y)}</script><p>代入全概率公式：</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x\ |\ y)=\frac{f_{Y|X}(y \ | \ x)f_X(x)}{\int_{-\infty}^{+\infty}f_{Y|X}(y \ | \ x)f_X(x)\mathrm{d}x}</script><p>上式即为二维连续型随机变量的贝叶斯公式，推导完毕。</p>
+<h2 id="2-2-先验概率、似然概率与后验概率" class="heading-control"><a href="#2-2-先验概率、似然概率与后验概率" class="headerlink" title="2.2 先验概率、似然概率与后验概率"></a>2.2 先验概率、似然概率与后验概率<a class="heading-anchor" href="#2-2-先验概率、似然概率与后验概率" aria-hidden="true"></a></h2><p>在二维连续型随机变量的贝叶斯公式中，有如下定义：</p>
+<ul>
+<li>$f_X(x)$ 被称为<strong>先验概率密度</strong>（Prior Probability Density），表示根据以往的经验和分析，在本次试验或采样前便可获得的随机变量 $X$ 的概率密度；</li>
+<li>$f_{Y|X}(y \ | \ x)$ 被称为<strong>似然概率密度</strong>（Likelihood Probability Density），表示在状态随机变量 $X$ 取值为 $x$ 的条件下，观测随机变量 $Y$ 取值为 $y$ 的概率密度，状态为因，观测为果，即<strong>由因推果</strong>；</li>
+<li>$f_{X|Y}(x\ |\ y)$ 被成为<strong>后验概率密度</strong>（Posterior Probability Density），表示在观测随机变量 $Y$ 取值为 $y$ 的条件下，状态随机变量 $X$ 取值为 $x$ 的概率密度，状态为因，观测为果，即<strong>由果推因</strong>。</li>
+</ul>
+<p>此外，当 $y$ 为定值时，$\eta=\left[\int_{-\infty}^{+\infty}f_{Y|X}(y \ | \ x)f_X(x)\mathrm{d}x\right]^{-1}$ 为一常数，常被称为贝叶斯公式的<strong>归一化常数</strong>。</p>
+<p>因此，二维连续型随机变量的贝叶斯公式可表示为：</p>
+<script type="math/tex; mode=display">
+后验概率密度=\eta \times 似然概率密度 \times 先验概率密度</script><h2 id="2-3-再谈似然概率" class="heading-control"><a href="#2-3-再谈似然概率" class="headerlink" title="2.3 再谈似然概率"></a>2.3 再谈似然概率<a class="heading-anchor" href="#2-3-再谈似然概率" aria-hidden="true"></a></h2><p>上文中提到，似然概率密度函数 $f_{Y|X}(y \ | \ x)$ 表示在状态随机变量 $X$ 取值为 $x$ 的条件下，观测随机变量 $Y$ 取值为 $y$ 的概率密度。<strong>似然概率密度函数表征了传感器检测精度</strong>，对于给定的状态条件 $X=x$，观测结果 $Y=y$ 的概率分布通常有三种模型：</p>
+<p><strong>(1) 等可能型</strong></p>
+<p>观测值在状态量真值附近呈均匀分布，此时的似然概率密度函数为常数。</p>
+<p><strong>(2) 阶梯型</strong></p>
+<p>观测值在状态量真值附近呈阶梯分布，此时的似然概率密度函数为分段常数。</p>
+<p><strong>(3) 正态分布型</strong></p>
+<p>观测值在状态量真值附近呈高斯分布，此时的似然概率密度函数为高斯函数：</p>
+<script type="math/tex; mode=display">
+f_{Y|X}(y \ | \ x)=\frac{1}{\sigma \sqrt{2\pi}}e^{-\frac{(y-x)^2}{2\sigma ^2}}</script><p>若假定似然概率密度函数为高斯函数，此时，似然概率密度函数的均值 $x$ 代表状态量真值，$\sigma$ 代表传感器检测精度范围。若同时假定先验概率密度函数为高斯函数，即：</p>
+<script type="math/tex; mode=display">
+f_X(x) \sim \mathcal{N}(\mu_1, \ \sigma_1^2), \quad f_{Y|X}(y \ | \ x) \sim \mathcal{N}(\mu_2, \ \sigma_2^2)</script><p>则</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x \ | \ y) \sim \mathcal{N}(\frac{\sigma_2^2}{\sigma_1^2 + \sigma_2^2}\mu_1+\frac{\sigma_1^2}{\sigma_1^2 + \sigma_2^2}\mu_2, \ \frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2})</script><p>由于</p>
+<script type="math/tex; mode=display">
+\frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2}=\frac{\sigma_1^2}{1+\frac{\sigma_1^2}{\sigma_2^2}} < \sigma_1^2</script><p>且</p>
+<script type="math/tex; mode=display">
+\frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2}=\frac{\sigma_2^2}{1+\frac{\sigma_2^2}{\sigma_1^2}} < \sigma_2^2</script><p>故，<strong>后验概率密度函数方差既小于先验概率密度函数方差，也小于似然概率密度函数方差，系统不确定度降低</strong>。</p>
+<p>若 $\sigma_1^2 \gg \sigma_2^2$，则近似有：</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x \ | \ y) \sim \mathcal{N}(\mu_2, \ \sigma_2^2)</script><p>此时，后验倾向于观测。</p>
+<p>若 $\sigma_1^2 \ll \sigma_2^2$，则近似有：</p>
+<script type="math/tex; mode=display">
+f_{X|Y}(x \ | \ y) \sim \mathcal{N}(\mu_1, \ \sigma_1^2)</script><p>此时，后验倾向于先验。</p>
+<h2 id="2-4-贝叶斯滤波推导" class="heading-control"><a href="#2-4-贝叶斯滤波推导" class="headerlink" title="2.4 贝叶斯滤波推导"></a>2.4 贝叶斯滤波推导<a class="heading-anchor" href="#2-4-贝叶斯滤波推导" aria-hidden="true"></a></h2><h3 id="2-4-1-问题建模" class="heading-control"><a href="#2-4-1-问题建模" class="headerlink" title="2.4.1 问题建模"></a>2.4.1 问题建模<a class="heading-anchor" href="#2-4-1-问题建模" aria-hidden="true"></a></h3><p><strong>(1) 问题描述</strong></p>
+<p>对于某状态量随机变量 $X$，从初始时刻 0 开始，对其进行观测，得到 0 ~ k 时刻的观测值：</p>
+<script type="math/tex; mode=display">
+y_0, y_1, y_2, \cdots , y_k</script><p>求解 k 时刻状态量随机变量 $X_k$ 的最优估计 $\hat{x}_k$。</p>
+<p><strong>(2) 求解思路</strong></p>
+<p>以贝叶斯公式为求解方向，将问题转化为求解状态量随机变量 $X_k$ 后验概率密度函数的期望：</p>
+<script type="math/tex; mode=display">
+\hat{x}_k=E[f_{X_k}^+(x)]</script><p>进而需要求解状态量随机变量 $X_k$ 的先验概率密度函数与似然概率密度函数。我们认为，<strong>k 时刻的状态量随机变量 $X_k$ 与且仅与上一时刻的状态量随机变量 $X_{k-1}$ 有关，k 时刻的观测量随机变量 $Y_k$ 与且仅与 k 时刻的状态量随机变量 $X_k$ 有关</strong>，其中的数量关系我们分别称之为<strong>状态方程</strong>与<strong>观测方程</strong>：</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+    X_k=f(X_{k-1})+Q_k \quad \Rightarrow \color{red}{状态方程} \\
+    Y_k=h(X_k)+R_k \quad \Rightarrow \color{red}{观测方程}
+\end{cases}</script><p>$f(x)$ 被称为状态转移函数，$h(x)$ 被称为观测函数。</p>
+<p>对于 0 时刻的初始状态量随机变量 $X_0$，认为观测值 $y_0$ 即为其真值，其后验概率密度函数即为其先验概率密度函数。我们可以根据经验知识（建模精度和传感器精度）写出 0 时刻的初始状态量随机变量 $X_0$ 的后验概率密度函数 $f_{X_0}^+(x)$、k 时刻过程噪声随机变量 $Q_k$ 的概率密度函数 $f_{Q_k}(x)$ 和 k 时刻观测噪声随机变量 $R_k$ 的概率密度函数 $f_{R_k}(x)$。</p>
+<p><strong>(3) 符号定义</strong></p>
+<ul>
+<li><p>各时刻的状态量随机变量</p>
+<script type="math/tex; mode=display">
+X_0, X_1, X_2, \cdots , X_k</script></li>
+<li><p>各时刻的观测量随机变量</p>
+<script type="math/tex; mode=display">
+Y_0, Y_1, Y_2, \cdots , Y_k</script></li>
+<li><p>各时刻的观测值</p>
+<script type="math/tex; mode=display">
+y_0, y_1, y_2, \cdots , y_k</script></li>
+<li><p>各时刻的过程噪声随机变量</p>
+<script type="math/tex; mode=display">
+Q_1, Q_2, \cdots , Q_k</script></li>
+<li><p>各时刻的观测噪声随机变量</p>
+<script type="math/tex; mode=display">
+R_1, R_2, \cdots , R_k</script></li>
+<li><p>各时刻的过程噪声随机变量概率密度函数</p>
+<script type="math/tex; mode=display">
+f_{Q_1}(x), f_{Q_2}(x), \cdots , f_{Q_k}(x)</script></li>
+<li><p>各时刻的观测噪声随机变量概率密度函数</p>
+<script type="math/tex; mode=display">
+f_{R_1}(x), f_{R_2}(x), \cdots , f_{R_k}(x)</script></li>
+<li><p>各时刻的状态量随机变量先验概率密度函数</p>
+<script type="math/tex; mode=display">
+f_{X_0}^-(x), f_{X_1}^-(x), f_{X_2}^-(x), \cdots , f_{X_k}^-(x)</script></li>
+<li><p>各时刻的状态量随机变量后验概率密度函数</p>
+<script type="math/tex; mode=display">
+f_{X_0}^+(x), f_{X_1}^+(x), f_{X_2}^+(x), \cdots , f_{X_k}^+(x)</script></li>
+<li><p>各时刻状态量随机变量与观测量随机变量的似然概率密度函数</p>
+<script type="math/tex; mode=display">
+f_{Y_1|X_1}(y_1 \ | \ x), f_{Y_2|X_2}(y_2 \ | \ x), \cdots , f_{Y_k|X_k}(y_k \ | \ x)</script></li>
+</ul>
+<p><strong>(4) 重要假设</strong></p>
+<ul>
+<li>$X_0$ 分别与 $Q_1, Q_2, \cdots , Q_k$ 相互独立；</li>
+<li>$X_0$ 分别与 $R_1, R_2, \cdots , R_k$ 相互独立；</li>
+<li>$X_{k-1}$ 与 $Q_k$ 相互独立；</li>
+<li>$X_{k}$ 与 $R_k$ 相互独立。</li>
+</ul>
+<p><strong>(5) 重要定理</strong></p>
+<p>$\star$ <strong>条件概率里的条件可以作逻辑推导</strong>。例如：</p>
+<script type="math/tex; mode=display">
+P(X=1 \ | \ Y=2,Z=3)=P(X+Y=3 \ | \ Y=2,Z=3)=P(X+Y=3 \ | \ Y=2,Z-Y=1)</script><h3 id="2-4-2-预测步推导" class="heading-control"><a href="#2-4-2-预测步推导" class="headerlink" title="2.4.2 预测步推导"></a>2.4.2 预测步推导<a class="heading-anchor" href="#2-4-2-预测步推导" aria-hidden="true"></a></h3><p>已知 0 时刻状态量随机变量 $X_0$ 的后验概率密度函数 $f_{X_0}^+(x)$，状态转移函数 $f(x)$，1 时刻过程噪声随机变量 $Q_1$ 的概率密度函数 $f_{Q_1}(x)$，求解 1 时刻状态量随机变量 $X_1$ 的先验概率密度函数 $f_{X_1}^-(x)$。</p>
+<p>类似二维连续型随机变量贝叶斯公式的推导过程，我们从求解 $X_1$ 的先验累积分布函数 $F_{X_1}^-$ 入手。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    F_{X_1}^-(x) & = P(X_1 \le x) \\
+    & = \sum_{u=-\infty}^xP(X_1=u) \quad \Rightarrow \color{red}{化连续为离散无穷小的累加} \\
+    & = \sum_{u=-\infty}^x\sum_{v=-\infty}^{+\infty}P(X_1=u \ | \ X_0=v)P(X_0=v) \quad \Rightarrow \color{red}{全概率公式} \\
+    & = \sum_{u=-\infty}^x\sum_{v=-\infty}^{+\infty}P[X_1-f(X_0)=u-f(v) \ | \ X_0=v]P(X_0=v) \quad \Rightarrow \color{red}{条件概率里的条件可以作逻辑推导} \\
+    & = \sum_{u=-\infty}^x\sum_{v=-\infty}^{+\infty}P[Q_1=u-f(v) \ | \ X_0=v]P(X_0=v) \quad \Rightarrow \color{red}{状态方程} \\
+    & = \sum_{u=-\infty}^x\sum_{v=-\infty}^{+\infty}P[Q_1=u-f(v)]P(X_0=v) \quad \Rightarrow \color{red}{X_{k-1}与Q_k相互独立} \\
+    & = \sum_{u=-\infty}^x\left\{\lim_{\epsilon \to 0}\sum_{v=-\infty}^{+\infty}f_{Q_1}[u-f(v)]·\epsilon · f_{X_0}^+(v)·\epsilon \right\} \quad \Rightarrow \color{red}{类似二维连续型随机变量贝叶斯公式的推导过程，将点概率化为概率密度与无穷小的乘积} \\
+    & = \sum_{u=-\infty}^x\left\{\lim_{\epsilon \to 0}\int_{-\infty}^{+\infty}f_{Q_1}[u-f(v)]f_{X_0}^+(v)\mathrm{d}v·\epsilon \right\} \quad \Rightarrow \color{red}{积分定义} \\
+    & = \int_{-\infty}^x \int_{-\infty}^{+\infty}f_{Q_1}[u-f(v)]f_{X_0}^+(v)\mathrm{d}v\mathrm{d}u \quad \Rightarrow \color{red}{积分定义} \\
+    & = \int_{-\infty}^x \int_{-\infty}^{+\infty}f_{Q_1}[x-f(v)]f_{X_0}^+(v)\mathrm{d}v\mathrm{d}x \quad \Rightarrow \color{red}{替换自变量符号u为x}
+\end{aligned}</script><p>故，1 时刻状态量随机变量 $X_1$ 的先验概率密度函数为：</p>
+<script type="math/tex; mode=display">
+f_{X_1}^-(x)=\frac{\mathrm{d}F_{X_1}^-(x)}{\mathrm{d}x}=\int_{-\infty}^{+\infty}f_{Q_1}[x-f(v)]f_{X_0}^+(v)\mathrm{d}v</script><p>推导完毕。可以发现，<strong>先验概率密度函数本质来源于状态方程</strong>。</p>
+<h3 id="2-4-3-更新步推导" class="heading-control"><a href="#2-4-3-更新步推导" class="headerlink" title="2.4.3 更新步推导"></a>2.4.3 更新步推导<a class="heading-anchor" href="#2-4-3-更新步推导" aria-hidden="true"></a></h3><p>已知 1 时刻观测量随机变量 $Y_1$ 的取值 $y_1$，求解 1 时刻状态量随机变量与观测量随机变量的似然概率密度函数 $f_{Y_1|X_1}(y_1 \ | \ x)$，并联合预测步得到的 1 时刻状态量随机变量 $X_1$ 的先验概率密度函数 $f_{X_1}^-(x)$，求解 1 时刻状态量随机变量 $X_1$ 的后验概率密度函数 $f_{X_1}^+(x)$。</p>
+<p>首先，求解似然概率密度函数 $f_{Y_1|X_1}(y_1 \ | \ x)$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    f_{Y_1|X_1}(y_1 \ | \ x) & =\lim_{\epsilon \to 0}\frac{F_{Y_1 | X_1}(y_1+\epsilon \ | \ x)-F_{Y_1 | X_1}(y_1 \ | \ x)}{\epsilon} \quad \Rightarrow \color{red}{导数的定义} \\
+    & =\lim_{\epsilon \to 0}\frac{P(y_1 \le Y_1 \le y_1 + \epsilon \ | \ X_1=x)}{\epsilon} \quad \Rightarrow \color{red}{累积分布函数的性质} \\
+    & =\lim_{\epsilon \to 0}\frac{P[y_1-h(x) \le Y_1-h(X_1) \le y_1 - h(x) + \epsilon \ | \ X_1=x]}{\epsilon} \quad \Rightarrow \color{red}{条件概率里的条件可以作逻辑推导} \\
+    & =\lim_{\epsilon \to 0}\frac{P[y_1-h(x) \le R_1 \le y_1 - h(x) + \epsilon \ | \ X_1=x]}{\epsilon} \quad \Rightarrow \color{red}{观测方程} \\
+    & =\lim_{\epsilon \to 0}\frac{P[y_1-h(x) \le R_1 \le y_1 - h(x) + \epsilon]}{\epsilon} \quad \Rightarrow \color{red}{X_{k}与R_k相互独立} \\
+    & =\lim_{\epsilon \to 0}\frac{F_{R_1}[y_1 - h(x) + \epsilon]-F_{R_1}[y_1 - h(x)]}{\epsilon} \quad \Rightarrow \color{red}{累积分布函数的性质} \\
+    & =f_{R_1}[y_1-h(x)] \quad \Rightarrow \color{red}{导数的定义}
+\end{aligned}</script><p>可以发现，<strong>似然概率密度函数本质来源于观测方程</strong>。</p>
+<p>然后，联合预测步得到的 1 时刻状态量随机变量 $X_1$ 的先验概率密度函数 $f_{X_1}^-(x)$，求解 1 时刻状态量随机变量 $X_1$ 的后验概率密度函数 $f_{X_1}^+(x)$：</p>
+<script type="math/tex; mode=display">
+f_{X_1}^+(x)=\eta_1·f_{Y_1|X_1}(y_1 \ | \ x)·f_{X_1}^-(x)=\eta_1·f_{R_1}[y_1-h(x)]·f_{X_1}^-(x)</script><p>其中，归一化常数 $\eta_1$为：</p>
+<script type="math/tex; mode=display">
+\eta_1=\left[\int_{-\infty}^{+\infty}f_{Y_1|X_1}(y_1 \ | \ x)f_{X_1}^-(x)\mathrm{d}x\right]^{-1}=\left\{\int_{-\infty}^{+\infty}f_{R_1}[y_1-h(x)]f_{X_1}^-(x)\mathrm{d}x\right\}^{-1}</script><p>推导完毕。</p>
+<h3 id="2-4-4-递推流程" class="heading-control"><a href="#2-4-4-递推流程" class="headerlink" title="2.4.4 递推流程"></a>2.4.4 递推流程<a class="heading-anchor" href="#2-4-4-递推流程" aria-hidden="true"></a></h3><p>由预测步和更新步的推导结果，可得到由 0 时刻状态量随机变量 $X_0$ 的后验概率密度函数 $f_{X_0}^+(x)$ 到 k 时刻状态量随机变量 $X_k$ 的后验概率密度函数 $f_{X_k}^+(x)$ 的递推流程：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    f_{X_0}^+(x) & \stackrel{预测}{\Longrightarrow} f_{X_1}^-(x)=\int_{-\infty}^{+\infty}f_{Q_1}[x-f(v)]f_{X_0}^+(v)\mathrm{d}v \stackrel{观测更新}{\Longrightarrow} f_{X_1}^+(x)=\eta_1·f_{R_1}[y_1-h(x)]·f_{X_1}^-(x) \\
+    & \stackrel{预测}{\Longrightarrow} f_{X_2}^-(x)=\int_{-\infty}^{+\infty}f_{Q_2}[x-f(v)]f_{X_1}^+(v)\mathrm{d}v \stackrel{观测更新}{\Longrightarrow} f_{X_2}^+(x)=\eta_2·f_{R_2}[y_2-h(x)]·f_{X_2}^-(x) \\
+    & \cdots \\
+    & \stackrel{预测}{\Longrightarrow} f_{X_k}^-(x)=\int_{-\infty}^{+\infty}f_{Q_k}[x-f(v)]f_{X_{k-1}}^+(v)\mathrm{d}v \stackrel{观测更新}{\Longrightarrow} f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)
+\end{aligned}</script><p>其中，归一化常数 $\eta_k$ 为：</p>
+<script type="math/tex; mode=display">
+\eta_k=\left\{\int_{-\infty}^{+\infty}f_{R_k}[y_k-h(x)]f_{X_k}^-(x)\mathrm{d}x\right\}^{-1}</script><p>最终，可得到 k 时刻状态量随机变量 $X_k$ 的最优估计 $\hat{x}_k$：</p>
+<script type="math/tex; mode=display">
+\hat{x}_k=E[f_{X_k}^+(x)]=\int_{-\infty}^{+\infty}xf_{X_k}^+(x)\mathrm{d}x</script><h3 id="2-4-5-完整算法框架" class="heading-control"><a href="#2-4-5-完整算法框架" class="headerlink" title="2.4.5 完整算法框架"></a>2.4.5 完整算法框架<a class="heading-anchor" href="#2-4-5-完整算法框架" aria-hidden="true"></a></h3><p><strong>(1) 设初值</strong></p>
+<p>初始 0 时刻状态量随机变量 $X_0$ 的后验概率密度函数：</p>
+<script type="math/tex; mode=display">
+f_{X_0}^+(x)</script><p><strong>(2) 预测步</strong></p>
+<p>k 时刻状态量随机变量 $X_k$ 的先验概率密度函数：</p>
+<script type="math/tex; mode=display">
+f_{X_k}^-(x)=\int_{-\infty}^{+\infty}f_{Q_k}[x-f(v)]f_{X_{k-1}}^+(v)\mathrm{d}v</script><p><strong>(3) 更新步</strong></p>
+<p>k 时刻状态量随机变量 $X_k$ 的后验概率密度函数：</p>
+<script type="math/tex; mode=display">
+f_{X_k}^+(x)=\eta_k·f_{R_k}[y_k-h(x)]·f_{X_k}^-(x)</script><p>归一化常数 $\eta_k$：</p>
+<script type="math/tex; mode=display">
+\eta_k=\left\{\int_{-\infty}^{+\infty}f_{R_k}[y_k-h(x)]f_{X_k}^-(x)\mathrm{d}x\right\}^{-1}</script><p><strong>(4) 求解状态量后验估计</strong></p>
+<p>k 时刻状态量随机变量 $X_k$ 的后验估计：</p>
+<script type="math/tex; mode=display">
+\hat{x}_k^+=E[f_{X_k}^+(x)]=\int_{-\infty}^{+\infty}xf_{X_k}^+(x)\mathrm{d}x</script><h2 id="2-5-贝叶斯滤波的缺点及解决方法" class="heading-control"><a href="#2-5-贝叶斯滤波的缺点及解决方法" class="headerlink" title="2.5 贝叶斯滤波的缺点及解决方法"></a>2.5 贝叶斯滤波的缺点及解决方法<a class="heading-anchor" href="#2-5-贝叶斯滤波的缺点及解决方法" aria-hidden="true"></a></h2><h3 id="2-5-1-缺点" class="heading-control"><a href="#2-5-1-缺点" class="headerlink" title="2.5.1 缺点"></a>2.5.1 缺点<a class="heading-anchor" href="#2-5-1-缺点" aria-hidden="true"></a></h3><p>从上文的推导及结论中可以发现，求解预测步中的先验概率密度函数 $f_{X_k}^-(x)$、更新步中的归一化常数 $\eta_k$、最终的最优估计 $\hat{x}_k$ 时均涉及到<strong>无穷积分</strong>，而大多数情况无法得到解析解，使得贝叶斯滤波算法的直接应用十分困难。</p>
+<h3 id="2-5-2-解决办法" class="heading-control"><a href="#2-5-2-解决办法" class="headerlink" title="2.5.2 解决办法"></a>2.5.2 解决办法<a class="heading-anchor" href="#2-5-2-解决办法" aria-hidden="true"></a></h3><p>为了解决贝叶斯滤波中的无穷积分问题，通常从两个角度出发：</p>
+<p><strong>(1) 作理想假设</strong></p>
+<ul>
+<li>假设状态转移函数 $f(x)$ 和观测函数 $h(x)$ 均为线性函数，过程噪声随机变量 $Q_k$ 和 观测噪声随机变量 $R_k$ 均服从均值为 0 的正态分布——卡尔曼滤波（Kalman Filter）</li>
+<li>假设状态转移函数 $f(x)$ 和（或）观测函数 $h(x)$ 为非线性函数，过程噪声随机变量 $Q_k$ 和 观测噪声随机变量 $R_k$ 均服从均值为 0 的正态分布——扩展卡尔曼滤波（Extended Kalman Filter）和无迹卡尔曼滤波（Unscented Kalman Filter）</li>
+</ul>
+<p><strong>(2) 化连续为离散</strong></p>
+<p>将无穷积分转化为数值积分，一般有以下方法：</p>
+<ul>
+<li>高斯积分（不常用）</li>
+<li>蒙特卡罗积分（粒子滤波，Particle Filter）</li>
+<li>直方图滤波</li>
+</ul>
+<p>针对本节内容中提到的卡尔曼滤波、扩展卡尔曼滤波、无迹卡尔曼滤波、粒子滤波、直方图滤波等常用滤波算法，将在后续文章中进行详细展开讨论。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS8=" title="https://www.matongxue.com/">马同学数学课程<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS8lRTUlODglODYlRTUlQjglODMlRTUlODclQkQlRTYlOTUlQjAvMjQzOTc5Nj9mcj1hbGFkZGlu" title="https://baike.baidu.com/item/%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0/2439796?fr=aladdin">百度百科 - 分布函数<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS8lRTklOUElOEYlRTYlOUMlQkElRTglQkYlODclRTclQTglOEIvMzY4ODk1P2ZyPWFsYWRkaW4=" title="https://baike.baidu.com/item/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/368895?fr=aladdin">百度百科 - 随机过程<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3F1ZXN0aW9uLzI2Njk0NDg2L2Fuc3dlci8xMjcyODk2OTQz" title="https://www.zhihu.com/question/26694486/answer/1272896943">如何从深刻地理解随机过程的含义？<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zcGFjZS5iaWxpYmlsaS5jb20vMjg3OTg5ODUyL3ZpZGVv" title="https://space.bilibili.com/287989852/video">b 站忠实的王大头《贝叶斯滤波与卡尔曼滤波》系列教学视频<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dxMXBzYTc4L2FydGljbGUvZGV0YWlscy8xMDU4NDkzNTM=" title="https://blog.csdn.net/wq1psa78/article/details/105849353">你真的搞懂贝叶斯滤波了吗？<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\ea375326.html" rel="bookmark">从贝叶斯滤波到扩展卡尔曼滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\cfd8b171.html" rel="bookmark">从贝叶斯滤波到无迹卡尔曼滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f3c9e219.html" rel="bookmark">从贝叶斯滤波到粒子滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e0ebe48c.html" rel="bookmark">最小二乘法多项式曲线拟合数学原理及其C++实现</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/9fb25cec.html" title="从概率到贝叶斯滤波">https://blog.shipengx.com/archives/9fb25cec.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag"><i class="fa fa-tag"></i> 自动驾驶</a>
+              <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i> 数学</a>
+              <a href="/tags/%E6%BB%A4%E6%B3%A2/" rel="tag"><i class="fa fa-tag"></i> 滤波</a>
+              <a href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2/" rel="tag"><i class="fa fa-tag"></i> 贝叶斯滤波</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/e0ebe48c.html" rel="prev" title="最小二乘法多项式曲线拟合数学原理及其C++实现">
+      <i class="fa fa-chevron-left"></i> 最小二乘法多项式曲线拟合数学原理及其C++实现
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/3bb74af.html" rel="next" title="从贝叶斯滤波到卡尔曼滤波">
+      从贝叶斯滤波到卡尔曼滤波 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-概率基础概念拾遗"><span class="nav-text">1 概率基础概念拾遗</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-随机变量"><span class="nav-text">1.1 随机变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-定义"><span class="nav-text">1.1.1 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-离散型随机变量"><span class="nav-text">1.1.2 离散型随机变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-连续型随机变量"><span class="nav-text">1.1.3 连续型随机变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-累积分布函数"><span class="nav-text">1.2 累积分布函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-概率质量函数"><span class="nav-text">1.3 概率质量函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-概率密度函数"><span class="nav-text">1.4 概率密度函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-联合概率"><span class="nav-text">1.5 联合概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-1-二维离散型随机变量的联合概率质量函数"><span class="nav-text">1.5.1 二维离散型随机变量的联合概率质量函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-2-二维连续型随机变量的联合概率密度函数"><span class="nav-text">1.5.2 二维连续型随机变量的联合概率密度函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-边缘概率"><span class="nav-text">1.6 边缘概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-1-二维离散型随机变量的边缘概率质量函数"><span class="nav-text">1.6.1 二维离散型随机变量的边缘概率质量函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-2-二维连续型随机变量的边缘概率密度函数"><span class="nav-text">1.6.2 二维连续型随机变量的边缘概率密度函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-条件概率"><span class="nav-text">1.7 条件概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-1-二维离散型随机变量的条件概率质量函数"><span class="nav-text">1.7.1 二维离散型随机变量的条件概率质量函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-2-二维连续型随机变量的条件概率密度函数"><span class="nav-text">1.7.2 二维连续型随机变量的条件概率密度函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-全概率"><span class="nav-text">1.8 全概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8-1-二维离散型随机变量的全概率公式"><span class="nav-text">1.8.1 二维离散型随机变量的全概率公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8-2-二维连续型随机变量的全概率公式"><span class="nav-text">1.8.2 二维连续型随机变量的全概率公式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-9-随机过程"><span class="nav-text">1.9 随机过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-贝叶斯滤波"><span class="nav-text">2 贝叶斯滤波</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-贝叶斯公式"><span class="nav-text">2.1 贝叶斯公式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-二维离散型随机变量的贝叶斯公式"><span class="nav-text">2.1.1 二维离散型随机变量的贝叶斯公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-二维连续型随机变量的贝叶斯公式"><span class="nav-text">2.1.2 二维连续型随机变量的贝叶斯公式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-先验概率、似然概率与后验概率"><span class="nav-text">2.2 先验概率、似然概率与后验概率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-再谈似然概率"><span class="nav-text">2.3 再谈似然概率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-贝叶斯滤波推导"><span class="nav-text">2.4 贝叶斯滤波推导</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-1-问题建模"><span class="nav-text">2.4.1 问题建模</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-2-预测步推导"><span class="nav-text">2.4.2 预测步推导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-3-更新步推导"><span class="nav-text">2.4.3 更新步推导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-4-递推流程"><span class="nav-text">2.4.4 递推流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-5-完整算法框架"><span class="nav-text">2.4.5 完整算法框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-贝叶斯滤波的缺点及解决方法"><span class="nav-text">2.5 贝叶斯滤波的缺点及解决方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-1-缺点"><span class="nav-text">2.5.1 缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-2-解决办法"><span class="nav-text">2.5.2 解决办法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

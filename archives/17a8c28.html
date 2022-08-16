@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Shell中的括号种类繁多，作用各不相同：()、(())、[ ]、[[ ]]、{}。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shell中各种括号的作用">
+<meta property="og:url" content="https://blog.shipengx.com/archives/17a8c28.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="Shell中的括号种类繁多，作用各不相同：()、(())、[ ]、[[ ]]、{}。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-01-29T05:11:18.188Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Shell">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/17a8c28.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>Shell中各种括号的作用 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/17a8c28.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Shell中各种括号的作用
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-18 00:00:00" itemprop="dateCreated datePublished" datetime="2019-11-18T00:00:00+08:00">2019-11-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-29 13:11:18" itemprop="dateModified" datetime="2022-01-29T13:11:18+08:00">2022-01-29</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/17a8c28.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/17a8c28.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">Shell中的括号种类繁多，作用各不相同：()、(())、[ ]、[[ ]]、{}。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-小括号，圆括号" class="heading-control"><a href="#1-小括号，圆括号" class="headerlink" title="1 小括号，圆括号()"></a>1 小括号，圆括号()<a class="heading-anchor" href="#1-小括号，圆括号" aria-hidden="true"></a></h1><h2 id="1-1-单小括号" class="heading-control"><a href="#1-1-单小括号" class="headerlink" title="1.1 单小括号()"></a>1.1 单小括号()<a class="heading-anchor" href="#1-1-单小括号" aria-hidden="true"></a></h2><ul>
+<li><strong>命令组</strong>。<code>(cmd1;cmd2;cmd3)</code>将会新开一个子shell顺序执行命令cmd1、cmd2、cmd3，所以括号中的变量不能够被脚本余下的部分使用。括号中多个命令之间用分号隔开，最后一个命令可以没有分号，各命令和括号之间不必有空格。</li>
+<li><strong>命令替换</strong>。等同于`cmd`，shell扫描一遍命令行，发现了$(cmd)结构，便将$(cmd)中的cmd执行一次，得到其标准输出，再将此输出放到原来命令。有些shell不支持，如tcsh。</li>
+<li><strong>初始化数组</strong>。如：array=(a b c d)</li>
+</ul>
+<h2 id="1-2-双小括号" class="heading-control"><a href="#1-2-双小括号" class="headerlink" title="1.2 双小括号(())"></a>1.2 双小括号(())<a class="heading-anchor" href="#1-2-双小括号" aria-hidden="true"></a></h2><ul>
+<li><strong>整数扩展</strong>。这种扩展计算是整数型的计算，不支持浮点型。((exp))结构扩展并计算一个算术表达式的值，如果表达式的结果为0，那么返回的退出状态码为1，或者 是”假”，而一个非零值的表达式所返回的退出状态码将为0，或者是”true”。若是逻辑判断，表达式exp为真则为1,假则为0。</li>
+<li><strong>只要括号中的运算符、表达式符合C语言运算规则，都可用在$((exp))中，甚至是三目运算符</strong>。作不同进位（如二进制、八进制、十六进制）运算时，输出结果全都自动转化成了十进制。如：echo $((16#5f))结果为95（16进位转十进制）。</li>
+<li><strong>可重定义变量值</strong>。比如 a=5; ((a++)) 可将 $a 重定义为6。</li>
+<li><strong>算术运算比较，双括号中的变量可以不使用$符号前缀</strong>。括号内支持多个表达式用逗号分开。只要括号中的表达式符合C语言运算规则，比如对于for循环，下面3种写法是等效的：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>((i=0;i&lt;5;i++))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 0 4`</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;0..4&#125;</span><br></pre></td></tr></table></figure>
+对if逻辑判断，下面两种写法是等效的：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((<span class="variable">$i</span>&lt;5))</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$i</span> -lt 5 ]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="2-中括号，方括号" class="heading-control"><a href="#2-中括号，方括号" class="headerlink" title="2 中括号，方括号[]"></a>2 中括号，方括号[]<a class="heading-anchor" href="#2-中括号，方括号" aria-hidden="true"></a></h1><h2 id="2-1-单中括号" class="heading-control"><a href="#2-1-单中括号" class="headerlink" title="2.1 单中括号[]"></a>2.1 单中括号[]<a class="heading-anchor" href="#2-1-单中括号" aria-hidden="true"></a></h2><ul>
+<li><strong>bash的内部命令，[和test是等同的</strong>。如果不用绝对路径指明，通常用的都是bash自带的命令。if/test结构中的左中括号是调用test的命令标识，右中括号是关闭条件判断的。这个命令把它的参数作为比较表达式或者作为文件测试，并且根据比较的结果来返回一个退出状态码。if/test结构中并不是必须右中括号，但是新版的bash中要求必须这样。</li>
+<li><strong>test和[]中可用的比较运算符只有==和!=，两者都是用于字符串比较的，不可用于整数比较，整数比较只能使用-eq，-gt这种形式</strong>。无论是字符串比较还是整数比较都不支持大于号小于号。如果实在想用，对于字符串比较可以使用转义形式，如果比较”ab”和”bc”：[ ab \&lt; bc ]，结果为真，也就是返回状态为0。[ ]中的逻辑与和逻辑或使用-a 和-o 表示。</li>
+<li><strong>字符范围</strong>。用作正则表达式的一部分，描述一个匹配的字符范围。作为test用途的中括号内不能使用正则。</li>
+<li><strong>在一个array结构的上下文中，中括号用来引用数组中每个元素的编号</strong>。</li>
+</ul>
+<h2 id="2-2-双中括号" class="heading-control"><a href="#2-2-双中括号" class="headerlink" title="2.2 双中括号[[]]"></a>2.2 双中括号[[]]<a class="heading-anchor" href="#2-2-双中括号" aria-hidden="true"></a></h2><ul>
+<li><strong>[[是bash程序语言的关键字，并不是一个命令</strong>。[[ ]] 结构比[ ]结构更加通用，在[[和]]之间所有的字符都不会发生文件名扩展或者单词分割，但是会发生参数扩展和命令替换。</li>
+<li><strong>支持字符串的模式匹配，使用=~操作符时甚至支持shell的正则表达式</strong>。字符串比较时可以把右边的作为一个模式，而不仅仅是一个字符串，比如[[ hello == hell? ]]，结果为真。[[ ]] 中匹配字符串或通配符，不需要引号。</li>
+<li><strong>使用[[ … ]]条件判断结构，而不是[ … ]，能够防止脚本中的许多逻辑错误</strong>。比如，&amp;&amp;、||、&lt;和&gt; 操作符能够正常存在于[[ ]]条件判断结构中，但是如果出现在[ ]结构中的话，会报错。比如下面的几种写法是等效的：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [[ <span class="variable">$a</span> != 1 &amp;&amp; <span class="variable">$a</span> != 2 ]]</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> -ne 1] &amp;&amp; [ <span class="variable">$a</span> != 2 ]</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> -ne 1 -a <span class="variable">$a</span> != 2 ]</span><br></pre></td></tr></table></figure></li>
+<li><strong>bash把双中括号中的表达式看作一个单独的元素，并返回一个退出状态码</strong>。</li>
+</ul>
+<p>一些示例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable">$i</span>&lt;5) </span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$i</span> -lt 5 ] </span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> -ne 1 -a <span class="variable">$a</span> != 2 ] </span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> -ne 1] &amp;&amp; [ <span class="variable">$a</span> != 2 ] </span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$a</span> != 1 &amp;&amp; <span class="variable">$a</span> != 2 ]] </span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(seq 0 4);<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>;<span class="keyword">done</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 0 4`;<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>;<span class="keyword">done</span></span><br><span class="line"><span class="keyword">for</span> ((i=0;i&lt;5;i++));<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>;<span class="keyword">done</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;0..4&#125;;<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>;<span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="3-大括号，花括号" class="heading-control"><a href="#3-大括号，花括号" class="headerlink" title="3 大括号，花括号{}"></a>3 大括号，花括号{}<a class="heading-anchor" href="#3-大括号，花括号" aria-hidden="true"></a></h1><h2 id="3-1-常规用法" class="heading-control"><a href="#3-1-常规用法" class="headerlink" title="3.1 常规用法"></a>3.1 常规用法<a class="heading-anchor" href="#3-1-常规用法" aria-hidden="true"></a></h2><ul>
+<li><strong>大括号拓展</strong>。(通配(globbing))将对大括号中的文件名做扩展。在大括号中，不允许有空白，除非这个空白被引用或转义。第一种：对大括号中的以逗号分割的文件列表进行拓展。如 touch {a,b}.txt 结果为a.txt b.txt。第二种：对大括号中以点点（..）分割的顺序文件列表起拓展作用，如：touch {a..d}.txt 结果为a.txt b.txt c.txt d.txt。<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls &#123;ex1,ex2&#125;.sh </span></span><br><span class="line">ex1.sh ex2.sh </span><br><span class="line"><span class="comment"># ls &#123;ex&#123;1..3&#125;,ex4&#125;.sh </span></span><br><span class="line">ex1.sh ex2.sh ex3.sh ex4.sh </span><br><span class="line"><span class="comment"># ls &#123;ex[1-3],ex4&#125;.sh </span></span><br><span class="line">ex1.sh ex2.sh ex3.sh ex4.sh</span><br></pre></td></tr></table></figure></li>
+<li><strong>代码块，又被称为内部组，这个结构事实上创建了一个匿名函数</strong>。与小括号中的命令不同，大括号内的命令不会新开一个子shell运行，即脚本余下部分仍可使用括号内变量。<code>{ cmd1;cmd2;cmd3;}</code>在当前shell顺序执行命令cmd1、cmd2、cmd3，括号内的命令间用分号隔开，最后一个也必须有分号。{}的第一个命令和左括号之间必须要有一个空格。</li>
+</ul>
+<h2 id="3-2-几种特殊的替换结构" class="heading-control"><a href="#3-2-几种特殊的替换结构" class="headerlink" title="3.2 几种特殊的替换结构"></a>3.2 几种特殊的替换结构<a class="heading-anchor" href="#3-2-几种特殊的替换结构" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$&#123;var:-string&#125;</span>,<span class="variable">$&#123;var:+string&#125;</span>,<span class="variable">$&#123;var:=string&#125;</span>,<span class="variable">$&#123;var:?string&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>${var:-string}</code>和<code>${var:=string}</code>：若变量var为空，则用在命令行中用string来替换<code>${var:-string}</code>，否则变量var不为空时，则用变量var的值来替换<code>${var:-string}</code>；对于<code>${var:=string}</code>的替换规则和<code>${var:-string}</code>是一样的，不同之处是<code>${var:=string}</code>若var为空时，用string替换<code>${var:=string}</code>的同时，把string赋给变量var。<code>${var:=string}</code>很常用的一种用法是，判断某个变量是否赋值，没有的话则给它赋上一个默认值。</li>
+<li><code>${var:+string}</code>的替换规则和上面的相反，即只有当var不是空的时候才替换成string，若var为空时则不替换或者说是替换成变量var的值，即空值。(因为变量var此时为空，所以这两种说法是等价的)。</li>
+<li><code>${var:?string}</code>替换规则为：若变量var不为空，则用变量var的值来替换<code>${var:?string}</code>；若变量var为空，则把string输出到标准错误中，并从脚本中退出。可利用此特性来检查是否设置了变量的值。</li>
+</ul>
+<blockquote>
+<p>补充扩展：在上面五种替换结构中string不一定是常值的，可用另外一个变量的值或是一种命令的输出。</p>
+</blockquote>
+<h2 id="3-3-四种模式匹配替换结构" class="heading-control"><a href="#3-3-四种模式匹配替换结构" class="headerlink" title="3.3 四种模式匹配替换结构"></a>3.3 四种模式匹配替换结构<a class="heading-anchor" href="#3-3-四种模式匹配替换结构" aria-hidden="true"></a></h2><p>模式匹配记忆方法：</p>
+<blockquote>
+<p>#是去掉左边（在键盘上#在$之左边），%是去掉右边（在键盘上%在$之右边）。#和%中的单一符号是最小匹配，两个相同符号是最大匹配。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$&#123;var%pattern&#125;</span>,<span class="variable">$&#123;var%%pattern&#125;</span>,<span class="variable">$&#123;var#pattern&#125;</span>,<span class="variable">$&#123;var##pattern&#125;</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>第一种模式：<code>${variable%pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern结尾，如果是，就从命令行把variable中的内容<strong>去掉右边最短</strong>的匹配模式。</li>
+<li>第二种模式：<code>${variable%%pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern结尾，如果是，就从命令行把variable中的内容<strong>去掉右边最长</strong>的匹配模式。</li>
+<li>第三种模式：<code>${variable#pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern开始，如果是，就从命令行把variable中的内容<strong>去掉左边最短</strong>的匹配模式。</li>
+<li>第四种模式：<code>${variable##pattern}</code>，这种模式时，shell在variable中查找，看它是否以给的模式pattern开始，如果是，就从命令行把variable中的内容<strong>去掉左边最长</strong>的匹配模式。</li>
+</ul>
+<p>这四种模式中都不会改变variable的值，其中，只有在pattern中使用了*匹配符号时，%和%%，#和##才有区别。结构中的pattern支持通配符，*表示零个或多个任意字符，?表示仅与一个任意字符匹配，[…]表示匹配中括号里面的字符，[!…]表示不匹配中括号里面的字符。</p>
+</blockquote>
+<p>示例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">var=testcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span> </span><br><span class="line">testcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var%s*e&#125;</span> </span><br><span class="line">testca </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span> </span><br><span class="line">testcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var%%s*e&#125;</span> </span><br><span class="line">te </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var#?e&#125;</span> </span><br><span class="line">stcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##?e&#125;</span> </span><br><span class="line">stcase </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##*e&#125;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##*s&#125;</span> </span><br><span class="line">e </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##test&#125;</span> </span><br><span class="line"><span class="keyword">case</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="3-4-字符串提取和替换" class="heading-control"><a href="#3-4-字符串提取和替换" class="headerlink" title="3.4 字符串提取和替换"></a>3.4 字符串提取和替换<a class="heading-anchor" href="#3-4-字符串提取和替换" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$&#123;var:num&#125;</span>,<span class="variable">$&#123;var:num1:num2&#125;</span>,<span class="variable">$&#123;var/pattern/pattern&#125;</span>,<span class="variable">$&#123;var//pattern/pattern&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一种模式：<code>${var:num}</code>，这种模式时，shell在var中提取第num个字符到末尾的所有字符。若num为正数，从左边0处开始；若num为负数，从右边开始提取字串，但必须使用在冒号后面加空格或一个数字或整个num加上括号，如<code>${var: -2}</code>、<code>${var:1-3}</code>或<code>${var:(-2)}</code>。</li>
+<li>第二种模式：<code>${var:num1:num2}</code>，num1是位置，num2是长度。表示从$var字符串的第$num1个位置开始提取长度为$num2的子串。不能为负数。</li>
+<li>第三种模式：<code>${var/pattern1/pattern2}</code>，表示将var字符串的第一个匹配的pattern1替换为pattern2。</li>
+<li>第四种模式：<code>${var//pattern1/pattern2}</code>，表示将var字符串中的所有能匹配的pattern1替换为pattern2。</li>
+</ul>
+<p>示例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">var=/home/centos </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span> </span><br><span class="line">/home/centos</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:5&#125;</span> </span><br><span class="line">/centos</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var: -6&#125;</span> </span><br><span class="line">centos </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:(-6)&#125;</span> </span><br><span class="line">centos </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:1:4&#125;</span> </span><br><span class="line">home </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var/o/h&#125;</span> </span><br><span class="line">/hhme/centos</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var//o/h&#125;</span> </span><br><span class="line">/hhme/cenths</span><br></pre></td></tr></table></figure></p>
+<h1 id="4-符号-后的括号" class="heading-control"><a href="#4-符号-后的括号" class="headerlink" title="4 符号$后的括号"></a>4 符号$后的括号<a class="heading-anchor" href="#4-符号-后的括号" aria-hidden="true"></a></h1><ul>
+<li><code>${a}</code>表示变量a的值，在不引起歧义的情况下可以省略大括号。</li>
+<li><code>$(cmd)</code>表示命令替换，和`cmd`效果相同，结果为shell命令cmd的输出，然而某些Shell版本不支持$()形式的命令替换, 如tcsh。</li>
+<li><code>$((expression))</code>和`exprexpression`效果相同，计算数学表达式exp的数值，其中exp只要符合C语言的运算规则即可, 甚至三目运算符和逻辑表达式都可以计算。</li>
+</ul>
+<h1 id="5-参考" class="heading-control"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考<a class="heading-anchor" href="#5-参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamI1MS5uZXQvYXJ0aWNsZS8xMjMwODEuaHRt" title="https://www.jb51.net/article/123081.htm">shell中各种括号的作用详解()、(())、[ ]、[[]]、{}<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vaG9uZzIwMTYvcC85NDY1NzExLmh0bWw=" title="https://www.cnblogs.com/hong2016/p/9465711.html">Linux shell 中 $() ` `，${}，$[ ] $(())，[ ] (( )) [[]] 作用与区别<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy56c3l0aGluay5uZXQvYXJjaGl2ZXMvMjI1Mi8=" title="http://www.zsythink.net/archives/2252/">bash中[ ]与[[]]的区别<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\31e5f0fe.html" rel="bookmark">Linux中使用sed命令进行字符串查找和替换</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\ffbee3f1.html" rel="bookmark">Not able to execute a .sh file: /bin/bash^M: bad interpreter</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\55ffbd22.html" rel="bookmark">Shell中美元符$与数字及其它各种符号组合的含义</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\a1691b48.html" rel="bookmark">Shell中设置文字输出的颜色及字体格式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\17c6bb1a.html" rel="bookmark">实用 Shell 脚本：自动拉取 Git 仓库所有远程分支代码到本地</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/17a8c28.html" title="Shell中各种括号的作用">https://blog.shipengx.com/archives/17a8c28.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/Shell/" rel="tag"><i class="fa fa-tag"></i> Shell</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/ffbee3f1.html" rel="prev" title="Not able to execute a .sh file: /bin/bash^M: bad interpreter">
+      <i class="fa fa-chevron-left"></i> Not able to execute a .sh file: /bin/bash^M: bad interpreter
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/208e6058.html" rel="next" title="使用Hexo + GitHub Pages搭建个人博客站点">
+      使用Hexo + GitHub Pages搭建个人博客站点 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-小括号，圆括号"><span class="nav-text">1 小括号，圆括号()</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-单小括号"><span class="nav-text">1.1 单小括号()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-双小括号"><span class="nav-text">1.2 双小括号(())</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-中括号，方括号"><span class="nav-text">2 中括号，方括号[]</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-单中括号"><span class="nav-text">2.1 单中括号[]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-双中括号"><span class="nav-text">2.2 双中括号[[]]</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-大括号，花括号"><span class="nav-text">3 大括号，花括号{}</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-常规用法"><span class="nav-text">3.1 常规用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-几种特殊的替换结构"><span class="nav-text">3.2 几种特殊的替换结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-四种模式匹配替换结构"><span class="nav-text">3.3 四种模式匹配替换结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-字符串提取和替换"><span class="nav-text">3.4 字符串提取和替换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-符号-后的括号"><span class="nav-text">4 符号$后的括号</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-参考"><span class="nav-text">5 参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

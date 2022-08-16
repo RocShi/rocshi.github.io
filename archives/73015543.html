@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer - 第 3 章 字符串、向量和数组">
+<meta property="og:url" content="https://blog.shipengx.com/archives/73015543.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E6%95%B0%E7%BB%84%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3%EF%BC%8C%E6%97%A0%E6%B3%95%E5%AD%98%E6%94%BE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%97%E9%9D%A2%E5%80%BC%E4%B8%AD%E7%9A%84%E7%A9%BA%E5%AD%97%E7%AC%A6.png">
+<meta property="article:published_time" content="2020-03-29T13:17:03.000Z">
+<meta property="article:modified_time" content="2022-05-12T07:58:09.604Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="C++ Primer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E6%95%B0%E7%BB%84%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3%EF%BC%8C%E6%97%A0%E6%B3%95%E5%AD%98%E6%94%BE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%97%E9%9D%A2%E5%80%BC%E4%B8%AD%E7%9A%84%E7%A9%BA%E5%AD%97%E7%AC%A6.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/73015543.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>C++ Primer - 第 3 章 字符串、向量和数组 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/73015543.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          C++ Primer - 第 3 章 字符串、向量和数组
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-29 21:17:03" itemprop="dateCreated datePublished" datetime="2020-03-29T21:17:03+08:00">2020-03-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-12 15:58:09" itemprop="dateModified" datetime="2022-05-12T15:58:09+08:00">2022-05-12</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">编码</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AC-Primer%E3%80%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">《C++ Primer》</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/73015543.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/73015543.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ol>
+<li><p><strong>using 声明</strong>（using declaration）。有了 <code>using</code> 声明就无须专门的前缀（形如命名空间::）也能使用所需的名字了。<code>using</code> 声明具有如下的形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span>::name;</span><br></pre></td></tr></table></figure>
+<p>一旦声明了上述语句，就可以直接访问命名空间中的名字：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="comment">// using声明，当我们使用名字cin时，从命名空间std中获取它</span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">cin</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; i;        <span class="comment">// 正确：cin和std::cin含义相同</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i;       <span class="comment">// 错误：没有对应的using声明，必须使用完整的名字</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i;  <span class="comment">// 正确：显式地从std中使用cout</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>位于头文件的代码一般来说不应该使用 <code>using</code> 声明</strong>。因为头文件的内容会拷贝到所有引用它的文件中去，如果头文件里有某个 <code>using</code> 声明，那么每个使用了该头文件的文件就都会有这个声明。对于某些程序来说，由于不经意间包含了一些名字，反而可能产生始料未及的名字冲突。</p>
+</li>
+<li><p>标准库类型 <code>string</code> 表示可变长的字符序列，<strong>使用 <code>string</code> 类型必须首先包含 <code>string</code> 头文件。</strong>作为标准库的一部分，<code>string</code> 定义在命名空间 <code>std</code> 中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">string</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一个类可以定义很多种初始化对象的方式，只不过这些方式之间必须有所区别：或者是初始值的数量不同，或者是初始值的类型不同。下表列出了初始化 <code>string</code> 对象最常用的一些方式：</p>
+ <table>
+ <tbody>
+ <tr>
+     <td><b>写法</b></td>
+     <td><b>含义</b></td>
+ </tr>
+ <tr>
+     <td>string s1</td>
+     <td>默认初始化，s1是一个空串</td>
+ </tr>
+ <tr>
+     <td>string s2(s1)</td>
+     <td>s2是s1的副本</td>
+ </tr>
+ <tr>
+     <td>string s2 = s1</td>
+     <td>等价于s2(s1)，s2是s1的副本</td>
+ </tr>
+ <tr>
+     <td>string s3("value")</td>
+     <td>s3是字面值“value”的副本，除了字面值最后的那个空字符外</td>
+ </tr>
+ <tr>
+     <td>string s3 = "value" </td>
+     <td>等价于s3("value")，s3是字面值“value”的副本</td>
+ </tr>
+ <tr>
+     <td>string s4(n, 'c')</td>
+     <td>把s4初始化为由连续n个字符c组成的串</td>
+ </tr>
+ </tbody>
+ </table>
+
+<p>下面是几个例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s1;           <span class="comment">// 默认初始化，s1是一个空字符串</span></span><br><span class="line"><span class="built_in">string</span> s2 = s1;      <span class="comment">// s2是s1的副本</span></span><br><span class="line"><span class="built_in">string</span> s3 = <span class="string">"hiya"</span>;  <span class="comment">// s3是该字符串字面值的副本</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s4</span><span class="params">(<span class="number">10</span>, <span class="string">'c'</span>)</span></span>;  <span class="comment">// s4的内容是cccccccccc</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果使用等号（=）初始化一个变量，实际上执行的是<strong>拷贝初始化</strong>（copy initialization），编译器把等号右侧的初始值拷贝到新创建的对象中去。与之相反，如果不使用等号，则执行的是<strong>直接初始化</strong>（direct initialization）。当初始值只有一个时，使用直接初始化或拷贝初始化都行。如果像上面的 s4 那样初始化要用到的值有多个，一般来说只能使用直接初始化的方式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s5 = <span class="string">"hiya"</span>;  <span class="comment">// 拷贝初始化</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s6</span><span class="params">(<span class="string">"hiya"</span>)</span></span>;   <span class="comment">// 直接初始化</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s7</span><span class="params">(<span class="number">10</span>, <span class="string">'c'</span>)</span></span>;  <span class="comment">// 直接初始化，s7的内容是cccccccccc</span></span><br></pre></td></tr></table></figure>
+<p>对于用多个值进行初始化的情况，也可以使用拷贝初始化的方式，不过需要显式地创建一个（临时）对象用于拷贝：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s8 = <span class="built_in">string</span>(<span class="number">10</span>, <span class="string">'c'</span>);  <span class="comment">// 拷贝初始化，s8的内容是cccccccccc</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>string</code> 对象可进行的大多数操作如下表所示：</p>
+<table>
+<tbody>
+<tr>
+    <td colspan="2"><b><center>string的操作</center></b></td>
+</tr>
+<tr>
+    <td>os &lt;&lt; s</td>
+    <td>将s写到输出流os当中，返回os</td>
+</tr>
+<tr>
+    <td>is &gt;&gt; s</td>
+    <td>从is中读取字符串赋给s，字符串以空白分隔，返回is</td>
+</tr>
+<tr>
+    <td>getline(is, s)</td>
+    <td>从is中读取一行赋给s，返回is</td>
+</tr>
+<tr>
+    <td>s.empty()</td>
+    <td>s为空返回true，否则返回false</td>
+</tr>
+<tr>
+    <td>s.size()</td>
+    <td>返回s中字符的个数</td>
+</tr>
+<tr>
+    <td>s[n]</td>
+    <td>返回s中第n个字符的引用，位置n从0计起</td>
+</tr>
+<tr>
+    <td>s1 + s2</td>
+    <td>返回s1和s2连接后的结果</td>
+</tr>
+<tr>
+    <td>s1 = s2</td>
+    <td>用s2的副本代替s1中原来的字符</td>
+</tr>
+<tr>
+    <td>s1 == s2</td>
+    <td rowspan="2">如果s1和s2中所含的字符完全一样，则它们相等；string对象的相等性判断对字母的大小写敏感</td>
+</tr>
+<tr>
+    <td>s1 != s2</td>
+</tr>
+<tr>
+    <td>&lt;, &lt;=, &gt;, &gt;=</td>
+    <td>利用字符在字典中的顺序进行比较，且对字母的大小写敏感</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>观察下述代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> s;           <span class="comment">// 空字符串</span></span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s;           <span class="comment">// 将string对象读入s，遇到空白为止</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">// 输出s</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">string</span> s1, s2;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s1 &gt;&gt; s2;    <span class="comment">// 把第一个读入到s1中，第二个读入到s2中</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s1 &lt;&lt; s2 &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在执行读取操作时，<code>string</code> 对象会自动忽略开头的空白（即空格符、换行符、制表符等）并从第一个真正的字符开始读起，直到遇见下一处空白为止。将上述代码编译为可执行程序，在终端中运行可执行程序，输入 <code>Hello World!</code> 后回车，将打印此时 s 的值 <code>Hello</code>，可知输入的空白被忽略了；再输入 <code>ha ya</code> 后回车，将打印 <code>World!ha</code>，这是因为第一次的输入中的 <code>World!</code> 还在键盘缓冲区，在执行</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cin</span> &gt;&gt; s1 &gt;&gt; s2;</span><br></pre></td></tr></table></figure>
+<p>时，键盘缓冲区中的内容被读到了 s1，然后第二次输入中的 <code>ha</code> 被读到了 s2，<code>ya</code> 又被暂存在了键盘缓冲区。</p>
+</li>
+<li><p>观察下述代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> word;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; word)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; word &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>while</code> 的循环条件负责在读取时检测流的情况，如果流有效，也就是说没遇到文件结束标记或非法输入，那么执行 <code>while</code> 语句内部的操作。此时，循环体将输出刚刚从标准输入读取的内容。重复若干次之后，一旦遇到文件结束标记或非法输入循环也就结束了。<code>cin</code> 读取的内容会被暂存在键盘缓冲区。</p>
+</li>
+<li><p><code>getline</code> 函数的参数是一个输入流和一个 <code>string</code> 对象，函数从给定的输入流中读入内容，直到遇到换行符为止（注意换行符也被读进来了），然后把所读的内容存入到那个 <code>string</code> 对象中去（注意不存换行符）。<code>getline</code> 只要一遇到换行符就结束读取操作并返回结果，哪怕输入的一开始就是换行符也是如此。如果输入真的一开始就是换行符，那么所得的结果是个空 <code>string</code>。和输入运算符一样，<strong><code>getline</code> 也会返回它的流参数</strong>。因此既然输入运算符能作为判断的条件，也能用 <code>getline</code> 的结果作为条件。观察下述代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> line;</span><br><span class="line">    <span class="keyword">while</span> (getline(<span class="built_in">cin</span>, line))</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; line &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>触发 <code>getline</code> 函数返回的那个换行符实际上被丢弃掉了，得到的 <code>string</code> 对象中并不包含该换行符。输入完一行的内容后回车，<code>getline</code> 本次读取结束，执行 <code>while</code> 主体中的语句，再开始执行下一次的 <code>getline</code> 读取操作，直至输入 <code>Ctrl + z</code>（Windows 系统下）或 <code>Ctrl + d</code>（类 Unix 系统下）并回车才退出循环。</p>
+</li>
+<li><p><code>string</code> 类中的 <code>empty</code> 函数根据 <code>string</code> 对象是否为空返回一个对应的布尔值。</p>
+</li>
+<li><p><code>string</code> 类中的 <code>size</code> 函数返回 <code>string</code> 对象的长度（即 <code>string</code> 对象中字符的个数）。<code>size</code> 函数返回的是一个 <code>string::size_type</code> 类型的值。所有用于存放 <code>string</code> 类的 <code>size</code> 函数返回值的变量，都应该是 <code>string::size_type</code> 类型的。在 C++11 新标准中，允许编译器通过 <code>auto</code> 或者 <code>decltype</code> 来推断变量的类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> len = line.size();  <span class="comment">// len 的类型是 string::size_type</span></span><br></pre></td></tr></table></figure>
+<p>由于 <code>size</code> 函数返回的是一个无符号整型数，因此切记，<strong>如果在表达式中混用了带符号数和无符号数将可能产生意想不到的结果</strong>。例如，假设 n 是一个具有负值的 <code>int</code>，则表达式 <code>s.size() &lt; n</code> 的判断结果几乎肯定是 <code>true</code>。这是因为负值 n 会自动地转换成一个比较大的无符号值。<strong>如果一条表达式中已经有了 <code>size()</code> 函数就不要再使用 <code>int</code> 了，这样可以避免混用 <code>int</code> 和 <code>unsigned</code> 可能带来的问题。</strong></p>
+</li>
+<li><p><code>string</code> 类定义了几种用于比较字符串的运算符。这些比较运算符逐一比较 <code>string</code> 对象中的字符，并且对大小写敏感，也就是说，<strong>在比较时同一个字母的大写形式和小写形式是不同的。</strong>相等性运算符（<code>==</code> 和 <code>!=</code>）分别检验两个 <code>string</code> 对象相等或不相等，<strong><code>string</code> 对象相等意味着它们的长度相同而且所包含的字符也全都相同</strong>。关系运算符 <code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code> 分别检验一个 <code>string</code> 对象是否小于、小于等于、大于、大于等于另外一个 <code>string</code> 对象。上述这些运算符都依照（大小写敏感的）字典顺序：</p>
+<ul>
+<li>规则一：如果两个 <code>string</code> 对象的长度不同，而且较短 <code>string</code> 对象的每个字符都与较长 <code>string</code> 对象对应位置上的字符相同，就说较短 <code>string</code> 对象小于较长 <code>string</code> 对象；</li>
+<li>规则二：如果两个 <code>string</code> 对象在某些对应的位置上不一致，则 <code>string</code> 对象比较的结果其实是 <code>string</code> 对象中第一对相异字符比较的结果。<br><br></li>
+</ul>
+<p>下面是 <code>string</code> 对象比较的一个示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> str = <span class="string">"Hello"</span>;</span><br><span class="line"><span class="built_in">string</span> phrase = <span class="string">"Hello World"</span>;</span><br><span class="line"><span class="built_in">string</span> slang = <span class="string">"Hiya"</span>;</span><br></pre></td></tr></table></figure>
+<p>根据规则一可判断，对象 str 小于对象 phrase；根据规则二可判断，对象 slang 既大于 str 也大于 phrase。</p>
+</li>
+<li><p>对于 <code>string</code> 类而言，允许把一个对象的值赋给另外一个对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string st1(10,'c'), st2;</span><br><span class="line">st1 = st2;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>两个 <code>string</code> 对象相加得到一个新的 <code>string</code> 对象，其内容是把左侧的运算对象与右侧的运算对象串接而成。<strong>复合赋值运算符（<code>+=</code>）负责把右侧 <code>string</code> 对象的内容追加到左侧 <code>string</code> 对象的后面</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">"hello, "</span>, s2 = <span class="string">"world\n"</span>;</span><br><span class="line"><span class="built_in">string</span> s3 = s1 + s2;  <span class="comment">// s3的内容是hello，world\n</span></span><br><span class="line">s1 += s2;             <span class="comment">// 等价于s1 = s1 + s2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>标准库允许把字符字面值和字符串字面值转换成 <code>string</code> 对象，所以在需要 <code>string</code> 对象的地方就可以使用这两种字面值来替代：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">"hello"</span>, s2 = <span class="string">"world"</span>;  <span class="comment">// 在s1和s2中都没有标点符号</span></span><br><span class="line"><span class="built_in">string</span> s3 = s1 + <span class="string">", "</span> + s2 + <span class="string">'\n'</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>当把 <code>string</code> 对象和字符字面值及字符串字面值混在一条语句中使用时，必须确保每个加法运算符（+）的两侧的运算对象至少有一个是 <code>string</code></strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s4 = s1 + <span class="string">", "</span>;       <span class="comment">// 正确：把一个string对象和一个字面值相加</span></span><br><span class="line"><span class="built_in">string</span> s5 = <span class="string">"hello"</span> + <span class="string">", "</span>;  <span class="comment">// 错误：两个运算对象都不是string</span></span><br><span class="line"><span class="comment">//正确：每个加法运算符都有一个运算对象是string</span></span><br><span class="line"><span class="built_in">string</span> s6 = s1 + <span class="string">", "</span> + <span class="string">"world"</span>;</span><br><span class="line"><span class="built_in">string</span> s7 = <span class="string">"hello"</span> + <span class="string">", "</span> + s2;  <span class="comment">//错误：不能把字面值直接相加</span></span><br></pre></td></tr></table></figure>
+<p>s6 的初始化形式的工作机理和连续输入连续输出是一样的，可以用如下的形式分组：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s6 = (s1 + <span class="string">", "</span>) + <span class="string">"world"</span>;</span><br></pre></td></tr></table></figure>
+<p>其中子表达式 <code>s1 + &quot;, ”</code> 的结果是一个 <code>string</code> 对象，它同时作为第二个加法运算符的左侧运算对象，因此上述语句和下面的两个语句是等价的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> tmp = s1 + <span class="string">", "</span>;  <span class="comment">// 正确：加法运算符有一个运算对象是string</span></span><br><span class="line">s6 = tmp + <span class="string">"world"</span>;      <span class="comment">// 正确：加法运算符有一个运算对象是string</span></span><br></pre></td></tr></table></figure>
+<p>另一方面，s7 的初始化是非法的，根据其语义加上括号后就成了下面的形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s7 = (<span class="string">"hello"</span> + <span class="string">", "</span>) + s2;  <span class="comment">// 错误：不能把字面值直接相加</span></span><br></pre></td></tr></table></figure>
+<p>很容易看到，括号内的子表达式试图把两个字符串字面值加在一起，而编译器根本没法做到这一点，所以这条语句是错误的。</p>
+</li>
+<li><p><strong>C++ 语言中的字符串字面值并不是标准库类型 <code>string</code> 的对象。切记，字符串字面值与 <code>string</code> 是不同的类型。</strong></p>
+</li>
+<li><p>在 <code>cctype</code> 头文件中定义了一组标准库函数用于单独处理 <code>string</code> 对象中的字符，其中主要的函数名及其含义如下表所示：</p>
+<table>
+<tbody>
+<tr>
+    <td colspan="2"><b><center>cctype头文件中的函数</center></b></td>
+</tr>
+<tr>
+    <td>isalnum(c)</td>
+    <td>当c是字母或数字时为真</td>
+</tr>
+<tr>
+    <td>isalpha(c)</td>
+    <td>当c是字母时为真</td>
+</tr>
+<tr>
+    <td>iscntrl(c)</td>
+    <td>当c是控制字符时为真</td>
+</tr>
+<tr>
+    <td>isdigit(c)</td>
+    <td>当c是数字时为真</td>
+</tr>
+<tr>
+    <td>isgraph(c)</td>
+    <td>当c不是空格但可打印时为真</td>
+</tr>
+<tr>
+    <td>islower(c)</td>
+    <td>当c是小写字母时为真</td>
+</tr>
+<tr>
+    <td>isprint(c)</td>
+    <td>当c是可打印字符时为真（即c是空格或c具有可视形式）</td>
+</tr>
+<tr>
+    <td>ispunct(c)</td>
+    <td>当c是标点符号时为真（即c不是控制字符、数字、字母、可打印空白中的一种）</td>
+</tr>
+<tr>
+    <td>isspace(c)</td>
+    <td>当c是空白时为真（即c是空格、横向制表符、纵向制表符、回车符、换行符、进纸符中的一种）</td>
+</tr>
+<tr>
+    <td>isupper(c)</td>
+    <td>当c是大写字母时为真</td>
+</tr>
+<tr>
+    <td>isxdigit(c)</td>
+    <td>当c是十六进制数字时为真</td>
+</tr>
+<tr>
+    <td>tolower(c)</td>
+    <td>如果c是大写字母，输出对应的小写字母；否则原样输出c</td>
+</tr>
+<tr>
+    <td>toupper(c)</td>
+    <td>如果c是小写字母，输出对应的大写字母；否则原样输出c</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p><strong>建议：使用 C++ 版本的 C 标准库头文件。</strong>C++ 标准库中除了定义 C++ 语言特有的功能外，也兼容了 C 语言的标准库。C 语言的头文件形如 <code>name.h</code>，C++ 则将这些文件命名为 <code>cname</code>。也就是去掉了 <code>.h</code> 后缀，而在文件名 name 之前添加了字母 <code>c</code>，这里的 <code>c</code> 表示这是一个属于 C 语言标准库的头文件。因此，cctype 头文件和 ctype.h 头文件的内容是一样的，只不过从命名规范上来讲更符合 C++ 语言的要求。<strong>特别的，在名为 <code>cname</code> 的头文件中定义的名字从属于命名空间 <code>std</code>，而定义在名为 <code>.h</code> 的头文件中的则不然。</strong> 一般来说，C++ 程序应该使用名为<code>cname</code> 的头文件而不使用 <code>name.h</code> 的形式，标准库中的名字总能在命名空间 <code>std</code> 中找到。</p>
+</li>
+<li><p>如果想对 <code>string</code> 对象中的每个字符做点儿什么操作，使用 C++11 新标准提供的一种语句：<code>范围 for</code>（range for）语句。这种语句遍历给定序列中的每个元素并对序列中的每个值执行某种操作，其语法形式是：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (declaration : expression)</span><br><span class="line">    statement</span><br></pre></td></tr></table></figure>
+<p>其中，expression 部分是一个对象，用于表示一个序列。declaration 部分负责定义一个变量，该变量将被用于访问序列中的基础元素。每次迭代，_declaration_ 部分的变量会被初始化为 expression 部分的下一个元素值。一个 <strong>string</strong> 对象表示一个字符的序列，因此 <code>string</code> 对象可以作为<code>范围 for</code> 语句中的 expression 部分。</p>
+</li>
+<li><p>下面的代码片段通过使用<code>范围 for</code> 语句把 <code>string</code> 对象中的字符每行一个输出出来：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">str</span><span class="params">(<span class="string">"some string"</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> c : str)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>通过使用 <code>auto</code> 关键字让编译器来决定变量 <code>c</code> 的类型，这里 <code>c</code> 的类型是 <code>char</code>。每次迭代，<code>str</code> 的下一个字符被拷贝给 <code>c</code>，因此该循环可以读作“对于字符串 <code>str</code> 中的每个字符 <code>c</code>，”执行某某操作。</p>
+</li>
+<li><p>下面的代码片段使用<code>范围 for</code> 语句和 <code>ispunct</code> 函数来统计 <code>string</code> 对象中标点符号的个数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"Hello World!!!"</span>)</span></span>;</span><br><span class="line"><span class="keyword">decltype</span> punct_cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> c : s)</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">ispunct</span>(c))</span><br><span class="line">        ++punct_cnt;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; punct_cnt</span><br><span class="line">     &lt;&lt; <span class="string">" punctuation characters in "</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>使用<code>范围 for</code> 语句改变字符串中的字符。</strong>如果想要改变 <code>string</code> 对象中字符的值，必须把循环变量定义成引用类型。记住，所谓引用只是给定对象的一个别名，因此当使用引用作为循环控制变量时，这个变量实际上被依次绑定到了序列的每个元素上。使用这个引用，我们就能改变它绑定的字符。标准库函数 <code>toupper</code> 接收一个字符，然后输出其对应的大写形式。这样，为了把整个 <code>string</code> 对象转换成大写，只要对其中的每个字符调用 <code>toupper</code> 函数并将结果再赋给原字符就可以了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"Hello World!!!"</span>)</span></span>;</span><br><span class="line"><span class="comment">// 转换成大写形式。</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;c : s)  <span class="comment">// 对于s中的每个字符（注意：c是引用</span></span><br><span class="line">    c = <span class="built_in">toupper</span>(c);    <span class="comment">// c是一个引用，因此赋值语句将改变s中字符的值</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>每次迭代时，变量 c 引用<code>string</code>对象 s 的下一个字符，赋值给 c 也就是在改变 s 中对应字符的值。因此当执行下面的语句时，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c = <span class="built_in">toupper</span>(c);   <span class="comment">// c是一个引用，因此赋值语句将改变s中字符的值</span></span><br></pre></td></tr></table></figure>
+<p>实际上改变了 c 绑定的字符的值。整个循环结束后，str 中的所有字符都变成了大写形式。</p>
+</li>
+<li><p>要想访问 <code>string</code> 对象中的单个字符有两种方式：一种是使用下标，另外一种是使用迭代器。下标运算符（<code>[ ]</code>）接收的输入参数是 <code>string::size type</code> 类型的值，这个参数表示要访问的字符的位置；返回值是该位置上字符的引用。<code>string</code> 对象的下标从 0 计起，<code>s[s.size()-1]</code> 是最后一个字符。<code>string</code> 对象的下标必须大于等于 0 而小于 <code>s.size()</code>。使用超出此范围的下标将引发不可预知的结果，以此推断，使用下标访问空 <code>string</code> 也会引发不可预知的结果。下标的值称作“下标”或“索引”，任何表达式只要它的值是一个整型值就能作为索引。不过，如果某个索引是带符号类型的值将自动转换成 <code>string::size_type</code> 表达的无符号类型。在访问指定字符之前，首先检查 s 是否为空。其实不管什么时候只要对 <code>string</code> 对象使用了下标，都要确认在那个位置上确实有值。如果 s 为空，则 <code>s[0]</code> 的结果将是未定义的。只要字符串不是常量，就能为下标运算符返回的字符赋新值。下面的程序将字符串的首字符改成了大写形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">strings(<span class="string">"some string"</span>);</span><br><span class="line"><span class="keyword">if</span> (!s.empty())            <span class="comment">// 确保s[0]的位置确实有字符</span></span><br><span class="line">    s[<span class="number">0</span>] = <span class="built_in">toupper</span>(s[<span class="number">0</span>]);  <span class="comment">// 为s的第一个字符赋一个新值</span></span><br></pre></td></tr></table></figure>
+<p>下面的程序把 s 的第一个词改成大写形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 依次处理s中的字符直至处理完全部字符或者遇到一个空白</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">decltype</span>(s.size()) index = <span class="number">0</span>;</span><br><span class="line">    index != s.size() &amp;&amp; !<span class="built_in">isspace</span>(s[index]);</span><br><span class="line">    ++index)</span><br><span class="line">    s[index] = <span class="built_in">toupper</span>(s[index]); <span class="comment">// 将当前字符改成大写形式</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>C++ 语言规定<strong>只有当左侧运算对象为真时才会检查右侧运算对象的情况</strong>（C 语言中有着相同规定），这条规定确保了只有当下标取值在合理范围之内时才会真的用此下标去访问字符串。C++ 标准并不要求标准库检测下标是否合法，一旦使用了一个超出范围的下标，就会产生不可预知的结果。</p>
+</li>
+<li><p>标准库类型 <code>vector</code> 表示对象的集合，其中所有对象的类型都相同。集合中的每个对象都有一个与之对应的索引，索引用于访问对象。<code>vector</code> 常被称作<strong>容器</strong>（container）。要想使用 <code>vector</code>，必须包含适当的头文件：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>C++ 语言既有<strong>类模板</strong>（class template），也有函数模板，其中 <code>vector</code> 是一个类模板。模板本身不是类或函数，相反可以将模板看作为编译器生成类或函数编写的一份说明。编译器根据模板创建类或函数的过程称为<strong>实例化</strong>（instantiation），当使用模板时，需要指出编译器应把类或函数实例化成何种类型。对于类模板来说，通过提供一些额外信息来指定模板到底实例化成什么样的类，需要提供哪些信息由模板决定。提供信息的方式总是这样：即在模板名字后面跟一对尖括号，在括号内放上信息。以 <code>vector</code> 为例，提供的额外信息是 <code>vector</code> 内所存放对象的类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;              <span class="comment">// ivec保存int类型的对象</span></span><br><span class="line"><span class="built_in">vector</span>&lt;Sales_item&gt; Sales vec;  <span class="comment">// 保存Sales_item类型的对象</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; file;   <span class="comment">// 该向量的元素是vector对象</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>vector</code> 是模板而非类型，由 <code>vector</code> 生成的类型必须包含 <code>vector</code> 中元素的类型，例如 <code>vector&lt;int&gt;</code>。</p>
+</li>
+<li><p><code>vector</code> 能容纳绝大多数类型的对象作为其元素，但是因为引用不是对象，所以<strong>不存在包含引用的<code>vector</code></strong>。除此之外，其他大多数（非引用）内置类型和类类型都可以构成 <code>vector</code> 对象，甚至组成 <code>vector</code> 的元素也可以是 <code>vector</code>。</p>
+</li>
+<li><p>在早期版本的 C++ 标准中，如果 <code>vector</code> 的元素还是 <code>vector</code>（或者其他模板类型），则其定义的形式与现在的 C++11 新标准略有不同。过去，必须在外层 <code>vector</code> 对象的右尖括号和其元素类型之间添加一个空格，如应该写成 <code>vector&lt;vector&lt;int&gt; &gt;</code> 而非 <code>vector&lt;vector&lt;int&gt;&gt;</code>。</p>
+</li>
+<li><p>定义 <code>vector</code> 对象的常用方法如下表所示：</p>
+<table>
+<tbody>
+<tr>
+    <td colspan="2"><b><center>初始化vector对象的方法</center></b></td>
+</tr>
+<tr>
+    <td>vector&lt;T&gt; v1</td>
+    <td>v1是一个空vector，它潜在的元素是T类型的，执行默认初始化</td>
+</tr>
+<tr>
+    <td>vector&lt;T&gt; v2(v1)</td>
+    <td>v2中包含有v1所有元素的副本</td>
+</tr>
+<tr>
+    <td>vector&lt;T&gt; v2 = v1</td>
+    <td>等价于v2(v1)，v2中包含有v1所有元素的副本</td>
+</tr>
+<tr>
+    <td>vector&lt;T&gt; v3(n, val)</td>
+    <td>v3包含了n个重复的元素，每个元素的值都是val</td>
+</tr>
+<tr>
+    <td>vector&lt;T&gt; v4(n)</td>
+    <td>v4包含了n个重复地执行了值初始化的对象</td>
+</tr>
+<tr>
+    <td>vector&lt;T&gt; v5{a, b, c ...}</td>
+    <td>v5包含了初始值个数的元素，每个元素被赋予相应的初始值</td>
+</tr>
+<tr>
+    <td>vector&lt;T&gt; v5 = {a, b, c ...}</td>
+    <td>等价于v5{a, b, c...}</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>可以默认初始化 <code>vector对象</code>，从而创建一个指定类型的空 <code>vector</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; svec;  <span class="comment">// 默认初始化，svec不含任何元素</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>允许把一个 <code>vector</code> 对象的元素拷贝给另外一个 <code>vector</code> 对象。此时，新 <code>vector</code> 对象的元素就是原 <code>vector</code> 对象对应元素的副本。注意两个 <code>vector</code> 对象的类型必须相同：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;  <span class="comment">// 初始状态为空</span></span><br><span class="line"><span class="comment">// 在此处给ivec添加一些值</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">ivec2</span><span class="params">(ivec)</span></span>;     <span class="comment">// 把ivec的元素拷贝给ivec2</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec3 = ivec;    <span class="comment">// 把ivec的元素拷贝给ivec3</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">svec</span><span class="params">(ivec2)</span></span>;  <span class="comment">// 错误：svec的元素是string对象，不是int</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>C++11 新标准还提供了另外一种为 <code>vector</code> 对象的元素赋初值的方法，即列表初始化。此时，用花括号括起来的 0 个或多个初始元素值被赋给 <code>vector</code> 对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; articles = &#123;<span class="string">"a"</span>, <span class="string">"an"</span>, <span class="string">"the"</span>&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用 C++ 中几种不同的初始化方式时的三点要求：</p>
+<ul>
+<li>其一，使用拷贝初始化时（即使用=时），只能提供一个初始值；</li>
+<li>其二，如果提供的是一个类内初始值，则只能使用拷贝初始化或使用花括号的形式初始化；</li>
+<li>其三，如果提供的是初始元素值的列表，则只能把初始值都放在花括号里进行列表初始化，而不能放在圆括号里。<br><br></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; v1&#123;<span class="string">"a"</span>, <span class="string">"an"</span>, <span class="string">"the"</span>&#125;;  <span class="comment">// 列表初始化</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">v2</span><span class="params">(<span class="string">"a"</span>, <span class="string">"an"</span>, <span class="string">"the"</span>)</span></span>;  <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>还可以用 <code>vector</code> 对象容纳的元素数量和所有元素的统一初始值来初始化 <code>vector</code> 对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">ivec</span><span class="params">(<span class="number">10</span>, <span class="number">-1</span>)</span></span>;        <span class="comment">// 10个int类型的元素，每个都被初始化为-1</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">svec</span><span class="params">(<span class="number">10</span>, <span class="string">"hi!"</span>)</span></span>;  <span class="comment">// 10个string类型的元素，每个都被初始化为"hi!"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通常情况下，可以只提供 <code>vector</code> 对象容纳的元素数量而略去初始值。此时库会创建一个<strong>值初始化的</strong>（value-initialized）元素初值，并把它赋给容器中的所有元素。这个初值由 <code>vector</code> 对象中元素的类型决定。如果 <code>vector</code> 对象的元素是内置类型，比如 <code>int</code>，则元素初始值自动设为 0。如果元素是某种类类型，比如 <code>string</code>，则元素由类默认初始化：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">ivec</span><span class="params">(<span class="number">10</span>)</span></span>;     <span class="comment">// 10个元素，每个都初始化为0</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">svec</span><span class="params">(<span class="number">10</span>)</span></span>;  <span class="comment">// 10个元素，每个都是空string对象</span></span><br></pre></td></tr></table></figure>
+<p>对这种初始化的方式有两个特殊限制：、</p>
+<ul>
+<li>其一，有些类要求必须明确地提供初始值，如果 <code>vector</code> 对象中元素的类型不支持默认初始化，就必须提供初始的元素值。对这种类型的对象来说，只提供元素的数量而不设定初始值无法完成初始化工作；</li>
+<li>其二，如果只提供了元素的数量而没有设定初始值，只能使用直接初始化：<br><br></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vi = <span class="number">10</span>;  <span class="comment">// 错误：必须使用直接初始化的形式指定向量大小</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>在某些情况下，初始化的真实含义依赖于传递初始值时用的是花括号还是圆括号。</strong> 观察如下代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">10</span>)</span></span>;     <span class="comment">// v1有10个元素，每个的值都是0</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v2&#123;<span class="number">10</span>&#125;;     <span class="comment">// v2有1个元素，该元素的值是10</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v3</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>;  <span class="comment">// v3有10个元素，每个的值都是1</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v4&#123;<span class="number">10</span>，<span class="number">1</span>&#125;;  <span class="comment">// v4有2个元素，值分别是10和1</span></span><br></pre></td></tr></table></figure>
+<p>如果用的是花括号，可以表述成我们想列表初始化（list initialize）该 <code>vector</code> 对象。也就是说，初始化过程会尽可能地把花括号内的值当成是元素初始值的列表来处理，只有在无法执行列表初始化时才会考虑其他初始化方式。另一方面，<strong>如果初始化时使用了花括号的形式但是提供的值又不能用来列表初始化，就要考虑用这样的值来构造 <code>vector</code> 对象了</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; v5&#123;<span class="string">"hi"</span>&#125;;      <span class="comment">// 列表初始化：v5有一个元素</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">v6</span><span class="params">(<span class="string">"hi"</span>)</span></span>;      <span class="comment">// 错误：不能使用字符串字面值构建vector对象</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; v7&#123;<span class="number">10</span>&#125;;        <span class="comment">// v7有10个默认初始化的元素</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; v8&#123;<span class="number">10</span>, <span class="string">"hi"</span>&#125;;  <span class="comment">// v8有10个值为“hi”的元素</span></span><br></pre></td></tr></table></figure>
+<p>尽管在上面的例子中除了第二条语句之外都用了花括号，但其实只有 v5 是列表初始化。<strong>要想列表初始化 <code>vector</code> 对象，花括号里的值必须与元素类型相同。</strong>显然不能用 <code>int</code> 初始化 <code>string</code> 对象，所以 v7 和 v8 提供的值不能作为元素的初始值。<strong>确认无法执行列表初始化后，编译器会尝试用默认值初始化 <code>vector</code> 对象。</strong></p>
+</li>
+<li><p>下列的 <code>vector</code> 对象各包含多少个元素？这些元素的值分别是多少？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1;               <span class="comment">// （a）：0个元素</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v2</span><span class="params">(<span class="number">10</span>)</span></span>;           <span class="comment">// （b）：10个0</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v3</span><span class="params">(<span class="number">10</span>, <span class="number">42</span>)</span></span>;       <span class="comment">// （c）：10个42</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v4&#123;<span class="number">10</span>&#125;;           <span class="comment">// （d）：1个10</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v5&#123;<span class="number">10</span>, <span class="number">42</span>&#125;;       <span class="comment">// （e）：2个，10和42</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; v6&#123;<span class="number">10</span>&#125;;        <span class="comment">// （f）：10个空字符串</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; v7&#123;<span class="number">10</span>, <span class="string">"hi"</span>&#125;;  <span class="comment">// （g）：10个"hi"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>vector</code> 的成员函数 <code>push_back</code> 向其中添加元素。<code>push_back</code> 负责把一个值当成 <code>vector</code> 对象的尾元素“压到（push）”<code>vector</code> 对象的“尾端（back）”。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v2;  <span class="comment">// 空vector对象</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != <span class="number">100</span>; ++i)</span><br><span class="line">    v2.push_back(i);  <span class="comment">// 依次把整数值放到v2尾端</span></span><br><span class="line"><span class="comment">// 循环结束后v2有100个元素，值从0到99</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>vector</code> 对象能高效地增长，那么<strong>在定义 <code>vector</code> 对象的时候设定其大小也就没什么必要了，事实上如果这么做性能可能更差</strong>。只有一种例外情况，就是所有（all）元素的值都一样。一旦元素的值有所不同，更有效的办法是先定义一个空的 <code>vector</code> 对象，再在运行时向其中添加具体值。</p>
+</li>
+<li><p><strong>如果循环体内部包含有向 <code>vector</code> 对象添加元素的语句，则不能使用范围 <code>for</code> 循环，范围 <code>for</code> 语句体内不应改变其所遍历序列的大小。</strong></p>
+</li>
+<li><p>比较重要的一些 <code>vector</code> 支持的操作如下表所示：</p>
+<table>
+<tbody>
+<tr>
+    <td colspan="2"><b><center>vector支持的操作</center></b></td>
+</tr>
+<tr>
+    <td>v.empty()</td>
+    <td>如果v不含有任何元素，返回真；否则返回假</td>
+</tr>
+<tr>
+    <td>v.size()</td>
+    <td>返回v中元素的个数</td>
+</tr>
+<tr>
+    <td>v.push_back(t)</td>
+    <td>向v的尾端添加一个值为t的元素</td>
+</tr>
+<tr>
+    <td>v[n]</td>
+    <td>返回v中第n个位置上元素的引用</td>
+</tr>
+<tr>
+    <td>v1 = v2</td>
+    <td>用v2中元素的拷贝替换v1中的元素</td>
+</tr>
+<tr>
+    <td>v1 = {a, b, c ..}</td>
+    <td>用列表中元素的拷贝替换v1中的元素</td>
+</tr>
+<tr>
+    <td>v1 == v2</td>
+    <td rowspan="2">v1和v2相等当且仅当它们的元素数量相同且对应位置的元素值都相同</td>
+</tr>
+<tr>
+    <td>v1 != v2</td>
+</tr>
+<tr>
+    <td>&lt;, &lt;=, &gt;, &gt;=</td>
+    <td>以字典顺序进行比较</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>可以使用范围 <code>for</code> 语句处理 <code>vector</code> 对象中的所有元素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)      <span class="comment">// 对于v中的每个元素（注意：i是一个引用）</span></span><br><span class="line">    i *= i;            <span class="comment">// 求元素值的平方</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> i : v)       <span class="comment">// 对于v中的每个元素</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">" "</span>;  <span class="comment">// 输出该元素</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>vector</code> 的 <code>size</code> 函数返回 <code>vector</code> 对象中元素的个数，返回值的类型是由 <code>vector</code> 定义的 <code>size_type</code> 类型。要使用 <code>size_type</code>，需首先指定它是由哪种类型定义的。<code>vector</code> 对象的类型总是包含着元素的类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::size_type  <span class="comment">// 正确</span></span><br><span class="line"><span class="built_in">vector</span>::size_type       <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>两个 <code>vector</code> 对象相等当且仅当它们所含的元素个数相同，而且对应位置的元素值也相同。关系运算符依照字典顺序进行比较：如果两个 <code>vector</code> 对象的容量不同，但是在相同位置上的元素值都一样，则元素较少的 <code>vector</code> 对象小于元素较多的 <code>vector</code> 对象；若元素的值有区别，则 <code>vector</code> 对象的大小关系由第一对相异的元素值的大小关系决定。</p>
+</li>
+<li><p>只要 <code>vector</code> 对象不是一个常量，就能向下标运算符返回的元素赋值。</p>
+</li>
+<li><p><strong>两个整数相除，结果还是整数，余数部分被自动忽略掉了。</strong>下面的程序以 10 分为一个分数段统计成绩的数量：0~9，10~19…，90~99，100：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span>&gt; <span class="title">scores</span><span class="params">(<span class="number">11</span>, <span class="number">0</span>)</span></span>;  <span class="comment">// 11个分数段，全都初始化为0</span></span><br><span class="line"><span class="keyword">unsigned</span> grade;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; grade)         <span class="comment">// 读取成绩</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (grade &lt;= <span class="number">100</span>)        <span class="comment">// 只处理有效的成绩</span></span><br><span class="line">        ++scores[grade/<span class="number">10</span>];  <span class="comment">// 将对应分数段的计数值加1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下面的代码试图为 <code>vector</code> 对象 ivec 添加 10 个元素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;  <span class="comment">// 空vector对象</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">decltype</span>(ivec.size()) ix = <span class="number">0</span>; ix != <span class="number">10</span>; ++ix)</span><br><span class="line">    ivec[ix] = ix;  <span class="comment">// 严重错误：ivec不包含任何元素</span></span><br></pre></td></tr></table></figure>
+<p>然而，这段代码是错误的：ivec 是一个空 <code>vector</code>，根本不包含任何元素，当然也就不能通过下标去访问任何元素！如前所述，正确的方法是使用 <code>push_back</code>。<code>vector</code> 对象（以及 <code>string</code> 对象）的下标运算符可用于访问已存在的元素，而不能用于添加元素。</p>
+</li>
+<li><p><strong>试图用下标的形式去访问一个不存在的元素将引发错误，不过这种错误不会被编译器发现，而是在运行时产生一个不可预知的值。</strong>不幸的是，这种通过下标访问不存在的元素的行为非常常见，而且会产生很严重的后果。所谓的缓冲区溢出（buffer overflow）指的就是这类错误，这也是导致 PC 及其他设备上应用程序出现安全问题的一个重要原因。<strong>确保下标合法的一种有效手段就是尽可能使用范围 <code>for</code> 语句。</strong></p>
+</li>
+<li><p>可以使用下标运算符来访问 <code>string</code> 对象的字符或 <code>vector</code> 对象的元素，使用<strong>迭代器</strong>（iterator）也可以做到这一点。所有标准库容器都可以使用迭代器，但是其中只有少数几种才同时支持下标运算符。</p>
+</li>
+<li><p>迭代器也提供了对对象的间接访问。就迭代器而言，其对象是容器中的元素或者 string 对象中的字符。使用迭代器可以访问某个元素，迭代器也能从一个元素移动到另外一个元素。迭代器有有效和无效之分，这一点和指针差不多。有效的迭代器或者指向某个元素，或者指向容器中尾元素的下一位置；其他所有情况都属于无效。</p>
+</li>
+<li><p>获取迭代器不是使用取地址符，有迭代器的类型同时拥有返回迭代器的成员。比如，这些类型都拥有名为 <strong><code>begin</code></strong> 和 <strong><code>end</code></strong> 的成员，其中 <code>begin</code> 成员负责返回指向第一个元素（或第一个字符）的迭代器。<code>end</code> 成员则负责返回指向容器（或 string 对象）“尾元素的下一位置（one past the end）”的迭代器，也就是说，该迭代器指示的是容器的一个本不存在的“<strong>尾后</strong>（off the end）”元素。<code>end</code> 成员返回的迭代器常被称作<strong>尾后迭代器</strong>（off-the-end iterator）或者简称为尾迭代器（end iterator）。特殊情况下如果容器为空，则 <code>begin</code> 和 <code>end</code> 返回的是同一个迭代器——尾迭代器。</p>
+</li>
+<li><p>下表列举了迭代器支持的一些运算。使用 <code>==</code> 和 <code>!=</code> 来比较两个合法的迭代器是否相等，如果两个迭代器指向的元素相同或者都是同一个容器的尾后迭代器，则它们相等：否则就说这两个迭代器不相等。</p>
+<table>
+<tbody>
+<tr>
+    <td colspan="2"><b><center>标准容器迭代器的运算符</center></b></td>
+</tr>
+<tr>
+    <td>*iter</td>
+    <td>返回迭代器iter所指元素的引用</td>
+</tr>
+<tr>
+    <td>iter-&gt;mem</td>
+    <td>解引用iter并获取该元素的名为mem的成员，等价于(*iter).mem</td>
+</tr>
+<tr>
+    <td>++iter</td>
+    <td>令iter指示容器中的下一个元素</td>
+</tr>
+<tr>
+    <td>--iter</td>
+    <td>令iter指示容器中的上一个元素</td>
+</tr>
+<tr>
+    <td>iter1 == iter2</td>
+    <td rowspan="2">判断两个迭代器是否相等（不相等），如果两个迭代器指示的是同一个元素或者它们是同一个容器的尾后迭代器，则相等；反之，不相等</td>
+</tr>
+<tr>
+    <td>iter1 != iter2</td>
+</tr>
+</tbody>
+</table>
+
+<p>和指针类似，也能通过解引用迭代器来获取它所指示的元素，执行解引用的迭代器必须合法并确实指示着某个元素。试图解引用一个非法迭代器或者尾后迭代器都是未被定义的行为。</p>
+</li>
+<li><p>下面的程序将 <code>string</code> 对象的第一个字母改为了大写形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"some string"</span>)</span></span>;</span><br><span class="line"><span class="keyword">if</span> (s.begin() != s.end())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">auto</span> it = s.begin();</span><br><span class="line">    *it = <span class="built_in">toupper</span>(*it);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>迭代器使用递增（<code>++</code>）运算符来从一个元素移动到下一个元素。因为 <code>end</code> 返回的迭代器并不实际指示某个元素，所以不能对其进行递增或解引用的操作。</p>
+</li>
+<li><p>下面的程序将 <code>string</code> 对象的第一个单词改为了大写形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"some string"</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> it = s.begin(); it != s.end() &amp;&amp; !<span class="built_in">isspace</span>(*it); ++it)</span><br><span class="line">    *it = <span class="built_in">toupper</span>(*it);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只有 <code>string</code> 和 <code>vector</code> 等一些标准库类型有下标运算符，而并非全都如此。与之类似，所有标准库容器的迭代器都定义了 <code>==</code> 和 <code>!=</code>，但是它们中的太多数都没有定义 <code>&lt;</code> 运算符。因此，只要养成使用迭代器和 <code>!=</code> 的习惯，就不用太在意用的到底是哪种容器类型。</p>
+</li>
+<li><p>拥有迭代器的标准库类型使用 <code>iterator</code> 和 <code>const_iterator</code> 来表示迭代器的类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator it;         <span class="comment">// it能读写vector&lt;int&gt;的元素</span></span><br><span class="line"><span class="built_in">string</span>::iterator it2;             <span class="comment">// it2能读写string对象中的元素</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::const_iterator it3;  <span class="comment">// it3只能读元素，不能写元素</span></span><br><span class="line"><span class="built_in">string</span>::const_iterator it4;       <span class="comment">// it4只能读字符，不能写字符</span></span><br></pre></td></tr></table></figure>
+<p><code>const_iterator</code> 和指向常量的指针差不多，能读取但不能修改它所指的元素值。相反，<code>iterator</code> 的对象可读可写。如果 <code>vector</code> 对象或 <code>string</code> 对象是一个常量，只能使用 <code>const_iterator</code>；如果 <code>vector</code> 对象或 <code>string</code> 对象不是常量，那么既能使用 <code>iterator</code> 也能使用 <code>const_iterator</code>。</p>
+</li>
+<li><p>每个容器类定义了一个名为 <code>iterator</code> 的类型，该类型支持迭代器概念所规定的一套操作。</p>
+</li>
+<li><p><code>begin</code> 和 <code>end</code> 返回的具体类型由对象是否是常量决定，如果对象是常量，<code>begin</code> 和 <code>end</code> 返回 <code>const_iterator</code>；如果对象不是常量，返回 <code>iterator</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cv;</span><br><span class="line"><span class="keyword">auto</span> it1 = v.begin();   <span class="comment">// it1的类型是vector&lt;int&gt;::iterator</span></span><br><span class="line"><span class="keyword">auto</span> it2 = cv.begin();  <span class="comment">// it2的类型是vector&lt;int&gt;::const_iterator</span></span><br></pre></td></tr></table></figure>
+<p>如果对象只需读操作而无须写操作的话最好使用常量类型（比如 <code>const_iterator</code>）。为了便于专门得到 <code>const_iterator</code> 类型的返回值，C++11 新标准引入了两个新函数，分别是 <code>cbegin</code> 和 <code>cend</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> it3 = v.cbegin();  <span class="comment">// it3的类型是vector&lt;int&gt;::const_iterator</span></span><br></pre></td></tr></table></figure>
+<p>类似于 <code>begin</code> 和 <code>end</code>，上述两个新函数也分别返回指示容器第一个元素或最后元素下一位置的迭代器。有所不同的是，不论 <code>vector</code> 对象（或 <code>string</code> 对象）本身是否是常量，返回值都是 <code>const_iterator</code>。</p>
+</li>
+<li><p><strong>箭头运算符</strong>把解引用和成员访问两个操作结合在一起，也就是说，<code>it-&gt;mem</code> 和 <code>(*it).mem</code> 表达的意思相同。</p>
+</li>
+<li><p>虽然 <code>vector</code> 对象可以动态地增长，但是也会有一些副作用。已知的一个限制是<strong>不能在范围 <code>for</code> 循环中向 <code>vector</code> 对象添加元素</strong>。另外一个限制是<strong>任何一种可能改变 <code>vector</code> 对象容量的操作，比如 <code>push_back</code>，都会使该 <code>vector</code> 对象的迭代器失效</strong>。谨记，<strong>但凡是使用了迭代器的循环体，都不要向选代器所属的容器添加元素</strong>。</p>
+</li>
+<li><p>假设用一个名为 text 的字符串向量存放文本文件中的数据，其中的元素或者是一句话或者是一个用于表示段落分隔的空字符串。下面的程序将 text 的第一段全都改成大写形式，然后进行输出：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">text</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line">text[<span class="number">0</span>] = <span class="string">"The world is fantastic."</span>;</span><br><span class="line">text[<span class="number">1</span>] = <span class="string">"If you have a dream, struggle for it."</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> iter = text.begin();</span><br><span class="line">     iter != text.end() &amp;&amp; !iter-&gt;empty();</span><br><span class="line">     iter++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;c : *iter)</span><br><span class="line">        c = <span class="built_in">toupper</span>(c);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; *iter &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译代码后，运行可执行程序，将输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">THE WORLD IS FANTASTIC.</span><br><span class="line">IF YOU HAVE A DREAM, STRUGGLE FOR IT.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>vector</code> 和 <code>string</code> 迭代器支持的运算如下表所示：</p>
+<table>
+<tbody>
+<tr>
+    <td colspan="2"><b><center>vector和string迭代器支持的运算</center></b></td>
+</tr>
+<tr>
+    <td>iter + n</td>
+    <td>迭代器加上一个整数值仍得一个迭代器，迭代器指示的新位置与原来相比向前移动了若干个元素。结果迭代器或者指示容器内的一个元素，或者指示容器尾元素的下一位置</td>
+</tr>
+<tr>
+    <td>iter - n</td>
+    <td>迭代器减去一个整数值仍得一个迭代器，迭代器指示的新位置与原来相比向后移动了若干个元素。结果迭代器或者指示容器内的一个元素，或者指示容器尾元素的下一位置</td>
+</tr>
+<tr>
+    <td>iter1 += n</td>
+    <td>选代器加法的复合赋值语句，将iter1加n的结果赋给iter1</td>
+</tr>
+<tr>
+    <td>iter1 -= n</td>
+    <td>迭代器减法的复合赋值语句，将iter1减n的结果赋给iter1</td>
+</tr>
+<tr>
+    <td>iter1 - iter2</td>
+    <td>两个迭代器相减的结果是它们之间的距离，也就是说，将运算符右侧的迭代器向前移动差值个元素后将得到左侧的迭代器。参与运算的两个迭代器必须指向的是同一个容器中的元素或者尾元素的下一位置</td>
+</tr>
+<tr>
+    <td>&gt;、&gt;=、&lt;、&lt;=</td>
+    <td>迭代器的关系运算符，如果某迭代器指向的容器位置在另一个迭代器所指位置之前，则说前者小于后者。参与运算的两个迭代器必须指向的是同一个容器中的元素或者尾元素的下一位置</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>只要两个迭代器指向的是同一个容器中的元素或者尾元素的下一位置，就能将其相减，所得结果是两个迭代器的距离。所谓距离指的是右侧的迭代器向前移动多少位置就能追上左侧的迭代器，其类型是名为 <strong><code>difference_type</code></strong> 的带符号整型数。<code>string</code> 和 <code>vector</code> 都定义了 <code>difference_type</code>，因为这个距离可正可负，所以 <code>difference_type</code> 是带符号类型的。</p>
+</li>
+<li><p>使用迭代器运算的一个经典算法是二分搜索：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面的程序使用迭代器完成了二分搜索</span></span><br><span class="line"><span class="comment">// beg和end表示我们要搜索的范围</span></span><br><span class="line"><span class="keyword">auto</span> beg = text.begin(), end = text.end();</span><br><span class="line"><span class="keyword">auto</span> mid = beg + (end - beg) / <span class="number">2</span>;</span><br><span class="line"><span class="keyword">while</span> (mid != end &amp;&amp; *mid != sought)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (*mid &lt; sought)</span><br><span class="line">        end = mid;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        beg = mid + <span class="number">1</span>;</span><br><span class="line">    mid = beg + (end - beg) / <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>循环过程终止时，mid 或者等于 end 或者指向要找的元素。如果 mid 等于 end，说明 text 中没有我们要找的元素。</p>
+</li>
+<li><p>数组与 <code>vector</code> 相似的地方是，数组也是存放类型相同的对象的容器，这些对象本身没有名字，需要通过其所在位置访问。与 <code>vector</code> 不同的地方是，数组的大小确定不变，不能随意向数组中增加元素。因为数组的太小固定，因此对某些特殊的应用来说程序的运行时性能较好，但是相应地也损失了一些灵活性。<strong>如果不清楚元素的确切个数，请使用 <code>vector</code>。</strong></p>
+</li>
+<li><p>数组中元素的个数也属于数组类型的一部分，编译的时候维度应该是已知的。也就是说，<strong>维度必须是一个常量表达式</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> cnt = <span class="number">42</span>;           <span class="comment">// 不是常量表达式</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="keyword">unsigned</span> sz = <span class="number">42</span>;  <span class="comment">// 常量表达式</span></span><br><span class="line"><span class="keyword">int</span> arr[<span class="number">10</span>];                 <span class="comment">// 含有10个整数的数组</span></span><br><span class="line"><span class="keyword">int</span> *parr[sz];               <span class="comment">// 含有42个整型指针的数组</span></span><br><span class="line"><span class="built_in">string</span> bad[cnt];             <span class="comment">// 错误：cnt不是常量表达式</span></span><br><span class="line"><span class="built_in">string</span> strs[get_size()];     <span class="comment">// 当get_size是constexpr时正确；否则错误</span></span><br></pre></td></tr></table></figure>
+<p><strong>默认情况下，数组的元素被默认初始化。</strong></p>
+</li>
+<li><p><strong>定义数组的时候必须指定数组的类型，不允许用 <code>auto</code> 关键字由初始值的列表推断类型。另外和 <code>vector</code> 一样，数组的元素应为对象，因此不存在引用的数组。</strong></p>
+</li>
+<li><p>可以对数组的元素进行列表初始化，此时允许忽略数组的维度。如果在声明时没有指明维度，编译器会根据初始值的数量计算并推测出来：相反，如果指明了维度，那么初始值的总数量不应该超出指定的大小。<strong>如果维度比提供的初始值数量大，则用提供的初始值初始化靠前的元素，剩下的元素被初始化成默认值</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">unsigned</span> sz = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">int</span> ia1[sz] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;       <span class="comment">// 含有3个元素的数组，元素值分别是0，1，2</span></span><br><span class="line"><span class="keyword">int</span> a2[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;          <span class="comment">// 维度是3的数组</span></span><br><span class="line"><span class="keyword">int</span> a3[<span class="number">5</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;         <span class="comment">// 等价于a3[] = &#123;0, 1, 2, 0, 0&#125;;</span></span><br><span class="line"><span class="built_in">string</span> a4[<span class="number">3</span>] = &#123;<span class="string">"hi"</span>, <span class="string">"bye"</span>&#125;;  <span class="comment">// 等价于a4[] = &#123;"hi", "bye", ""&#125;;</span></span><br><span class="line"><span class="keyword">int</span> a5[<span class="number">2</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;         <span class="comment">// 错误：初始值过多</span></span><br></pre></td></tr></table></figure>
+<p>应注意，int a[10] = 1;并不会将数组 a 的所有元素初始化为 1。</p>
+</li>
+<li><p>字符数组有一种额外的初始化形式，可以用字符串字面值对此类数组初始化。当使用这种方式时，一定要注意<strong>字符串字面值的结尾处还有一个空字符，这个空字符也会像字符串的其他字符一样被拷贝到字符数组中去</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> a1[] = &#123;<span class="string">'c'</span>, <span class="string">'+'</span>, <span class="string">'+'</span>&#125;;         <span class="comment">// 列表初始化，没有空字符</span></span><br><span class="line"><span class="keyword">char</span> a1[] = &#123;<span class="string">'c'</span>, <span class="string">'+'</span>, <span class="string">'+'</span>, <span class="string">'\0'</span>&#125;;   <span class="comment">// 列表初始化，含有显式的空字符</span></span><br><span class="line"><span class="keyword">char</span> a3[] = <span class="string">"c++"</span>;                   <span class="comment">// 自动添加表示字符串结束的空字符</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> a4[<span class="number">5</span>] = <span class="string">"Hello"</span>;          <span class="comment">// 错误：没有空间可存放空字符！</span></span><br></pre></td></tr></table></figure>
+<p>关于最后一例，编译器会提示：</p>
+<p><img data-src="https://image.shipengx.com/%E6%95%B0%E7%BB%84%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3%EF%BC%8C%E6%97%A0%E6%B3%95%E5%AD%98%E6%94%BE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%97%E9%9D%A2%E5%80%BC%E4%B8%AD%E7%9A%84%E7%A9%BA%E5%AD%97%E7%AC%A6.png" alt="数组空间不足，无法存放字符串字面值中的空字符"></p>
+</li>
+<li><p><strong>不能将数组的内容拷贝给其他数组作为其初始值，也不能用数组为其他数组赋值</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;  <span class="comment">// 含有3个整数的数组</span></span><br><span class="line"><span class="keyword">int</span> a2[] = a;         <span class="comment">// 错误：不允许使用一个数组初始化另一个数组</span></span><br><span class="line">a2 = a;               <span class="comment">// 错误：不能把一个数组直接赋值给另一个数组</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一些编译器支持数组的赋值，这就是所谓的<strong>编译器扩展</strong>（compiler extension）。但一般来说，最好避免使用非标准特性，因为含有非标准特性的程序很可能在其他编译器上无法正常工作。</p>
+</blockquote>
+</li>
+<li><p>数组指针和指针数组总是容易让人混淆：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *ptrs[<span class="number">10</span>];             <span class="comment">// ptrs是含有10个整型指针的数组</span></span><br><span class="line"><span class="keyword">int</span> &amp;refs[<span class="number">10</span>] = <span class="comment">/* ? */</span>;   <span class="comment">// 错误：不存在引用的数组</span></span><br><span class="line"><span class="keyword">int</span> (*Parray)[<span class="number">10</span>] = &amp;arr;  <span class="comment">// Parry指向一个含有10个整数的数组</span></span><br><span class="line"><span class="keyword">int</span> (&amp;rref)[<span class="number">10</span>] = arr;     <span class="comment">// arrRef引用一个含有10个整数的数组</span></span><br></pre></td></tr></table></figure>
+<p>默认情况下，类型修饰符从右向左依次绑定。数组的维度是紧跟着被声明的名字的，所以就数组而言，由内向外阅读要比从右向左好多了。由内向外的顺序可帮助我们更好地理解 Parray 的含义。<br>观察下面的代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *(&amp;arry)[<span class="number">10</span>] = ptrs;</span><br></pre></td></tr></table></figure>
+<p>按照由内向外的顺序阅读上述语句，首先知道 arry 是一个引用，然后观察右边知道，arry 引用的对象是一个大小为 10 的数组，最后观察左边知道，数组的元素类型是指向 <code>int</code> 的指针。这样，arry 就是一个含有 10 个 <code>int</code> 型指针的数组的引用。</p>
+<blockquote>
+<p>要想理解数组声明的含义，最好的办法是从数组的名字开始按照由内向外的顺序阅读。</p>
+</blockquote>
+</li>
+<li><p>在使用数组下标的时候，通常将其定义为 <code>size_t</code> 类型。<strong><code>size_t</code> 是一种机器相关的无符号类型，它被设计得足够大以便能表示内存中任意对象的大小。</strong>在 <code>cstddef</code> 头文件中定义了 <code>size_t</code> 类型，这个文件是 C 标准库 <code>stddef.h</code> 头文件的 C++语言版本。</p>
+</li>
+<li><p>与<code>vector</code> 和 <code>string</code> 一样，当需要遍历数组的所有元素时，最好的办法也是使用范围 <code>for</code> 语句。例如，下面的程序输出数组 <code>scores</code> 中的所有元素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> i : scores)  <span class="comment">// 对于scores中的每个计数值</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">" "</span>;  <span class="comment">// 输出当前的计数值</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>因为维度是数组类型的一部分，所以系统知道数组 scores 中有多少个元素，使用范围<code>for</code>语句可以减轻人为控制遍历过程的负担。</p>
+<blockquote>
+<p>WARNING 大多数常见的安全问题都源于缓冲区溢出错误。当数组或其他类似数据结构的下标越界并试图访问非法内存区域时，就会产生此类错误。</p>
+</blockquote>
+</li>
+<li><p>像其他对象一样，对数组的元素使用取地址符就能得到指向该元素的指针：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> nums[] = &#123;<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>&#125;;  <span class="comment">// 数组的元素是string对象</span></span><br><span class="line"><span class="built_in">string</span> *p = &amp;nums[<span class="number">0</span>];                     <span class="comment">// p指向nums的第一个元素</span></span><br></pre></td></tr></table></figure>
+<p>数组还有一个特性：<strong>在很多用到数组名字的地方，编译器都会自动地将其替换为一个指向数组首元素的指针</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> *p2 = nums;  <span class="comment">// 等价于p2 = &amp;nums[0];</span></span><br></pre></td></tr></table></figure>
+<p>但应注意：<strong><code>&amp;num</code> 和 <code>&amp;num[0]</code> 拥有不同的含义。</strong></p>
+<blockquote>
+<p>在大多数表达式中，使用数组类型的对象其实是使用一个指向该数组首元素的指针。</p>
+</blockquote>
+</li>
+<li><p><strong>当使用数组作为一个 <code>auto</code> 变量的初始值时，推断得到的类型是指针而非数组</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;  <span class="comment">// ia是一个含有10个整数的数组</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">ia2</span><span class="params">(ia)</span></span>;                               <span class="comment">// ia2是一个整型指针，指向ia的第一个元素</span></span><br><span class="line">ia2 = <span class="number">42</span>;                                   <span class="comment">// 错误：ia2是一个指针，不能用int值给指针赋值</span></span><br></pre></td></tr></table></figure>
+<p>尽管 ia 是由 10 个整数构成的数组，但当使用 ia 作为初始值时，编译器实际执行的初始化过程类似于下面的形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">ia2</span><span class="params">(&amp;ia[<span class="number">0</span>])</span></span>;  <span class="comment">// 显然 ia2 的类型是 int*</span></span><br></pre></td></tr></table></figure>
+<p><strong>当使用 <code>decltype</code> 关键字时上述转换不会发生</strong>，<code>decltype(ia)</code> 返回的类型是由 10 个整数构成的数组：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ia3是一个含有10个整数的数组</span></span><br><span class="line"><span class="keyword">decltype</span>(ia) ia3 = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line">ia3 = p;     <span class="comment">// 错误：不能用整型指针给数组赋值</span></span><br><span class="line">ia3[<span class="number">4</span>] = i;  <span class="comment">// 正确：把i的值赋给ia3的一个元素</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以设法获取数组尾元素之后的那个并不存在的元素的地址：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> arr[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> *e = &amp;arr[<span class="number">10</span>];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>C++ 新标准引入了两个名为 <code>begin</code> 和 <code>end</code> 的函数，这两个函数与容器中的两个同名成员功能类似，不过数组不是类类型，因此两个函数不是成员函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> *beg = begin(ia);  <span class="comment">// 指向ia首元素的指针</span></span><br><span class="line"><span class="keyword">int</span> *last = end(ia);   <span class="comment">// 指向ia尾元素的下一位置的指针</span></span><br></pre></td></tr></table></figure>
+<p><code>begin</code> 函数返回指向 ia 首元素的指针，<code>end</code> 函数返回指向 ia 尾元素下一位置的指针，这两个函数定义在 <code>iterator</code> 头文件中。</p>
+</li>
+<li><p>假设 arr 是一个整型数组，下面的程序负责找到 arr 中的第一个负数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pbeg指向arr的首元素，pend指向arr尾元素的下一位置</span></span><br><span class="line"><span class="keyword">int</span> *pbeg = begin(arr), *pend = end(arr);</span><br><span class="line"><span class="keyword">while</span> (pbeg != pend &amp;&amp; *pbeg &gt;= <span class="number">0</span>)</span><br><span class="line">    ++pbeg;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一个指针如果指向了某种内置类型数组的尾元素的“下一位置”，则其具备与 <code>vector</code> 的 <code>end</code> 函数返回的与迭代器类似的功能。特别要注意，尾后指针不能执行解引用和递增操作。</p>
+</blockquote>
+</li>
+<li><p>给指针加上一个整数，得到的新指针仍需指向同一数组的其他元素，或者指向同一数组的尾元素的下一位置：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">size_t</span> sz = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">int</span> arr[sz] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="comment">// 正确：arr转换成指向它首元素的指针；p指向arr尾元素的下一位置</span></span><br><span class="line"><span class="keyword">int</span> *p = arr + sz;   <span class="comment">// 使用警告：不要解引用！</span></span><br><span class="line"><span class="keyword">int</span> *p2 = arr + <span class="number">10</span>;  <span class="comment">// 错误：arr只有5个元素，p2的值未定义</span></span><br></pre></td></tr></table></figure>
+<p><strong>如果计算所得的指针超出了数组范围就将产生错误，而且这种错误编译器一般发现不了。</strong></p>
+</li>
+<li><p><strong>和迭代器一样，两个指针相减的结果是它们之间的距离。参与运算的两个指针必须指向同一个数组当中的元素</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">auto</span> size = <span class="built_in">std</span>::end(<span class="built_in">array</span>) - <span class="built_in">std</span>::begin(<span class="built_in">array</span>);  <span class="comment">// 以此获取数组中元素的数量</span></span><br></pre></td></tr></table></figure>
+<p>两个指针相减的结果的类型是一种名为 <strong><code>ptrdiff_t</code></strong> 的标准库类型，和 <code>size_t</code> 一样，<code>ptrdiff_t</code> 也是一种定义在 <code>cstddef</code> 头文件中的机器相关的类型。因为差值可能为负值，所以 <code>ptrdiff_t</code> 是一种带符号类型。</p>
+</li>
+<li><p>只要两个指针指向同一个数组的元素，或者指向该数组的尾元素的下一位置，就能利用关系运算符对其进行比较：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *b = arr, *e = arr + sz;</span><br><span class="line"><span class="keyword">while</span> (b &lt; e)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 使用*b</span></span><br><span class="line">    ++b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果两个指针分别指向不相关的对象，则不能比较它们（没有意义）。</p>
+</li>
+<li><p>只要指针指向的是数组中的元素（或者数组中尾元素的下一位置），都可以执行下标运算：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = &amp;ia[<span class="number">2</span>];  <span class="comment">// p指向索引为2的元素</span></span><br><span class="line"><span class="keyword">int</span> j = p[<span class="number">1</span>];     <span class="comment">// p[1]等价于*(p + 1)，即ia[3]表示的那个元素</span></span><br><span class="line"><span class="keyword">int</span> k = p[<span class="number">-2</span>];    <span class="comment">// p[-2]是ia[0]表示的那个元素</span></span><br></pre></td></tr></table></figure>
+<p><strong>标准库类型限定使用的下标必须是无符号类型，而内置的下标运算无此要求</strong>，当然，结果地址必须指向原来的指针所指同一数组中的元素（或是同一数组尾元素的下一位置）。</p>
+<blockquote>
+<p>内置的下标运算符所用的索引值不是无符号类型，这一点与 <code>vector</code> 和 <code>string</code> 不一样。</p>
+</blockquote>
+</li>
+<li><p>假定 p1 和 p2 指向同一个数组中的元素，则下面程序的功能是什么？什么情况下该程序是非法的？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p1 += p2 -p1;</span><br></pre></td></tr></table></figure>
+<p>使 p1 指向 p2 所指元素。当 p1 为常量指针时（即 p1 本身的值不可更改时），该程序非法。</p>
+</li>
+<li><p>C 语言标准库提供了一组函数，如下表所示。这些函数可用于操作 C 风格字符串，它们定义在 <code>cstring</code> 头文件中。</p>
+<table>
+<tbody>
+<tr>
+    <td colspan="2"><b><center>C风格字符串的函数</center></b></td>
+</tr>
+<tr>
+    <td>strlen(p)</td>
+    <td>返回p的长度，空字符不计算在内</td>
+</tr>
+<tr>
+    <td>strcmp(p1, p2)</td>
+    <td>比较p1和p2的相等性。如果p1 == p2，返回0；如果p1 &gt; p2，返回一个正值；如果p1 &lt; p2，返回一个负值</td>
+</tr>
+<tr>
+    <td>strcat(p1, p2)</td>
+    <td>将p2附加到p1之后，返回p1</td>
+</tr>
+<tr>
+    <td>strcpy(p1, p2)</td>
+    <td>将p2拷贝给p1，返回p1</td>
+</tr>
+</tbody>
+</table>
+
+<p>传入此类函数的指针必须指向以空字符作为结束的数组：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> ca[] = &#123;<span class="string">'C'</span>, <span class="string">'+'</span>, <span class="string">'+'</span>&#125;;  <span class="comment">// 不以空字符结束</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="built_in">strlen</span>(ca) &lt;&lt; <span class="built_in">endl</span>;   <span class="comment">// 严重错误：ca没有以空字符结束</span></span><br></pre></td></tr></table></figure>
+<p>但实际调试结果是，上述代码可以正常输出结果 3。</p>
+</li>
+<li><p>观察下述代码片段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> ca1[] = <span class="string">"A string example"</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> ca2[] = <span class="string">"A different string"</span>;</span><br><span class="line"><span class="keyword">if</span> (ca1 &lt; ca2)  <span class="comment">// 未定义的：试图比较两个无关的地址</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>当使用数组的时候其实真正用的是指向数组首元素的指针</strong>，上面的 <code>if</code> 条件实际上比较的是两个 <code>const char*</code> 的值。</p>
+<blockquote>
+<p>对大多数应用来说，使用标准库<code>string</code>要比使用 C 风格字符串更安全，更高效。</p>
+</blockquote>
+</li>
+<li><p>下面程序的输出结果是什么？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> ca1[] = &#123;<span class="string">'h'</span>, <span class="string">'e'</span>, <span class="string">'l'</span>, <span class="string">'l'</span>, <span class="string">'o'</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *cp = ca1;</span><br><span class="line"><span class="keyword">while</span> (*cp)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; *cp &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    ++cp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>逐行输出 ca1 中的内容，但*cp 什么时候为假？ca1 尾元素的下一位置是空字符‘\0’，这是编译器对字符数组的默认处理吗？</strong></p>
+</li>
+<li><p>此前已介绍过允许使用字符串字面值来初始化 <code>string</code>对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"Hello World"</span>)</span></span>; <span class="comment">// s 的内容是 Hello World</span></span><br></pre></td></tr></table></figure>
+<p>更一般的情况是，<strong>任何出现字符串字面值的地方都可以用以空字符结束的字符数组来替代</strong>：</p>
+<ul>
+<li>允许使用以空字符结束的字符数组来初始化 <code>string</code> 对象或为 <code>string</code> 对象赋值；</li>
+<li>在 <code>string</code> 对象的加法运算中允许使用以空字符结束的字符数组作为其中一个运算对象（<strong>不能两个运算对象都是</strong>）；在 string 对象的复合赋值运算中允许使用以空字符结束的字符数组作为右侧的运算对象。<br><br></li>
+</ul>
+</li>
+<li><p>如果程序的某处需要一个 C 风格字符串，无法直接用 <code>string</code> 对象来代替它。例如，不能用 <code>string</code> 对象直接初始化指向字符的指针。为了完成该功能，<code>string</code> 专门提供了一个名为 <code>c_str</code> 的成员函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *str = s;                <span class="comment">// 错误：不能用string对象初始化char*</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *str = s.c_str();  <span class="comment">// 正确</span></span><br></pre></td></tr></table></figure>
+<p><code>c_str</code> 函数的返回值是一个 C 风格的字符串。也就是说，<strong><code>c_str</code> 函数的返回结果是一个指针，该指针指向一个以空字符结束的字符数组，而这个数组所存的数据恰好与那个 <code>string</code> 对象的一样。结果指针的类型是 <code>const char*</code>，从而确保我们不会改变字符数组的内容。</strong>无法保证<code>c_str</code> 函数返回的数组一直有效，事实上，如果后续的操作改变了 s 的值就可能让之前返回的数组失去效用。</p>
+<blockquote>
+<p>如果执行完 <code>c_str()</code> 函数后程序想一直都能使用其返回的数组，最好将该数组重新拷贝一份。</p>
+</blockquote>
+</li>
+<li><p><strong>不允许使用一个数组为另一个内置类型的数组赋初值，也不允许使用 <code>vector</code> 对象初始化数组。相反的，允许使用数组来初始化 <code>vector</code> 对象。要实现这一目的，只需指明要拷贝区域的首元素地址和尾后地址就可以了</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> int_arr[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="comment">// ivec有6个元素，分别是int_arr中对应元素的副本</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">ivec</span><span class="params">(begin(int_arr), end(int_arr))</span></span>;</span><br></pre></td></tr></table></figure>
+<p>用于初始化 <code>vector</code> 对象的值也可能仅是数组的一部分：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 拷贝三个元素：int_arr[1]、int_arr[2]、int_arr[3]</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">subVec</span><span class="params">(int_arr + <span class="number">1</span>, int_arr + <span class="number">4</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>这条初始化语句用 3 个元素创建了对象 subVec，3 个元素的值分别来自 <code>int_arr[1]</code>、<code>int_arr[2]</code>和<code>int_arr[3]</code>。</p>
+<blockquote>
+<p>现代的 C++ 程序应当尽量使用 <code>vector</code> 和迭代器，避免使用内置数组和指针；应该尽量使用 <code>string</code>，避免使用 C 风格的基于数组的字符串。</p>
+</blockquote>
+<p><strong>不敢苟同，看需求，如果仅需要存储一些数据，那数组足够。（博主注）</strong></p>
+</li>
+<li><p>当一个数组的元素仍然是数组时，通常使用两个维度来定义它：一个维度表示数组本身大小，另外一个维度表示其元素（也是数组）大小。</p>
+</li>
+<li><p>允许使用花括号括起来的一组值初始化多维数组：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[<span class="number">3</span>][<span class="number">4</span>] =</span><br><span class="line">&#123;</span><br><span class="line">    &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;,   <span class="comment">// 第1行的初始值</span></span><br><span class="line">    &#123;<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;,   <span class="comment">// 第2行的初始值</span></span><br><span class="line">    &#123;<span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>&#125;  <span class="comment">// 第3行的初始值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中,内层嵌套着的花括号并非必须：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>类似于一维数组，在初始化多维数组时也并非所有元素的值都必须包含在初始化列表之内。如果仅仅想初始化每一行的第一个元素，通过如下的语句即可：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[<span class="number">3</span>][<span class="number">4</span>] = &#123;&#123;<span class="number">0</span>&#125;, &#123;<span class="number">4</span>&#125;, &#123;<span class="number">8</span>&#125;&#125;;</span><br></pre></td></tr></table></figure>
+<p>其他未列出的元素执行默认值初始化，这个过程和一维数组一样。在这种情况下如果再省略掉内层的花括号，结果就大不一样了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ix[<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>&#125;;  <span class="comment">// 显式地初始化第1行,其它元素执行值初始化</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果表达式含有的下标运算符数量比数组的维度小，则表达式的结果将是给定索引处的一个内层数组：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> (&amp;row)[<span class="number">4</span>] = ia[<span class="number">1</span>];  <span class="comment">// 把row定义成一个含有4个整数的数组的引用，然后绑定到ia的第二个4元素数组上</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用范围 <code>for</code> 语句处理二维数组中的每一个元素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">size_t</span> rowCnt = <span class="number">3</span>, colCnt = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">size_t</span> cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> ia[rowCnt][colCnt];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;row : ia)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;col : row)</span><br><span class="line">    &#123;</span><br><span class="line">        col = cnt;</span><br><span class="line">        ++cnt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，因为要改变数组元素的值，所以我们选用引用类型作为循环控制变量，但其实还有一个深层次的原因促使我们这么做。举一个例子，考虑如下的循环：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;row : ia)  <span class="comment">// 对于外层数组的每一个元素</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> col : row)    <span class="comment">// 对于内层数组的每一个元素</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; col &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>这个循环中并没有任何写操作，可是我们还是将外层循环的控制变量声明成了引用类型，这是<strong>为了避免数组被自动转成指针</strong>。假设不用引用类型，则循环如下述形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> row : ia)  <span class="comment">// 对于外层数组的每一个元素</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> col : row)    <span class="comment">// 对于内层数组的每一个元素</span></span><br></pre></td></tr></table></figure>
+<p>程序将无法通过编译。这是因为，像之前一样第一个循环遍历 ia 的所有元素，注意这些元素实际上是大小为 4 的数组。因为 row 不是引用类型，所以编译器初始化 row 时会自动将这些数组形式的元素（和其他类型的数组一样）转换成指向该数组内首元素的指针。这样得到的 row 的类型就是 <code>int*</code>，显然内层的循环就不合法了，编译器将试图在一个 <code>int*</code> 内遍历，这显然和程序的初衷相去甚远。</p>
+<blockquote>
+<p>要使用范围 <code>for</code> 语句处理多维数组，除了最内层的循环外，其他所有循环的控制变量都应该是引用类型。</p>
+</blockquote>
+</li>
+<li><p>当程序使用多维数组的名字时，也会自动将其转换成指向数组首元素的指针。因为多维数组实际上是数组的数组，所以由多维数组名转换得来的指针实际上是指向第一个内层数组的指针：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[<span class="number">3</span>][<span class="number">4</span>];</span><br><span class="line"><span class="keyword">int</span> (*p)[<span class="number">4</span>] = ia;  <span class="comment">// p指向含有4个整数的数组</span></span><br><span class="line">p = &amp;ia[<span class="number">2</span>];        <span class="comment">// p指向ia的尾元素</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过使用 <code>auto</code> 和 <code>decltype</code> 关键字，可以尽可能地避免在数组前加上一个指针类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出ia中每个最小元素的值，每个内层数组各占一行</span></span><br><span class="line"><span class="comment">// p指向含有4个整数的数组</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> p = ia; p != ia + <span class="number">3</span>; p++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// q指向4个整数数组的首元素，意即，q指向一个整数</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> q = *p; q != *p +<span class="number">4</span>; ++q)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *q &lt;&lt; <span class="string">' '</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用标准库函数 <code>begin</code> 和 <code>end</code> 也能实现同样的功能，而且更加简洁：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// p指向ia的第一个数组</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> p = begin(ia); p != end(ia); ++p)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// q指向内层数组的首元素</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> q = begin(*p); q != end(*p); ++q)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *q &lt;&lt; <span class="string">' '</span>;  <span class="comment">// 输出q所指的整数值</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用数组别名简化工作：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> int_array = <span class="keyword">int</span>[<span class="number">4</span>];  <span class="comment">// 使用using声明的方式</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> int_array[<span class="number">4</span>];  <span class="comment">// 使用typedef声明的方式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出ia中每个最小元素的值，每个内层数组各占一行</span></span><br><span class="line"><span class="keyword">for</span> (int_array *p = ia; p != ia + <span class="number">3</span>; ++p)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> *q = *p; q != *p + <span class="number">4</span>; ++q)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *q &lt;&lt; <span class="string">' '</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只有当逻辑与运算符 <code>&amp;&amp;</code> 左侧运算对象为真时才会检查其右侧运算对象的真值，只有当逻辑或运算符 <code>||</code> 左侧运算对象为假时才会检查其右侧运算对象的真值。</p>
+</li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/73015543.html" title="C++ Primer - 第 3 章 字符串、向量和数组">https://blog.shipengx.com/archives/73015543.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"><i class="fa fa-tag"></i> C/C++</a>
+              <a href="/tags/C-Primer/" rel="tag"><i class="fa fa-tag"></i> C++ Primer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/e005f4cb.html" rel="prev" title="C++ Primer - 第 2 章 变量和基本类型">
+      <i class="fa fa-chevron-left"></i> C++ Primer - 第 2 章 变量和基本类型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/dc74a592.html" rel="next" title="C++ Primer - 第 4 章 表达式">
+      C++ Primer - 第 4 章 表达式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

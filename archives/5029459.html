@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer - 第 18 章 用于大型程序的工具">
+<meta property="og:url" content="https://blog.shipengx.com/archives/5029459.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E6%A0%87%E5%87%86%20exception%20%E7%B1%BB%E5%B1%82%E6%AC%A1.png">
+<meta property="og:image" content="https://image.shipengx.com/Panda%20%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://image.shipengx.com/Panda%20%E7%9A%84%E8%99%9A%E7%BB%A7%E6%89%BF%E5%B1%82%E6%AC%A1.png">
+<meta property="og:image" content="https://image.shipengx.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%881%EF%BC%89.png">
+<meta property="og:image" content="https://image.shipengx.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%882%EF%BC%89.png">
+<meta property="og:image" content="https://image.shipengx.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%883%EF%BC%89.png">
+<meta property="article:published_time" content="2022-05-15T17:18:37.000Z">
+<meta property="article:modified_time" content="2022-05-22T12:55:12.759Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="C++ Primer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E6%A0%87%E5%87%86%20exception%20%E7%B1%BB%E5%B1%82%E6%AC%A1.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/5029459.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>C++ Primer - 第 18 章 用于大型程序的工具 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-gitbook">
+
+    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/5029459.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          C++ Primer - 第 18 章 用于大型程序的工具
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-16 01:18:37" itemprop="dateCreated datePublished" datetime="2022-05-16T01:18:37+08:00">2022-05-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-22 20:55:12" itemprop="dateModified" datetime="2022-05-22T20:55:12+08:00">2022-05-22</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">编码</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A0%81/C-C/%E3%80%8AC-Primer%E3%80%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">《C++ Primer》</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/5029459.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/5029459.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="18-1-异常处理" class="heading-control"><a href="#18-1-异常处理" class="headerlink" title="18.1 异常处理"></a>18.1 异常处理<a class="heading-anchor" href="#18-1-异常处理" aria-hidden="true"></a></h1><ol>
+<li><strong>异常处理</strong>（exception handling）机制允许程序中独立开发的部分能够在运行时就出现的问题进行通信并做出相应的处理。</li>
+</ol>
+<h2 id="18-1-1-抛出异常" class="heading-control"><a href="#18-1-1-抛出异常" class="headerlink" title="18.1.1 抛出异常"></a>18.1.1 抛出异常<a class="heading-anchor" href="#18-1-1-抛出异常" aria-hidden="true"></a></h2><ol>
+<li><p>在 C++ 语言中，我们通过<strong>抛出</strong>（throwing）一条表达式来<strong>引发</strong>（raised）一个异常。被抛出的表达式的类型以及当前的调用链共同决定了哪段<strong>处理代码</strong>（handler）将被用来处理该异常。被选中的处理代码是在调用链中与抛出对象类型匹配的最近的处理代码。其中，根据抛出对象的类型和内容，程序的异常抛出部分将会告知异常处理部分到底发生了什么错误。</p>
+</li>
+<li><p>当执行一个 <code>throw</code> 时，跟在 <code>throw</code> 后面的语句将不再被执行。相反，程序的控制权从 <code>throw</code> 转移到与之匹配的 <code>catch</code> 模块。该 <code>catch</code> 可能是同一个函数中的局部 <code>catch</code>，也可能位于直接或间接调用了发生异常的函数的另一个函数中。控制权从一处转移到另一处，这有两个重要的含义：</p>
+<ul>
+<li>沿着调用链的函数可能会提早退出。</li>
+<li>一旦程序开始执行异常处理代码，则沿着调用链创建的对象将被销毁。</li>
+</ul>
+<p>因为跟在 <code>throw</code> 后面的语句将不再被执行，所以 <code>throw</code> 语句的用法有点类似于 <code>return</code> 语句：它通常作为条件语句的一部分或者作为某个函数的最后（或者唯一）一条语句。</p>
+</li>
+<li><p>当抛出一个异常后，程序暂停当前函数的执行过程并立即开始寻找与异常匹配的 <code>catch</code> 子句。当 <code>throw</code> 出现在一个 <strong><code>try</code> 语句块</strong>（try block）内时，检查与该 <code>try</code> 块关联的 <code>catch</code> 子句。如果找到了匹配的 <code>catch</code>，就使用该 <code>catch</code> 处理异常。如果这一步没找到匹配的 <code>catch</code> 且该 <code>try</code> 语句嵌套在其他 <code>try</code> 块中，则继续检查与外层 <code>try</code> 匹配的 <code>catch</code> 子句。如果还是找不到匹配的 <code>catch</code>，则退出当前的函数，在调用当前函数的外层函数中继续寻找。</p>
+<p>如果对抛出异常的函数的调用语句位于一个 <code>try</code> 语句块内，则检查与该 <code>try</code> 块关联的 <code>catch</code> 子句。如果找到了匹配的 <code>catch</code>，就使用该 <code>catch</code> 处理异常。否则，如果该 <code>try</code> 语句嵌套在其他 <code>try</code> 块中，则继续检查与外层 <code>try</code> 匹配的 <code>catch</code> 子句。如果仍然没有找到匹配的 <code>catch</code>，则退出当前这个主调函数，继续在调用了刚刚退出的这个函数的其他函数中寻找，以此类推。</p>
+<p>上述过程被称为<strong>栈展开</strong>（stack unwinding）过程。栈展开过程沿着嵌套函数的调用链不断查找，直到找到了与异常匹配的 <code>catch</code> 子句为止；或者也可能一直没找到匹配的 <code>catch</code>，则退出主函数后查找过程终止。</p>
+<p>假设找到了一个匹配的 <code>catch</code> 子句，则程序进入该子句并执行其中的代码。当执行完这个 <code>catch</code> 子句后，找到与 <code>try</code> 块关联的最后一个 <code>catch</code> 子句之后的点，并从这里继续执行。</p>
+<p>如果没找到匹配的 <code>catch</code> 子句，程序将退出。因为异常通常被认为是妨碍程序正常执行的事件，所以一旦引发了某个异常，就不能对它置之不理。当找不到匹配的 <code>catch</code> 时，程序将调用标准库函数 <strong><code>terminate</code></strong>，顾名思义，<code>terminate</code> 负责终止程序的执行过程。</p>
+<blockquote>
+<p><strong>Note：一个异常如果没有被捕获，则它将终止当前的程序。</strong></p>
+</blockquote>
+</li>
+<li><p>在栈展开过程中，位于调用链上的语句块可能会提前退出。通常情况下，程序在这些块中创建了一些局部对象。我们已经知道，块退出后它的局部对象也将随之销毁，这条规则对于栈展开过程同样适用。如果在栈展开过程中退出了某个块，编译器将负责确保在这个块中创建的对象能被正确地销毁。如果某个局部对象的类型是类类型，则该对象的析构函数将被自动调用。与往常一样，<strong>编译器在销毁内置类型的对象时不需要做任何事情</strong>。</p>
+<p><strong>如果异常发生在构造函数中，则当前的对象可能只构造了一部分。有的成员已经初始化了，而另外一些成员在异常发生前也许还没有初始化。即使某个对象只构造了一部分，我们也要确保已构造的成员能被正确地销毁。</strong></p>
+<p>类似的，异常也可能发生在数组或标准库容器的元素初始化过程中。与之前类似，如果在异常发生前已经构造了一部分元素，则我们应该确保这部分元素被正确地销毁。</p>
+</li>
+<li><p><strong>析构函数总是会被执行的，但是函数中负责释放资源的代码却可能被跳过，如果一个块分配了资源，并且在负责释放这些资源的代码前面发生了异常，则释放资源的代码将不会被执行。</strong> 另一方面，类对象分配的资源将由类的析构函数负责释放。因此，如果我们使用类来控制资源的分配，就能确保无论函数正常结束还是遭遇异常，资源都能被正确地释放。</p>
+<p>析构函数在栈展开的过程中执行。在栈展开的过程中，已经引发了异常但是我们还没有处理它。如果异常抛出后没有被正确捕获，则系统将调用 <code>terminate</code> 函数。因此，<strong>出于栈展开可能使用析构函数的考虑，析构函数不应该抛出不能被它自身处理的异常。换句话说，如果析构函数需要执行某个可能抛出异常的操作，则该操作应该被放置在一个 <code>try</code> 语句块当中，并且在析构函数内部得到处理。</strong></p>
+<p>在实际的编程过程中，因为析构函数仅仅是释放资源，所以它不太可能抛出异常。所有标准库类型都能确保它们的析构函数不会引发异常。</p>
+<blockquote>
+<p><strong>WARNING：</strong> 在栈展开的过程中，运行类类型的局部对象的析构函数。因为这些析构函数是自动执行的，所以它们不应该抛出异常。一旦在栈展开的过程中析构函数抛出了异常，并且析构函数自身没能捕获到该异常，则程序将被终止。</p>
+</blockquote>
+</li>
+<li><p><strong>异常对象</strong>（exception object）是一种特殊的对象，编译器使用异常抛出表达式来对异常对象进行拷贝初始化。因此，<code>throw</code> 语句中的表达式必须拥有完全类型。而且<strong>如果该表达式是类类型的话，则相应的类必须含有一个可访问的析构函数和一个可访问的拷贝或移动构造函数。如果该表达式是数组类型或函数类型，则表达式将被转换成与之对应的指针类型。</strong></p>
+<p>异常对象位于由编译器管理的空间中，编译器确保无论最终调用的是哪个 <code>catch</code> 子句都能访问该空间。当异常处理完毕后，异常对象被销毁。</p>
+<p>如我们所知，当一个异常被抛出时，沿着调用链的块将依次退出直至找到与异常匹配的处理代码。如果退出了某个块，则同时释放块中局部对象使用的内存。因此，抛出一个指向局部对象的指针几乎肯定是一种错误的行为。出于同样的原因，从函数中返回指向局部对象的指针也是错误的。如果指针所指的对象位于某个块中，而该块在 <code>catch</code> 语句之前就已经退出了，则意味着在执行 <code>catch</code> 语句之前局部对象已经被销毁了。</p>
+<p>当我们抛出一条表达式时，该表达式的静态编译时类型决定了异常对象的类型，很多情况下程序抛出的表达式类型来自于某个继承体系。<strong>如果一条 <code>throw</code> 表达式解引用一个基类指针，而该指针实际指向的是派生类对象，则抛出的对象将被切掉一部分，只有基类部分被抛出。</strong></p>
+<blockquote>
+<p><strong>WARNING：</strong> 抛出指针要求在任何对应的处理代码存在的地方，指针所指的对象都必须存在。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="18-1-2-捕获异常" class="heading-control"><a href="#18-1-2-捕获异常" class="headerlink" title="18.1.2 捕获异常"></a>18.1.2 捕获异常<a class="heading-anchor" href="#18-1-2-捕获异常" aria-hidden="true"></a></h2><ol>
+<li><p><code>catch</code> 子句（catch clause）中的<strong>异常声明</strong>（exception declaration）看起来像是只包含一个形参的函数形参列表。像在形参列表中一样，如果 <code>catch</code> 无须访问抛出的表达式的话，则我们可以忽略捕获形参的名字。</p>
+</li>
+<li><p><strong>声明的类型决定了处理代码所能捕获的异常类型。这个类型必须是完全类型，它可以是左值引用，但不能是右值引用。</strong></p>
+</li>
+<li><p>当进入一个 <code>catch</code> 语句后，通过异常对象初始化异常声明中的参数。和函数的参数类似，如果 <code>catch</code> 的参数类型是非引用类型，则该参数是异常对象的一个副本，在 <code>catch</code> 语句内改变该参数实际上改变的是局部副本而非异常对象本身；相反，如果参数是引用类型，则和其他引用参数一样，该参数是异常对象的一个别名，此时改变参数也就是改变异常对象。</p>
+<p><code>catch</code> 的参数还有一个特性也与函数的参数非常类似：<strong>如果 <code>catch</code> 的参数是基类类型，则我们可以使用其派生类类型的异常对象对其进行初始化。此时，如果 <code>catch</code> 的参数是非引用类型，则异常对象将被切掉一部分，这与将派生类对象以值传递的方式传给一个普通函数差不多。另一方面，如果 <code>catch</code> 的参数是基类的引用，则该参数将以常规方式绑定到异常对象上。</strong></p>
+<p>最后一点需要注意的是，异常声明的静态类型将决定 <code>catch</code> 语句所能执行的操作。如果 <code>catch</code> 的参数是基类类型，则 <code>catch</code> 无法使用派生类特有的任何成员。</p>
+<blockquote>
+<p>《Effective C++》第三版“条款 20：宁以 pass-by-reference-to-const 替换 pass-by-value”也阐述了派生类对象以传值方式传给一个函数的基类形参时存在的对象切割问题。——博主注</p>
+<p><strong>Best Practices：</strong> 通常情况下，如果 <code>catch</code> 接受的异常与某个继承体系有关，则最好将该 <code>catch</code> 的参数定义成引用类型。</p>
+</blockquote>
+</li>
+<li><p>在搜寻 <code>catch</code> 语句的过程中，我们最终找到的 <code>catch</code> 未必是异常的最佳匹配。相反，<strong>挑选出来的应该是第一个与异常匹配的 <code>catch</code> 语句。因此，越是专门的 <code>catch</code> 越应该置于整个 <code>catch</code> 列表的前端。</strong></p>
+<p>因为 <code>catch</code> 语句是按照其出现的顺序逐一进行匹配的，所以当程序使用具有继承关系的多个异常时必须对 <code>catch</code> 语句的顺序进行组织和管理，<strong>使得派生类异常的处理代码出现在基类异常的处理代码之前</strong>。</p>
+<p>与实参和形参的匹配规则相比，异常和 <code>catch</code> 异常声明的匹配规则受到更多限制。此时，绝大多数类型转换都不被允许，除了一些极细小的差别之外，要求异常的类型和 <code>catch</code> 声明的类型是精确匹配的：</p>
+<ul>
+<li>允许从非常量向常量的类型转换，也就是说，一条非常量对象的 <code>throw</code> 语句可以匹配一个接受常量引用的 <code>catch</code> 语句。</li>
+<li>允许从派生类向基类的类型转换。</li>
+<li>数组被转换成指向数组（元素）类型的指针，函数被转换成指向该函数类型的指针。</li>
+</ul>
+<p>除此之外，包括标准算术类型转换和类类型转换在内，其他所有转换规则都不能在匹配 <code>catch</code> 的过程中使用。</p>
+<blockquote>
+<p><strong>Note：如果在多个 <code>catch</code> 语句的类型之间存在着继承关系，则我们应该把继承链最底端的类（most derived type）放在前面，而将继承链最顶端的类（least derived type）放在后面。</strong></p>
+</blockquote>
+</li>
+<li><p>有时，一个单独的 <code>catch</code> 语句不能完整地处理某个异常。在执行了某些校正操作之后，当前的 <code>catch</code> 可能会决定由调用链更上一层的函数接着处理异常。一条 <code>catch</code> 语句通过重新抛出（rethrowing）的操作将异常传递给另外一个 <code>catch</code> 语句。这里的重新抛出仍然是一条 <code>throw</code> 语句，只不过不包含任何表达式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span>;</span><br></pre></td></tr></table></figure>
+<p>空的 <code>throw</code> 语句只能出现在 <code>catch</code> 语句或 <code>catch</code> 语句直接或间接调用的函数之内。如果在处理代码之外的区域遇到了空 <code>throw</code> 语句，编译器将调用 <code>terminate</code>。</p>
+<p>一个重新抛出语句并不指定新的表达式，而是将当前的异常对象沿着调用链向上传递。</p>
+<p>很多时候，<code>catch</code> 语句会改变其参数的内容。如果在改变了参数的内容后 <code>catch</code> 语句重新抛出异常，则只有当 <code>catch</code> 异常声明是引用类型时我们对参数所做的改变才会被保留并继续传播：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">catch</span> (my_error &amp;eObj) <span class="comment">// 引用类型</span></span><br><span class="line">&#123;</span><br><span class="line">    eobj.status = errCodes::severeErr; <span class="comment">// 修改了异常对象</span></span><br><span class="line">    <span class="keyword">throw</span>;                             <span class="comment">// 异常对象的 status 成员是 severeErr</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (other_error eObj) <span class="comment">// 非引用类型</span></span><br><span class="line">&#123;</span><br><span class="line">    eObj.status = errCodes::badErr; <span class="comment">// 只修改了异常对象的局部副本</span></span><br><span class="line">    <span class="keyword">throw</span>;                          <span class="comment">// 异常对象的 status 成员没有改变</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>有时我们希望不论抛出的异常是什么类型，程序都能统一捕获它们。为了一次性捕获所有异常，我们使用省略号作为异常声明，这样的处理代码称为<strong>捕获所有异常</strong>（catch-all）的处理代码，形如 <code>catch(...)</code>。一条捕获所有异常的语句可以与任意类型的异常匹配。<code>catch(...)</code> 通常与重新抛出语句一起使用，其中 <code>catch</code> 执行当前局部能完成的工作，随后重新抛出异常：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">manip</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 这里的操作将引发并抛出一个异常 catch</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (...)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 处理异常的某些特殊操作</span></span><br><span class="line">        <span class="keyword">throw</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>catch(...)</code> 既能单独出现，也能与其他几个 <code>catch</code> 语句一起出现。</p>
+<blockquote>
+<p><strong>Note：</strong> 如果 <code>catch(...)</code> 与其他几个 <code>catch</code> 语句一起出现，则 <code>catch(...)</code> 必须在最后的位置。出现在捕获所有异常语句后面的 <code>catch</code> 语句将永远不会被匹配。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="18-1-3-函数-try-语句块与构造函数" class="heading-control"><a href="#18-1-3-函数-try-语句块与构造函数" class="headerlink" title="18.1.3 函数 try 语句块与构造函数"></a>18.1.3 函数 try 语句块与构造函数<a class="heading-anchor" href="#18-1-3-函数-try-语句块与构造函数" aria-hidden="true"></a></h2><ol>
+<li><p><strong>构造函数在进入其函数体之前首先执行初始值列表。因为在初始值列表抛出异常时构造函数体内的 <code>try</code> 语句块还未生效，所以构造函数体内的 <code>catch</code> 语句无法处理构造函数初始值列表抛出的异常。</strong></p>
+<p><strong>要想处理构造函数初始值抛出的异常，我们必须将构造函数写成函数 <code>try</code> 语句块（也称为函数测试块，function try block）的形式。函数 <code>try</code> 语句块使得一组 <code>catch</code> 语句既能处理构造函数体（或析构函数体），也能处理构造函数的初始化过程（或析构函数的析构过程）</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Blob&lt;T&gt;::Blob(<span class="built_in">std</span>::<span class="built_in">initializer_list</span>&lt;T&gt; il)</span><br><span class="line"><span class="keyword">try</span> : data(<span class="built_in">std</span>::make_shared&lt;<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt;&gt;(il))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* 空函数体 */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (<span class="keyword">const</span> <span class="built_in">std</span>::bad_alloc &amp;e)</span><br><span class="line">&#123;</span><br><span class="line">    handle_out_of_memory(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：<strong>关键字 <code>try</code> 出现在表示构造函数初始值列表的冒号以及表示构造函数体（此例为空）的花括号之前。与这个 <code>try</code> 关联的 <code>catch</code> 既能处理构造函数体抛出的异常，也能处理成员初始化列表抛出的异常。</strong></p>
+<blockquote>
+<p>构造函数初始化列表先于构造函数体执行，因此构造函数初始化列表抛出的异常无法被构造函数体内的一般的 <code>try...catch...</code> 语句捕获，需要将构造函数写成函数 <code>try</code> 语句块的形式。——博主注</p>
+</blockquote>
+</li>
+<li><p><strong>在初始化构造函数的参数时也可能发生异常，这样的异常不属于函数 <code>try</code> 语句块的一部分。函数 <code>try</code> 语句块只能处理构造函数开始执行后发生的异常。和其他函数调用一样，如果在参数初始化的过程中发生了异常，则该异常属于调用表达式的一部分，并将在调用者所在的上下文中处理。</strong></p>
+</li>
+<li><blockquote>
+<p><strong>Note：处理构造函数初始值异常的唯一方法是将构造函数写成函数 <code>try</code> 语句块。</strong></p>
+</blockquote>
+</li>
+</ol>
+<h2 id="18-1-4-noexcept-异常说明" class="heading-control"><a href="#18-1-4-noexcept-异常说明" class="headerlink" title="18.1.4 noexcept 异常说明"></a>18.1.4 noexcept 异常说明<a class="heading-anchor" href="#18-1-4-noexcept-异常说明" aria-hidden="true"></a></h2><ol>
+<li><p>首先，知道函数不会抛出异常有助于简化调用该函数的代码：其次，如果编译器确认函数不会抛出异常，它就能执行某些特殊的优化操作，而这些优化操作并不适用于可能出错的代码。</p>
+</li>
+<li><p>在 C++11 新标准中，我们可以通过提供 <strong><code>noexcept</code> 说明</strong>（noexcept specification）指定某个函数不会抛出异常。其形式是关键字 <code>noexcept</code> 紧跟在函数的参数列表后面，用以标识该函数不会抛出异常：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">recoup</span><span class="params">(<span class="keyword">int</span>)</span> <span class="keyword">noexcept</span></span>; <span class="comment">// 不会抛出异常</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">alloc</span><span class="params">(<span class="keyword">int</span>)</span></span>;           <span class="comment">// 可能抛出异常</span></span><br></pre></td></tr></table></figure>
+<p>我们说 <code>recoup</code> 做了<strong>不抛出说明</strong>（nonthrowing specification）。</p>
+</li>
+<li><p>对于一个函数来说，<code>noexcept</code> 说明要么出现在该函数的所有声明语句和定义语句中，要么一次也不出现。该说明应该在函数的尾置返回类型之前。我们也可以在函数指针的声明和定义中指定 <code>noexcept</code>。在 <code>typedef</code> 或类型别名中则不能出现 <code>noexcept</code>。在成员函数中，<code>noexcept</code> 说明符需要跟在 <code>const</code> 及引用限定符之后，而在 <code>final</code>、<code>override</code> 或虚函数的 <code>=0</code> 之前。</p>
+</li>
+<li><p>编译器并不会在编译时检查 <code>noexcept</code> 说明。实际上，如果一个函数在说明了 <code>noexcept</code> 的同时又含有 <code>throw</code> 语句或者调用了可能抛出异常的其他函数，编译器将顺利编译通过，并不会因为这种违反异常说明的情况而报错（不排除个别编译器会对这种用法提出警告）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 尽管该函数明显违反了异常说明，但它仍然可以顺利编译通过</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> <span class="keyword">noexcept</span> <span class="comment">// 承诺不会抛出异常</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> exception(); <span class="comment">// 违反了异常说明</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因此可能出现这样一种情况：尽管函数声明了它不会抛出异常，但实际上还是抛出了。一旦一个 <code>noexcept</code> 函数抛出了异常，程序就会调用 <code>terminate</code> 以确保遵守不在运行时抛出异常的承诺。上述过程对是否执行栈展开未作约定，因此 <strong><code>noexcept</code> 可以用在两种情况下：一是我们确认函数不会抛出异常，二是我们根本不知道该如何处理异常</strong>。</p>
+<p>指明某个函数不会抛出异常可以令该函数的调用者不必再考虑如何处理异常。无论是函数确实不抛出异常，还是程序被终止，调用者都无须为此负责。</p>
+<blockquote>
+<p><strong>WARNING：</strong> 通常情况下，编译器不能也不必在编译时验证异常说明。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p><strong>向后兼容：异常说明。</strong> 早期的 C++ 版本设计了一套更加详细的异常说明方案，该方案使得我们可以指定某个函数可能抛出的异常类型。函数可以指定一个关键字 <code>throw</code>，在后面跟上括号括起来的异常类型列表。<code>throw</code> 说明符所在的位置与新版本 C++ 中 <code>noexcept</code> 所在的位置相同。<br>上述使用 <code>throw</code> 的异常说明方案在 C++11 新版本中已经被取消了。然而尽管如此，它还有一个重要的用处。如果函数被设计为是 <code>throw()</code> 的，则意味着该函数将不会抛出异常：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">recoup</span><span class="params">(<span class="keyword">int</span>)</span> <span class="keyword">noexcept</span></span>; <span class="comment">// recoup 不会抛出异常</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">recoup</span><span class="params">(<span class="keyword">int</span>)</span> <span class="title">throw</span><span class="params">()</span></span>;  <span class="comment">// 等价的声明</span></span><br></pre></td></tr></table></figure>
+<p>上面的两条声明语句是等价的，它们都承诺 <code>recoup</code> 不会抛出异常。</p>
+</blockquote>
+</li>
+<li><p><code>noexcept</code> 说明符接受一个可选的实参，该实参必须能转换为 <code>bool</code> 类型：如果实参是 <code>true</code>，则函数不会抛出异常；如果实参是 <code>false</code>，则函数可能抛出异常：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">recoup</span><span class="params">(<span class="keyword">int</span>)</span> <span class="title">noexcept</span><span class="params">(<span class="literal">true</span>)</span></span>; <span class="comment">// recoup 不会抛出异常</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">alloc</span><span class="params">(<span class="keyword">int</span>)</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span></span>; <span class="comment">// alloc 可能抛出异常</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>noexcept</code> 说明符的实参常常与 <strong><code>noexcept</code> 运算符</strong>（noexcept operator）混合使用。<code>noexcept</code> 运算符是一个一元运算符，它的返回值是一个 <code>bool</code> 类型的右值常量表达式，用于表示给定的表达式是否会抛出异常。和 <code>sizeof</code> 类似，<code>noexcept</code> 也不会求其运算对象的值。</p>
+<p>例如，因为我们声明 <code>recoup</code> 时使用了 <code>noexcept</code> 说明符，所以下面的表达式的返回值为 <code>true</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">noexcept</span>(recoup(i)) <span class="comment">// 如果 recoup 不抛出异常则结果为 true；否则结果为 false</span></span><br></pre></td></tr></table></figure>
+<p>更普通的形式是：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">noexcept</span>(e)</span><br></pre></td></tr></table></figure>
+<p>当 <code>e</code> 调用的所有函数都做了不抛出说明且 <code>e</code> 本身不含有 <code>throw</code> 语句时，上述表达式为 <code>true</code>；否则 <code>noexcept(e)</code> 返回 <code>false</code>。</p>
+<p>我们可以使用 <code>noexcept</code> 运算符得到如下的异常说明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(g()))</span></span>; <span class="comment">// f 和 g 的异常说明一致</span></span><br></pre></td></tr></table></figure>
+<p>如果函数 <code>g</code> 承诺了不会抛出异常，则 <code>f</code> 也不会抛出异常；如果 <code>g</code> 没有异常说明符，或者 <code>g</code> 虽然有异常说明符但是允许抛出异常，则 <code>f</code> 也可能抛出异常。</p>
+<blockquote>
+<p><strong>Note： <code>noexcept</code> 有两层含义：当跟在函数参数列表后面时它是异常说明符；而当作为 <code>noexcept</code> 异常说明的 <code>bool</code> 实参出现时，它是一个运算符。</strong></p>
+</blockquote>
+</li>
+<li><p>尽管 <code>noexcept</code> 说明符不属于函数类型的一部分，但是函数的异常说明仍然会影响函数的使用。</p>
+<p><strong>函数指针及该指针所指的函数必须具有一致的异常说明。</strong> 也就是说，如果我们为某个指针做了不抛出异常的声明，则该指针将只能指向不抛出异常的函数。相反，如果我们显式或隐式地说明了指针可能抛出异常，则该指针可以指向任何函数，即使是承诺了不抛出异常的函数也可以：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// recoup 和 pf1 都承诺不会抛出异常</span></span><br><span class="line"><span class="keyword">void</span> (*pf1)(<span class="keyword">int</span>) <span class="keyword">noexcept</span> = recoup;</span><br><span class="line"><span class="comment">// 正确：recoup 不会抛出异常，pf2 可能抛出异常，二者之间互不干扰</span></span><br><span class="line"><span class="keyword">void</span> (*pf2)(<span class="keyword">int</span>) = recoup;</span><br><span class="line">pf1 = alloc; <span class="comment">// 错误：alloc 可能抛出异常，但是 pf1 已经说明了它不会抛出异常</span></span><br><span class="line">pf2 = alloc; <span class="comment">// 正确：pf2 和 alloc 都可能抛出异常</span></span><br></pre></td></tr></table></figure>
+<p><strong>如果一个虚函数承诺了它不会抛出异常，则后续派生出来的虚函数也必须做出同样的承诺；与之相反，如果基类的虚函数允许抛出异常，则派生类的对应函数既可以允许抛出异常，也可以不允许抛出异常</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">double</span> <span class="title">f1</span><span class="params">(<span class="keyword">double</span>)</span> <span class="keyword">noexcept</span></span>; <span class="comment">// 不会抛出异常</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">f2</span><span class="params">()</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span></span>;   <span class="comment">// 可能抛出异常</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">f3</span><span class="params">()</span></span>;                  <span class="comment">// 可能抛出异常</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span> :</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">f1</span><span class="params">(<span class="keyword">double</span>)</span></span>;        <span class="comment">// 错误：Base::f1 承诺不会抛出异常</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">f2</span><span class="params">()</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span></span>; <span class="comment">// 正确：与 Base::f2 的异常说明一致</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">f3</span><span class="params">()</span> <span class="keyword">noexcept</span></span>;       <span class="comment">// 正确：Derived 的 f3 做了更严格的限定,</span></span><br><span class="line">                              <span class="comment">// 这是允许的</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>当编译器合成拷贝控制成员时，同时也生成一个异常说明。如果对所有成员和基类的所有操作都承诺了不会抛出异常，则合成的成员是 <code>noexcept</code> 的。如果合成成员调用的任意一个函数可能抛出异常，则合成的成员是 <code>noexcept(false)</code>。而且，如果我们定义了一个析构函数但是没有为它提供异常说明，则编译器将合成一个。合成的异常说明将与假设由编译器为类合成析构函数时所得的异常说明一致。</p>
+</li>
+</ol>
+<h2 id="18-1-5-异常类层次" class="heading-control"><a href="#18-1-5-异常类层次" class="headerlink" title="18.1.5 异常类层次"></a>18.1.5 异常类层次<a class="heading-anchor" href="#18-1-5-异常类层次" aria-hidden="true"></a></h2><ol>
+<li><p>标准库异常类构成了如下图所示的继承体系：</p>
+<p><img data-src="https://image.shipengx.com/%E6%A0%87%E5%87%86%20exception%20%E7%B1%BB%E5%B1%82%E6%AC%A1.png" alt="标准 exception 类层次"></p>
+<p>类型 <code>exception</code> 仅仅定义了拷贝构造函数、拷贝赋值运算符、一个虚析构函数和一个名为 <code>what</code> 的虚成员。其中 <code>what</code> 函数返回一个 <code>const char*</code>，该指针指向一个以 un11 结尾的字符数组，并且确保不会抛出任何异常。</p>
+<p>类 <code>exception</code>、<code>bad_cast</code> 和 <code>bad_alloc</code> 定义了默认构造函数。类 <code>runtime_error</code> 和 <code>logic_error</code> 没有默认构造函数，但是有一个可以接受 C 风格字符串或者标准库 <code>string</code> 类型实参的构造函数，这些实参负责提供关于错误的更多信息。在这些类中，<code>what</code> 负责返回用于初始化异常对象的信息。<strong>因为 <code>what</code> 是虚函数，所以当我们捕获基类的引用时，对 <code>what</code> 函数的调用将执行与异常对象动态类型对应的版本。</strong></p>
+</li>
+<li><p>和其他继承体系一样，异常类也可以看作按照层次关系组织的。层次越低，表示的异常情况就越特殊。例如，在异常类继承体系中位于最顶层的通常是 <code>exception</code>，<code>exception</code> 表示的含义是某处出错了，至于错误的细节则未作描述。</p>
+<p>继承体系的第二层将 <code>exception</code> 划分为两个大的类别：运行时错误和逻辑错误。运行时错误表示的是只有在程序运行时才能检测到的错误；而逻辑错误一般指的是我们可以在程序代码中发现的错误。</p>
+</li>
+</ol>
+<h1 id="18-2-命名空间" class="heading-control"><a href="#18-2-命名空间" class="headerlink" title="18.2 命名空间"></a>18.2 命名空间<a class="heading-anchor" href="#18-2-命名空间" aria-hidden="true"></a></h1><ol>
+<li><p>大型程序往往会使用多个独立开发的库，这些库又会定义大量的全局名字，如类、函数和模板等。多个库将名字放置在全局命名空间中将引发<strong>命名空间污染</strong>（namespace pollution）。</p>
+</li>
+<li><p><strong>命名空间</strong>（namespace）为防止名字冲突提供了更加可控的机制。命名空间分割了全局命名空间，其中每个命名空间是一个作用域。</p>
+</li>
+</ol>
+<h2 id="18-2-1-命名空间定义" class="heading-control"><a href="#18-2-1-命名空间定义" class="headerlink" title="18.2.1 命名空间定义"></a>18.2.1 命名空间定义<a class="heading-anchor" href="#18-2-1-命名空间定义" aria-hidden="true"></a></h2><ol>
+<li><p>一个命名空间的定义包含两部分：首先是关键字 <code>namespace</code>，随后是命名空间的名字。在命名空间名字后面是一系列由花括号括起来的声明和定义。只要能出现在全局作用域中的声明就能置于命名空间内，主要包括：类、变量（及其初始化操作）、函数（及其定义）、模板和其他命名空间。</p>
+</li>
+<li><p>和其他名字一样，命名空间的名字也必须在定义它的作用域内保持唯一。命名空间既可以定义在全局作用域内，也可以定义在其他命名空间中，但是不能定义在函数或类的内部。</p>
+<blockquote>
+<p><strong>Note：</strong> 命名空间作用域后面无须分号。</p>
+</blockquote>
+</li>
+<li><p>因为不同命名空间的作用域不同，所以在不同命名空间内可以有相同名字的成员。</p>
+<p>定义在某个命名空间中的名字可以被该命名空间内的其他成员直接访问，也可以被这些成员内嵌作用域中的任何单位访问。位于该命名空间之外的代码则必须明确指出所用的名字属于哪个命名空间。</p>
+</li>
+<li><p>命名空间可以定义在几个不同的部分，这一点与其他作用域不太一样。编写如下的命名空间定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> nsp &#123;</span><br><span class="line"><span class="comment">// 相关声明</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可能是定义了一个名为 <code>nsp</code> 的新命名空间，也可能是为已经存在的命名空间添加一些新成员。如果之前没有名为 <code>nsp</code> 的命名空间定义，则上述代码创建一个新的命名空间；否则，上述代码打开已经存在的命名空间定义并为其添加一些新成员的声明。</p>
+<p>命名空间的定义可以不连续的特性使得我们可以将几个独立的接口和实现文件组成一个命名空间。此时，命名空间的组织方式类似于我们管理自定义类及函数的方式：</p>
+<ul>
+<li>命名空间的一部分成员的作用是定义类，以及声明作为类接口的函数及对象，则这些成员应该置于头文件中，这些头文件将被包含在使用了这些成员的文件中。</li>
+<li>命名空间成员的定义部分则置于另外的源文件中。</li>
+</ul>
+<p>在程序中某些实体只能定义一次：如非内联函数、静态数据成员、变量等，命名空间中定义的名字也需要满足这一要求，我们可以通过上面的方式组织命名空间并达到目的。这种接口和实现分离的机制确保我们所需的函数和其他名字只定义一次，而只要是用到这些实体的地方都能看到对于实体名字的声明。</p>
+<blockquote>
+<p><strong>Best Practices：</strong> 定义多个类型不相关的命名空间应该使用单独的文件分别表示每个类型（或关联类型构成的集合）。</p>
+</blockquote>
+</li>
+<li><p><strong>在通常情况下，我们不把 <code>#include</code> 放在命名空间内部。</strong> 如果我们这么做了，隐含的意思是把头文件中所有的名字定义成该命名空间的成员。</p>
+</li>
+<li><p>假定作用域中存在合适的声明语句，则命名空间中的代码可以使用同一命名空间定义的名字的简写形式。</p>
+<p>也可以在命名空间定义的外部定义该命名空间的成员。命名空间对于名字的声明必须在作用域内，同时该名字的定义需要明确指出其所属的命名空间。</p>
+<p>和定义在类外部的类成员一样，一旦看到含有完整前缀的名字，我们就可以确定该名字位于命名空间的作用域内。</p>
+</li>
+<li><p>模板特例化必须定义在原始模板所属的命名空间中。<strong>和其他命名空间名字类似，只要我们在命名空间中声明了特例化，就能在命名空间外部定义它了</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我们必须将模板特例化声明成 std 的成员</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span> &#123;</span><br><span class="line"><span class="keyword">template</span> &lt;&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hash</span>&lt;Sales_data&gt;;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 在 std 中添加了模板特例化的声明后，就可以在命名空间 std 的外部定义它了</span></span><br><span class="line"><span class="keyword">template</span> &lt;&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">std</span>:</span>:hash&lt;Sales_data&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> Sales_data &amp;s)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> hash&lt;<span class="built_in">string</span>&gt;()(s.bookNo) ^ hash&lt;<span class="keyword">unsigned</span>&gt;()(s.units_sold) ^</span><br><span class="line">               hash&lt;<span class="keyword">double</span>&gt;()(s.revenue);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 其他成员与之前的版本一致</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>全局作用域中定义的名字（即在所有类、函数及命名空间之外定义的名字）也就是定义在<strong>全局命名空间</strong>（global namespace）中。<strong>全局命名空间以隐式的方式声明，并且在所有程序中都存在。全局作用域中定义的名字被隐式地添加到全局命名空间中。</strong></p>
+<p>作用域运算符同样可以用于全局作用域的成员，因为全局作用域是隐式的，所以它并没有名字。下面的形式</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">::member_name</span><br></pre></td></tr></table></figure>
+<p>表示全局命名空间中的一个成员。</p>
+</li>
+<li><p><strong>嵌套的命名空间</strong>是指定义在其他命名空间中的命名空间。嵌套的命名空间同时是一个嵌套的作用域，它嵌套在外层命名空间的作用域中。嵌套的命名空间中的名字遵循的规则与往常类似：内层命名空间声明的名字将隐藏外层命名空间声明的同名成员。在嵌套的命名空间中定义的名字只在内层命名空间中有效，外层命名空间中的代码要想访问它必须在名字前添加限定符。例如，在嵌套的命名空间 <code>QueryLib</code> 中声明的类名是</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cplusplus_primer::QueryLib::Query</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>C++11 新标准引入了一种新的嵌套命名空间，称为<strong>内联命名空间</strong>（inline namespace）。和普通的嵌套命名空间不同，<strong>内联命名空间中的名字可以被外层命名空间直接使用</strong>。也就是说，我们无须在内联命名空间的名字前添加表示该命名空间的前缀，通过外层命名空间的名字就可以直接访问它。</p>
+<p>定义内联命名空间的方式是在关键字 <code>namespace</code> 前添加关键字 <code>inline</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="keyword">namespace</span> FifthEd &#123;</span><br><span class="line"><span class="comment">// 该命名空间表示 C++ Primer 第 5 版的代码</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> FifthEd &#123; <span class="comment">// 隐式内联</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Query_base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">    <span class="comment">// 其他与 Query 有关的声明</span></span><br><span class="line">&#125;;</span><br><span class="line">&#125; <span class="comment">// namespace FifthEd</span></span><br></pre></td></tr></table></figure>
+<p><strong>关键字 <code>inline</code> 必须出现在命名空间第一次定义的地方，后续再打开命名空间的时候可以写 <code>inline</code>，也可以不写。</strong></p>
+<p>当应用程序的代码在一次发布和另一次发布之间发生了改变时，常常会用到内联命名空间。例如，我们可以把本书当前版本的所有代码都放在一个内联命名空间中，而之前版本的代码都放在一个非内联命名空间中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> FourthEd &#123;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Item_base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Query_base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// C++ Primer 第 4 版用到的其他代码</span></span><br><span class="line">&#125; <span class="comment">// namespace FourthEd</span></span><br></pre></td></tr></table></figure>
+<p>命名空间 <code>cplusplus_primer</code> 将同时使用这两个命名空间。例如，假定每个命名空间都定义在同名的头文件中，则我们可以把命名空间 <code>cplusplus_primer</code> 定义成如下形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> cplusplus_primer &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"FifthEd.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"FourthEd.h"</span></span></span><br><span class="line">&#125; <span class="comment">// namespace cplusplus_primer</span></span><br></pre></td></tr></table></figure>
+<p>因为 <code>FifthEd</code> 是内联的，所以形如 <code>cplusplus_primer::</code> 的代码可以直接获得 <code>FifthEd</code> 的成员。如果我们想使用早期版本的代码，则必须像其他嵌套的命名空间一样加上完整的外层命名空间名字，比如 <code>cplusplus_primer::FourthEd::Query_base</code>。</p>
+</li>
+<li><p><strong>未命名的命名空间</strong>（unnamed namespace）是指关键字 <code>namespace</code> 后紧跟花括号括起来的一系列声明语句。<strong>未命名的命名空间中定义的变量拥有静态生命周期：它们在第一次使用前创建，并且直到程序结束才销毁。</strong></p>
+<p><strong>一个未命名的命名空间可以在某个给定的文件内不连续，但是不能跨越多个文件。</strong> 每个文件定义自己的未命名的命名空间，如果两个文件都含有未命名的命名空间，则这两个空间互相无关。在这两个未命名的命名空间中可以定义相同的名字，并且这些定义表示的是不同实体。如果一个头文件定义了未命名的命名空间，则该命名空间中定义的名字将在每个包含了该头文件的文件中对应不同实体。</p>
+<blockquote>
+<p><strong>Note：和其他命名空间不同，未命名的命名空间仅在特定的文件内部有效，其作用范围不会横跨多个不同的文件。</strong></p>
+</blockquote>
+</li>
+<li><p><strong>定义在未命名的命名空间中的名字可以直接使用</strong>，毕竟我们找不到什么命名空间的名字来限定它们；同样的，我们也不能对未命名的命名空间的成员使用作用域运算符。</p>
+<p><strong>未命名的命名空间中定义的名字的作用域与该命名空间所在的作用域相同。如果未命名的命名空间定义在文件的最外层作用域中，则该命名空间中的名字一定要与全局作用域中的名字有所区别</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i; <span class="comment">// i 的全局声明</span></span><br><span class="line"><span class="keyword">namespace</span> &#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 二义性：i 的定义既出现在全局作用域中，又出现在未嵌套的未命名的命名空间中</span></span><br><span class="line">i = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<p>其他情况下，未命名的命名空间中的成员都属于正确的程序实体。和所有命名空间类似，一个未命名的命名空间也能嵌套在其他命名空间当中。此时，未命名的命名空间中的成员可以通过外层命名空间的名字来访问：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> local &#123;</span><br><span class="line"><span class="keyword">namespace</span> &#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line">&#125;</span><br><span class="line">&#125; <span class="comment">// namespace local</span></span><br><span class="line"><span class="comment">// 正确：定义在嵌套的未命名的命名空间中的 i 与全局作用域中的 i 不同</span></span><br><span class="line">local::i = <span class="number">42</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><blockquote>
+<p><strong>未命名的命名空间取代文件中的静态声明。</strong> 在标准 C++ 引入命名空间的概念之前，程序需要将名字声明成 <code>static</code> 的以使得其对于整个文件有效。在文件中进行静态声明的做法是从 C 语言继承而来的。在 C 语言中，声明为 <code>static</code> 的全局实体在其所在的文件外不可见。</p>
+<p><strong>WARNING：</strong> 在文件中进行静态声明的做法已经被 C++ 标准取消了，现在的做法是使用未命名的命名空间。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="18-2-2-使用命名空间成员" class="heading-control"><a href="#18-2-2-使用命名空间成员" class="headerlink" title="18.2.2 使用命名空间成员"></a>18.2.2 使用命名空间成员<a class="heading-anchor" href="#18-2-2-使用命名空间成员" aria-hidden="true"></a></h2><ol>
+<li><p><strong>命名空间的别名</strong>（namespace alias）使得我们可以为命名空间的名字设定一个短得多的同义词。例如，一个很长的命名空间的名字形如</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> cplusplus_primer &#123;</span><br><span class="line"><span class="comment">/*...*/</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>我们可以为其设定一个短得多的同义词：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> primer = cplusplus_primer;</span><br></pre></td></tr></table></figure>
+<p>命名空间的别名声明以关键字 <code>namespace</code> 开始，后面是别名所用的名字、<code>=</code> 符号、命名空间原来的名字以及一个分号。<strong>不能在命名空间还没有定义前就声明别名，否则将产生错误。</strong></p>
+<p><strong>命名空间的别名也可以指向一个嵌套的命名空间</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> Qlib = cplusplus_primer::QueryLib;</span><br><span class="line">Qlib::Query q;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>Note：</strong> 一个命名空间可以有好几个同义词或别名，所有别名都与命名空间原来的名字等价。</p>
+</blockquote>
+</li>
+<li><p><strong>一条 <code>using</code> 声明</strong>（using declaration）语句一次只引入命名空间的一个成员。它使得我们可以清楚地知道程序中所用的到底是哪个名字。</p>
+<p><strong><code>using</code> 声明引入的名字遵守与过去一样的作用域规则：它的有效范围从 <code>using</code> 声明的地方开始，一直到 <code>using</code> 声明所在的作用域结束为止。在此过程中，外层作用域的同名实体将被隐藏。未加限定的名字只能在 <code>using</code> 声明所在的作用域以及其内层作用域中使用。在有效作用域结束后，我们就必须使用完整的经过限定的名字了。</strong></p>
+<p><strong>一条 <code>using</code> 声明语句可以出现在全局作用域、局部作用域、命名空间作用域以及类的作用域中。在类的作用域中，这样的声明语句只能指向基类成员。</strong></p>
+</li>
+<li><p><strong><code>using</code> 指示</strong>（using directive）和 <code>using</code> 声明类似的地方是，我们可以使用命名空间名字的简写形式；和 <code>using</code> 声明不同的地方是，我们无法控制哪些名字是可见的，因为所有名字都是可见的。</p>
+<p><code>using</code> 指示以关键字 <code>using</code> 开始，后面是关键字 <code>namespace</code> 以及命名空间的名字。如果这里所用的名字不是一个已经定义好的命名空间的名字，则程序将发生错误。<code>using</code> 指示可以出现在全局作用域、局部作用域和命名空间作用域中，但是不能出现在类的作用域中。</p>
+<p><strong><code>using</code> 指示使得某个特定的命名空间中所有的名字都可见，这样我们就无须再为它们添加任何前缀限定符了。简写的名字从 <code>using</code> 指示开始，一直到 <code>using</code> 指示所在的作用域结束都能使用。</strong></p>
+<blockquote>
+<p><strong>WARNING：如果我们提供了一个对 <code>std</code> 等命名空间的 <code>using</code> 指示而未做任何特殊控制的话，将重新引入由于使用了多个库而造成的名字冲突问题。</strong></p>
+</blockquote>
+</li>
+<li><p><code>using</code> 指示引入的名字的作用域远比 <code>using</code> 声明引入的名字的作用域复杂。如我们所知，<code>using</code> 声明的名字的作用域与 <code>using</code> 声明语句本身的作用域一致，从效果上看就好像 <code>using</code> 声明语句为命名空间的成员在当前作用域内创建了一个别名一样。</p>
+<p><strong><code>using</code> 指示所做的绝非声明别名这么简单。相反，它具有将命名空间成员提升到包含命名空间本身和 <code>using</code> 指示的最近作用域的能力。</strong></p>
+<p><code>using</code> 声明和 <code>using</code> 指示在作用域上的区别直接决定了它们工作方式的不同。对于 <code>using</code> 声明来说，我们只是简单地令名字在局部作用域内有效。相反，<code>using</code> 指示是令整个命名空间的所有内容变得有效。通常情况下，命名空间中会含有一些不能出现在局部作用域中的定义，因此，<code>using</code> 指示一般被看作是出现在最近的外层作用域中。</p>
+<p>在最简单的情况下，假定我们有一个命名空间 <code>A</code> 和一个函数 <code>f</code>，它们都定义在全局作用域中。如果 <code>f</code> 含有一个对 <code>A</code> 的 <code>using</code> 指示，则在 <code>f</code> 看来，<code>A</code> 中的名字仿佛是出现在全局作用域中 <code>f</code> 之前的位置一样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 命名空间 A 和函数 f 定义在全局作用域中</span></span><br><span class="line"><span class="keyword">namespace</span> A &#123;</span><br><span class="line"><span class="keyword">int</span> i, j;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">namespace</span> A;     <span class="comment">// 把 A 中的名字注入到全局作用域中</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i * j &lt;&lt; <span class="built_in">endl</span>; <span class="comment">// 使用命名空间 A 中的 i 和 j</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个简单的示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> blip &#123;</span><br><span class="line"><span class="keyword">int</span> i = <span class="number">16</span>, j = <span class="number">15</span>, k = <span class="number">23</span>;</span><br><span class="line"><span class="comment">// 其他声明</span></span><br><span class="line">&#125; <span class="comment">// namespace blip</span></span><br><span class="line"><span class="keyword">int</span> j = <span class="number">0</span>; <span class="comment">// 正确：blip 的 j 隐藏在命名空间中</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">manip</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// using 指示，blip 中的名字被“添加”到全局作用域中</span></span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">namespace</span> blip; <span class="comment">// 如果使用了 j，则将在 ::j 和 blip::j 之间产生冲突</span></span><br><span class="line">    ++i;                  <span class="comment">// 将 blip::i 设定为 17</span></span><br><span class="line">    ++j;                  <span class="comment">// 二义性错误：是全局的 j 还是 blip::j？</span></span><br><span class="line">    ++::j;                <span class="comment">// 正确：全局的 j 设定为 1</span></span><br><span class="line">    ++blip::j;            <span class="comment">// 正确：将 blip::j 设定为 16</span></span><br><span class="line">    <span class="keyword">int</span> k = <span class="number">97</span>;           <span class="comment">// 当前局部的 k 隐藏了 blip::k</span></span><br><span class="line">    ++k;                  <span class="comment">// 将当前局部的 k 设定为 98</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>manip</code> 的 <code>using</code> 指示使得程序可以直接访问 <code>blip</code> 的所有名字，也就是说，<code>manip</code> 的代码可以使用 <code>blip</code> 中名字的简写形式。</p>
+<p><strong><code>blip</code> 的成员看起来好像是定义在 <code>blip</code> 和 <code>manip</code> 所在的作用域一样。假定 <code>manip</code> 定义在全局作用域中，则 <code>blip</code> 的成员也好像是定义在全局作用域中一样。</strong></p>
+<p>当命名空间被注入到它的外层作用域之后，很有可能该命名空间中定义的名字会与其外层作用域中的成员冲突。例如在 <code>manip</code> 中，<code>blip</code> 的成员 <code>j</code> 就与全局作用域中的 <code>j</code> 产生了冲突。这种冲突是允许存在的，但是要想使用冲突的名字，我们就必须明确指出名字的版本。<code>manip</code> 中所有未加限定的 <code>j</code> 都会产生二义性错误。</p>
+<p>为了使用像这样的名字，我们必须使用作用域运算符来明确指出所需的版本。我们使用 <code>::j</code> 来表示定义在全局作用域中的 <code>j</code>，而使用 <code>blip::j</code> 来表示定义在 <code>blip</code> 中的 <code>j</code>。</p>
+<p>因为 <code>manip</code> 的作用域和命名空间的作用域不同，所以 <code>manip</code> 内部的声明可以隐藏命名空间中的某些成员名字。例如，局部变量 <code>k</code> 隐藏了命名空间的成员 <code>blip::k</code>。在 <code>manip</code> 内使用 <code>k</code> 不存在二义性，它指的就是局部变量 <code>k</code>。</p>
+</li>
+<li><p><strong>头文件如果在其顶层作用域中含有 <code>using</code> 指示或 <code>using</code> 声明，则会将名字注入到所有包含了该头文件的文件中。</strong> 通常情况下，头文件应该只负责定义接口部分的名字，而不定义实现部分的名字。因此，头文件最多只能在它的函数或命名空间内使用 <code>using</code> 指示或 <code>using</code> 声明。</p>
+</li>
+<li><blockquote>
+<p><strong>提示：避免 <code>using</code> 指示。</strong> <code>using</code> 指示一次性注入某个命名空间的所有名字，这种用法看似简单实则充满了风险：只使用一条语句就突然将命名空间中所有成员的名字变得可见了。如果应用程序使用了多个不同的库，而这些库中的名字通过 <code>using</code> 指示变得可见，则全局命名空间污染的问题将重新出现。<br>而且，当引入库的新版本后，正在工作的程序很可能会编译失败。如果新版本引入了一个与应用程序正在使用的名字冲突的名字，就会出现这个问题。<br>另一个风险是<strong>由 <code>using</code> 指示引发的二义性错误只有在使用了冲突名字的地方才能被发现。这种延后的检测意味着可能在特定库引入很久之后才爆发冲突。直到程序开始使用该库的新部分后，之前一直未被检测到的错误才会出现。</strong><br>相比于使用 <code>using</code> 指示，在程序中对命名空间的每个成员分别使用 <code>using</code> 声明效果更好，这么做可以减少注入到命名空间中的名字数量。<code>using</code> 声明引起的二义性问题在声明处就能发现，无须等到使用名字的地方，这显然对检测并修改错误大有益处。</p>
+<p><strong>Tip：</strong> <code>using</code> 指示也并非一无是处，例如在命名空间本身的实现文件中就可以使用 <code>using</code> 指示。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="18-2-3-类、命名空间与作用域" class="heading-control"><a href="#18-2-3-类、命名空间与作用域" class="headerlink" title="18.2.3 类、命名空间与作用域"></a>18.2.3 类、命名空间与作用域<a class="heading-anchor" href="#18-2-3-类、命名空间与作用域" aria-hidden="true"></a></h2><ol>
+<li><p><strong>对命名空间内部名字的查找遵循常规的查找规则：即由内向外依次查找每个外层作用域。</strong> 外层作用域也可能是一个或多个嵌套的命名空间，直到最外层的全局命名空间查找过程终止。<strong>只有位于开放的块中且在使用点之前声明的名字才被考虑</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> A &#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">namespace</span> B &#123;</span><br><span class="line"><span class="keyword">int</span> i; <span class="comment">// 在 B 中隐藏了 A::i</span></span><br><span class="line"><span class="keyword">int</span> j;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f1</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j;    <span class="comment">// j 是 f1 的局部变量，隐藏了 A::B::j</span></span><br><span class="line">    <span class="keyword">return</span> i; <span class="comment">// 返回 B::i</span></span><br><span class="line">&#125;</span><br><span class="line">&#125; <span class="comment">// namespace B</span></span><br><span class="line"><span class="comment">// 命名空间 B 结束，此后 B 中定义的名字不再可见</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> j; <span class="comment">// 错误：j 没有被定义</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> j = i; <span class="comment">// 用 A::i 进行初始化</span></span><br><span class="line">&#125; <span class="comment">// namespace A</span></span><br></pre></td></tr></table></figure>
+<p><strong>对于位于命名空间中的类来说，常规的查找规则仍然适用：当成员函数使用某个名字时，首先在该成员中进行查找，然后在类中查找（包括基类），接着在外层作用域中查找，这时一个或几个外层作用域可能就是命名空间</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> A &#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">int</span> k;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    C1() : i(<span class="number">0</span>), j(<span class="number">0</span>) &#123;&#125;   <span class="comment">// 正确：初始化 C1::i 和 C1::j</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">f1</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> k; &#125; <span class="comment">// 返回 A::k</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">f2</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> h; &#125; <span class="comment">// 错误：h 未定义</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">f3</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> i; <span class="comment">// 在 c1 中隐藏了 A::i</span></span><br><span class="line">    <span class="keyword">int</span> j;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">int</span> h = i; <span class="comment">// 用 A::i 进行初始化</span></span><br><span class="line">&#125; <span class="comment">// namespace A</span></span><br><span class="line"><span class="comment">// 成员 f3 定义在 C1 和命名空间 A 的外部</span></span><br><span class="line"><span class="keyword">int</span> A::C1::f3() &#123; <span class="keyword">return</span> h; &#125; <span class="comment">// 正确：返回 A::h</span></span><br></pre></td></tr></table></figure>
+<p><strong>除了类内部出现的成员函数定义之外，总是向上查找作用域。名字必须先声明后使用</strong>，因此 <code>f2</code> 的 <code>return</code> 语句无法通过编译。该语句试图使用命名空间 <code>A</code> 的名字 <code>h</code>，但此时 <code>h</code> 尚未定义。如果 <code>h</code> 在 <code>A</code> 中定义的位置位于 <code>C1</code> 的定义之前，则上述语句将合法。类似的，因为 <code>f3</code> 的定义位于 <code>A::h</code> 之后，所以 <code>f3</code> 对于 <code>h</code> 的使用是合法的。</p>
+<blockquote>
+<p><strong>Tip：</strong> 可以从函数的限定名推断出查找名字时检查作用域的次序，限定名以相反次序指出被查找的作用域。</p>
+</blockquote>
+<p>限定符 <code>A::C1::f3</code> 指出了查找类作用域和命名空间作用域的相反次序。首先查找函数 <code>f3</code> 的作用域，然后查找外层类 <code>C1</code> 的作用域，最后检查命名空间 <code>A</code> 的作用域以及包含着 <code>f3</code> 定义的作用域。</p>
+</li>
+<li><p>考虑下面的程序：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> s;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; s;</span><br></pre></td></tr></table></figure>
+<p>该调用等价于：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">operator</span>&gt;&gt;(<span class="built_in">std</span>::<span class="built_in">cin</span>, s);</span><br></pre></td></tr></table></figure>
+<p><code>operator&gt;&gt;</code> 函数定义在标准库 <code>string</code> 中，<code>string</code> 又定义在命名空间 <code>std</code> 中。但是我们不用 <code>std::</code> 限定符和 <code>using</code> 声明就可以调用 <code>operator&gt;&gt;</code>。</p>
+<p><strong>对于命名空间中名字的隐藏规则来说有一个重要的例外，它使得我们可以直接访问输出运算符。这个例外是，当我们给函数传递一个类类型的对象时，除了在常规的作用域查找外还会查找实参类所属的命名空间。这一例外对于传递类的引用或指针的调用同样有效。</strong></p>
+<p>在此例中，当编译器发现对 <code>operator&gt;&gt;</code> 的调用时，首先在当前作用域中寻找合适的函数，接着查找输出语句的外层作用域。随后，因为 <code>&gt;&gt;</code> 表达式的形参是类类型的，所以编译器还会查找 <code>cin</code> 和 <code>s</code> 的类所属的命名空间。也就是说，对于这个调用来说，编译器会查找定义了 <code>istream</code> 和 <code>string</code> 的命名空间 <code>std</code>。当在 <code>std</code> 中查找时，编译器找到了 <code>string</code> 的输出运算符函数。</p>
+<p>查找规则的这个例外允许概念上作为类接口一部分的非成员函数无须单独的 <code>using</code> 声明就能被程序使用。假如该例外不存在，则我们将不得不为输出运算符专门提供一个 <code>using</code> 声明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="keyword">operator</span>&gt;&gt;; <span class="comment">// 要想使用 cin &gt;&gt; s 就必须有该 using 声明</span></span><br></pre></td></tr></table></figure>
+<p>或者使用函数调用的形式以把命名空间的信息包含进来：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="keyword">operator</span>&gt;&gt;(<span class="built_in">std</span>::<span class="built_in">cin</span>, s); <span class="comment">// 正确：显式地使用 std::&gt;&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通常情况下，如果在应用程序中定义了一个标准库中已有的名字，则将出现以下两种情况中的一种：要么根据一般的重载规则确定某次调用应该执行函数的哪个版本；要么应用程序根本就不会执行函数的标准库版本。</p>
+<p><strong>标准库 <code>move</code> 和 <code>forward</code> 函数都是模板函数，在标准库的定义中它们都接受一个右值引用的函数形参。</strong> 如我们所知，<strong>在函数模板中，右值引用形参可以匹配任何类型</strong>。如果我们的应用程序也定义了一个接受单一形参的 <code>move</code> 函数，则不管该形参是什么类型，应用程序的 <code>move</code> 函数都将与标准库的版本冲突。<code>forward</code> 函数也是如此。因此，<code>move</code>（以及 <code>forward</code>）的名字冲突要比其他标准库函数的冲突频繁得多，建议最好使用它们的带限定语的完整版本。</p>
+</li>
+<li><p><strong>当类声明了一个友元时，该友元声明并没有使得友元本身可见。然而，一个另外的未声明的类或函数如果第一次出现在友元声明中，则我们认为它是最近的外层命名空间的成员。这条规则与实参相关的查找规则结合在一起将产生意想不到的效果</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> A &#123;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">// 两个友元，在友元声明之外没有其他的声明</span></span><br><span class="line">    <span class="comment">// 这些函数隐式地成为命名空间 A 的成员</span></span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">f2</span><span class="params">()</span></span>;         <span class="comment">// 除非另有声明，否则不会被找到</span></span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> C &amp;)</span></span>; <span class="comment">// 根据实参相关的查找规则可以被找到</span></span><br><span class="line">&#125;;</span><br><span class="line">&#125; <span class="comment">// namespace A</span></span><br></pre></td></tr></table></figure>
+<p><strong>此时，<code>f</code> 和 <code>f2</code> 都是命名空间 <code>A</code> 的成员。即使 <code>f</code> 不存在其他声明，我们也能通过实参相关的查找规则调用 <code>f</code></strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A::C cobj;</span><br><span class="line">    f(cobj); <span class="comment">// 正确：通过在 A::C 中的友元声明找到 A::f</span></span><br><span class="line">    f2();    <span class="comment">// 错误：A::f2 没有被声明</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>因为 <code>f</code> 接受一个类类型的实参，而且 <code>f</code> 在 <code>C</code> 所属的命名空间进行了隐式的声明，所以 <code>f</code> 能被找到。相反，因为 <code>f2</code> 没有形参，所以它无法被找到。</strong></p>
+</li>
+<li><p><strong>练习 18.18：</strong> 已知有下面的 <code>swap</code> 的典型定义，当 <code>mem1</code> 是一个 <code>string</code> 时程序使用 <code>swap</code> 的哪个版本？如果 <code>mem1</code> 是 <code>int</code> 呢？说明在这两种情况下名字查找的过程。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(T v1, T v2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> <span class="built_in">std</span>::swap;</span><br><span class="line">    swap(v1.mem1, v2.mem1);</span><br><span class="line">    <span class="comment">// 交换类型 T 的其他成员</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>答：</strong><code>mem1</code> 是 <code>string</code> 时，使用 <a href="http://www.cplusplus.com/reference/string/string/swap/" target="_blank" rel="noopener"><code>std::string::swap</code></a>；<code>mem1</code> 时 <code>int</code> 时，使用 <a href="http://www.cplusplus.com/reference/algorithm/swap/" target="_blank" rel="noopener"><code>std::swap</code></a>。</p>
+</li>
+</ol>
+<h2 id="18-2-4-重载与命名空间" class="heading-control"><a href="#18-2-4-重载与命名空间" class="headerlink" title="18.2.4 重载与命名空间"></a>18.2.4 重载与命名空间<a class="heading-anchor" href="#18-2-4-重载与命名空间" aria-hidden="true"></a></h2><ol>
+<li><p>命名空间对函数的匹配过程有两方面的影响。其中一个影响非常明显：<strong><code>using</code> 声明或 <code>using</code> 指示能将某些函数添加到候选函数集。</strong></p>
+</li>
+<li><p><strong>对于接受类类型实参的函数来说，其名字查找将在实参类所属的命名空间中进行。这条规则对于我们如何确定候选函数集同样也有影响。我们将在每个实参类（以及实参类的基类）所属的命名空间中搜寻候选函数。在这些命名空间中所有与被调用函数同名的函数都将被添加到候选集当中，即使其中某些函数在调用语句处不可见也是如此</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> NS &#123;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quote</span> &#123;</span> <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">(<span class="keyword">const</span> Quote &amp;)</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">&#125; <span class="comment">// namespace NS</span></span><br><span class="line"><span class="comment">// Bulk_item 的基类声明在命名空间 NS 中</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_item</span> :</span> <span class="keyword">public</span> NS::Quote &#123; <span class="comment">/* ... */</span> &#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Bulk_item book1;</span><br><span class="line">    display(book1);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们传递给 <code>display</code> 的实参属于类类型 <code>Bulk_item</code>，因此该调用语句的候选函数不仅应该在调用语句所在的作用域中查找，而且也应该在 <code>Bulk_item</code> 及其基类 <code>Quote</code> 所属的命名空间中查找。命名空间 <code>NS</code> 中声明的函数 <code>display(const Quote&amp;)</code> 也将被添加到候选函数集当中。</p>
+</li>
+<li><p>要想理解 <code>using</code> 声明与重载之间的交互关系，必须首先明确一条：<strong><code>using</code> 声明语句声明的是一个名字，而非一个特定的函数</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">using</span> <span class="title">NS::print</span><span class="params">(<span class="keyword">int</span>)</span></span>; <span class="comment">// 错误：不能指定形参列表</span></span><br><span class="line"><span class="keyword">using</span> NS::print;      <span class="comment">// 正确：using 声明只声明一个名字</span></span><br></pre></td></tr></table></figure>
+<p><strong>当我们为函数书写 <code>using</code> 声明时，该函数的所有版本都被引入到当前作用域中。</strong></p>
+<p><strong>一个 <code>using</code> 声明囊括了重载函数的所有版本以确保不违反命名空间的接口。</strong> 库的作者为某项任务提供了好几个不同的函数，允许用户选择性地忽略重载函数中的一部分但不是全部有可能导致意想不到的程序行为。</p>
+<p><strong>一个 <code>using</code> 声明引入的函数将重载该声明语句所属作用域中已有的其他同名函数。如果 <code>using</code> 声明出现在局部作用域中，则引入的名字将隐藏外层作用域的相关声明。如果 <code>using</code> 声明所在的作用域中已经有一个函数与新引入的函数同名且形参列表相同，则该 <code>using</code> 声明将引发错误。除此之外，<code>using</code> 声明将为引入的名字添加额外的重载实例，并最终扩充候选函数集的规模。</strong></p>
+</li>
+<li><p><strong><code>using</code> 指示将命名空间的成员提升到外层作用域中，如果命名空间的某个函数与该命名空间所属作用域的函数同名，则命名空间的函数将被添加到重载集合中</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> libs_R_us &#123;</span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">double</span>)</span></span>;</span><br><span class="line">&#125; <span class="comment">// namespace libs_R_us</span></span><br><span class="line"><span class="comment">// 普通的声明</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;)</span></span>;</span><br><span class="line"><span class="comment">// 这个 using 指示把名字添加到 print 调用的候选函数集</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> libs_R_us;</span><br><span class="line"><span class="comment">// print 调用此时的候选函数包括:</span></span><br><span class="line"><span class="comment">// libs R_us 的 print(int)</span></span><br><span class="line"><span class="comment">// libs_R_us 的 print(double)</span></span><br><span class="line"><span class="comment">// 显式声明的 print(const std::string &amp;)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fooBar</span><span class="params">(<span class="keyword">int</span> ival)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    print(<span class="string">"Value:"</span>); <span class="comment">// 调用全局函数 print(const string &amp;)</span></span><br><span class="line">    print(ival);     <span class="comment">// 调用 libs_R_us::print(int)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>与 <code>using</code> 声明不同的是，对于 <code>using</code> 指示来说，引入一个与已有函数形参列表完全相同的函数并不会产生错误。此时，只要我们指明调用的是命名空间中的函数版本还是当前作用域的版本即可。</strong></p>
+</li>
+<li><p><strong>如果存在多个 <code>using</code> 指示，则来自每个命名空间的名字都会成为候选函数集的一部分</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> AW &#123;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> Primer &#123;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">print</span><span class="params">(<span class="keyword">double</span>)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// using 指示从不同的命名空间中创建了一个重载函数集合</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> AW;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Primer;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">double</span> <span class="title">print</span><span class="params">(<span class="keyword">long</span> <span class="keyword">double</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    print(<span class="number">1</span>);   <span class="comment">// 调用 AW::print(int)</span></span><br><span class="line">    print(<span class="number">3.1</span>); <span class="comment">// 调用 Primer::print(double)</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在全局作用域中，函数 <code>print</code> 的重载集合包括 <code>print(int)</code>、<code>print(double)</code> 和 <code>print(long double)</code>，尽管它们的声明位于不同作用域中，但它们都属于 <code>main</code> 函数中 <code>print</code> 调用的候选函数集。</p>
+</li>
+<li><p><strong>练习 18.20：</strong> 在下面的代码中，确定哪个函数与 <code>compute</code> 调用匹配。列出所有候选函数和可行函数，对于每个可行函数的实参与形参的匹配过程来说，发生了哪种类型转换？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> primerLib &#123;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">compute</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">compute</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *)</span></span>;</span><br><span class="line">&#125; <span class="comment">// namespace primerLib</span></span><br><span class="line"><span class="keyword">using</span> primerLib::compute;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">compute</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">compute</span><span class="params">(<span class="keyword">double</span>, <span class="keyword">double</span> = <span class="number">3.4</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">compute</span><span class="params">(<span class="keyword">char</span> *, <span class="keyword">char</span> * = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123; compute(<span class="number">0</span>); &#125;</span><br></pre></td></tr></table></figure>
+<p>如果将 <code>using</code> 声明置于 <code>f</code> 函数中 <code>compute</code> 的调用点之前将发生什么情况？重新回答之前的那些问题。</p>
+<p><strong>答：</strong> <code>primerLib</code> 和全局作用域中的五个 <code>compute</code> 函数都是候选函数，其中：<code>void primerLib::compute()</code> 不可行；<code>void primerLib::compute(const void *)</code> 可行，<code>0</code> 被转换为 <code>const void *</code>；<code>void compute(int)</code> 可行，为最优匹配；<code>void compute(double, double = 3.4)</code> 可行，<code>int</code> 被转换为 <code>double</code>；<code>void compute(char*, char* = 0)</code> 可行，<code>int</code> 被转换为 <code>char*</code>。</p>
+<p>如果将 <code>using</code> 声明置于 <code>f</code> 函数中 <code>compute</code> 的调用点之前，则全局作用域中的三个 <code>compute</code> 函数被屏蔽，不可见，<code>primerLib</code> 中的两个 <code>compute</code> 函数是候选函数，其中：<code>void primerLib::compute()</code> 不可行；<code>void primerLib::compute(const void *)</code> 可行，<code>0</code> 被转换为 <code>const void *</code>。</p>
+</li>
+</ol>
+<h1 id="18-3-多重继承与虚继承" class="heading-control"><a href="#18-3-多重继承与虚继承" class="headerlink" title="18.3 多重继承与虚继承"></a>18.3 多重继承与虚继承<a class="heading-anchor" href="#18-3-多重继承与虚继承" aria-hidden="true"></a></h1><ol>
+<li><strong>多重继承</strong>（multiple inheritance）是指从多个直接基类中，产生派生类的能力。多重继承的派生类继承了所有父类的属性。</li>
+</ol>
+<h2 id="18-3-1-多重继承" class="heading-control"><a href="#18-3-1-多重继承" class="headerlink" title="18.3.1 多重继承"></a>18.3.1 多重继承<a class="heading-anchor" href="#18-3-1-多重继承" aria-hidden="true"></a></h2><ol>
+<li><p>在派生类的派生列表中可以包含多个基类：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bear</span> :</span> <span class="keyword">public</span> ZooAnimal</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Panda</span> :</span> <span class="keyword">public</span> Bear, <span class="keyword">public</span> Endangered</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>每个基类包含一个可选的访问说明符。一如往常，如果访问说明符被忽略掉了，则关键字 <code>class</code> 对应的默认访问说明符是 <code>private</code>，关键字 <code>struct</code> 对应的是 <code>public</code>。</strong></p>
+<p><strong>和只有一个基类的继承一样，多重继承的派生列表也只能包含已经被定义过的类，而且这些类不能是 <code>final</code> 的。对于派生类能够继承的基类个数，C++ 没有进行特殊规定；但是在某个给定的派生列表中，同一个基类只能出现一次。</strong></p>
+</li>
+<li><p>在多重继承关系中，派生类的对象包含有每个基类的子对象。如下图所示，在 <code>Panda</code> 对象中含有一个 <code>Bear</code> 部分（其中又含有一个 <code>ZooAnimal</code> 部分）、一个 <code>Endangered</code> 部分以及在 <code>Panda</code> 中声明的非静态数据成员。</p>
+<p><img data-src="https://image.shipengx.com/Panda%20%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png" alt="Panda 对象的概念结构"></p>
+</li>
+<li><p><strong>构造一个派生类的对象将同时构造并初始化它的所有基类子对象。与从一个基类进行的派生一样，多重继承的派生类的构造函数初始值也只能初始化它的直接基类</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 显式地初始化所有基类</span></span><br><span class="line">Panda::Panda(<span class="built_in">std</span>::<span class="built_in">string</span> name, <span class="keyword">bool</span> onExhibit)</span><br><span class="line">    : Bear(name, onExhibit, <span class="string">"Panda"</span>),</span><br><span class="line">      Endangered(Endangered::critical)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 隐式地使用 Bear 的默认构造函数初始化 Bear 子对象</span></span><br><span class="line">Panda::Panda() : Endangered(Endangered::critical) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>派生类的构造函数初始值列表将实参分别传递给每个直接基类。其中<strong>基类的构造顺序与派生列表中基类的出现顺序保持一致，而与派生类构造函数初始值列表中基类的顺序无关</strong>。一个 <code>Panda</code> 对象按照如下次序进行初始化：</p>
+<ul>
+<li><code>ZooAnimal</code> 是整个继承体系的最终基类，<code>Bear</code> 是 <code>Panda</code> 的直接基类，<code>ZooAnimal</code> 是 <code>Bear</code> 的基类，所以首先初始化 <code>ZooAnimal</code>。</li>
+<li>接下来初始化 <code>Panda</code> 的第一个直接基类 <code>Bear</code>。</li>
+<li>然后初始化 <code>Panda</code> 的第二个直接基类 <code>Endangered</code>。</li>
+<li>最后初始化 <code>Panda</code>。</li>
+</ul>
+</li>
+<li><p><strong>在 C++11 新标准中，允许派生类从它的一个或几个基类中继承构造函数。但是如果从多个基类中继承了相同的构造函数（即形参列表完全相同），则程序将产生错误</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Base1() = <span class="keyword">default</span>;</span><br><span class="line">    Base1(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;);</span><br><span class="line">    Base1(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt;);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base2</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Base2() = <span class="keyword">default</span>;</span><br><span class="line">    Base2(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;);</span><br><span class="line">    Base2(<span class="keyword">int</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 错误：D1 试图从两个基类中都继承 D1::D1(const string&amp;)</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D1</span> :</span> <span class="keyword">public</span> Base1,</span><br><span class="line">            <span class="keyword">public</span> Base2</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> Base1::Base1; <span class="comment">// 从 Base1 继承构造函数</span></span><br><span class="line">    <span class="keyword">using</span> Base2::Base2; <span class="comment">// 从 Base2 继承构造函数</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>如果一个类从它的多个基类中继承了相同的构造函数，则这个类必须为该构造函数定义它自己的版本</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D2</span> :</span> <span class="keyword">public</span> Base1, <span class="keyword">public</span> Base2</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> Base1::Base1; <span class="comment">// 从 Base1 继承构造函数</span></span><br><span class="line">    <span class="keyword">using</span> Base2::Base2; <span class="comment">// 从 Base2 继承构造函数</span></span><br><span class="line">    <span class="comment">// D2 必须自定义一个接受 string 的构造函数</span></span><br><span class="line">    D2(<span class="keyword">const</span> <span class="built_in">string</span> &amp;s) : Base1(s), Base2(s) &#123;&#125;</span><br><span class="line">    D2() = <span class="keyword">default</span>; <span class="comment">// 一旦 D2 定义了它自己的构造函数，则必须出现</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>和往常一样，派生类的析构函数只负责清除派生类本身分配的资源，派生类的成员及基类都是自动销毁的。合成的析构函数体为空。</strong></p>
+<p><strong>析构函数的调用顺序正好与构造函数相反</strong>，在我们的例子中，析构函数的调用顺序是 <code>~Panda</code>、<code>~Endangered</code>、<code>~Bear</code> 和 <code>~ZooAnimal</code>。</p>
+</li>
+<li><p><strong>与只有一个基类的继承一样，多重继承的派生类如果定义了自己的拷贝/赋值构造函数和赋值运算符，则必须在完整的对象上执行拷贝、移动或赋值操作。只有当派生类使用的是合成版本的拷贝、移动或赋值成员时，才会自动对其基类部分执行这些操作。在合成的拷贝控制成员中，每个基类分别使用自己的对应成员隐式地完成构造、赋值或销毁等工作。</strong></p>
+</li>
+<li><p><strong>练习 18.22：</strong> 已知存在如下所示的类的继承体系，其中每个类都定义了一个默认构造函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> :</span> <span class="keyword">public</span> B</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Y</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Z</span> :</span> <span class="keyword">public</span> X, <span class="keyword">public</span> Y</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MI</span> :</span> <span class="keyword">public</span> C, <span class="keyword">public</span> z</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>对于下面的定义来说，构造函数的执行顺序是怎样的？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MI mi;</span><br></pre></td></tr></table></figure>
+<p><strong>答：</strong> A，B，C，X，Y，Z，MI。</p>
+</li>
+</ol>
+<h2 id="18-3-2-类型转换与多个基类" class="heading-control"><a href="#18-3-2-类型转换与多个基类" class="headerlink" title="18.3.2 类型转换与多个基类"></a>18.3.2 类型转换与多个基类<a class="heading-anchor" href="#18-3-2-类型转换与多个基类" aria-hidden="true"></a></h2><ol>
+<li><p><strong>在只有一个基类的情况下，派生类的指针或引用能自动转换成一个可访问基类的指针或引用。多个基类的情况与之类似。我们可以令某个可访问基类的指针或引用直接指向一个派生类对象。</strong> 例如，一个 <code>ZooAnimal</code>、<code>Bear</code> 或 <code>Endangered</code> 类型的指针或引用可以绑定到 <code>Panda</code> 对象上：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 接受 Panda 的基类引用的一系列操作</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">const</span> Bear &amp;)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">highlight</span><span class="params">(<span class="keyword">const</span> Endangered &amp;)</span></span>;</span><br><span class="line">ostream &amp;<span class="keyword">operator</span>&lt;&lt;(ostream &amp;, <span class="keyword">const</span> ZooAnimal &amp;);</span><br><span class="line"><span class="function">Panda <span class="title">ying_yang</span><span class="params">(<span class="string">"ying_yang"</span>)</span></span>;</span><br><span class="line">print(ying_yang);          <span class="comment">// 把一个 Panda 对象传递给一个 Bear 的引用</span></span><br><span class="line">highlight(ying_yang);      <span class="comment">// 把一个 Panda 对象传递给一个 Endangered 的引用</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; ying_yang &lt;&lt; <span class="built_in">endl</span>; <span class="comment">// 把一个 Panda 对象传递给一个 ZooAnimal 的引用</span></span><br></pre></td></tr></table></figure>
+<p><strong>编译器不会在派生类向基类的几种转换中进行比较和选择，因为在它看来转换到任意一种基类都一样好。</strong> 例如，如果存在如下所示的 <code>print</code> 重载形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">const</span> Bear &amp;)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">const</span> Endangered &amp;)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>则通过 <code>Panda</code> 对象对不带前缀限定符的 <code>print</code> 函数进行调用将产生编译错误：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Panda <span class="title">ying_yang</span><span class="params">(<span class="string">"ying_yang"</span>)</span></span>;</span><br><span class="line">print(ying_yang); <span class="comment">// 二义性错误</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>与只有一个基类的继承一样，对象、指针和引用的静态类型决定了我们能够使用哪些成员。</strong> 如果我们使用一个 <code>ZooAnimal</code> 指针，则只有定义在 <code>ZooAnimal</code> 中的操作是可以使用的，<code>Panda</code> 接口中的 <code>Bear</code>、<code>Panda</code> 和 <code>Endangered</code> 特有的部分都不可见。类似的，一个 <code>Bear</code> 类型的指针或引用只能访问 <code>Bear</code> 及 <code>ZooAnimal</code> 的成员，一个 <code>Endangered</code> 的指针或引用只能访问 <code>Endangered</code> 的成员。</p>
+<p>举个例子，已知我们的类已经定义了下表列出的<strong>虚函数</strong>，考虑下面的这些函数调用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Bear *pb = <span class="keyword">new</span> Panda(<span class="string">"ying_yang"</span>);</span><br><span class="line">pb-&gt;print();     <span class="comment">// 正确：Panda::print()，多态调用</span></span><br><span class="line">pb-&gt;cuddle();    <span class="comment">// 错误：不属于 Bear 的接口</span></span><br><span class="line">pb-&gt;highlight(); <span class="comment">// 错误：不属于 Bear 的接口</span></span><br><span class="line"><span class="keyword">delete</span> pb;       <span class="comment">// 正确：Panda::~Panda()，多态调用</span></span><br></pre></td></tr></table></figure>
+<p>当我们通过 <code>Endangered</code> 的指针或引用访问一个 <code>Panda</code> 对象时，<code>Panda</code> 接口中 <code>Panda</code> 特有的部分以及属于 <code>Bear</code> 的部分都是不可见的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Endangered *pe = <span class="keyword">new</span> Panda(<span class="string">"ying_yang"</span>);</span><br><span class="line">pe-&gt;print();     <span class="comment">// 正确：Panda::print()，多态调用</span></span><br><span class="line">pe-&gt;toes();      <span class="comment">// 错误：不属于 Endangered 的接口</span></span><br><span class="line">pe-&gt;cuddle();    <span class="comment">// 错误：不属于 Endangered 的接口</span></span><br><span class="line">pe-&gt;highlight(); <span class="comment">// 正确：Panda::highlight()，多态调用</span></span><br><span class="line"><span class="keyword">delete</span> pe;       <span class="comment">// 正确：Panda::~Panda()，多态调用</span></span><br></pre></td></tr></table></figure>
+<p><style type="text/css"><br>.tg  {border-collapse:collapse;border-spacing:0;}<br>.tg td{border-color:black;border-style:solid;border-width:1px;   font-family:Arial, sans-serif;font-size:14px;<br>  overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg th{border-color:black;border-style:solid;border-width:1px;   font-family:Arial, sans-serif;font-size:14px;<br>  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}<br>.tg .tg-cly1{text-align:left;vertical-align:middle}<br>.tg .tg-1wig{font-weight:bold;text-align:left;vertical-align:top}<br>.tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}<br>.tg .tg-0lax{text-align:left;vertical-align:top}
+</style></p>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-amwm" colspan="2"><center>在 ZooAnimal/Endangered 中定义的虚函数</center></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-1wig"><b>函数</b></td>
+    <td class="tg-1wig"><b>含有自定义版本的类</b></td>
+  </tr>
+  <tr>
+    <td class="tg-cly1" rowspan="4">print</td>
+    <td class="tg-0lax">ZooAnimal::ZooAnimal</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Bear::Bear</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Endangered::Endangered</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Panda::Panda</td>
+  </tr>
+  <tr>
+    <td class="tg-cly1" rowspan="2">highlight</td>
+    <td class="tg-0lax">Endangered::Endangered</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Panda::Panda</td>
+  </tr>
+  <tr>
+    <td class="tg-cly1" rowspan="2">toes</td>
+    <td class="tg-0lax">Bear::Bear</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Panda::Panda</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">cuddle</td>
+    <td class="tg-0lax">Panda::Panda</td>
+  </tr>
+  <tr>
+    <td class="tg-cly1" rowspan="2">析构函数</td>
+    <td class="tg-0lax">ZooAnimal::ZooAnimal</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Endangered::Endangered</td>
+  </tr>
+</tbody>
+</table>
+</li>
+<li><p><strong>练习 18.25：</strong> 假设我们有两个基类 <code>Base1</code> 和 <code>Base2</code>，它们各自定义了一个名为 <code>print</code> 的虚成员和一个虚析构函数。从这两个基类中我们派生出下面的类，它们都重新定义了 <code>print</code> 函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D1</span> :</span> <span class="keyword">public</span> Base1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D2</span> :</span> <span class="keyword">public</span> Base2</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MI</span> :</span> <span class="keyword">public</span> D1, <span class="keyword">public</span> D2</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>通过下面的指针，指出在每个调用中分别使用了哪个函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Base1 *pb1 = <span class="keyword">new</span> MI;</span><br><span class="line">Base2 *pb2 = <span class="keyword">new</span> MI;</span><br><span class="line">D1 *pd1 = <span class="keyword">new</span> MI;</span><br><span class="line">D2 *pd2 = <span class="keyword">new</span> MI;</span><br><span class="line"></span><br><span class="line">(a) pb1-&gt;print(); (b) pd1-&gt;print(); (c) pd2-&gt;print();</span><br><span class="line">(d) <span class="keyword">delete</span> pb2; (e) <span class="keyword">delete</span> pd1; (f) <span class="keyword">delete</span> pd2;</span><br></pre></td></tr></table></figure>
+<p><strong>答：</strong>（a）、（b）、（c）：<code>MI::print</code>；（d）、（e）、（f）：<code>~MI</code>，<code>~D2</code>，<code>~Base2</code>，<code>~D1</code>，<code>~Base1</code>。</p>
+</li>
+</ol>
+<h2 id="18-3-3-多重继承下的类作用域" class="heading-control"><a href="#18-3-3-多重继承下的类作用域" class="headerlink" title="18.3.3 多重继承下的类作用域"></a>18.3.3 多重继承下的类作用域<a class="heading-anchor" href="#18-3-3-多重继承下的类作用域" aria-hidden="true"></a></h2><ol>
+<li><p>在只有一个基类的情况下，派生类的作用域嵌套在直接基类和间接基类的作用域中。<strong>查找过程沿着继承体系自底向上进行，直到找到所需的名字。派生类的名字将隐藏基类的同名成员。</strong></p>
+<p><strong>在多重继承的情况下，相同的查找过程在所有直接基类中同时进行。如果名字在多个基类中都被找到，则对该名字的使用将具有二义性。</strong></p>
+<p>在我们的例子中，如果我们通过 <code>Panda</code> 的对象、指针或引用使用了某个名字，则程序会并行地在 <code>Endangered</code> 和 <code>Bear</code>/<code>ZooAnimal</code> 这两棵子树中查找该名字。如果名字在超过一棵子树中被找到，则该名字的使用具有二义性。<strong>对于一个派生类来说，从它的几个基类中分别继承名字相同的成员是完全合法的，只不过在使用这个名字时必须明确指出它的版本。</strong></p>
+<blockquote>
+<p><strong>WARNING：当一个类拥有多个基类时，有可能出现派生类从两个或更多基类中继承了同名成员的情况。此时，不加前缀限定符直接使用该名字将引发二义性。</strong></p>
+</blockquote>
+</li>
+<li><p>例如，如果 <code>ZooAnimal</code> 和 <code>Endangered</code> 都定义了名为 <code>max_weight</code> 的成员，并且 <code>Panda</code> 没有定义该成员，则下面的调用是错误的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> d = ying_yang.max_weight();</span><br></pre></td></tr></table></figure>
+<p><code>Panda</code> 在派生的过程中拥有了两个名为 <code>max_weight</code> 的成员，这是完全合法的。<strong>派生仅仅是产生了潜在的二义性，只要 <code>Panda</code> 对象不调用 <code>max_weight</code> 函数就能避免二义性错误。另外，如果每次调用 <code>max_weight</code> 时都指出所调用的版本（<code>ZooAnimal::max_weight</code> 或者 <code>Endangered::max_weight</code>），也不会发生二义性。只有当要调用哪个函数含糊不清时程序才会出错。</strong></p>
+<p>在上面的例子中，派生类继承的两个 <code>max_weight</code> 会产生二义性，这一点显而易见。一种更复杂的情况是，<strong>有时即使派生类继承的两个函数形参列表不同也可能发生错误。此外，即使 <code>max_weight</code> 在一个类中是私有的，而在另一个类中是公有的或受保护的同样也可能发生错误</strong>。最后一种情况，假如 <code>max_weight</code> 定义在 <code>Bear</code> 中而非 <code>ZooAnimal</code> 中，上面的程序仍然是错误的。<strong>和往常一样，先查找名字后进行类型检查。当编译器在两个作用域中同时发现了 <code>max_weight</code> 时，将直接报告一个调用二义性的错误。</strong></p>
+<p><strong>要想避免潜在的二义性，最好的办法是在派生类中为该函数定义一个新版本。</strong> 例如，我们可以为 <code>Panda</code> 定义一个 <code>max_weight</code> 函数从而解决二义性问题：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Panda::max_weight</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">std</span>::max(ZooAnimal::max_weight(), Endangered::max_weight());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="18-3-4-虚继承" class="heading-control"><a href="#18-3-4-虚继承" class="headerlink" title="18.3.4 虚继承"></a>18.3.4 虚继承<a class="heading-anchor" href="#18-3-4-虚继承" aria-hidden="true"></a></h2><ol>
+<li><p>尽管在派生列表中同一个基类只能出现一次，但实际上派生类可以多次继承同一个类。<strong>派生类可以通过它的两个直接基类分别继承同一个间接基类，也可以直接继承某个基类，然后通过另一个基类再一次间接继承该类。</strong></p>
+<p>举个例子，IO 标准库的 <code>istream</code> 和 <code>ostream</code> 分别继承了一个共同的名为 <code>base_ios</code> 的抽象基类。该抽象基类负责保存流的缓冲内容并管理流的条件状态。<code>iostream</code> 是另外一个类，它从 <code>istream</code> 和 <code>ostream</code> 直接继承而来，可以同时读写流的内容。因为 <code>istream</code> 和 <code>ostream</code> 都继承自 <code>base_ios</code>，所以 <code>iostream</code> 继承了 <code>base_ios</code> 两次，一次是通过 <code>istream</code>，另一次是通过 <code>ostream</code>。</p>
+<p><strong>在默认情况下，派生类中含有继承链上每个类对应的子部分。如果某个类在派生过程中出现了多次，则派生类中将包含该类的多个子对象。</strong></p>
+<p>这种默认的情况对某些形如 <code>iostream</code> 的类显然是行不通的。一个 <code>iostream</code> 对象肯定希望在同一个缓冲区中进行读写操作，也会要求条件状态能同时反映输入和输出操作的情况。假如在 <code>iostream</code> 对象中真的包含了 <code>base_ios</code> 的两份拷贝，则上述的共享行为就无法实现了。</p>
+<p>在 C++ 语言中我们通过<strong>虚继承</strong>（virtual inheritance）的机制解决上述问题。<strong>虚继承的目的是令某个类做出声明，承诺愿意共享它的基类。其中，共享的基类子对象称为虚基类（virtual base class）。在这种机制下，不论虚基类在继承体系中出现了多少次，在派生类中都只包含唯一一个共享的虚基类子对象。</strong></p>
+</li>
+<li><p>我们可以对 <code>Panda</code> 类进行修改，令其同时继承 <code>Bear</code> 和 <code>Raccoon</code>。此时，为了避免赋予 <code>Panda</code> 两份 <code>ZooAnimal</code> 的子对象，我们将 <code>Bear</code> 和 <code>Raccoon</code> 继承 <code>ZooAnimal</code> 的方式定义为虚继承。</p>
+<p><img data-src="https://image.shipengx.com/Panda%20%E7%9A%84%E8%99%9A%E7%BB%A7%E6%89%BF%E5%B1%82%E6%AC%A1.png" alt="Panda 的虚继承层次"></p>
+<p>观察这个新的继承体系，我们将发现虚继承的一个不太直观的特征：<strong>必须在虚派生的真实需求出现前就已经完成虚派生的操作。例如在我们的类中，当我们定义 <code>Panda</code> 时才出现了对虚派生的需求，但是如果 <code>Bear</code> 和 <code>Raccoon</code> 不是从 <code>ZooAnimal</code> 虚派生得到的，那么 <code>Panda</code> 的设计者就显得不太幸运了。</strong></p>
+<p>在实际的编程过程中，位于中间层次的基类将其继承声明为虚继承一般不会带来什么问题。</p>
+<blockquote>
+<p><strong>Note：虚派生只影响从指定了虚基类的派生类中进一步派生出的类，它不会影响派生类本身。</strong></p>
+</blockquote>
+</li>
+<li><p>我们<strong>指定虚基类的方式是在派生列表中添加关键字 <code>virtual</code></strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关键字 public 和 virtual 的顺序随意</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Raccoon</span> :</span> <span class="keyword">public</span> <span class="keyword">virtual</span> ZooAnimal</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bear</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> ZooAnimal</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>通过上面的代码我们将 <code>ZooAnimal</code> 定义为 <code>Raccoon</code> 和 <code>Bear</code> 的虚基类。</p>
+<p><strong><code>virtual</code> 说明符表明了一种愿望，即在后续的派生类当中共享虚基类的同一份实例。至于什么样的类能够作为虚基类并没有特殊规定。</strong></p>
+<p><strong>如果某个类指定了虚基类，则该类的派生仍按常规方式进行</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Panda</span> :</span> <span class="keyword">public</span> Bear, <span class="keyword">public</span> Raccoon, <span class="keyword">public</span> Endangered</span><br><span class="line">&#123;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>Panda</code> 通过 <code>Raccoon</code> 和 <code>Bear</code> 继承了 <code>ZooAnimal</code>，因为 <code>Raccoon</code> 和 <code>Bear</code> 继承 <code>ZooAnimal</code> 的方式都是虚继承，所以在 <code>Panda</code> 中只有一个 <code>ZooAnimal</code> 基类部分。（如果 <code>Raccoon</code> 和 <code>Bear</code> 中，一个是虚继承自 <code>ZooAnimal</code>，而另一个是常规继承自 <code>ZooAnimal</code> 呢？——博主注）</p>
+</li>
+<li><p><strong>不论基类是不是虚基类，派生类对象都能被可访问基类的指针或引用操作。</strong> 例如，下面这些从 <code>Panda</code> 向基类的类型转换都是合法的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dance</span><span class="params">(<span class="keyword">const</span> Bear &amp;)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rummage</span><span class="params">(<span class="keyword">const</span> Raccoon &amp;)</span></span>;</span><br><span class="line">ostream &amp;<span class="keyword">operator</span>&lt;&lt;(ostream &amp;, <span class="keyword">const</span> ZooAnimal &amp;);</span><br><span class="line">Panda ying_yang;</span><br><span class="line">dance(ying_yang);   <span class="comment">// 正确：把一个 Panda 对象当成 Bear 传递</span></span><br><span class="line">rummage(ying_yang); <span class="comment">// 正确：把一个 Panda 对象当成 Raccoon 传递</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; ying_yang;  <span class="comment">// 正确：把一个 Panda 对象当成 ZooAnimal 传递</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>因为在每个共享的虚基类中只有唯一一个共享的子对象，所以该基类的成员可以被直接访问，并且不会产生二义性。此外，如果虚基类的成员只被一条派生路径覆盖，则我们仍然可以直接访问这个被覆盖的成员。但是如果成员被多余一个基类覆盖，则一般情况下派生类必须为该成员自定义一个新的版本。</strong></p>
+<p>例如，假定类 <code>B</code> 定义了一个名为 <code>x</code> 的成员，<code>D1</code> 和 <code>D2</code> 都是从 <code>B</code> 虚继承得到的，<code>D</code> 继承了 <code>D1</code> 和 <code>D2</code>，则在 <code>D</code> 的作用域中，<code>x</code> 通过 <code>D</code> 的两个基类都是可见的。如果我们通过 <code>D</code> 的对象使用 <code>x</code>，有三种可能性：</p>
+<ul>
+<li>如果在 <code>D1</code> 和 <code>D2</code> 中都没有 <code>x</code> 的定义，则 <code>x</code> 将被解析为 <code>B</code> 的成员，此时不存在二义性，一个 <code>D</code> 的对象只含有 <code>x</code> 的一个实例。</li>
+<li>如果 <code>x</code> 是 <code>B</code> 的成员，同时是 <code>D1</code> 和 <code>D2</code> 中某一个的成员，则同样没有二义性，<strong>派生类的 <code>x</code> 比共享虚基类 <code>B</code> 的 <code>x</code> 优先级更高</strong>。</li>
+<li>如果在 <code>D1</code> 和 <code>D2</code> 中都有 <code>x</code> 的定义，则直接访问 <code>x</code> 将产生二义性问题。</li>
+</ul>
+<p><strong>与非虚的多重继承体系一样，解决这种二义性问题最好的方法是在派生类中为成员自定义新的实例。</strong></p>
+</li>
+<li><p><strong>练习 18.28：</strong> 已知存在如下的继承体系，在 <code>VMI</code> 类的内部哪些继承而来的成员无须前缀限定符就能直接访问？哪些必须有限定符才能访问？说明你的原因。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span>)</span></span>; <span class="comment">// 默认情况下是公有的</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">int</span> ival;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Derived1</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">char</span>)</span></span>; <span class="comment">// 默认情况下是公有的</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">char</span>)</span></span>;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">char</span> cval;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Derived2</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span>)</span></span>; <span class="comment">// 默认情况下是公有的</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">int</span> ival;</span><br><span class="line">    <span class="keyword">char</span> cval;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VMI</span> :</span> <span class="keyword">public</span> Derived1, <span class="keyword">public</span> Derived2</span><br><span class="line">&#123;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>答：</strong> <code>bar</code> 和 <code>ival</code> 可以不加限定地访问：<code>bar</code> 在共享基类 <code>Base</code> 和派生类 <code>Derived1</code> 中都存在，但这只是在一条派生路径上，特定派生类实例的优先级高于共享基类实例，所以在 <code>VMI</code> 类内部不加限定地访问 <code>bar</code>，访问到的是 <code>Derived1</code> 中的 <code>bar</code> 实例。<code>ival</code> 在共享基类 <code>Base</code> 和派生类 <code>Derived2</code> 中都存在，同理，在 <code>VMI</code> 类内部不加限定地访问 <code>ival</code>，访问到的是 <code>Derived2</code> 中的 <code>ival</code> 实例。</p>
+<p><code>foo</code> 和 <code>cval</code> 需要限定：二者在 <code>Derived1</code> 和 <code>Derived2</code> 中都存在，<code>Derived1</code> 和 <code>Derived2</code> 均为 <code>Base</code> 的派生类，访问优先级相同，所以，在 <code>VMI</code> 类内不加限定地访问 <code>foo</code> 和 <code>cval</code> 存在二义性。</p>
+</li>
+</ol>
+<h2 id="18-3-5-构造函数与虚继承" class="heading-control"><a href="#18-3-5-构造函数与虚继承" class="headerlink" title="18.3.5 构造函数与虚继承"></a>18.3.5 构造函数与虚继承<a class="heading-anchor" href="#18-3-5-构造函数与虚继承" aria-hidden="true"></a></h2><ol>
+<li><p><strong>在虚派生中，虚基类是由最低层的派生类初始化的。</strong> 以我们的程序为例，当创建 <code>Panda</code> 对象时，由 <code>Panda</code> 的构造函数独自控制 <code>ZooAnimal</code> 的初始化过程。</p>
+<p>为了理解这一规则，我们不妨假设当以普通规则处理初始化任务时会发生什么情况。在此例中，虚基类将会在多条继承路径上被重复初始化。以 <code>ZooAnimal</code> 为例，如果应用普通规则，则 <code>Raccoon</code> 和 <code>Bear</code> 都会试图初始化 <code>Panda</code> 对象的 <code>ZooAnimal</code> 部分。</p>
+<p>当然，继承体系中的每个类都可能在某个时刻成为“最低层的派生类”。只要我们能创建虚基类的派生类对象，该派生类的构造函数就必须初始化它的虚基类。例如在我们的继承体系中，当创建一个 <code>Bear</code>（或 <code>Raccoon</code>）的对象时，它已经位于派生的最低层，因此 <code>Bear</code>（或 <code>Raccoon</code>）的构造函数将直接初始化其 <code>ZooAnimal</code> 基类部分：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Bear::Bear(<span class="built_in">std</span>::<span class="built_in">string</span> name, <span class="keyword">bool</span> onExhibit)</span><br><span class="line">    : ZooAnimal(name, onExhibit, <span class="string">"Bear"</span>)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line">Raccoon::Raccoon(<span class="built_in">std</span>::<span class="built_in">string</span> name, <span class="keyword">bool</span> onExhibit)</span><br><span class="line">    : ZooAnimal(name, onExhibit, <span class="string">"Raccoon"</span>)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>而当创建一个 <code>Panda</code> 对象时，<code>Panda</code> 位于派生的最低层并由它负责初始化共享的 <code>ZooAnimal</code> 基类部分。即使 <code>ZooAnimal</code> 不是 <code>Panda</code> 的直接基类，<code>Panda</code> 的构造函数也可以初始化 <code>ZooAnimal</code></strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Panda::Panda(<span class="built_in">std</span>::<span class="built_in">string</span> name, <span class="keyword">bool</span> onExhibit)</span><br><span class="line">    : ZooAnimal(name, onExhibit, <span class="string">"Panda"</span>),</span><br><span class="line">      Bear(name, onExhibit),</span><br><span class="line">      Raccoon(name, onExhibit),</span><br><span class="line">      Endangered(Endangered::critical),</span><br><span class="line">      sleeping_flag(<span class="literal">false</span>)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>含有虚基类的对象的构造顺序与一般的顺序稍有区别：首先使用提供给最低层派生类构造函数的初始值初始化该对象的虚基类子部分，接下来按照直接基类在派生列表中出现的次序依次对其进行初始化。</strong></p>
+<p>例如，当我们创建一个 Panda 对象时：</p>
+<ul>
+<li>首先使用 <code>Panda</code> 的构造函数初始值列表中提供的初始值构造虚基类 <code>ZooAnimal</code> 部分。</li>
+<li>接下来构造 <code>Bear</code> 部分。</li>
+<li>然后构造 <code>Raccoon</code> 部分。</li>
+<li>然后构造第三个直接基类 <code>Endangered</code>。</li>
+<li>最后构造 <code>Panda</code> 部分。</li>
+</ul>
+<p><strong>如果 <code>Panda</code> 没有显式地初始化 <code>ZooAnimal</code> 基类，则 <code>ZooAnimal</code> 的默认构造函数将被调用。如果 <code>ZooAnimal</code> 没有默认构造函数，则代码将发生错误。</strong></p>
+</li>
+<li><blockquote>
+<p><strong>Note：虚基类总是先于非虚基类构造，与它们在继承体系中的次序和位置无关。</strong></p>
+</blockquote>
+</li>
+<li><p><strong>一个类可以有多个虚基类。此时，这些虚的子对象按照它们在派生列表中出现的顺序从左向右依次构造。</strong> 例如，在下面这个稍显杂乱的 <code>TeddyBear</code> 派生关系中有两个虚基类：<code>ToyAnimal</code> 是直接虚基类，<code>ZooAnimal</code> 是 <code>Bear</code> 的虚基类：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Character</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookCharacter</span> :</span> <span class="keyword">public</span> Character</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ToyAnimal</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TeddyBear</span> :</span> <span class="keyword">public</span> BookCharacter, <span class="keyword">public</span> Bear, <span class="keyword">public</span> <span class="keyword">virtual</span> ToyAnimal</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>编译器按照直接基类的声明顺序对其依次进行检查，以确定其中是否含有虚基类。如果有，则先构造虚基类，然后按照声明的顺序逐一构造其他非虚基类。</strong> 因此，要想创建一个 <code>TeddyBear</code> 对象，需要按照如下次序调用这些构造函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ZooAnimal();     <span class="comment">// Bear 的虚基类</span></span><br><span class="line">ToyAnimal();     <span class="comment">// 直接虚基类</span></span><br><span class="line">Character();     <span class="comment">// 第一个非虚基类的间接基类</span></span><br><span class="line">BookCharacter(); <span class="comment">// 第一个直接非虚基类</span></span><br><span class="line">Bear();          <span class="comment">// 第二个直接非虚基类</span></span><br><span class="line">TeddyBear();     <span class="comment">// 最低层的派生类</span></span><br></pre></td></tr></table></figure>
+<p><strong>合成的拷贝和移动构造函数按照完全相同的顺序执行，合成的赋值运算符中的成员也按照该顺序赋值。和往常一样，对象的销毁顺序与构造顺序正好相反</strong>，首先销毁 <code>TeddyBear</code> 部分，最后销毁 <code>ZooAnimal</code> 部分。</p>
+</li>
+<li><p><strong>练习 18.29：</strong> 已知有如下所示的类继承关系：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Class</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> :</span> <span class="keyword">public</span> Class</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D1</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D2</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MI</span> :</span> <span class="keyword">public</span> D1, <span class="keyword">public</span> D2</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Final</span> :</span> <span class="keyword">public</span> MI, <span class="keyword">public</span> Class</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>（a）当作用于一个 <code>Final</code> 对象时，构造函数和析构函数的执行次序分别是什么？</p>
+<p><strong>答：</strong> 优先构造虚基类部分，所以构造函数执行次序为 <code>Class</code>，<code>Base</code>，<code>D1</code>，<code>D2</code>，<code>MI</code>，<code>Class</code>，<code>Final</code>；析构函数执行顺序相反。</p>
+<p>（b）在一个 <code>Final</code> 对象中有几个 <code>Base</code> 部分？几个 <code>Class</code> 部分？</p>
+<p><strong>答：</strong> 一个 <code>Base</code> 部分，两个 <code>Class</code> 部分。</p>
+<p>（c）下面的哪些赋值运算将造成编译错误？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Base *pb; Class *pc; MI *pmi; D2 *pd2;</span><br><span class="line">(a) pb = <span class="keyword">new</span> Class; (b) pc = <span class="keyword">new</span> Final; (c) pmi = pb; (d) pd2 = pmi;</span><br></pre></td></tr></table></figure>
+<p><strong>答：</strong> （a）错误，<code>Class</code> 是 <code>Base</code> 的基类，不能将基类指针转换为派生类指针；（b）错误，<code>Final</code> 中有两个 <code>Class</code> 部分，即 <code>Class</code> 是 <code>Final</code> 的二义基类；（c）错误，<code>Base</code> 是 <code>MI</code> 的基类，不能将基类指针转换为派生类指针；（d）正确。</p>
+</li>
+</ol>
+<h1 id="小结" class="heading-control"><a href="#小结" class="headerlink" title="小结"></a>小结<a class="heading-anchor" href="#小结" aria-hidden="true"></a></h1><ol>
+<li><p>异常处理使得我们可以将程序的错误检测部分与错误处理部分分隔开来。当程序抛出一个异常时，当前正在执行的函数暂时中止，开始查找最邻近的与异常匹配的 <code>catch</code> 语句。作为异常处理的一部分，如果查找 <code>catch</code> 语句的过程中退出了某些函数，则函数中定义的局部变量也随之销毁。</p>
+</li>
+<li><p>从概念上来说，多重继承非常简单：<strong>一个派生类可以从多个直接基类继承而来。在派生类对象中既包含派生类部分，也包含与每个基类对应的基类部分。</strong> 虽然看起来很简单，但实际上多重继承的细节非常复杂。特别是<strong>对多个基类的继承可能会引入新的名字冲突，并造成来自于基类部分的名字的二义性问题</strong>。</p>
+<p><strong>如果一个类是从多个基类直接继承而来的，那么有可能这些基类本身又其享了另一个基类。在这种情况下，中间类可以选择使用虚继承，从而声明愿意与层次中虚继承同一基类的其他类共享虚基类。用这种方法，后代派生类中将只有一个共享虚基类的副本。</strong></p>
+</li>
+</ol>
+<h1 id="术语表" class="heading-control"><a href="#术语表" class="headerlink" title="术语表"></a>术语表<a class="heading-anchor" href="#术语表" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%881%EF%BC%89.png" alt="第 18 章术语表（1）"></p>
+<p><img data-src="https://image.shipengx.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%882%EF%BC%89.png" alt="第 18 章术语表（2）"></p>
+<p><img data-src="https://image.shipengx.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%883%EF%BC%89.png" alt="第 18 章术语表（3）"></p>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/5029459.html" title="C++ Primer - 第 18 章 用于大型程序的工具">https://blog.shipengx.com/archives/5029459.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"><i class="fa fa-tag"></i> C/C++</a>
+              <a href="/tags/C-Primer/" rel="tag"><i class="fa fa-tag"></i> C++ Primer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/8c16df73.html" rel="prev" title="C++ Primer - 第 16 章 模板与泛型编程">
+      <i class="fa fa-chevron-left"></i> C++ Primer - 第 16 章 模板与泛型编程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/19236f69.html" rel="next" title="使用 gperftools 进行 C++ 代码性能分析">
+      使用 gperftools 进行 C++ 代码性能分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#18-1-异常处理"><span class="nav-text">18.1 异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#18-1-1-抛出异常"><span class="nav-text">18.1.1 抛出异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-1-2-捕获异常"><span class="nav-text">18.1.2 捕获异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-1-3-函数-try-语句块与构造函数"><span class="nav-text">18.1.3 函数 try 语句块与构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-1-4-noexcept-异常说明"><span class="nav-text">18.1.4 noexcept 异常说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-1-5-异常类层次"><span class="nav-text">18.1.5 异常类层次</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#18-2-命名空间"><span class="nav-text">18.2 命名空间</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#18-2-1-命名空间定义"><span class="nav-text">18.2.1 命名空间定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-2-2-使用命名空间成员"><span class="nav-text">18.2.2 使用命名空间成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-2-3-类、命名空间与作用域"><span class="nav-text">18.2.3 类、命名空间与作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-2-4-重载与命名空间"><span class="nav-text">18.2.4 重载与命名空间</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#18-3-多重继承与虚继承"><span class="nav-text">18.3 多重继承与虚继承</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#18-3-1-多重继承"><span class="nav-text">18.3.1 多重继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-3-2-类型转换与多个基类"><span class="nav-text">18.3.2 类型转换与多个基类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-3-3-多重继承下的类作用域"><span class="nav-text">18.3.3 多重继承下的类作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-3-4-虚继承"><span class="nav-text">18.3.4 虚继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-3-5-构造函数与虚继承"><span class="nav-text">18.3.5 构造函数与虚继承</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#术语表"><span class="nav-text">术语表</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
