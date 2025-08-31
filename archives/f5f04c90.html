@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="目录0 前言本文将以 Apollo 8.0 源码 master 分支上的 a3c851fc58 提交（2023 年 7 月 14 日提交）为基础 参考线的平滑，参考线的生成及更新的完整流程 1 参考线1.1 参考线的用途1.2 参考线的数据结构1.3 参考线的生成与平滑参考线由定义在 apollo&#x2F;modules&#x2F;planning&#x2F;reference_line&#x2F;reference_line_pro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apollo Planning 模块参考线平滑：基本流程代码解析">
+<meta property="og:url" content="https://blog.shipengx.com/archives/f5f04c90.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="目录0 前言本文将以 Apollo 8.0 源码 master 分支上的 a3c851fc58 提交（2023 年 7 月 14 日提交）为基础 参考线的平滑，参考线的生成及更新的完整流程 1 参考线1.1 参考线的用途1.2 参考线的数据结构1.3 参考线的生成与平滑参考线由定义在 apollo&#x2F;modules&#x2F;planning&#x2F;reference_line&#x2F;reference_line_pro">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E5%8F%82%E8%80%83%E7%BA%BF%E5%B9%B3%E6%BB%91%E5%99%A8%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB.png">
+<meta property="article:published_time" content="2023-08-09T01:21:21.000Z">
+<meta property="article:modified_time" content="2025-08-31T15:42:11.732Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="自动驾驶">
+<meta property="article:tag" content="Apollo">
+<meta property="article:tag" content="决策规划">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E5%8F%82%E8%80%83%E7%BA%BF%E5%B9%B3%E6%BB%91%E5%99%A8%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/f5f04c90.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>Apollo Planning 模块参考线平滑：基本流程代码解析 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">49</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">99</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/f5f04c90.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Apollo Planning 模块参考线平滑：基本流程代码解析
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-09 09:21:21" itemprop="dateCreated datePublished" datetime="2023-08-09T09:21:21+08:00">2023-08-09</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">自动驾驶</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/Apollo/" itemprop="url" rel="index">
+                    <span itemprop="name">Apollo</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/f5f04c90.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/f5f04c90.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>本文将以 Apollo 8.0 源码 <code>master</code> 分支上的 <code>a3c851fc58</code> 提交（2023 年 7 月 14 日提交）为基础</p>
+<p>参考线的平滑，参考线的生成及更新的完整流程</p>
+<h1 id="1-参考线" class="heading-control"><a href="#1-参考线" class="headerlink" title="1 参考线"></a>1 参考线<a class="heading-anchor" href="#1-参考线" aria-hidden="true"></a></h1><h2 id="1-1-参考线的用途" class="heading-control"><a href="#1-1-参考线的用途" class="headerlink" title="1.1 参考线的用途"></a>1.1 参考线的用途<a class="heading-anchor" href="#1-1-参考线的用途" aria-hidden="true"></a></h2><h2 id="1-2-参考线的数据结构" class="heading-control"><a href="#1-2-参考线的数据结构" class="headerlink" title="1.2 参考线的数据结构"></a>1.2 参考线的数据结构<a class="heading-anchor" href="#1-2-参考线的数据结构" aria-hidden="true"></a></h2><h2 id="1-3-参考线的生成与平滑" class="heading-control"><a href="#1-3-参考线的生成与平滑" class="headerlink" title="1.3 参考线的生成与平滑"></a>1.3 参考线的生成与平滑<a class="heading-anchor" href="#1-3-参考线的生成与平滑" aria-hidden="true"></a></h2><p>参考线由定义在 <code>apollo/modules/planning/reference_line/reference_line_provider.h</code> 中的 <code>ReferenceLineProvider</code> 提供，<code>ReferenceLineProvider</code> 中进行了参考线的生成、平滑、更新</p>
+<h1 id="2-选择平滑器" class="heading-control"><a href="#2-选择平滑器" class="headerlink" title="2 选择平滑器"></a>2 选择平滑器<a class="heading-anchor" href="#2-选择平滑器" aria-hidden="true"></a></h1><h2 id="2-1-平滑器的分类" class="heading-control"><a href="#2-1-平滑器的分类" class="headerlink" title="2.1 平滑器的分类"></a>2.1 平滑器的分类<a class="heading-anchor" href="#2-1-平滑器的分类" aria-hidden="true"></a></h2><p>Apollo Planning 模块中有以下三种具体的参考线平滑器实现：</p>
+<ul>
+<li><code>DiscretePointsReferenceLineSmoother</code>：离散点平滑器</li>
+<li><code>QpSplineReferenceLineSmoother</code>：五次样条曲线平滑器</li>
+<li><code>SpiralReferenceLineSmoother</code>：螺旋线平滑器</li>
+</ul>
+<p>这三种平滑器都继承自抽象基类 <code>ReferenceLineSmoother</code>，继承关系如下图所示：</p>
+<p><img data-src="https://image.shipengx.com/%E5%8F%82%E8%80%83%E7%BA%BF%E5%B9%B3%E6%BB%91%E5%99%A8%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB.png" alt="参考线平滑器继承关系"></p>
+<p>抽象基类 <code>ReferenceLineSmoother</code> 定义在 <code>apollo/modules/planning/reference_line/reference_line_smoother.h</code> 中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReferenceLineSmoother</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">ReferenceLineSmoother</span><span class="params">(<span class="keyword">const</span> ReferenceLineSmootherConfig&amp; config)</span></span></span><br><span class="line"><span class="function">      : <span class="title">config_</span><span class="params">(config)</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Smoothing constraints</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">SetAnchorPoints</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;AnchorPoint&gt;&amp; achor_points)</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Smooth a given reference line</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">Smooth</span><span class="params">(<span class="keyword">const</span> ReferenceLine&amp;, ReferenceLine* <span class="keyword">const</span>)</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">virtual</span> ~ReferenceLineSmoother() = <span class="keyword">default</span>;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">protected</span>:</span><br><span class="line">  ReferenceLineSmootherConfig config_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>纯虚方法 <code>SetAnchorPoints</code> 和 <code>Smooth</code> 由各个派生平滑器来实现具体细节，我们将在后续的系列文章中详细展开；<code>config_</code> 是用于存储平滑器配置参数的 ProtoBuf 类型对象，其类型 <code>ReferenceLineSmootherConfig</code> 定义在 <code>apollo/modules/planning/proto/reference_line_smoother_config.proto</code> 文件中：</p>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">syntax = <span class="string">"proto2"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> apollo.planning;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"modules/planning/proto/math/cos_theta_smoother_config.proto"</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">"modules/planning/proto/math/fem_pos_deviation_smoother_config.proto"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 五次样条曲线平滑器配置</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">QpSplineSmootherConfig</span> </span>&#123;</span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">uint32</span> spline_order = <span class="number">1</span> [default = <span class="number">5</span>];</span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> max_spline_length = <span class="number">2</span> [default = <span class="number">25</span>];</span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> regularization_weight = <span class="number">3</span> [default = <span class="number">0.1</span>];</span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> second_derivative_weight = <span class="number">4</span> [default = <span class="number">0.0</span>];</span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> third_derivative_weight = <span class="number">5</span> [default = <span class="number">100</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 螺旋线平滑器配置</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">SpiralSmootherConfig</span> </span>&#123;</span><br><span class="line">  <span class="comment">// The max deviation of spiral reference line smoother.</span></span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> max_deviation = <span class="number">1</span> [default = <span class="number">0.1</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The piecewise length of spiral smoother.</span></span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> piecewise_length = <span class="number">2</span> [default = <span class="number">10.0</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The iteration num of spiral reference line smoother.");</span></span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">uint32</span> max_iteration = <span class="number">3</span> [default = <span class="number">1000</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The desired convergence tol for spiral opt;</span></span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> opt_tol = <span class="number">4</span> [default = <span class="number">1.0</span>e-<span class="number">8</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The acceptable convergence tol for spiral opt</span></span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> opt_acceptable_tol = <span class="number">5</span> [default = <span class="number">1</span>e-<span class="number">6</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The number of acceptable iters before termination for spiral opt;</span></span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">uint32</span> opt_acceptable_iteration = <span class="number">6</span> [default = <span class="number">15</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The weight of curve length term in objective function</span></span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> weight_curve_length = <span class="number">7</span> [default = <span class="number">1.0</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The weight of kappa term in objective function</span></span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> weight_kappa = <span class="number">8</span> [default = <span class="number">1.0</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The weight of dkappa term in objective function</span></span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> weight_dkappa = <span class="number">9</span> [default = <span class="number">100.0</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 离散点平滑器配置</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">DiscretePointsSmootherConfig</span> </span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">enum</span> <span class="title">SmoothingMethod</span> </span>&#123;</span><br><span class="line">    NOT_DEFINED = <span class="number">0</span>;</span><br><span class="line">    COS_THETA_SMOOTHING = <span class="number">1</span>;</span><br><span class="line">    FEM_POS_DEVIATION_SMOOTHING = <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">optional</span> SmoothingMethod smoothing_method = <span class="number">3</span></span><br><span class="line">      [default = FEM_POS_DEVIATION_SMOOTHING];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">oneof</span> SmootherConfig &#123;</span><br><span class="line">    CosThetaSmootherConfig cos_theta_smoothing = <span class="number">4</span>;</span><br><span class="line">    FemPosDeviationSmootherConfig fem_pos_deviation_smoothing = <span class="number">5</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 参考线平滑器总体配置</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">ReferenceLineSmootherConfig</span> </span>&#123;</span><br><span class="line">  <span class="comment">// The output resolution for discrete point smoother reference line is</span></span><br><span class="line">  <span class="comment">// directly decided by max_constraint_interval</span></span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> max_constraint_interval = <span class="number">1</span> [default = <span class="number">5</span>];</span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> longitudinal_boundary_bound = <span class="number">2</span> [default = <span class="number">1.0</span>];</span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> max_lateral_boundary_bound = <span class="number">3</span> [default = <span class="number">0.5</span>];</span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> min_lateral_boundary_bound = <span class="number">4</span> [default = <span class="number">0.2</span>];</span><br><span class="line">  <span class="comment">// The output resolution for qp smoother reference line.</span></span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">uint32</span> num_of_total_points = <span class="number">5</span> [default = <span class="number">500</span>];</span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> curb_shift = <span class="number">6</span> [default = <span class="number">0.2</span>];</span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> lateral_buffer = <span class="number">7</span> [default = <span class="number">0.2</span>];</span><br><span class="line">  <span class="comment">// The output resolution for spiral smoother reference line.</span></span><br><span class="line">  <span class="keyword">optional</span> <span class="built_in">double</span> resolution = <span class="number">8</span> [default = <span class="number">0.02</span>];</span><br><span class="line">  <span class="keyword">oneof</span> SmootherConfig &#123;</span><br><span class="line">    QpSplineSmootherConfig qp_spline = <span class="number">20</span>;</span><br><span class="line">    SpiralSmootherConfig spiral = <span class="number">21</span>;</span><br><span class="line">    DiscretePointsSmootherConfig discrete_points = <span class="number">22</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面的 ProtoBuf 文件中我们可以看到，<code>ReferenceLineSmootherConfig</code> 中定义了三种平滑器的宏观配置参数，并通过 <code>SmootherConfig</code> 参数指定具体使用哪种平滑器。</p>
+<blockquote>
+<p>ProtoBuf 中的 <code>oneof</code> 字段类似 C 语言中的联合体 <code>union</code>，一个 <code>oneof</code> 字段可能有多个潜在的取值，但只能有一个取值。</p>
+</blockquote>
+<h2 id="2-2-选择具体的平滑器" class="heading-control"><a href="#2-2-选择具体的平滑器" class="headerlink" title="2.2 选择具体的平滑器"></a>2.2 选择具体的平滑器<a class="heading-anchor" href="#2-2-选择具体的平滑器" aria-hidden="true"></a></h2><p>在 <code>ReferenceLineProvider</code> 类的构造函数中根据配置文件进行平滑器的选择：</p>
+<p>多态</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">ReferenceLineProvider::ReferenceLineProvider(</span><br><span class="line">    <span class="keyword">const</span> common::VehicleStateProvider *vehicle_state_provider,</span><br><span class="line">    <span class="keyword">const</span> hdmap::HDMap *base_map,</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;relative_map::MapMsg&gt; &amp;relative_map)</span><br><span class="line">    : vehicle_state_provider_(vehicle_state_provider) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!FLAGS_use_navigation_mode) &#123;</span><br><span class="line">    pnc_map_ = <span class="built_in">std</span>::make_unique&lt;hdmap::PncMap&gt;(base_map);</span><br><span class="line">    relative_map_ = <span class="literal">nullptr</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    pnc_map_ = <span class="literal">nullptr</span>;</span><br><span class="line">    relative_map_ = relative_map;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ACHECK(cyber::common::GetProtoFromFile(FLAGS_smoother_config_filename,</span><br><span class="line">                                         &amp;smoother_config_))</span><br><span class="line">      &lt;&lt; <span class="string">"Failed to load smoother config file "</span></span><br><span class="line">      &lt;&lt; FLAGS_smoother_config_filename;</span><br><span class="line">  <span class="keyword">if</span> (smoother_config_.has_qp_spline()) &#123;</span><br><span class="line">    smoother_.reset(<span class="keyword">new</span> QpSplineReferenceLineSmoother(smoother_config_));</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (smoother_config_.has_spiral()) &#123;</span><br><span class="line">    smoother_.reset(<span class="keyword">new</span> SpiralReferenceLineSmoother(smoother_config_));</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (smoother_config_.has_discrete_points()) &#123;</span><br><span class="line">    smoother_.reset(<span class="keyword">new</span> DiscretePointsReferenceLineSmoother(smoother_config_));</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ACHECK(<span class="literal">false</span>) &lt;&lt; <span class="string">"unknown smoother config "</span></span><br><span class="line">                  &lt;&lt; smoother_config_.DebugString();</span><br><span class="line">  &#125;</span><br><span class="line">  is_initialized_ = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单工厂模式或策略模式，默认使用的是 <code>DiscretePointsReferenceLineSmoother</code></p>
+<p>声明在 <code>apollo/modules/planning/common/planning_gflags.h</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DECLARE_string(smoother_config_filename);</span><br></pre></td></tr></table></figure>
+<p>定义在 <code>apollo/modules/planning/common/planning_gflags.cc</code> 中</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DEFINE_string(smoother_config_filename,</span><br><span class="line">              <span class="string">"/apollo/modules/planning/conf/qp_spline_smoother_config.pb.txt"</span>,</span><br><span class="line">              <span class="string">"The configuration file for qp_spline smoother"</span>);</span><br></pre></td></tr></table></figure>
+<p><a href="https://blog.shipengx.com/archives/80682599.html">《Apollo 8.0 配置参数读取源码解析：以 Planning 模块为例》</a></p>
+<h1 id="3-平滑参考线" class="heading-control"><a href="#3-平滑参考线" class="headerlink" title="3 平滑参考线"></a>3 平滑参考线<a class="heading-anchor" href="#3-平滑参考线" aria-hidden="true"></a></h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ReferenceLineProvider::SmoothReferenceLine</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> ReferenceLine &amp;raw_reference_line, ReferenceLine *reference_line)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!FLAGS_enable_smooth_reference_line) &#123;</span><br><span class="line">    *reference_line = raw_reference_line;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// generate anchor points:</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;AnchorPoint&gt; anchor_points;</span><br><span class="line">  GetAnchorPoints(raw_reference_line, &amp;anchor_points);</span><br><span class="line">  smoother_-&gt;SetAnchorPoints(anchor_points);</span><br><span class="line">  <span class="keyword">if</span> (!smoother_-&gt;Smooth(raw_reference_line, reference_line)) &#123;</span><br><span class="line">    AERROR &lt;&lt; <span class="string">"Failed to smooth reference line with anchor points"</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (!IsReferenceLineSmoothValid(raw_reference_line, *reference_line)) &#123;</span><br><span class="line">    AERROR &lt;&lt; <span class="string">"The smoothed reference line error is too large"</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-1-获取参考线锚点" class="heading-control"><a href="#3-1-获取参考线锚点" class="headerlink" title="3.1 获取参考线锚点"></a>3.1 获取参考线锚点<a class="heading-anchor" href="#3-1-获取参考线锚点" aria-hidden="true"></a></h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ReferenceLineProvider::GetAnchorPoints</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> ReferenceLine &amp;reference_line,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;AnchorPoint&gt; *anchor_points)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">  CHECK_NOTNULL(anchor_points);</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">double</span> interval = smoother_config_.max_constraint_interval();</span><br><span class="line">  <span class="keyword">int</span> num_of_anchors =</span><br><span class="line">      <span class="built_in">std</span>::max(<span class="number">2</span>, <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(reference_line.Length() / interval + <span class="number">0.5</span>));</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; anchor_s;</span><br><span class="line">  common::util::uniform_slice(<span class="number">0.0</span>, reference_line.Length(), num_of_anchors - <span class="number">1</span>,</span><br><span class="line">                              &amp;anchor_s);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">double</span> s : anchor_s) &#123;</span><br><span class="line">    AnchorPoint anchor = GetAnchorPoint(reference_line, s);</span><br><span class="line">    anchor_points-&gt;emplace_back(anchor);</span><br><span class="line">  &#125;</span><br><span class="line">  anchor_points-&gt;front().longitudinal_bound = <span class="number">1e-6</span>;</span><br><span class="line">  anchor_points-&gt;front().lateral_bound = <span class="number">1e-6</span>;</span><br><span class="line">  anchor_points-&gt;front().enforced = <span class="literal">true</span>;</span><br><span class="line">  anchor_points-&gt;back().longitudinal_bound = <span class="number">1e-6</span>;</span><br><span class="line">  anchor_points-&gt;back().lateral_bound = <span class="number">1e-6</span>;</span><br><span class="line">  anchor_points-&gt;back().enforced = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">AnchorPoint <span class="title">ReferenceLineProvider::GetAnchorPoint</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> ReferenceLine &amp;reference_line, <span class="keyword">double</span> s)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">  AnchorPoint anchor;</span><br><span class="line">  anchor.longitudinal_bound = smoother_config_.longitudinal_boundary_bound();</span><br><span class="line">  <span class="keyword">auto</span> ref_point = reference_line.GetReferencePoint(s);</span><br><span class="line">  <span class="keyword">if</span> (ref_point.lane_waypoints().empty()) &#123;</span><br><span class="line">    anchor.path_point = ref_point.ToPathPoint(s);</span><br><span class="line">    anchor.lateral_bound = smoother_config_.max_lateral_boundary_bound();</span><br><span class="line">    <span class="keyword">return</span> anchor;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">double</span> adc_width =</span><br><span class="line">      VehicleConfigHelper::GetConfig().vehicle_param().width();</span><br><span class="line">  <span class="keyword">const</span> Vec2d left_vec =</span><br><span class="line">      Vec2d::CreateUnitVec2d(ref_point.heading() + M_PI / <span class="number">2.0</span>);</span><br><span class="line">  <span class="keyword">auto</span> waypoint = ref_point.lane_waypoints().front();</span><br><span class="line">  <span class="keyword">double</span> left_width = <span class="number">0.0</span>;</span><br><span class="line">  <span class="keyword">double</span> right_width = <span class="number">0.0</span>;</span><br><span class="line">  waypoint.lane-&gt;GetWidth(waypoint.s, &amp;left_width, &amp;right_width);</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">double</span> kEpislon = <span class="number">1e-8</span>;</span><br><span class="line">  <span class="keyword">double</span> effective_width = <span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// shrink width by vehicle width, curb</span></span><br><span class="line">  <span class="keyword">double</span> safe_lane_width = left_width + right_width;</span><br><span class="line">  safe_lane_width -= adc_width;</span><br><span class="line">  <span class="keyword">bool</span> is_lane_width_safe = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (safe_lane_width &lt; kEpislon) &#123;</span><br><span class="line">    ADEBUG &lt;&lt; <span class="string">"lane width ["</span> &lt;&lt; left_width + right_width &lt;&lt; <span class="string">"] "</span></span><br><span class="line">           &lt;&lt; <span class="string">"is smaller than adc width ["</span> &lt;&lt; adc_width &lt;&lt; <span class="string">"]"</span>;</span><br><span class="line">    effective_width = kEpislon;</span><br><span class="line">    is_lane_width_safe = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">double</span> center_shift = <span class="number">0.0</span>;</span><br><span class="line">  <span class="keyword">if</span> (hdmap::RightBoundaryType(waypoint) == hdmap::LaneBoundaryType::CURB) &#123;</span><br><span class="line">    safe_lane_width -= smoother_config_.curb_shift();</span><br><span class="line">    <span class="keyword">if</span> (safe_lane_width &lt; kEpislon) &#123;</span><br><span class="line">      ADEBUG &lt;&lt; <span class="string">"lane width smaller than adc width and right curb shift"</span>;</span><br><span class="line">      effective_width = kEpislon;</span><br><span class="line">      is_lane_width_safe = <span class="literal">false</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      center_shift += <span class="number">0.5</span> * smoother_config_.curb_shift();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (hdmap::LeftBoundaryType(waypoint) == hdmap::LaneBoundaryType::CURB) &#123;</span><br><span class="line">    safe_lane_width -= smoother_config_.curb_shift();</span><br><span class="line">    <span class="keyword">if</span> (safe_lane_width &lt; kEpislon) &#123;</span><br><span class="line">      ADEBUG &lt;&lt; <span class="string">"lane width smaller than adc width and left curb shift"</span>;</span><br><span class="line">      effective_width = kEpislon;</span><br><span class="line">      is_lane_width_safe = <span class="literal">false</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      center_shift -= <span class="number">0.5</span> * smoother_config_.curb_shift();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//  apply buffer if possible</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">double</span> buffered_width =</span><br><span class="line">      safe_lane_width - <span class="number">2.0</span> * smoother_config_.lateral_buffer();</span><br><span class="line">  safe_lane_width =</span><br><span class="line">      buffered_width &lt; kEpislon ? safe_lane_width : buffered_width;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// shift center depending on the road width</span></span><br><span class="line">  <span class="keyword">if</span> (is_lane_width_safe) &#123;</span><br><span class="line">    effective_width = <span class="number">0.5</span> * safe_lane_width;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ref_point += left_vec * center_shift;</span><br><span class="line">  anchor.path_point = ref_point.ToPathPoint(s);</span><br><span class="line">  anchor.lateral_bound = common::math::Clamp(</span><br><span class="line">      effective_width, smoother_config_.min_lateral_boundary_bound(),</span><br><span class="line">      smoother_config_.max_lateral_boundary_bound());</span><br><span class="line">  <span class="keyword">return</span> anchor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-2-将参考线锚点传入平滑器" class="heading-control"><a href="#3-2-将参考线锚点传入平滑器" class="headerlink" title="3.2 将参考线锚点传入平滑器"></a>3.2 将参考线锚点传入平滑器<a class="heading-anchor" href="#3-2-将参考线锚点传入平滑器" aria-hidden="true"></a></h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smoother_-&gt;SetAnchorPoints(anchor_points);</span><br></pre></td></tr></table></figure>
+<h2 id="3-3-平滑" class="heading-control"><a href="#3-3-平滑" class="headerlink" title="3.3 平滑"></a>3.3 平滑<a class="heading-anchor" href="#3-3-平滑" aria-hidden="true"></a></h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!smoother_-&gt;Smooth(raw_reference_line, reference_line)) &#123;</span><br><span class="line">  AERROR &lt;&lt; <span class="string">"Failed to smooth reference line with anchor points"</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在后续的文章中将逐一进行分析</p>
+<h2 id="3-4-检查参考线平滑有效性" class="heading-control"><a href="#3-4-检查参考线平滑有效性" class="headerlink" title="3.4 检查参考线平滑有效性"></a>3.4 检查参考线平滑有效性<a class="heading-anchor" href="#3-4-检查参考线平滑有效性" aria-hidden="true"></a></h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ReferenceLineProvider::IsReferenceLineSmoothValid</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> ReferenceLine &amp;raw, <span class="keyword">const</span> ReferenceLine &amp;smoothed)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">double</span> kReferenceLineDiffCheckStep = <span class="number">10.0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">double</span> s = <span class="number">0.0</span>; s &lt; smoothed.Length();</span><br><span class="line">       s += kReferenceLineDiffCheckStep) &#123;</span><br><span class="line">    <span class="keyword">auto</span> xy_new = smoothed.GetReferencePoint(s);</span><br><span class="line"></span><br><span class="line">    common::SLPoint sl_new;</span><br><span class="line">    <span class="keyword">if</span> (!raw.XYToSL(xy_new, &amp;sl_new)) &#123;</span><br><span class="line">      AERROR &lt;&lt; <span class="string">"Fail to change xy point on smoothed reference line to sl "</span></span><br><span class="line">                <span class="string">"point respect to raw reference line."</span>;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> diff = <span class="built_in">std</span>::<span class="built_in">fabs</span>(sl_new.l());</span><br><span class="line">    <span class="keyword">if</span> (diff &gt; FLAGS_smoothed_reference_line_max_diff) &#123;</span><br><span class="line">      AERROR &lt;&lt; <span class="string">"Fail to provide reference line because too large diff "</span></span><br><span class="line">                <span class="string">"between smoothed and raw reference lines. diff: "</span></span><br><span class="line">             &lt;&lt; diff;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="4-总结" class="heading-control"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结<a class="heading-anchor" href="#4-总结" aria-hidden="true"></a></h1><h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\80682599.html" rel="bookmark">Apollo 8.0 配置参数读取源码解析：以 Planning 模块为例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3df505e0.html" rel="bookmark">Apollo Planning 模块参考线平滑：离散点平滑原理与代码解析</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e8e6ccc3.html" rel="bookmark">Apollo 6.0 Perception 模块 Fusion 组件（一）：构建与启动流程分析</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e4b9c8ad.html" rel="bookmark">Apollo 6.0 安装完全指南</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\46155f38.html" rel="bookmark">Apollo 6.0 Perception 模块 Fusion 组件（二）：主体算法流程分析</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/f5f04c90.html" title="Apollo Planning 模块参考线平滑：基本流程代码解析">https://blog.shipengx.com/archives/f5f04c90.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="tag"><i class="fa fa-tag"></i> 自动驾驶</a>
+              <a href="/tags/Apollo/" rel="tag"><i class="fa fa-tag"></i> Apollo</a>
+              <a href="/tags/%E5%86%B3%E7%AD%96%E8%A7%84%E5%88%92/" rel="tag"><i class="fa fa-tag"></i> 决策规划</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/3df505e0.html" rel="prev" title="Apollo Planning 模块参考线平滑：离散点平滑原理与代码解析">
+      <i class="fa fa-chevron-left"></i> Apollo Planning 模块参考线平滑：离散点平滑原理与代码解析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/6d4db972.html" rel="next" title="使用 gflags 进行 C++ 命令行参数处理">
+      使用 gflags 进行 C++ 命令行参数处理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-参考线"><span class="nav-text">1 参考线</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-参考线的用途"><span class="nav-text">1.1 参考线的用途</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-参考线的数据结构"><span class="nav-text">1.2 参考线的数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-参考线的生成与平滑"><span class="nav-text">1.3 参考线的生成与平滑</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-选择平滑器"><span class="nav-text">2 选择平滑器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-平滑器的分类"><span class="nav-text">2.1 平滑器的分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-选择具体的平滑器"><span class="nav-text">2.2 选择具体的平滑器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-平滑参考线"><span class="nav-text">3 平滑参考线</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-获取参考线锚点"><span class="nav-text">3.1 获取参考线锚点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-将参考线锚点传入平滑器"><span class="nav-text">3.2 将参考线锚点传入平滑器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-平滑"><span class="nav-text">3.3 平滑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-检查参考线平滑有效性"><span class="nav-text">3.4 检查参考线平滑有效性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-总结"><span class="nav-text">4 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号    </span>
+      <img src="https://blog.shipengx.com/download/备案图标.png" style="display: inline-block;"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5nb3YuY24vcG9ydGFsL3JlZ2lzdGVyU3lzdGVtSW5mbz9yZWNvcmRjb2RlPTMxMDExNDAyMDA2MzA5">沪公网安备31011402006309号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

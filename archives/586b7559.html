@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
@@ -60,7 +60,7 @@
 <meta property="og:description" content="创建新分支加入某个项目，为其贡献代码。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-07-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-23T05:14:52.217Z">
+<meta property="article:modified_time" content="2022-08-22T14:27:34.913Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
@@ -158,12 +158,12 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">49</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">99</span></a>
 
   </li>
         <li class="menu-item menu-item-books">
@@ -174,11 +174,6 @@
         <li class="menu-item menu-item-zhihu">
 
     <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
-
-  </li>
-        <li class="menu-item menu-item-gitbook">
-
-    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -265,13 +260,6 @@
 
               <time title="创建时间：2019-07-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-15T00:00:00+08:00">2019-07-15</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 13:14:52" itemprop="dateModified" datetime="2020-07-23T13:14:52+08:00">2020-07-23</time>
-              </span>
 
           <br>
             <span class="post-meta-item">
@@ -319,18 +307,19 @@
 
       
         <h1 id="1-背景" class="heading-control"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景<a class="heading-anchor" href="#1-背景" aria-hidden="true"></a></h1><blockquote>
-<p>公司项目存放于GitLab服务器，想要加入该项目贡献代码</p>
+<p>公司项目存放于 GitLab 服务器，想要加入该项目贡献代码</p>
 </blockquote>
-<h1 id="2-最佳实践" class="heading-control"><a href="#2-最佳实践" class="headerlink" title="2 最佳实践"></a>2 最佳实践<a class="heading-anchor" href="#2-最佳实践" aria-hidden="true"></a></h1><h2 id="2-1-添加SSH公钥至GitLab服务器" class="heading-control"><a href="#2-1-添加SSH公钥至GitLab服务器" class="headerlink" title="2.1 添加SSH公钥至GitLab服务器"></a>2.1 添加SSH公钥至GitLab服务器<a class="heading-anchor" href="#2-1-添加SSH公钥至GitLab服务器" aria-hidden="true"></a></h2><ul>
-<li>生成SSH公钥<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -C “your email address”</span><br></pre></td></tr></table></figure></li>
-<li>添加公钥至GitLab服务器（不再赘述）</li>
+<h1 id="2-最佳实践" class="heading-control"><a href="#2-最佳实践" class="headerlink" title="2 最佳实践"></a>2 最佳实践<a class="heading-anchor" href="#2-最佳实践" aria-hidden="true"></a></h1><h2 id="2-1-添加-SSH-公钥至-GitLab-服务器" class="heading-control"><a href="#2-1-添加-SSH-公钥至-GitLab-服务器" class="headerlink" title="2.1 添加 SSH 公钥至 GitLab 服务器"></a>2.1 添加 SSH 公钥至 GitLab 服务器<a class="heading-anchor" href="#2-1-添加-SSH-公钥至-GitLab-服务器" aria-hidden="true"></a></h2><ul>
+<li>生成 SSH 公钥<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -C “your email address”</span><br></pre></td></tr></table></figure></li>
+<li>添加公钥至 GitLab 服务器（不再赘述）</li>
 </ul>
-<h2 id="2-2-配置git全局（或工程）用户名和邮箱" class="heading-control"><a href="#2-2-配置git全局（或工程）用户名和邮箱" class="headerlink" title="2.2 配置git全局（或工程）用户名和邮箱"></a>2.2 配置git全局（或工程）用户名和邮箱<a class="heading-anchor" href="#2-2-配置git全局（或工程）用户名和邮箱" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name “your user name”</span><br><span class="line">git config --global user.email “your email address”</span><br></pre></td></tr></table></figure>
-<h2 id="2-3-克隆仓库、创建个人分支、提交代码" class="heading-control"><a href="#2-3-克隆仓库、创建个人分支、提交代码" class="headerlink" title="2.3 克隆仓库、创建个人分支、提交代码"></a>2.3 克隆仓库、创建个人分支、提交代码<a class="heading-anchor" href="#2-3-克隆仓库、创建个人分支、提交代码" aria-hidden="true"></a></h2><p>克隆仓库，切换到将要merge进去的目标分支，在该分支下创建个人分支，在新建的个人分支下进行文件修改，将个人分支push到远程仓库并建立追踪关系（push后加—set-upstream参数）：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch_to_merge</span><br><span class="line">git checkout -b branch_name</span><br><span class="line"><span class="comment"># 进行文件修改</span></span><br><span class="line">git add --all</span><br><span class="line">git commit -m “Your commit content.”</span><br><span class="line">git push --<span class="built_in">set</span>-upstream origin branch_name  <span class="comment"># 成功push过一次后可以简化为git push</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="2-4-将个人分支merge到目标分支、打好tag" class="heading-control"><a href="#2-4-将个人分支merge到目标分支、打好tag" class="headerlink" title="2.4 将个人分支merge到目标分支、打好tag"></a>2.4 将个人分支merge到目标分支、打好tag<a class="heading-anchor" href="#2-4-将个人分支merge到目标分支、打好tag" aria-hidden="true"></a></h2><p>Web界面操作即可。</p>
-<h1 id="3-一些说明" class="heading-control"><a href="#3-一些说明" class="headerlink" title="3 一些说明"></a>3 一些说明<a class="heading-anchor" href="#3-一些说明" aria-hidden="true"></a></h1><p>执行完<code>git clone</code>后，将拉取远程仓库的所有分支、各分支上的修改、tag等全部内容，并将在本地的克隆仓库中创建master分支（自动与远程仓库的master分支相关联，远程仓库别名缺省为origin），在创建个人分支前，务必先<code>git checkout</code>到将要merged到的分支（示例中为develop），然后再进行分支创建操作，否则在GitLab服务器上进行merge操作时，可能会发生冲突与逆向merge（develop分支merge到了个人分支）。原因：</p>
+<h2 id="2-2-配置-git-全局（或工程）用户名和邮箱" class="heading-control"><a href="#2-2-配置-git-全局（或工程）用户名和邮箱" class="headerlink" title="2.2 配置 git 全局（或工程）用户名和邮箱"></a>2.2 配置 git 全局（或工程）用户名和邮箱<a class="heading-anchor" href="#2-2-配置-git-全局（或工程）用户名和邮箱" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name “your user name”</span><br><span class="line">git config --global user.email “your email address”</span><br></pre></td></tr></table></figure>
+<h2 id="2-3-克隆仓库、创建个人分支、提交代码" class="heading-control"><a href="#2-3-克隆仓库、创建个人分支、提交代码" class="headerlink" title="2.3 克隆仓库、创建个人分支、提交代码"></a>2.3 克隆仓库、创建个人分支、提交代码<a class="heading-anchor" href="#2-3-克隆仓库、创建个人分支、提交代码" aria-hidden="true"></a></h2><p>克隆仓库，切换到将要 merge 进去的目标分支，在该分支下创建个人分支，在新建的个人分支下进行文件修改，将个人分支 push 到远程仓库并建立追踪关系（push 后加 - -set-upstream 参数）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> repo_addr</span><br><span class="line"><span class="built_in">cd</span> repo_dir</span><br><span class="line">git checkout target_repo_branch_to_merge</span><br><span class="line">git checkout -b branch_name</span><br><span class="line"><span class="comment"># 进行文件修改</span></span><br><span class="line">git add --all</span><br><span class="line">git commit -m “Your commit content.”</span><br><span class="line">git push --<span class="built_in">set</span>-upstream origin branch_name  <span class="comment"># 成功 push 过一次后可以简化为 git push</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-4-将个人分支-merge-到目标分支、打好-tag" class="heading-control"><a href="#2-4-将个人分支-merge-到目标分支、打好-tag" class="headerlink" title="2.4 将个人分支 merge 到目标分支、打好 tag"></a>2.4 将个人分支 merge 到目标分支、打好 tag<a class="heading-anchor" href="#2-4-将个人分支-merge-到目标分支、打好-tag" aria-hidden="true"></a></h2><p>Web 界面操作即可。</p>
+<h1 id="3-一些说明" class="heading-control"><a href="#3-一些说明" class="headerlink" title="3 一些说明"></a>3 一些说明<a class="heading-anchor" href="#3-一些说明" aria-hidden="true"></a></h1><p>执行完<code>git clone</code>后，将拉取远程仓库的所有分支、各分支上的修改、tag 等全部内容，并将在本地的克隆仓库中创建 master 分支（自动与远程仓库的 master 分支相关联，远程仓库别名缺省为 origin），在创建个人分支前，务必先 <code>git checkout</code> 到将要 merged 到的分支（示例中为 develop），然后再进行分支创建操作，否则在 GitLab 服务器上进行 merge 操作时，可能会发生冲突与逆向 merge（develop 分支 merge 到了个人分支）。原因：</p>
 <blockquote>
-<p>初次完成仓库克隆时，所在分支为master分支，此时若立即创建个人分支将是基于master分支创建的，而master分支与将要merge的分支很有可能是不同的，后续将做过修改的个人分支向develop分支进行merge时大概率会出现问题。当然，即使这样做了，也可能在进行merge操作时发生冲突与逆向merge（从develop分支创建个人分支后，修改文件期间有人向develop分支push了新的提交）。</p>
+<p>初次完成仓库克隆时，所在分支为 master 分支，此时若立即创建个人分支将是基于 master 分支创建的，而 master 分支与将要 merge 的分支很有可能是不同的，后续将做过修改的个人分支向 develop 分支进行 merge 时大概率会出现问题。当然，即使这样做了，也可能在进行 merge 操作时发生冲突与逆向 merge（从 develop 分支创建个人分支后，修改文件期间有人向 develop 分支 push 了新的提交）。</p>
 </blockquote>
 <hr>
 
@@ -346,16 +335,16 @@
       <div class="popular-posts-title"><a href="\archives\77718b2.html" rel="bookmark">Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\ba569070.html" rel="bookmark">gitignore与gitkeep的作用</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\f390ae43.html" rel="bookmark">git的cherry-pick命令</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\296a9967.html" rel="bookmark">在腾讯云上搭建个人Git服务器</a></div>
+      <div class="popular-posts-title"><a href="\archives\ba569070.html" rel="bookmark">gitignore与gitkeep的作用</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\732ab93b.html" rel="bookmark">如何检出git仓库中最新的tag号</a></div>
+      <div class="popular-posts-title"><a href="\archives\2577fd4c.html" rel="bookmark">使用 Gitea Actions 实现 Hexo 博客持续集成与持续部署</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\afb81b2.html" rel="bookmark">使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成</a></div>
     </li>
   </ul>
 
@@ -476,7 +465,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-背景"><span class="nav-text">1 背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-最佳实践"><span class="nav-text">2 最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-添加SSH公钥至GitLab服务器"><span class="nav-text">2.1 添加SSH公钥至GitLab服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-配置git全局（或工程）用户名和邮箱"><span class="nav-text">2.2 配置git全局（或工程）用户名和邮箱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-克隆仓库、创建个人分支、提交代码"><span class="nav-text">2.3 克隆仓库、创建个人分支、提交代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-将个人分支merge到目标分支、打好tag"><span class="nav-text">2.4 将个人分支merge到目标分支、打好tag</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-一些说明"><span class="nav-text">3 一些说明</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-背景"><span class="nav-text">1 背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-最佳实践"><span class="nav-text">2 最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-添加-SSH-公钥至-GitLab-服务器"><span class="nav-text">2.1 添加 SSH 公钥至 GitLab 服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-配置-git-全局（或工程）用户名和邮箱"><span class="nav-text">2.2 配置 git 全局（或工程）用户名和邮箱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-克隆仓库、创建个人分支、提交代码"><span class="nav-text">2.3 克隆仓库、创建个人分支、提交代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-将个人分支-merge-到目标分支、打好-tag"><span class="nav-text">2.4 将个人分支 merge 到目标分支、打好 tag</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-一些说明"><span class="nav-text">3 一些说明</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -494,7 +483,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">99</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -507,7 +496,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -518,9 +507,6 @@
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
-      </span>
-      <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
@@ -545,13 +531,14 @@
     <footer class="footer">
       <div class="footer-inner">
         
-  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号    </span>
+      <img src="https://blog.shipengx.com/download/备案图标.png" style="display: inline-block;"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5nb3YuY24vcG9ydGFsL3JlZ2lzdGVyU3lzdGVtSW5mbz9yZWNvcmRjb2RlPTMxMDExNDAyMDA2MzA5">沪公网安备31011402006309号 </span>
   </div>
 
 <div class="copyright">
   
   &copy; 2020 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -1256,7 +1256,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #bfffc3;
+  background: #d9ffb9;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3084,9 +3084,6 @@ blockquote {
   font-weight: bold;
   background-color: #4f94cd;
   color: #fff !important;
-}
-.menu-item.menu-item-gitbook {
-  font-weight: bold;
 }
 .menu-item.menu-item-zhihu {
   font-weight: bold;

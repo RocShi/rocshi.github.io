@@ -1,0 +1,75 @@
+@startuml
+
+hide footbox
+
+box "mainboard" <<order 10>>
+actor main
+participant ModuleArgument
+participant ModuleController
+participant DagConfig
+participant ClassLoaderManager
+end box
+
+box "Planning Module" #SkyBlue
+participant Component order 21
+participant PlanningComponent order 22
+participant ComponentBase order 23
+end box
+
+box  #Orange 
+collections common order 30
+end box
+
+main -> ModuleArgument ++: ParseArgument 
+
+ModuleArgument -> ModuleArgument ++: GetOptions
+return
+
+return
+
+main -> ModuleController ++: Init
+
+ModuleController -> ModuleController ++: LoadAll
+
+ModuleController -> ModuleController ++: LoadModule(dag_path)
+
+create DagConfig
+ModuleController -> DagConfig: Construct
+
+ModuleController -> common ++: GetProtoFromFile（读取 DAG 文件）
+return
+
+|||
+
+ModuleController -> ModuleController ++: LoadModule(dag_protobuf)
+
+ModuleController -> ClassLoaderManager ++: LoadLibrary(libplanning_component.so)
+return
+
+|||
+
+ModuleController -> ClassLoaderManager ++: CreateClassObj
+return //PlanningComponent 实例指针//
+
+|||
+
+ModuleController -> Component ++: Initialize
+
+Component -> ComponentBase ++: LoadConfigFiles（读取 gflags 命令行参数）
+return
+
+Component -> PlanningComponent ++: Init
+
+PlanningComponent -> ComponentBase ++: GetProtoConfig
+ComponentBase -> common ++: GetProtoFromFile（读取 ProtoBuf 参数）
+return
+
+return
+return
+return
+return
+return
+return
+return
+
+@enduml

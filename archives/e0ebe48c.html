@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
@@ -54,22 +54,23 @@
 
   <meta name="description" content="自动驾驶开发中经常涉及到多项式曲线拟合，本文详细描述了使用最小二乘法进行多项式曲线拟合的数学原理，通过样本集构造范德蒙德矩阵，将一元 N 次多项式非线性回归问题转化为 N 元一次线性回归问题，并基于线性代数 C++ 模板库——Eigen 进行了实现，最后，比较了几种实现方法在求解速度与求解精度上的差异。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="最小二乘法多项式曲线拟合数学原理及其C++实现">
+<meta property="og:title" content="最小二乘法多项式曲线拟合数学原理及其 C++ 实现">
 <meta property="og:url" content="https://blog.shipengx.com/archives/e0ebe48c.html">
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="自动驾驶开发中经常涉及到多项式曲线拟合，本文详细描述了使用最小二乘法进行多项式曲线拟合的数学原理，通过样本集构造范德蒙德矩阵，将一元 N 次多项式非线性回归问题转化为 N 元一次线性回归问题，并基于线性代数 C++ 模板库——Eigen 进行了实现，最后，比较了几种实现方法在求解速度与求解精度上的差异。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%9B%B2%E7%BA%BF%E6%8B%9F%E5%90%88%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%20C%2B%2B%20%E5%AE%9E%E7%8E%B0.png">
 <meta property="og:image" content="https://image.shipengx.com/Eigen%20%E5%BA%93%E4%B8%AD%E7%BA%BF%E6%80%A7%E9%97%AE%E9%A2%98%E7%9A%84%E5%87%A0%E7%A7%8D%E6%B1%82%E8%A7%A3%E6%96%B9%E6%B3%95%E5%AF%B9%E6%AF%94.png">
 <meta property="og:image" content="https://image.shipengx.com/%E5%87%A0%E7%A7%8D%E6%B1%82%E8%A7%A3%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E9%97%AE%E9%A2%98%E6%96%B9%E6%B3%95%E7%9A%84%E5%AF%B9%E6%AF%94.png">
 <meta property="article:published_time" content="2020-08-01T21:53:43.000Z">
-<meta property="article:modified_time" content="2022-05-12T07:25:10.493Z">
+<meta property="article:modified_time" content="2023-10-04T11:40:06.928Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="最小二乘法">
 <meta property="article:tag" content="多项式曲线拟合">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/Eigen%20%E5%BA%93%E4%B8%AD%E7%BA%BF%E6%80%A7%E9%97%AE%E9%A2%98%E7%9A%84%E5%87%A0%E7%A7%8D%E6%B1%82%E8%A7%A3%E6%96%B9%E6%B3%95%E5%AF%B9%E6%AF%94.png">
+<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%9B%B2%E7%BA%BF%E6%8B%9F%E5%90%88%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%20C%2B%2B%20%E5%AE%9E%E7%8E%B0.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/e0ebe48c.html">
 
@@ -87,7 +88,7 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
-  <title>最小二乘法多项式曲线拟合数学原理及其C++实现 | 朝花夕拾</title>
+  <title>最小二乘法多项式曲线拟合数学原理及其 C++ 实现 | 朝花夕拾</title>
   
 
 
@@ -164,12 +165,12 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">49</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">99</span></a>
 
   </li>
         <li class="menu-item menu-item-books">
@@ -180,11 +181,6 @@
         <li class="menu-item menu-item-zhihu">
 
     <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
-
-  </li>
-        <li class="menu-item menu-item-gitbook">
-
-    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -259,7 +255,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          最小二乘法多项式曲线拟合数学原理及其C++实现
+          最小二乘法多项式曲线拟合数学原理及其 C++ 实现
         </h2>
 
         <div class="post-meta">
@@ -271,13 +267,6 @@
 
               <time title="创建时间：2020-08-02 05:53:43" itemprop="dateCreated datePublished" datetime="2020-08-02T05:53:43+08:00">2020-08-02</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-12 15:25:10" itemprop="dateModified" datetime="2022-05-12T15:25:10+08:00">2022-05-12</time>
-              </span>
 
           <br>
             <span class="post-meta-item">
@@ -324,32 +313,57 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>自动驾驶开发中经常涉及到多项式曲线拟合，本文详细描述了使用最小二乘法进行多项式曲线拟合的数学原理，通过样本集构造范德蒙德矩阵，将一元 N 次多项式非线性回归问题转化为 N 元一次线性回归问题，并基于线性代数 C++ 模板库——Eigen 进行了实现，最后，比较了几种实现方法在求解速度与求解精度上的差异。</p>
-<h1 id="1-最小二乘法概述" class="heading-control"><a href="#1-最小二乘法概述" class="headerlink" title="1 最小二乘法概述"></a>1 最小二乘法概述<a class="heading-anchor" href="#1-最小二乘法概述" aria-hidden="true"></a></h1><p><strong>最小二乘法</strong>（Least Square Method，LSM）通过最小化误差（也叫残差）的平方和寻找数据的最优函数匹配。</p>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%9B%B2%E7%BA%BF%E6%8B%9F%E5%90%88%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%20C%2B%2B%20%E5%AE%9E%E7%8E%B0.png" alt="目录-最小二乘法多项式曲线拟合数学原理及其 C++ 实现"></p>
+<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>自动驾驶开发中经常涉及到多项式曲线拟合，本文详细描述了使用最小二乘法进行多项式曲线拟合的数学原理，通过样本集构造范德蒙德矩阵，将一元 N 次多项式非线性回归问题转化为 N 元一次线性回归问题，并基于线性代数 C++ 模板库——Eigen 进行了实现，最后，比较了几种实现方法在求解速度与求解精度上的差异。</p>
+<h1 id="1-符号约定" class="heading-control"><a href="#1-符号约定" class="headerlink" title="1 符号约定"></a>1 符号约定<a class="heading-anchor" href="#1-符号约定" aria-hidden="true"></a></h1><p>本文中对所使用的数学符号做如下约定：</p>
+<ul>
+<li>简体小写字母：标量。例如，$s$、$\theta_0$。注意，本文中的微分符号 $d$ 也使用简体小写字母</li>
+<li>粗体小写字母：向量。例如，$\boldsymbol{\theta}$、$\mathbf{y}$、$\mathbf{y_r}$</li>
+<li>粗体大写字母：矩阵。例如，$\mathbf{X}$、$\mathbf{X_v}$</li>
+</ul>
+<h1 id="2-最小二乘法概述" class="heading-control"><a href="#2-最小二乘法概述" class="headerlink" title="2 最小二乘法概述"></a>2 最小二乘法概述<a class="heading-anchor" href="#2-最小二乘法概述" aria-hidden="true"></a></h1><p><strong>最小二乘法</strong>（Least Square Method，LSM）通过最小化误差（也叫残差）的平方和寻找数据的最优函数匹配。</p>
 <p>假设给定一组样本数据集 $P(x, y)$，$P$ 内各数据点 $P_i(x_i, y_i) (i=1, 2, 3, …, m)$ 来自于对多项式</p>
 <script type="math/tex; mode=display">
-f(x_i)=θ_0+θ_1x_i+θ_2x_i^2+···+θ_nx_i^n</script><p>的多次采样，其中：</p>
+f(x_i)=\theta_0+\theta_1x_i+\theta_2x_i^2+···+\theta_jx_i^j+···+\theta_nx_i^n \tag{2.1}</script><p>的多次采样，其中：</p>
 <ul>
 <li>$m$ 为样本维度</li>
 <li>$n$ 为多项式阶数</li>
-<li>$θ_j (j=1, 2, 3, …, n)$ 为多项式的各项系数</li>
+<li>$\theta_j (j=0,1, 2, …, n)$ 为多项式的各项系数</li>
 </ul>
-<p>针对样本数据集 $P$ 内各数据点的误差平方和为：</p>
+<p>样本数据集 $P$ 内各数据点的误差平方和 $s$ 为：</p>
 <script type="math/tex; mode=display">
-S=\sum_{i=1}^m[f(x_i)-y_i]^2</script><p>最小二乘法认为，最优函数的各项系数 $θ_j (j=1, 2, 3, …, n)$ 应使得误差平方和 $S$ 取得极小值。最小二乘法与<strong>极大似然估计</strong>有着密切的联系，关于最小二乘法的数学本质可参考文章<span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS9tYWRvY3MvODE4Lmh0bWw=" title="https://www.matongxue.com/madocs/818.html">《如何理解最小二乘法？》<i class="fa fa-external-link"></i></span>。</p>
-<h1 id="2-最小二乘法求解多项式曲线系数向量的数学推导" class="heading-control"><a href="#2-最小二乘法求解多项式曲线系数向量的数学推导" class="headerlink" title="2 最小二乘法求解多项式曲线系数向量的数学推导"></a>2 最小二乘法求解多项式曲线系数向量的数学推导<a class="heading-anchor" href="#2-最小二乘法求解多项式曲线系数向量的数学推导" aria-hidden="true"></a></h1><h2 id="2-1-代数法" class="heading-control"><a href="#2-1-代数法" class="headerlink" title="2.1 代数法"></a>2.1 代数法<a class="heading-anchor" href="#2-1-代数法" aria-hidden="true"></a></h2><p>由于最优函数的各项系数 $θ_j (j=1, 2, 3, …, n)$ 使得误差平方和 $S$ 取得极小值，因而，对于最优函数而言，其误差平方和 $S$ 对各多项式系 i 数 $θ_j (j=1, 2, 3, …, n)$ 的偏导数应满足：</p>
+s=\sum_{i=1}^m[f(x_i)-y_i]^2 \tag{2.2}</script><p>最小二乘法认为，最优函数的各项系数 $\theta_j$ 应使得误差平方和 $s$ 取得极小值。最小二乘法与<strong>极大似然估计</strong>有着密切的联系，关于最小二乘法的数学本质可参考文章<span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS9tYWRvY3MvODE4Lmh0bWw=" title="https://www.matongxue.com/madocs/818.html">《如何理解最小二乘法？》<i class="fa fa-external-link"></i></span>。</p>
+<h1 id="3-数学推导" class="heading-control"><a href="#3-数学推导" class="headerlink" title="3 数学推导"></a>3 数学推导<a class="heading-anchor" href="#3-数学推导" aria-hidden="true"></a></h1><h2 id="3-1-代数法" class="heading-control"><a href="#3-1-代数法" class="headerlink" title="3.1 代数法"></a>3.1 代数法<a class="heading-anchor" href="#3-1-代数法" aria-hidden="true"></a></h2><p>由于最优函数的各项系数 $\theta_j$ 使得误差平方和 $s$ 取得极小值，因而，对于最优函数而言，其误差平方和 $s$ 对各多项式系数 $\theta_j$ 的偏导数应满足：</p>
 <script type="math/tex; mode=display">
-\frac{\partial{S}}{\partial{θ_j}}=\sum_{i=1}^{m}[2(θ_0+θ_1x_i+θ_2x_i^2+···+θ_nx_i^n-y_i)x_i^j]=0</script><p>整理上式，$j$ 分别取 $0,1,2,…,n$ 时，有：</p>
+\begin{aligned}
+    \frac{\partial{s}}{\partial{\theta_j}}
+    & =\frac{\partial{\sum\limits_{i=1}^m[f(x_i)-y_i]^2}}{\partial{\theta_j}} \quad & ① \\
+    & =\sum_{i=1}^m\frac{\partial[(\theta_0+\theta_1x_i+\theta_2x_i^2+···+\theta_jx_i^j+···+\theta_nx_i^n-y_i)^2]}{\partial{\theta_j}} \quad & ② \\
+    & =\sum_{i=1}^{m}[2(\theta_0+\theta_1x_i+\theta_2x_i^2+···+\theta_jx_i^j+···+\theta_nx_i^n-y_i)x_i^j] & ③ \\
+    & =0
+\end{aligned} \tag{3.1}</script><p>注意，式 (3.1) 最后的 0 为标量，应与下文中的零向量 $\mathbf{0}$ 进行区分。式 (3.1) 的推导用到了两个知识点：</p>
+<ul>
+<li>① → ②：多个函数的和的偏导数等于各个函数的偏导数的和</li>
+<li>② → ③：复合函数求偏导，将 $\theta_0+\theta_1x_i+\theta_2x_i^2+···+\theta_jx_i^j+···+\theta_nx_i^n-y_i$ 视作一个整体，运用链式法则求解</li>
+</ul>
+<p>由式 (3.1) 我们可以进一步得到：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    & \quad\sum_{i=1}^{m}(\theta_0x_i^j+\theta_1x_i^{j+1}+\theta_2x_i^{j+2}+···+\theta_jx_i^{2j}+···+\theta_nx_i^{j+n}) \\
+    & = \theta_0\sum\limits_{i=1}^{m}x_i^j+\theta_1\sum\limits_{i=1}^{m}x_i^{j+1}+\theta_2\sum\limits_{i=1}^{m}x_i^{j+2}+\cdots+\theta_n\sum\limits_{i=1}^{m}x_i^{j+n} \\
+    & =\sum_{i=1}^{m}(x_i^jy_i)
+\end{aligned} \tag{3.2}</script><p>将 $j=0,1, 2, …, n$ 分别代入式 (3.2)，有：</p>
 <script type="math/tex; mode=display">
 \begin{cases}
-    mθ_0+(\sum\limits_{i=1}^{m}x_i)θ_1+(\sum\limits_{i=1}^{m}x_i^2)θ_2+\cdots+(\sum\limits_{i=1}^{m}x_i^n)θ_n=\sum\limits_{i=1}^{m}y_i \\
-    (\sum\limits_{i=1}^{m}x_i)θ_0+(\sum\limits_{i=1}^{m}x_i^2)θ_1+(\sum\limits_{i=1}^{m}x_i^3)θ_2+\cdots+(\sum\limits_{i=1}^{m}x_i^{n+1})θ_n=\sum\limits_{i=1}^{m}(x_iy_i) \\
-    (\sum\limits_{i=1}^{m}x_i^2)θ_0+(\sum\limits_{i=1}^{m}x_i^3)θ_1+(\sum\limits_{i=1}^{m}x_i^4)θ_2+\cdots+(\sum\limits_{i=1}^{m}x_i^{n+2})θ_n=\sum\limits_{i=1}^{m}(x_i^2y_i) \\
+    m\theta_0+\theta_1\sum\limits_{i=1}^{m}x_i+\theta_2\sum\limits_{i=1}^{m}x_i^2+\cdots+\theta_n\sum\limits_{i=1}^{m}x_i^n=\sum\limits_{i=1}^{m}y_i \\
+    \theta_0\sum\limits_{i=1}^{m}x_i+\theta_1\sum\limits_{i=1}^{m}x_i^2+\theta_2\sum\limits_{i=1}^{m}x_i^3+\cdots+\theta_n\sum\limits_{i=1}^{m}x_i^{n+1}=\sum\limits_{i=1}^{m}(x_iy_i) \\
+    \theta_0\sum\limits_{i=1}^{m}x_i^2+\theta_1\sum\limits_{i=1}^{m}x_i^3+\theta_2\sum\limits_{i=1}^{m}x_i^4+\cdots+\theta_n\sum\limits_{i=1}^{m}x_i^{n+2}=\sum\limits_{i=1}^{m}(x_i^2y_i) \\
     \cdots\cdots \\
-    (\sum\limits_{i=1}^{m}x_i^n)θ_0+(\sum\limits_{i=1}^{m}x_i^{n+1})θ_1+(\sum\limits_{i=1}^{m}x_i^{n+2})θ_2+\cdots+(\sum\limits_{i=1}^{m}x_i^{2n})θ_n=\sum\limits_{i=1}^{m}(x_i^ny_i)
-\end{cases}</script><p>转化为矩阵形式，令：</p>
+    \theta_0\sum\limits_{i=1}^{m}x_i^n+\theta_1\sum\limits_{i=1}^{m}x_i^{n+1}+\theta_2\sum\limits_{i=1}^{m}x_i^{n+2}+\cdots+\theta_n\sum\limits_{i=1}^{m}x_i^{2n}=\sum\limits_{i=1}^{m}(x_i^ny_i)
+\end{cases} \tag{3.3}</script><p>我们将式 (3.3) 转化为矩阵形式，令：</p>
 <script type="math/tex; mode=display">
-X=\begin{bmatrix}
+\mathbf{X}=
+\begin{bmatrix}
     m & \sum\limits_{i=1}^{m}x_i & \sum\limits_{i=1}^{m}x_i^2 & \cdots & \sum\limits_{i=1}^{m}x_i^n \\
     \sum\limits_{i=1}^{m}x_i & \sum\limits_{i=1}^{m}x_i^2 & \sum\limits_{i=1}^{m}x_i^3 & \cdots & \sum\limits_{i=1}^{m}x_i^{n+1} \\
     \sum\limits_{i=1}^{m}x_i^2 & \sum\limits_{i=1}^{m}x_i^3 & \sum\limits_{i=1}^{m}x_i^4 & \cdots & \sum\limits_{i=1}^{m}x_i^{n+2} \\
@@ -357,30 +371,33 @@ X=\begin{bmatrix}
     \sum\limits_{i=1}^{m}x_i^n & \sum\limits_{i=1}^{m}x_i^{n+1} & \sum\limits_{i=1}^{m}x_i^{n+2} & \cdots & \sum\limits_{i=1}^{m}x_i^{2n}
 \end{bmatrix},
 \quad
-θ=\begin{bmatrix}
-    θ_0 \\
-    θ_1 \\
-    θ_2 \\
+\boldsymbol{\theta}=
+\begin{bmatrix}
+    \theta_0 \\
+    \theta_1 \\
+    \theta_2 \\
     \vdots \\
-    θ_n \\
+    \theta_n \\
 \end{bmatrix},
 \quad
-Y=\begin{bmatrix}
+\mathbf{y}=
+\begin{bmatrix}
     \sum\limits_{i=1}^{m}y_i \\
     \sum\limits_{i=1}^{m}(x_iy_i) \\
     \sum\limits_{i=1}^{m}(x_i^2y_i) \\
     \vdots \\
     \sum\limits_{i=1}^{m}(x_i^ny_i)
-\end{bmatrix}</script><p>则有：</p>
+\end{bmatrix} \tag{3.4}</script><p>则有：</p>
 <script type="math/tex; mode=display">
 \begin{gathered}
-    Xθ=Y \\
+    \mathbf{X}\boldsymbol{\theta}=\mathbf{y} \\
     \Downarrow \\
-    θ=X^{-1}Y
-\end{gathered}</script><p>使用样本数据集构造出矩阵 $X$ 和矩阵 $Y$ 后，便可由上式解得最优函数的系数向量 $θ$。</p>
-<h2 id="2-2-矩阵法" class="heading-control"><a href="#2-2-矩阵法" class="headerlink" title="2.2 矩阵法"></a>2.2 矩阵法<a class="heading-anchor" href="#2-2-矩阵法" aria-hidden="true"></a></h2><p>在代数法中，构造矩阵 $X$ 和矩阵 $Y$ 较为繁琐且计算量大，我们尝试直接将误差平方和 $S$ 拆解为矩阵形式。令：</p>
+    \boldsymbol{\theta}=\mathbf{X}^{-1}\mathbf{y}
+\end{gathered} \tag{3.5}</script><p>使用样本数据集构造出矩阵 $\mathbf{X}$ 和向量 $\mathbf{y}$ 后，便可由式 (3.5) 解得最优函数的系数向量 $\boldsymbol{\theta}$。</p>
+<h2 id="3-2-矩阵法" class="heading-control"><a href="#3-2-矩阵法" class="headerlink" title="3.2 矩阵法"></a>3.2 矩阵法<a class="heading-anchor" href="#3-2-矩阵法" aria-hidden="true"></a></h2><p>在代数法中，构造矩阵 $\mathbf{X}$ 和向量 $\mathbf{y}$ 较为繁琐且计算量大，我们尝试直接将误差平方和 $s$ 拆解为矩阵形式。令：</p>
 <script type="math/tex; mode=display">
-X_v=\begin{bmatrix}
+\mathbf{X_v}=
+\begin{bmatrix}
     1 & x_1 & x_1^2 & \cdots & x_1^n \\
     1 & x_2 & x_2^2 & \cdots & x_2^n \\
     1 & x_3 & x_3^2 & \cdots & x_3^n \\
@@ -388,37 +405,66 @@ X_v=\begin{bmatrix}
     1 & x_m & x_m^2 & \cdots & x_m^n \\
 \end{bmatrix},
 \quad
-θ=\begin{bmatrix}
-    θ_0 \\
-    θ_1 \\
-    θ_2 \\
+\boldsymbol{\theta}=
+\begin{bmatrix}
+    \theta_0 \\
+    \theta_1 \\
+    \theta_2 \\
     \vdots \\
-    θ_n \\
+    \theta_n \\
 \end{bmatrix},
 \quad
-Y_r=\begin{bmatrix}
+\mathbf{y_r}=
+\begin{bmatrix}
     y_1 \\
     y_2 \\
     y_3 \\
     \vdots \\
     y_m \\
-\end{bmatrix}</script><p>则误差平方和 $S$ 可写成：</p>
+\end{bmatrix} \tag{3.6}</script><p>则误差平方和 $s$ 可写成：</p>
 <script type="math/tex; mode=display">
-S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</strong>（Vandermonde Matrix）, $θ$ 仍然是多项式系数构成的系数向量， $Y_r$ 是样本数据集的输出向量。对于最优函数，应满足：</p>
+s=(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})^\mathrm{T}(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r}) \tag{3.7}</script><p>$\mathbf{X_v}$ 是一个<strong>范德蒙矩阵</strong>（Vandermonde Matrix），$\boldsymbol{\theta}$ 仍然是多项式系数构成的系数向量，$\mathbf{y_r}$ 是样本数据集的输出向量。对于最优函数，应满足：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-    \frac{\partial{S}}{\partial{θ}} & =\frac{\partial{[(X_vθ-Y_r)^T(X_vθ-Y_r)]}}{\partial{θ}} \\
-    & =X_v^TX_vθ-X_v^TY_r \\
-    & =0 \\
-\end{aligned}</script><p>可求得最优函数的多项式系数向量 $θ$ 为：</p>
+    \frac{\partial{s}}{\partial{\boldsymbol{\theta}}}=\mathbf{0}
+\end{aligned} \tag{3.8}</script><p>注意，式 (3.8) 中的 $\mathbf{0}$ 为向量。$\frac{\partial{s}}{\partial{\boldsymbol{\theta}}}$ 是标量对向量的导数，这里我们不直接推导它，而是从推导 $s$ 的微分 $ds$ 开始：</p>
 <script type="math/tex; mode=display">
-θ=(X_v^TX_v)^{-1}X_v^TY_r</script><p>相比代数法求解中的矩阵 $X$ 和矩阵 $Y$，矩阵法中的矩阵 $X_v$ 和矩阵 $Y_r$ 构造起来更加简单。仔细观察，可以发现：</p>
+\begin{aligned}
+    ds
+    & =d[(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})^\mathrm{T}(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})] \quad & ① \\
+    & =d[(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})^\mathrm{T}](\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})+(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})^\mathrm{T}d(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r}) \quad & ② \\
+    & =[d(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})]^\mathrm{T}(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})+(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})^\mathrm{T}d(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r}) \quad & ③ \\
+    & =(\mathbf{X_v}d\boldsymbol{\theta})^\mathrm{T}(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})+(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})^\mathrm{T}\mathbf{X_v}d\boldsymbol{\theta} \quad & ④ \\
+    & =(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})^\mathrm{T}\mathbf{X_v}d\boldsymbol{\theta}+(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})^\mathrm{T}\mathbf{X_v}d\boldsymbol{\theta} \quad & ⑤ \\
+    & =2(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})^\mathrm{T}\mathbf{X_v}d\boldsymbol{\theta} \quad & ⑥
+\end{aligned} \tag{3.9}</script><p>式 (3.9) 的推导运用了几条基础运算法则：</p>
+<ul>
+<li>① → ②：$d(\mathbf{AB})=(d\mathbf{A})\mathbf{B}+\mathbf{A}(d\mathbf{B})$</li>
+<li>② → ③：$d\mathbf{A}^\mathrm{T}=(d\mathbf{A})^\mathrm{T}$</li>
+<li>③ → ④：$d(\mathbf{A\pm B})=d\mathbf{A}\pm d\mathbf{B}$，① → ② 中的法则，向量常量的微分为零向量 $\mathbf{0}$</li>
+<li>④ → ⑤：对于同维的列向量 $\mathbf{u}$ 和 $\mathbf{v}$，它们的内积满足 $\langle\mathbf{u},\mathbf{v}\rangle=\mathbf{u}^\mathrm{T}\mathbf{v}=\mathbf{v}^\mathrm{T}\mathbf{u}$，而 $\mathbf{X_v}d\boldsymbol{\theta}$ 和 $\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r}$ 正是两个同维的列向量</li>
+</ul>
+<p>$s$ 是关于 $\theta_j (j=0,1, 2, …, n)$ 的多元函数，我们知道多元函数的全微分公式为：</p>
+<script type="math/tex; mode=display">
+ds=\sum_{j=0}^n(\frac{\partial{s}}{\partial{\theta_j}}d\theta_j)=(\frac{\partial{s}}{\partial{\boldsymbol{\theta}}})^\mathrm{T}d\boldsymbol{\theta} \tag{3.10}</script><p>联立式 (3.9) 和式 (3.10)：</p>
+<script type="math/tex; mode=display">
+ds=2(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})^\mathrm{T}\mathbf{X_v}d\boldsymbol{\theta}=(\frac{\partial{s}}{\partial{\boldsymbol{\theta}}})^\mathrm{T}d\boldsymbol{\theta} \\
+\Downarrow \\
+(\frac{\partial{s}}{\partial{\boldsymbol{\theta}}})^\mathrm{T}=2(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})^\mathrm{T}\mathbf{X_v} \\
+\Downarrow \\
+\frac{\partial{s}}{\partial{\boldsymbol{\theta}}}=[2(\mathbf{X_v}\boldsymbol{\theta}-\mathbf{y_r})^\mathrm{T}\mathbf{X_v}]^\mathrm{T}=2(\mathbf{X_v}^\mathrm{T}\mathbf{X_v}\boldsymbol{\theta}-\mathbf{X_v}^\mathrm{T}\mathbf{y_r}) \tag{3.11}</script><p>联立式 (3.8) 和式 (3.11)，很容易求得最优函数的多项式系数向量 $\boldsymbol{\theta}$：</p>
+<script type="math/tex; mode=display">
+\frac{\partial{s}}{\partial{\boldsymbol{\theta}}}=2(\mathbf{X_v}^\mathrm{T}\mathbf{X_v}\boldsymbol{\theta}-\mathbf{X_v}^\mathrm{T}\mathbf{y_r})=\mathbf{0} \\
+\Downarrow \\
+\mathbf{X_v}^\mathrm{T}\mathbf{X_v}\boldsymbol{\theta}=\mathbf{X_v}^\mathrm{T}\mathbf{y_r} \\
+\Downarrow \\
+\boldsymbol{\theta}=(\mathbf{X_v}^\mathrm{T}\mathbf{X_v})^{-1}\mathbf{X_v}^\mathrm{T}\mathbf{y_r} \tag{3.12}</script><p>相比代数法求解中的矩阵 $\mathbf{X}$ 和向量 $\mathbf{y}$，矩阵法中的矩阵 $\mathbf{X_v}$ 和向量 $\mathbf{y_r}$ 构造起来更加简单。仔细观察，可以发现：</p>
 <script type="math/tex; mode=display">
 \begin{cases}
-    X=X_v^TX_v \\
-    Y=X_v^TY_r
-\end{cases}</script><p>说明两个解法是相通的。</p>
-<h1 id="3-代码实现" class="heading-control"><a href="#3-代码实现" class="headerlink" title="3 代码实现"></a>3 代码实现<a class="heading-anchor" href="#3-代码实现" aria-hidden="true"></a></h1><p>通过 C++ <span class="exturl" data-url="aHR0cDovL2VpZ2VuLnR1eGZhbWlseS5vcmcvaW5kZXgucGhwP3RpdGxlPU1haW5fUGFnZQ==" title="http://eigen.tuxfamily.org/index.php?title=Main_Page">Eigen<i class="fa fa-external-link"></i></span>库实现了矩阵法中的求解方式，Eigen 版本为 v3.3.7，运行环境为 Windows10，Eigen 库安装路径为 <code>D:\eigen-3.3.7</code>。</p>
+    \mathbf{X}=\mathbf{X_v}^\mathrm{T}\mathbf{X_v} \\
+    \mathbf{y}=\mathbf{X_v}^\mathrm{T}\mathbf{y_r}
+\end{cases} \tag{3.13}</script><p>说明两个解法是等价的。</p>
+<h1 id="4-代码实现" class="heading-control"><a href="#4-代码实现" class="headerlink" title="4 代码实现"></a>4 代码实现<a class="heading-anchor" href="#4-代码实现" aria-hidden="true"></a></h1><p>通过 C++ <span class="exturl" data-url="aHR0cDovL2VpZ2VuLnR1eGZhbWlseS5vcmcvaW5kZXgucGhwP3RpdGxlPU1haW5fUGFnZQ==" title="http://eigen.tuxfamily.org/index.php?title=Main_Page">Eigen<i class="fa fa-external-link"></i></span>库实现了矩阵法中的求解方式，Eigen 版本为 v3.3.7，运行环境为 Windows10，Eigen 库安装路径为 <code>D:\eigen-3.3.7</code>。</p>
 <p><strong>函数声明</strong></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> LEAST_SQUARE_METHOD_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LEAST_SQUARE_METHOD_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;D:\eigen-3.3.7\Eigen\Dense&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief Fit polynomial using Least Square Method.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param X X-axis coordinate vector of sample data.</span></span><br><span class="line"><span class="comment"> * @param Y Y-axis coordinate vector of sample data.</span></span><br><span class="line"><span class="comment"> * @param orders Fitting order which should be larger than zero.</span></span><br><span class="line"><span class="comment"> * @return Eigen::VectorXf Coefficients vector of fitted polynomial.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">Eigen::VectorXf <span class="title">FitterLeastSquareMethod</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt; &amp;X, <span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt; &amp;Y, <span class="keyword">uint8_t</span> orders)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 <p><strong>函数实现</strong></p>
@@ -433,7 +479,7 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
 <p>运行编译后的可执行程序，得到如下结果：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;LSM.exe</span><br><span class="line"></span><br><span class="line">The coefficients vector is:</span><br><span class="line"></span><br><span class="line">theta_0: 1.30698</span><br><span class="line">theta_1: 0.924561</span><br><span class="line">theta_2: 2.0032</span><br><span class="line">theta_3: 2.99976</span><br></pre></td></tr></table></figure>
 <p>点击<a href="/download/Demo_LSM.zip">这里</a>下载完整的工程 Demo，工程使用了 <code>cmake</code> 编译链，你也可以下载工程后使用其中的程序文件创建符合自己开发习惯的工程。</p>
-<h1 id="4-总结" class="heading-control"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结<a class="heading-anchor" href="#4-总结" aria-hidden="true"></a></h1><p>本文中的矩阵法本质在于，<strong>通过样本集构造范德蒙德矩阵，将一元 N 次多项式非线性回归问题转化为 N 元一次线性回归问题</strong>（即多元线性回归）。对于线性回归问题的求解，Eigen 库中有多种实现：</p>
+<h1 id="5-总结" class="heading-control"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结<a class="heading-anchor" href="#5-总结" aria-hidden="true"></a></h1><p>本文中的矩阵法本质在于，<strong>通过样本集构造范德蒙德矩阵，将一元 N 次多项式非线性回归问题转化为 N 元一次线性回归问题</strong>（即多元线性回归）。对于线性回归问题的求解，Eigen 库中有多种实现：</p>
 <ul>
 <li>LU 分解</li>
 <li>基于 Householder 变换的 QR 分解</li>
@@ -442,16 +488,16 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
 <li>改进型 Cholesky 分解（LDLT）</li>
 <li>SVD 分解</li>
 </ul>
-<p>不同方法在对矩阵 $A$ 的需求、求解速度、求解精度上有所差异，Eigen 官网对几种方法进行了对比总结，查看原文请移步 <span class="exturl" data-url="aHR0cDovL2VpZ2VuLnR1eGZhbWlseS5vcmcvZG94L2dyb3VwX19UdXRvcmlhbExpbmVhckFsZ2VicmEuaHRtbA==" title="http://eigen.tuxfamily.org/dox/group__TutorialLinearAlgebra.html">Linear algebra and decompositions<i class="fa fa-external-link"></i></span> 。</p>
+<p>不同方法在对矩阵 $\mathbf{A}$ 的需求、求解速度、求解精度上有所差异，Eigen 官网对几种方法进行了对比总结，查看原文请移步 <span class="exturl" data-url="aHR0cDovL2VpZ2VuLnR1eGZhbWlseS5vcmcvZG94L2dyb3VwX19UdXRvcmlhbExpbmVhckFsZ2VicmEuaHRtbA==" title="http://eigen.tuxfamily.org/dox/group__TutorialLinearAlgebra.html">Linear algebra and decompositions<i class="fa fa-external-link"></i></span> 。</p>
 <p><img data-src="https://image.shipengx.com/Eigen%20%E5%BA%93%E4%B8%AD%E7%BA%BF%E6%80%A7%E9%97%AE%E9%A2%98%E7%9A%84%E5%87%A0%E7%A7%8D%E6%B1%82%E8%A7%A3%E6%96%B9%E6%B3%95%E5%AF%B9%E6%AF%94.png" alt="Eigen 库中线性问题的几种求解方法对比"></p>
-<p>Eigen 官网在 <span class="exturl" data-url="aHR0cDovL2VpZ2VuLnR1eGZhbWlseS5vcmcvZG94L2dyb3VwX19MZWFzdFNxdWFyZXMuaHRtbA==" title="http://eigen.tuxfamily.org/dox/group__LeastSquares.html">Solving linear least squares systems<i class="fa fa-external-link"></i></span> 章节中讨论了 SVD 分解、QR 分解和正规方程（即使用 LDLT 解法）三种方法在求解线性最小二乘问题上的差异，并指出：SVD 分解通常精度最高但速度最慢，正规方程速度最快但精度最差，QR 分解性能介于两种方法之间。相比 SVD 分解和 QR 分解，当矩阵 $A$ 病态时，正规方程解法所得结果将损失两倍精度。</p>
-<p>利用上文所述的工程 Demo 中的小样本（三次多项式 $f(x) = 1 + x + 2x^2 + 3x^3$ 附近的 5 个点）构造出范德蒙德矩阵（即矩阵 $A$）后，对矩阵法（文中方法）、正规方程、householderQr 分解和 bdcSvd 分解进行了拟合实验对比：</p>
+<p>Eigen 官网在 <span class="exturl" data-url="aHR0cDovL2VpZ2VuLnR1eGZhbWlseS5vcmcvZG94L2dyb3VwX19MZWFzdFNxdWFyZXMuaHRtbA==" title="http://eigen.tuxfamily.org/dox/group__LeastSquares.html">Solving linear least squares systems<i class="fa fa-external-link"></i></span> 章节中讨论了 SVD 分解、QR 分解和正规方程（即使用 LDLT 解法）三种方法在求解线性最小二乘问题上的差异，并指出：SVD 分解通常精度最高但速度最慢，正规方程速度最快但精度最差，QR 分解性能介于两种方法之间。相比 SVD 分解和 QR 分解，当矩阵 $\mathbf{A}$ 病态时，正规方程解法所得结果将损失两倍精度。</p>
+<p>利用上文所述的工程 Demo 中的小样本（三次多项式 $f(x) = 1 + x + 2x^2 + 3x^3$ 附近的 5 个点）构造出范德蒙德矩阵（即矩阵 $\mathbf{A}$）后，对矩阵法（文中方法）、正规方程、householderQr 分解和 bdcSvd 分解进行了拟合实验对比：</p>
 <p><img data-src="https://image.shipengx.com/%E5%87%A0%E7%A7%8D%E6%B1%82%E8%A7%A3%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E9%97%AE%E9%A2%98%E6%96%B9%E6%B3%95%E7%9A%84%E5%AF%B9%E6%AF%94.png" alt="几种求解线性最小二乘问题方法的对比"></p>
 <p>从结果可以看出，在求解速度方面：</p>
 <script type="math/tex; mode=display">
 \text{正规方程}>\text{householderQr分解}>\text{矩阵法}>\text{bdcSvd分解}</script><p>在求解精度方面：</p>
 <script type="math/tex; mode=display">
-\text{bdcSvd分解}>\text{householderQr分解}>\text{正规方程}>\text{矩阵法}</script><p>householderQr 分解综合性能较优，矩阵法综合性能较差，且有 $A^TA$ 可逆的要求。</p>
+\text{bdcSvd分解}>\text{householderQr分解}>\text{正规方程}>\text{矩阵法}</script><p>householderQr 分解综合性能较优，矩阵法综合性能较差，且有 $\mathbf{A}^\mathrm{T}\mathbf{A}$ 可逆的要求。</p>
 <p>对于线性回归问题，还可通过<strong>梯度下降法</strong>进行求解，梯度下降法具体使用中还会涉及一些工程细节，例如数据的特征缩放（归一化）、步长 $\alpha$（学习率）的选择、迭代次数的设置等，具体不再展开，后面会另开一篇文章。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS9tYWRvY3MvODE4Lmh0bWw=" title="https://www.matongxue.com/madocs/818.html">如何理解最小二乘法？<i class="fa fa-external-link"></i></span></li>
@@ -471,6 +517,7 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC8xYzg2Zjk3NzBhYTc=" title="https://www.jianshu.com/p/1c86f9770aa7">从线性回归到最小二乘法和梯度下降法<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cubWF0b25neHVlLmNvbS9tYWRvY3MvMjIy" title="https://www.matongxue.com/madocs/222">如何直观形象的理解方向导数与梯度以及它们之间的关系？<i class="fa fa-external-link"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9ieXRlb2ZiaW8uY29tL2FyY2hpdmVzLzEzLmh0bWw=" title="https://byteofbio.com/archives/13.html">使用最小二乘法和梯度下降法进行线性回归分析<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8yNDcwOTc0OA==" title="https://zhuanlan.zhihu.com/p/24709748">矩阵求导术（上）<i class="fa fa-external-link"></i></span></li>
 </ol>
 <hr>
 
@@ -483,6 +530,9 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f2f67899.html" rel="bookmark">再谈最小二乘法：加权最小二乘多项式拟合数学推导及其 C++ 实现</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
     </li>
     <li class="popular-posts-item">
@@ -493,9 +543,6 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\cfd8b171.html" rel="bookmark">从贝叶斯滤波到无迹卡尔曼滤波</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\f3c9e219.html" rel="bookmark">从贝叶斯滤波到粒子滤波</a></div>
     </li>
   </ul>
 
@@ -528,7 +575,7 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.shipengx.com/archives/e0ebe48c.html" title="最小二乘法多项式曲线拟合数学原理及其C++实现">https://blog.shipengx.com/archives/e0ebe48c.html</a>
+    <a href="https://blog.shipengx.com/archives/e0ebe48c.html" title="最小二乘法多项式曲线拟合数学原理及其 C++ 实现">https://blog.shipengx.com/archives/e0ebe48c.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -619,7 +666,7 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-最小二乘法概述"><span class="nav-text">1 最小二乘法概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-最小二乘法求解多项式曲线系数向量的数学推导"><span class="nav-text">2 最小二乘法求解多项式曲线系数向量的数学推导</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-代数法"><span class="nav-text">2.1 代数法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-矩阵法"><span class="nav-text">2.2 矩阵法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-代码实现"><span class="nav-text">3 代码实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-总结"><span class="nav-text">4 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-符号约定"><span class="nav-text">1 符号约定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-最小二乘法概述"><span class="nav-text">2 最小二乘法概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-数学推导"><span class="nav-text">3 数学推导</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-代数法"><span class="nav-text">3.1 代数法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-矩阵法"><span class="nav-text">3.2 矩阵法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-代码实现"><span class="nav-text">4 代码实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-总结"><span class="nav-text">5 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -637,7 +684,7 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">99</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -650,7 +697,7 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -661,9 +708,6 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
-      </span>
-      <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
@@ -688,13 +732,14 @@ S=(X_vθ-Y_r)^T(X_vθ-Y_r)</script><p>$X_v$ 是一个<strong>范德蒙矩阵</st
     <footer class="footer">
       <div class="footer-inner">
         
-  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号    </span>
+      <img src="https://blog.shipengx.com/download/备案图标.png" style="display: inline-block;"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5nb3YuY24vcG9ydGFsL3JlZ2lzdGVyU3lzdGVtSW5mbz9yZWNvcmRjb2RlPTMxMDExNDAyMDA2MzA5">沪公网安备31011402006309号 </span>
   </div>
 
 <div class="copyright">
   
   &copy; 2020 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

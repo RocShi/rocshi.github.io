@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本文从图论中的一些基本概念出发，对匈牙利算法的发展脉络、算法流程及其 C++ 代码实现进行了详细阐述。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多目标跟踪数据关联之匈牙利算法">
+<meta property="og:url" content="https://blog.shipengx.com/archives/1a7e45e5.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本文从图论中的一些基本概念出发，对匈牙利算法的发展脉络、算法流程及其 C++ 代码实现进行了详细阐述。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E5%A4%9A%E7%9B%AE%E6%A0%87%E8%B7%9F%E8%B8%AA%E6%95%B0%E6%8D%AE%E5%85%B3%E8%81%94%E4%B9%8B%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%A4%9A%E7%9B%AE%E6%A0%87%E8%B7%9F%E8%B8%AA%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%85%B8%E5%9E%8B%E7%9A%84%E6%97%A0%E5%90%91%E6%9C%89%E6%9D%83%E5%9B%BE.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BA%8C%E5%88%86%E5%9B%BE.png">
+<meta property="og:image" content="https://image.shipengx.com/%E4%BA%8C%E5%88%86%E5%9B%BE%E7%9A%84%E4%B8%80%E4%B8%AA%E5%8C%B9%E9%85%8D.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%9B%BE%E7%9A%84%E6%9C%80%E5%A4%A7%E5%8C%B9%E9%85%8D%E4%B8%8D%E5%94%AF%E4%B8%80.png">
+<meta property="og:image" content="https://image.shipengx.com/%E6%9C%89%E6%9D%83%E4%BA%8C%E5%88%86%E5%9B%BE.png">
+<meta property="og:image" content="https://image.shipengx.com/%E4%BA%8C%E5%88%86%E5%9B%BE%E4%B8%AD%E7%9A%84%E4%B8%80%E6%9D%A1%E4%BA%A4%E6%9B%BF%E8%B7%AF.png">
+<meta property="og:image" content="https://image.shipengx.com/%E4%BA%8C%E5%88%86%E5%9B%BE%E4%B8%AD%E7%9A%84%E4%B8%80%E6%9D%A1%E5%A2%9E%E5%B9%BF%E8%B7%AF.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%8F%8D%E5%A4%8D%E6%90%9C%E7%B4%A2%E5%A2%9E%E5%B9%BF%E8%B7%AF%E5%AF%BB%E6%89%BE%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%A4%A7%E5%8C%B9%E9%85%8D.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95%E5%8E%9F%E5%A7%8B%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://image.shipengx.com/%E8%88%AA%E8%BF%B9%E9%87%8F%E6%B5%8B%E4%BB%A3%E4%BB%B7%E7%9F%A9%E9%98%B5%E7%A4%BA%E4%BE%8B.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95%E5%8E%9F%E5%A7%8B%E6%B5%81%E7%A8%8B%E7%A4%BA%E4%BE%8B.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%B0%86%E5%8E%9F%E4%BB%A3%E4%BB%B7%E7%9F%A9%E9%98%B5%E8%BF%9B%E8%A1%8C%E8%BD%AC%E5%8C%96%E4%BB%A5%E6%B1%82%E8%A7%A3%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%A4%A7%E6%9D%83%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98.png">
+<meta property="og:image" content="https://image.shipengx.com/%E6%94%B9%E8%BF%9B%E7%9A%84%20KM%20%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://image.shipengx.com/%E8%88%AA%E8%BF%B9%E9%87%8F%E6%B5%8B%E4%BB%A3%E4%BB%B7%E7%9F%A9%E9%98%B5%E4%B8%BA%E9%9D%9E%E6%96%B9%E9%98%B5.png">
+<meta property="og:image" content="https://image.shipengx.com/%E6%94%B9%E8%BF%9B%E7%9A%84%20KM%20%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E7%A4%BA%E4%BE%8B.png">
+<meta property="article:published_time" content="2022-10-08T12:04:00.000Z">
+<meta property="article:modified_time" content="2025-08-31T15:42:11.741Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="多传感器信息融合">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="多目标跟踪">
+<meta property="article:tag" content="匈牙利算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E5%A4%9A%E7%9B%AE%E6%A0%87%E8%B7%9F%E8%B8%AA%E6%95%B0%E6%8D%AE%E5%85%B3%E8%81%94%E4%B9%8B%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/1a7e45e5.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>多目标跟踪数据关联之匈牙利算法 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">49</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">99</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/1a7e45e5.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          多目标跟踪数据关联之匈牙利算法
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-10-08 20:04:00" itemprop="dateCreated datePublished" datetime="2022-10-08T20:04:00+08:00">2022-10-08</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">自动驾驶</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/%E5%A4%9A%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BF%A1%E6%81%AF%E8%9E%8D%E5%90%88/" itemprop="url" rel="index">
+                    <span itemprop="name">多传感器信息融合</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/1a7e45e5.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/1a7e45e5.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本文从图论中的一些基本概念出发，对匈牙利算法的发展脉络、算法流程及其 C++ 代码实现进行了详细阐述。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E5%A4%9A%E7%9B%AE%E6%A0%87%E8%B7%9F%E8%B8%AA%E6%95%B0%E6%8D%AE%E5%85%B3%E8%81%94%E4%B9%8B%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95.png" alt="目录-多目标跟踪数据关联之匈牙利算法"></p>
+<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>目标跟踪（Object Tracking）是自动驾驶中非常常见的任务，根据跟踪目标数量的不同，目标跟踪可分为：</p>
+<ul>
+<li>单目标跟踪（Single Object Tracking，SOT）</li>
+<li>多目标跟踪（Multi-Objects Tracking，MOT）</li>
+</ul>
+<p>目标跟踪所要做的是根据传感器量测序列确定真实目标的数量以及每个目标的对应状态（位置、速度、航向等），具体实现可大体分为三部分：</p>
+<ul>
+<li>状态估计</li>
+<li>数据关联</li>
+<li>航迹管理</li>
+</ul>
+<p>典型的多目标跟踪系统框架如下所示 <span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL2hlbHAvZnVzaW9uL3VnL2ludHJvZHVjdGlvbi10by1tdWx0aXBsZS10YXJnZXQtdHJhY2tpbmcuaHRtbA==" title="https://ww2.mathworks.cn/help/fusion/ug/introduction-to-multiple-target-tracking.html">[1]<i class="fa fa-external-link"></i></span>：</p>
+<p><img data-src="https://image.shipengx.com/%E5%A4%9A%E7%9B%AE%E6%A0%87%E8%B7%9F%E8%B8%AA%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6.png" alt="多目标跟踪系统框架"></p>
+<p>其中，数据关联（Data Association）是目标跟踪中最具挑战的任务之一。对于单目标跟踪而言，数据关联要解决的是传感器量测能否与跟踪目标关联上；对于多目标跟踪而言，数据关联要解决的是哪个传感器量测能与哪个跟踪目标关联上，意即，跟踪目标与传感器量测的一一对应关系。目前，数据关联已发展出多种理论与算法，包括但不限于 <span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL2hlbHAvZnVzaW9uL3VnL2ludHJvZHVjdGlvbi10by1hc3NpZ25tZW50LW1ldGhvZHMtaW4tdHJhY2tpbmctc3lzdGVtcy5odG1s" title="https://ww2.mathworks.cn/help/fusion/ug/introduction-to-assignment-methods-in-tracking-systems.html">[2]<i class="fa fa-external-link"></i></span>：</p>
+<ul>
+<li>最近邻（Nearest Neighbor，NN）</li>
+<li>概率数据关联（Probability Data Association，PDA）</li>
+<li>联合概率数据关联（Joint Probability Data Association，JPDA）</li>
+<li>多假设跟踪（Multiple Hypothesis Tracking，MHT）</li>
+<li>随机有限集（Random Finite Set，RFS）</li>
+<li>匈牙利算法（Hungarian Algorithm）</li>
+</ul>
+<p>多目标跟踪数据关联问题可以转化为有权二分图最小权匹配问题，本文将从图论中的一些基本概念出发，对匈牙利算法的发展脉络、算法流程及其 C++ 代码实现进行详细阐述。</p>
+<h1 id="1-基本概念" class="heading-control"><a href="#1-基本概念" class="headerlink" title="1 基本概念"></a>1 基本概念<a class="heading-anchor" href="#1-基本概念" aria-hidden="true"></a></h1><p>匈牙利算法本质是图算法，所以在对其进行展开前，我们首先需要认识一些图论中重要的基本概念。</p>
+<h2 id="1-1-图" class="heading-control"><a href="#1-1-图" class="headerlink" title="1.1 图"></a>1.1 图<a class="heading-anchor" href="#1-1-图" aria-hidden="true"></a></h2><p>图（Graph，G），是由顶点集合（Vertices，V）和边集合（Edges，E）组成的二元组，表征了不同顶点间的拓扑连接关系，记作：</p>
+<script type="math/tex; mode=display">
+G=(V,E)</script><p>根据图中的边是否具有单向性可将图分为有向图（Directed Graph）和无向图（Undirected Graph），根据图中的边是否具有不同的权重可将图分为有权图（Weighted Graph）和无权图（Unweighted Graph）。本文中将讨论的图都是无向有权图（Undirected Weighted Graph），一个典型的无向有权图如下所示 <span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMWs0NHkxejdnNi8/c3BtX2lkX2Zyb209MzMzLjk5OS4wLjAmYW1wO3ZkX3NvdXJjZT1iYmY0MzVmZGUxNzU0ZTgwMTRiNjBkZDE0MmFhNGZkNQ==" title="https://www.bilibili.com/video/BV1k44y1z7g6/?spm_id_from=333.999.0.0&amp;vd_source=bbf435fde1754e8014b60dd142aa4fd5">[3]<i class="fa fa-external-link"></i></span>：</p>
+<p><img data-src="https://image.shipengx.com/%E5%85%B8%E5%9E%8B%E7%9A%84%E6%97%A0%E5%90%91%E6%9C%89%E6%9D%83%E5%9B%BE.png" alt="典型的无向有权图"></p>
+<h2 id="1-2-二分图" class="heading-control"><a href="#1-2-二分图" class="headerlink" title="1.2 二分图"></a>1.2 二分图<a class="heading-anchor" href="#1-2-二分图" aria-hidden="true"></a></h2><h3 id="1-2-1-二分图的概念" class="heading-control"><a href="#1-2-1-二分图的概念" class="headerlink" title="1.2.1 二分图的概念"></a>1.2.1 二分图的概念<a class="heading-anchor" href="#1-2-1-二分图的概念" aria-hidden="true"></a></h3><p>二分图（Bipartite Graph）是一种特殊的图，又称二部图。二分图的顶点集可以被划分为两个互不相交的独立子集 $U$ 和 $V$ <span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQmlwYXJ0aXRlX2dyYXBo" title="https://en.wikipedia.org/wiki/Bipartite_graph">[4]<i class="fa fa-external-link"></i></span>：</p>
+<script type="math/tex; mode=display">
+G=(U,V,E)</script><p>二分图边集合 $E$ 中的每一条边分别连接了顶点子集 $U$ 和 $V$ 中的一个顶点，但 $U$ 和 $V$ 内部的顶点互不相连。一个典型的二分图如下所示 <span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMTRxNHkxajc3Ni8/c3BtX2lkX2Zyb209MzMzLjk5OS4wLjAmYW1wO3ZkX3NvdXJjZT1iYmY0MzVmZGUxNzU0ZTgwMTRiNjBkZDE0MmFhNGZkNQ==" title="https://www.bilibili.com/video/BV14q4y1j776/?spm_id_from=333.999.0.0&amp;vd_source=bbf435fde1754e8014b60dd142aa4fd5">[5]<i class="fa fa-external-link"></i></span>：</p>
+<p><img data-src="https://image.shipengx.com/%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BA%8C%E5%88%86%E5%9B%BE.png" alt="典型的二分图"></p>
+<h3 id="1-2-2-二分图的判定" class="heading-control"><a href="#1-2-2-二分图的判定" class="headerlink" title="1.2.2 二分图的判定"></a>1.2.2 二分图的判定<a class="heading-anchor" href="#1-2-2-二分图的判定" aria-hidden="true"></a></h3><p>判定一个图是否是二分图等价于判定该图是否是二色图 <span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvR3JhcGhfY29sb3JpbmcjVmVydGV4X2NvbG9yaW5n" title="https://en.wikipedia.org/wiki/Graph_coloring#Vertex_coloring">[6]<i class="fa fa-external-link"></i></span>，即图中所有顶点是否能被染色成两类颜色（需要保证相连顶点不能同色），我们可以通过广度优先搜索（Breadth First Search，BFS）实现 <span class="exturl" data-url="aHR0cHM6Ly93d3cuZ2Vla3Nmb3JnZWVrcy5vcmcvYmlwYXJ0aXRlLWdyYXBoLw==" title="https://www.geeksforgeeks.org/bipartite-graph/">[7]<i class="fa fa-external-link"></i></span>。下面我们给出具体的 C++ 代码示例，示例中使用邻接表来存储图，时间复杂度 $\mathcal{O}(V+E)$，可以使用<span class="exturl" data-url="aHR0cHM6Ly9jLnJ1bm9vYi5jb20vY29tcGlsZS8xMi8=" title="https://c.runoob.com/compile/12/">菜鸟工具 C++ 在线工具<i class="fa fa-external-link"></i></span>运行并验证程序：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 用于判断输入的图是否是二分图</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param V 图的顶点数量</span></span><br><span class="line"><span class="comment"> * @param adj 图的邻接表表示</span></span><br><span class="line"><span class="comment"> * @return bool 图是否是二分图：true - 是，false - 不是</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">IsBipartite</span><span class="params">(<span class="keyword">int</span> V, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; adj[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 存储所有顶点颜色的 vector 容器，初值 -1 表示未染色，0 表示红色，1 表示蓝色</span></span><br><span class="line">    <span class="function"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">col</span><span class="params">(V, <span class="number">-1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用于 BFS 过程的 FIFO 队列，元素类型是顶点索引及其颜色组成的二元组</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">queue</span>&lt;<span class="built_in">std</span>::pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; q;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 遍历所有顶点</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; V; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 顶点 i 尚未染色</span></span><br><span class="line">        <span class="keyword">if</span> (col[i] == <span class="number">-1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 将顶点 i 染成红色 0，并将其压入 BFS FIFO 队列</span></span><br><span class="line">            col[i] = <span class="number">0</span>;</span><br><span class="line">            q.push(&#123; i, <span class="number">0</span> &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 处理 BFS FIFO 队列中的各顶点</span></span><br><span class="line">            <span class="keyword">while</span> (!q.empty())</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">auto</span> p = q.front();</span><br><span class="line">                q.pop();</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 当前顶点</span></span><br><span class="line">                <span class="keyword">int</span> v = p.first;</span><br><span class="line">                <span class="comment">// 当前顶点的颜色</span></span><br><span class="line">                <span class="keyword">int</span> c = p.second;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 遍历当前顶点的所有相连顶点</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j : adj[v])</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">// 若相连顶点 j 与当前顶点颜色相同，则输入的图不是二分图</span></span><br><span class="line">                    <span class="keyword">if</span> (col[j] == c) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 若相连顶点 j 尚未染色</span></span><br><span class="line">                    <span class="keyword">if</span> (col[j] == <span class="number">-1</span>)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">// 将相连顶点 j 染成与当前顶点颜色相反的颜色，并将其压入 BFS</span></span><br><span class="line">                        <span class="comment">// FIFO 队列</span></span><br><span class="line">                        col[j] = <span class="number">1</span> - c;</span><br><span class="line">                        q.push(&#123; j, col[j] &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> V, E;</span><br><span class="line">    V = <span class="number">4</span> , E = <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用邻接表存储图</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; adj[V];</span><br><span class="line">    adj[<span class="number">0</span>] = &#123;<span class="number">1</span>, <span class="number">3</span>&#125;;</span><br><span class="line">    adj[<span class="number">1</span>] = &#123;<span class="number">0</span>, <span class="number">2</span>&#125;;</span><br><span class="line">    adj[<span class="number">2</span>] = &#123;<span class="number">1</span>, <span class="number">3</span>&#125;;</span><br><span class="line">    adj[<span class="number">3</span>] = &#123;<span class="number">0</span>, <span class="number">2</span>&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    IsBipartite(V, adj) ? <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"输入的图是二分图"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span></span><br><span class="line">                        : <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"输入的图不是二分图"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>二分图的判定与本文中要讲解的匈牙利算法并不直接相关，这里只作为二分图概念的扩展内容。</p>
+<h2 id="1-3-匹配" class="heading-control"><a href="#1-3-匹配" class="headerlink" title="1.3 匹配"></a>1.3 匹配<a class="heading-anchor" href="#1-3-匹配" aria-hidden="true"></a></h2><p>给定图 $G=(V,E)$，它的一个匹配（Matching）$M$ 表示包含于边集合 $E$ 的一个子集，即 $M$ 由 $E$ 中的若干条边组成：</p>
+<script type="math/tex; mode=display">
+M \subseteq E</script><p>匹配中的任意两条边之间没有公共顶点。以上面的二分图为例，下图中的两条红色边构成了它的一个匹配 <span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUc1NHkxNTdIQS8/c3BtX2lkX2Zyb209MzMzLjk5OS4wLjAmYW1wO3ZkX3NvdXJjZT1iYmY0MzVmZGUxNzU0ZTgwMTRiNjBkZDE0MmFhNGZkNQ==" title="https://www.bilibili.com/video/BV1G54y157HA/?spm_id_from=333.999.0.0&amp;vd_source=bbf435fde1754e8014b60dd142aa4fd5">[8]<i class="fa fa-external-link"></i></span>：</p>
+<p><img data-src="https://image.shipengx.com/%E4%BA%8C%E5%88%86%E5%9B%BE%E7%9A%84%E4%B8%80%E4%B8%AA%E5%8C%B9%E9%85%8D.png" alt="二分图的一个匹配"></p>
+<p>匹配 $M$ 中的边被称为匹配边，上图中的两条红色边都是匹配边；边集合 $E$ 中不属于匹配 $M$ 的边被称为未匹配边，上图中的灰色边都是未匹配边。</p>
+<p>匹配边的端点被称为匹配点，上图中顶点 $u_4$、$u_5$、$v_1$、$v_3$ 都是匹配点；顶点集合 $U$ 和 $V$ 中不是匹配边端点的其它顶点被称为未匹配点，上图中顶点 $u_1$、$u_2$、$u_3$、$v_2$、$v_4$ 都是未匹配点。</p>
+<h2 id="1-4-最大匹配" class="heading-control"><a href="#1-4-最大匹配" class="headerlink" title="1.4 最大匹配"></a>1.4 最大匹配<a class="heading-anchor" href="#1-4-最大匹配" aria-hidden="true"></a></h2><p>最大匹配（Maximum-Cardinality Matching）表示图的所有匹配中边数最多的那些匹配。最大匹配不唯一，仍以上面的二分图为例，它的最大匹配的边数为 4，下面的两个匹配都是它的最大匹配 <span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUc1NHkxNTdIQS8/c3BtX2lkX2Zyb209MzMzLjk5OS4wLjAmYW1wO3ZkX3NvdXJjZT1iYmY0MzVmZGUxNzU0ZTgwMTRiNjBkZDE0MmFhNGZkNQ==" title="https://www.bilibili.com/video/BV1G54y157HA/?spm_id_from=333.999.0.0&amp;vd_source=bbf435fde1754e8014b60dd142aa4fd5">[8]<i class="fa fa-external-link"></i></span>：</p>
+<p><img data-src="https://image.shipengx.com/%E5%9B%BE%E7%9A%84%E6%9C%80%E5%A4%A7%E5%8C%B9%E9%85%8D%E4%B8%8D%E5%94%AF%E4%B8%80.png" alt="图的最大匹配不唯一"></p>
+<h2 id="1-5-最大权匹配和最小权匹配" class="heading-control"><a href="#1-5-最大权匹配和最小权匹配" class="headerlink" title="1.5 最大权匹配和最小权匹配"></a>1.5 最大权匹配和最小权匹配<a class="heading-anchor" href="#1-5-最大权匹配和最小权匹配" aria-hidden="true"></a></h2><p>最大权匹配（Maximum-Weight Matching）表示的是有权图的所有匹配中边的权重之和最大的那些匹配，最小权匹配（Minimum-Weight Matching）表示的是有权图的所有匹配中边的权重之和最小的那些匹配。</p>
+<p>仍以上面的二分图为例，我们为它所有的边赋上权重，将其转化为有权二分图 <span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMU1CNHkxZzdGeC8/c3BtX2lkX2Zyb209MzMzLjk5OS4wLjAmYW1wO3ZkX3NvdXJjZT1iYmY0MzVmZGUxNzU0ZTgwMTRiNjBkZDE0MmFhNGZkNQ==" title="https://www.bilibili.com/video/BV1MB4y1g7Fx/?spm_id_from=333.999.0.0&amp;vd_source=bbf435fde1754e8014b60dd142aa4fd5">[9]<i class="fa fa-external-link"></i></span>：</p>
+<p><img data-src="https://image.shipengx.com/%E6%9C%89%E6%9D%83%E4%BA%8C%E5%88%86%E5%9B%BE.png" alt="有权二分图"></p>
+<p>对于上面的有权二分图，我们将任意边上的权重记作 $w$，任意匹配记作 $M$，匹配 $M$ 包含的所有匹配边的权重和记作函数 $f(M)$，则有权二分图的最大权匹配（Maximum-Weight Bipartite Matching）问题和有权二分图的最小权匹配（Minimum-Weight Bipartite Matching）问题可以用如下数学语言进行描述：</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+    f(M)=\displaystyle\sum_{(u,v) \in M}{w_{u,v}} \\
+    \max / \min{f(M)}
+\end{cases}</script><p>多目标跟踪数据关联问题可以转化为有权二分图最小权匹配问题，跟踪过程中的航迹序列和量测序列可以分别看作是上面这个有权二分图中的顶点集合 $U$ 和 $V$，边的权重可以看作是航迹和量测间通过某种方式计算得到的匹配距离（例如欧式距离），这个匹配距离我们称之为代价（Cost），所有的匹配距离构成了代价矩阵（Cost Matrix），我们需要做的是，找到航迹和量测间的匹配关系使得总的匹配距离最小（代价最低）。</p>
+<h2 id="1-6-交替路" class="heading-control"><a href="#1-6-交替路" class="headerlink" title="1.6 交替路"></a>1.6 交替路<a class="heading-anchor" href="#1-6-交替路" aria-hidden="true"></a></h2><p>给定图 $G=(V,E)$ 和它的一个匹配 $M$，交替路（Alternating Path）描述的是图中的这样一条路径：从图中的某个未匹配点出发，交替经过未匹配边和匹配边形成的路径。下面的二分图中，路径 $u_3$ $\color{gray}{\rightarrow}$ $v_1$ $\color{red}{\rightarrow}$ $u_1$ $\color{gray}{\rightarrow}$ $v_3$ $\color{red}{\rightarrow}$ $u_2$ 就是一条交替路：</p>
+<p><img data-src="https://image.shipengx.com/%E4%BA%8C%E5%88%86%E5%9B%BE%E4%B8%AD%E7%9A%84%E4%B8%80%E6%9D%A1%E4%BA%A4%E6%9B%BF%E8%B7%AF.png" alt="二分图中的一条交替路"></p>
+<h2 id="1-7-增广路" class="heading-control"><a href="#1-7-增广路" class="headerlink" title="1.7 增广路"></a>1.7 增广路<a class="heading-anchor" href="#1-7-增广路" aria-hidden="true"></a></h2><h3 id="1-7-1-增广路的概念" class="heading-control"><a href="#1-7-1-增广路的概念" class="headerlink" title="1.7.1 增广路的概念"></a>1.7.1 增广路的概念<a class="heading-anchor" href="#1-7-1-增广路的概念" aria-hidden="true"></a></h3><p>增广路（Augmenting Path）是一条特殊的交替路，增广路从图中的某个未匹配点起始，交替经过未匹配边和匹配边，并终止于不同于起始点的另一个未匹配点。下面的二分图中，路径 $u_1$ $\color{gray}{\rightarrow}$ $v_1$ $\color{red}{\rightarrow}$ $u_5$ $\color{gray}{\rightarrow}$ $v_4$ 就是一条增广路：</p>
+<p><img data-src="https://image.shipengx.com/%E4%BA%8C%E5%88%86%E5%9B%BE%E4%B8%AD%E7%9A%84%E4%B8%80%E6%9D%A1%E5%A2%9E%E5%B9%BF%E8%B7%AF.png" alt="二分图中的一条增广路"></p>
+<h3 id="1-7-2-增广路的性质" class="heading-control"><a href="#1-7-2-增广路的性质" class="headerlink" title="1.7.2 增广路的性质"></a>1.7.2 增广路的性质<a class="heading-anchor" href="#1-7-2-增广路的性质" aria-hidden="true"></a></h3><p>给定图 $G=(V,E)$ 和它的一个匹配 $M$ 以及增广路 $P$，并将 $P$ 上所有的边记作集合 $E_P$，则有如下三个非常重要的性质：</p>
+<ol>
+<li>Berge 定理：对于给定的图 $G$ 和它的一个匹配 $M$，$M$ 是 $G$ 的最大匹配的充要条件是 $G$ 中不存在匹配 $M$ 的增广路 <span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQmVyZ2UlMjdzX3RoZW9yZW0=" title="https://en.wikipedia.org/wiki/Berge%27s_theorem">[10]<i class="fa fa-external-link"></i></span>；</li>
+<li>$E_P$ 中边的数量一定为奇数，且增广路 $P$ 的第奇数条边不属于匹配 $M$，第偶数条边属于匹配 $M$，这意味着，$E_P$ 中的未匹配边数量一定比匹配边数量多 1；</li>
+<li>通过性质 2 不难发现，通过将 $E_P$ 中的未匹配边取反变成匹配边，匹配边取反变成未匹配边，就可以多出 1 条匹配边，取反得到的新匹配边和 $M$ 中不属于 $E_P$ 的剩余边可以构成一个更大的匹配 $M’$。在集合论中，$M’$ 被称作 $M$ 和 $E_P$ 的对称差（Symmetric Difference）<span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvU3ltbWV0cmljX2RpZmZlcmVuY2U=" title="https://en.wikipedia.org/wiki/Symmetric_difference">[11]<i class="fa fa-external-link"></i></span>，记作 $M\ominus E_P$：</li>
+</ol>
+<script type="math/tex; mode=display">
+M\ominus E_P=(M\cup E_P) - (M\cap E_P)</script><p>结合性质 1 和性质 3 我们不难发现，对于一个给定的二分图 $G=(U,V,E)$ 和初始为空的匹配 $M$，我们只要反复搜索增广路就能逐渐扩展匹配的大小，最终当我们找不到增广路时就得到了一个最大匹配，下图中的示例很直观地展示了这个过程：</p>
+<p><img data-src="https://image.shipengx.com/%E5%8F%8D%E5%A4%8D%E6%90%9C%E7%B4%A2%E5%A2%9E%E5%B9%BF%E8%B7%AF%E5%AF%BB%E6%89%BE%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%A4%A7%E5%8C%B9%E9%85%8D.png" alt="反复搜索增广路寻找二分图最大匹配"></p>
+<p>最后得到的 $M=\{e_{1,3},e_{3,1},e_{4,2},e_{5,4}\}$ 就是输入二分图 $G$ 的一个最大匹配。很多资料中使用“婚配问题”为例来讲解上述过程 <span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rhcmtfc2NvcGUvYXJ0aWNsZS9kZXRhaWxzLzg4ODA1NDc=" title="https://blog.csdn.net/dark_scope/article/details/8880547">[12]<i class="fa fa-external-link"></i></span>，这里我们不再赘述，一句话总结：有机会上，没机会创造机会也要上。</p>
+<h1 id="2-匈牙利算法的发展脉络" class="heading-control"><a href="#2-匈牙利算法的发展脉络" class="headerlink" title="2 匈牙利算法的发展脉络"></a>2 匈牙利算法的发展脉络<a class="heading-anchor" href="#2-匈牙利算法的发展脉络" aria-hidden="true"></a></h1><p>匈牙利算法是全局最近邻（Global Nearest Neighbor，GNN）数据关联思想的一种具体实现，其最早用于求解经济学领域中的任务分配问题，后来发展成为图论领域中求解有权二分图最小权匹配问题的一般性算法 <span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvSHVuZ2FyaWFuX2FsZ29yaXRobSNjaXRlX3JlZi1rdWhuMTk1Nl8yLTA=" title="https://en.wikipedia.org/wiki/Hungarian_algorithm#cite_ref-kuhn1956_2-0">[13]<i class="fa fa-external-link"></i></span> <span class="exturl" data-url="aHR0cHM6Ly9ib29rLmRvdWJhbi5jb20vc3ViamVjdC8yMzI4NjE5Lw==" title="https://book.douban.com/subject/2328619/">[14]<i class="fa fa-external-link"></i></span> <span class="exturl" data-url="aHR0cHM6Ly9kbC5hY20ub3JnL2RvaS9wZGYvMTAuMTE0NS82NDYyLjY1MDI=" title="https://dl.acm.org/doi/pdf/10.1145/6462.6502">[15]<i class="fa fa-external-link"></i></span>：</p>
+<ul>
+<li>1955 年，Harold Kuhn 在匈牙利数学家 Dénes Kőnig 和 Jenő Egerváry 的研究基础（系数矩阵中独立 0 元素的最多个数等于能覆盖所有 0 元素的最少直线数）上提出了匈牙利方法（Hungarian Method）以求解任务分配问题 <span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjEwMDIvbmF2LjM4MDAwMjAxMDk=" title="https://sci-hub.wf/10.1002/nav.3800020109">[16]<i class="fa fa-external-link"></i></span>。</li>
+<li>1956 年，Harold Kuhn 通过图论重新建模了使用匈牙利方法求解任务分配问题的过程，并将任务分配问题转化为有权二分图最小权匹配问题，同时比较了匈牙利方法的几个变种 <span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjEwMDIvbmF2LjM4MDAwMzA0MDQ=" title="https://sci-hub.wf/10.1002/nav.3800030404">[17]<i class="fa fa-external-link"></i></span>。</li>
+<li>1956 年，Merrill M. Flood 给出了匈牙利方法的算法实现步骤（划线法：划最少的线覆盖所有的 0），这是原始的匈牙利算法，网络上很多讲解匈牙利算法的资料中都使用了这里的步骤 <span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjEyODcvb3ByZS40LjEuNjE=" title="https://sci-hub.wf/10.1287/opre.4.1.61">[18]<i class="fa fa-external-link"></i></span>。</li>
+<li>1957 年，James Munkres 回顾并改进了匈牙利方法，针对划线法首次引入“标星 0（starred zeros）”和“标撇 0（primed zeros）”的概念，自此该算法常被称为 Kuhn–Munkres 算法、KM 算法或 Munkres 分配算法 <span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjExMzcvMDEwNTAwMw==" title="https://sci-hub.wf/10.1137/0105003">[19]<i class="fa fa-external-link"></i></span>。Kuhn–Munkres 算法只适用于分配矩阵（关联矩阵）为方阵的情形（即 $|U|=|V|$），最坏时间复杂度 $\mathcal{O}(n^4)$。</li>
+<li>1957 年，法国数学家 Claude Berge 证明，对于给定的图 $G$ 和它的一个匹配 $M$，$M$ 是最大匹配的充要条件是图中不存在匹配 $M$ 的增广路——Berge 定理 <span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQmVyZ2UlMjdzX3RoZW9yZW0=" title="https://en.wikipedia.org/wiki/Berge%27s_theorem">[10]<i class="fa fa-external-link"></i></span>，该定理奠定了后来各种通过搜索增广路求解图最大匹配问题的基础。</li>
+<li>1965 年，组合优化大师 Jack Edmonds <span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvSmFja19FZG1vbmRz" title="https://en.wikipedia.org/wiki/Jack_Edmonds">[20]<i class="fa fa-external-link"></i></span> 提出“带花树开花”算法（Blossom Algorithm）<span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQmxvc3NvbV9hbGdvcml0aG0=" title="https://en.wikipedia.org/wiki/Blossom_algorithm">[21]<i class="fa fa-external-link"></i></span>，用于求解无权一般图最大匹配问题 <span class="exturl" data-url="aHR0cHM6Ly93d3cuY2FtYnJpZGdlLm9yZy9jb3JlL3NlcnZpY2VzL2FvcC1jYW1icmlkZ2UtY29yZS9jb250ZW50L3ZpZXcvMDhCNDkyQjcyMzIyQzQxMzBBRTgwMEMwNjEwRTBFMjEvUzAwMDg0MTRYMDAwMzk0MTlhLnBkZi9wYXRocy10cmVlcy1hbmQtZmxvd2Vycy5wZGY=" title="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/08B492B72322C4130AE800C0610E0E21/S0008414X00039419a.pdf/paths-trees-and-flowers.pdf">[22]<i class="fa fa-external-link"></i></span> 和有权一般图最大权匹配问题 <span class="exturl" data-url="aHR0cHM6Ly9udmxwdWJzLm5pc3QuZ292L25pc3RwdWJzL2pyZXMvNjlCL2pyZXN2NjlCbjEtMnAxMjVfQTFiLnBkZg==" title="https://nvlpubs.nist.gov/nistpubs/jres/69B/jresv69Bn1-2p125_A1b.pdf">[23]<i class="fa fa-external-link"></i></span>，算法基于 Berge 定理通过反复搜索增广路来逐渐扩展部分匹配，直至找不到增广路。</li>
+<li>1971 年，François Bourgeois 等人将 Kuhn–Munkres 算法扩展到分配矩阵为非方阵的情形 <span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjExNDUvMzYyOTE5LjM2Mjk0NQ==" title="https://sci-hub.wf/10.1145/362919.362945">[24]<i class="fa fa-external-link"></i></span>。</li>
+<li>1973 年，John Hopcroft 和 Richard Karp 提出 Hopcroft–Karp 算法<span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvSG9wY3JvZnQlRTIlODAlOTNLYXJwX2FsZ29yaXRobQ==" title="https://en.wikipedia.org/wiki/Hopcroft%E2%80%93Karp_algorithm">[25]<i class="fa fa-external-link"></i></span>，用于求解无权二分图最大匹配问题，类似 Blossom 算法，Hopcroft–Karp 算法同样是通过反复搜索增广路的方式来逐渐扩展部分匹配，不同的是该算法每次迭代可以得到多条增广路，因而算法效率更高 <span class="exturl" data-url="aHR0cHM6Ly93ZWIuZWVjcy51bWljaC5lZHUvfnBldHRpZS9tYXRjaGluZy9Ib3Bjcm9mdC1LYXJwLWJpcGFydGl0ZS1tYXRjaGluZy5wZGY=" title="https://web.eecs.umich.edu/~pettie/matching/Hopcroft-Karp-bipartite-matching.pdf">[26]<i class="fa fa-external-link"></i></span>。</li>
+<li>1978 年，JIN KUE WONG 将 Kuhn–Munkres 算法的最坏时间复杂度优化到 $\mathcal{O}(n^3)$ <span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjEwMDcvYmYwMTkzMDk5NA==" title="https://sci-hub.wf/10.1007/bf01930994">[27]<i class="fa fa-external-link"></i></span>。</li>
+</ul>
+<p>通过网络搜索匈牙利算法相关资料时，我们经常会看到一些有误导性的说法，例如“匈牙利算法用于求解无权二分图的最大匹配问题，1965 年由匈牙利数学家 Edmonds 提出，故得名匈牙利算法；KM 算法用于求解有权二分图的最小权匹配问题” <span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC82Mjk4MTkwMQ==" title="https://zhuanlan.zhihu.com/p/62981901">[28]<i class="fa fa-external-link"></i></span>，类似说法很不严谨且容易让人产生混淆。根据匈牙利算法的发展历程，我们给出下面的三个事实对这些说法予以反驳：</p>
+<ol>
+<li>现在常说的以及文献中常提到的匈牙利算法和 Kuhn-Munkres 算法指的是同一个东西，求解的都是有权二分图最小权匹配问题；</li>
+<li>匈牙利算法起源于 1955 年 Kuhn 提出的匈牙利方法（Hungarian Method），1956 年 Merrill M. Flood 给出了匈牙利方法的算法实现步骤，1957 年 Munkres 针对该方法做了改进，后来大家习惯叫匈牙利算法或 Kuhn-Munkres 算法；</li>
+<li>Edmonds 1965 年提出的是用于求解一般图最大匹配和最大权匹配的“带花树开花”算法（Blossoms Algorithm），算法基于 Berge 定理通过反复搜索增广路的方法来逐渐扩展部分匹配，后来这个方法被引入了我们现在经常看到的各种版本的匈牙利算法代码实现。</li>
+</ol>
+<p><strong>自始至终，反复搜索增广路扩展部分匹配都是一种基于 Berge 定理的用于求解图最大匹配问题的方法，而非匈牙利算法本身。</strong></p>
+<p>除匈牙利算法外，Jonker-Volgenant 算法 <span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjEwMDcvYmYwMjI3ODcxMA==" title="https://sci-hub.wf/10.1007/bf02278710">[29]<i class="fa fa-external-link"></i></span>、Auction 算法 <span class="exturl" data-url="aHR0cHM6Ly9kc3BhY2UubWl0LmVkdS9iaXRzdHJlYW0vaGFuZGxlLzE3MjEuMS8zMjY1L1AtMjEwOC0yNjkxMjY1Mi5wZGY=" title="https://dspace.mit.edu/bitstream/handle/1721.1/3265/P-2108-26912652.pdf">[30]<i class="fa fa-external-link"></i></span> 等也可用于求解分配问题，这三个算法也是 Matlab GNN 跟踪器 trackerGNN <span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL2hlbHAvZnVzaW9uL3JlZi90cmFja2VyZ25uLXN5c3RlbS1vYmplY3QuaHRtbA==" title="https://ww2.mathworks.cn/help/fusion/ref/trackergnn-system-object.html">[31]<i class="fa fa-external-link"></i></span> 可选的分配算法，这里我们不做展开。</p>
+<h1 id="3-原始匈牙利算法" class="heading-control"><a href="#3-原始匈牙利算法" class="headerlink" title="3 原始匈牙利算法"></a>3 原始匈牙利算法<a class="heading-anchor" href="#3-原始匈牙利算法" aria-hidden="true"></a></h1><h2 id="3-1-算法流程" class="heading-control"><a href="#3-1-算法流程" class="headerlink" title="3.1 算法流程"></a>3.1 算法流程<a class="heading-anchor" href="#3-1-算法流程" aria-hidden="true"></a></h2><p>上文中我们已经提到，匈牙利算法的原始流程由 Merrill M. Flood 于 1956 年给出。假设代价矩阵为 $n\times n$ 的方阵（航迹、量测数量相同），则原始流程步骤如下图所示：</p>
+<p><img data-src="https://image.shipengx.com/%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95%E5%8E%9F%E5%A7%8B%E6%B5%81%E7%A8%8B.png" alt="匈牙利算法原始流程"></p>
+<h2 id="3-2-操作示例" class="heading-control"><a href="#3-2-操作示例" class="headerlink" title="3.2 操作示例"></a>3.2 操作示例<a class="heading-anchor" href="#3-2-操作示例" aria-hidden="true"></a></h2><p>假设我们有下面的 $4\times 4$ 航迹量测代价矩阵，矩阵中的元素表示航迹量测间的匹配距离（实际项目中匹配距离不会这么夸张，这里只为演示）：</p>
+<p><img data-src="https://image.shipengx.com/%E8%88%AA%E8%BF%B9%E9%87%8F%E6%B5%8B%E4%BB%A3%E4%BB%B7%E7%9F%A9%E9%98%B5%E7%A4%BA%E4%BE%8B.png" alt="航迹量测代价矩阵示例"></p>
+<p>我们将上述的匈牙利算法原始流程步骤应用到该代价矩阵上，则求解其最小权匹配的流程如下图所示：</p>
+<p><img data-src="https://image.shipengx.com/%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95%E5%8E%9F%E5%A7%8B%E6%B5%81%E7%A8%8B%E7%A4%BA%E4%BE%8B.png" alt="匈牙利算法原始流程示例"></p>
+<p>最后需要划 4 条线才能覆盖住矩阵中所有的 0 元素，迭代终止，根据矩阵中 0 元素的位置我们很容易得到航迹量测最终的匹配关系：track1→object3，track2→object2，track3→object1，track4→object4。这个匹配满足航迹量测构成的二分图上的匹配边总权重最小，即总的匹配距离最小，代价最低。</p>
+<p>二分图最大权匹配问题可以与最小权匹配问题相互转化。假设上述代价矩阵中的各元素表示航迹量测间的相似度得分，我们想要找到航迹量测的某个匹配关系使得总的相似度得分最高，这显然是一个二分图最大权匹配问题。首先，我们找到原代价矩阵中的最大代价，并将原代价矩阵中每个元素替换为最大代价与对应元素的差值以得到新的代价矩阵，这样代价矩阵中元素间的相对大小关系就发生了反转：</p>
+<p><img data-src="https://image.shipengx.com/%E5%B0%86%E5%8E%9F%E4%BB%A3%E4%BB%B7%E7%9F%A9%E9%98%B5%E8%BF%9B%E8%A1%8C%E8%BD%AC%E5%8C%96%E4%BB%A5%E6%B1%82%E8%A7%A3%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%A4%A7%E6%9D%83%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98.png" alt="将原代价矩阵进行转化以求解二分图最大权匹配问题"></p>
+<p>然后，在新的代价矩阵上执行前文中的二分图最小权匹配求解流程即可，得到的匹配结果即为原代价矩阵的最大权匹配。</p>
+<h1 id="4-改进的-KM-算法" class="heading-control"><a href="#4-改进的-KM-算法" class="headerlink" title="4 改进的 KM 算法"></a>4 改进的 KM 算法<a class="heading-anchor" href="#4-改进的-KM-算法" aria-hidden="true"></a></h1><h2 id="4-1-算法流程" class="heading-control"><a href="#4-1-算法流程" class="headerlink" title="4.1 算法流程"></a>4.1 算法流程<a class="heading-anchor" href="#4-1-算法流程" aria-hidden="true"></a></h2><p>上述匈牙利算法原始流程虽然直观易懂，但在代码实现上并不容易，其中的一个关键难点是：如何用尽量少的线覆盖代价矩阵中所有的 0？</p>
+<p>前文中已经提到，1957 年 James Munkres 引入了“标星 0（starred zeros）”和“标撇 0（primed zeros）”的概念以改进匈牙利算法原始流程中的划线法，在算法执行过程中会选择性地对代价矩阵中产生的 0 元素标记星号（*）或标记撇号（’）来辅助搜索增广路，标星 0 表示增广路中的匹配边，标撇 0 表示增广路中的未匹配边。后来我们习惯将 Munkres 提出的方法称为 Kuhn–Munkres 算法、KM 算法或 Munkres 分配算法。</p>
+<p>KM 算法本身只适用于代价矩阵为方阵的情形，本文将介绍一种 KM 算法的改进版本 <span class="exturl" data-url="aHR0cHM6Ly9icmMyLmNvbS90aGUtYWxnb3JpdGhtLXdvcmtzaG9wLw==" title="https://brc2.com/the-algorithm-workshop/">[32]<i class="fa fa-external-link"></i></span>，这里我们姑且称之为 MKM（Modified Kuhn–Munkres）算法。MKM 算法已被大量运用于工业实践，例如 Matlab 中的 Hungarian Algorithm for Linear Assignment Problems <span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL21hdGxhYmNlbnRyYWwvZmlsZWV4Y2hhbmdlLzIwNjUyLWh1bmdhcmlhbi1hbGdvcml0aG0tZm9yLWxpbmVhci1hc3NpZ25tZW50LXByb2JsZW1zLXYyLTM/c190aWQ9dGFfZnhfcmVzdWx0cw==" title="https://ww2.mathworks.cn/matlabcentral/fileexchange/20652-hungarian-algorithm-for-linear-assignment-problems-v2-3?s_tid=ta_fx_results">[33]<i class="fa fa-external-link"></i></span> 、Python 中的 munkres 包 <span class="exturl" data-url="aHR0cDovL3NvZnR3YXJlLmNsYXBwZXIub3JnL211bmtyZXMv" title="http://software.clapper.org/munkres/">[34]<i class="fa fa-external-link"></i></span> 以及百度 Apollo 自动驾驶框架中的 Hungarian Optimizer <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0Fwb2xsb0F1dG8vYXBvbGxvL2Jsb2IvcjMuMC4wL2RvY3Mvc3BlY3MvM2Rfb2JzdGFjbGVfcGVyY2VwdGlvbl9jbi5tZCNobSVFNSVBRiVCOSVFOCVCMSVBMSVFOCVCNyU5RiVFOCVCOCVBQQ==" title="https://github.com/ApolloAuto/apollo/blob/r3.0.0/docs/specs/3d_obstacle_perception_cn.md#hm%E5%AF%B9%E8%B1%A1%E8%B7%9F%E8%B8%AA">[35]<i class="fa fa-external-link"></i></span> <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0Fwb2xsb0F1dG8vYXBvbGxvL2Jsb2IvbWFzdGVyL21vZHVsZXMvcGVyY2VwdGlvbi9jb21tb24vZ3JhcGgvaHVuZ2FyaWFuX29wdGltaXplci5o" title="https://github.com/ApolloAuto/apollo/blob/master/modules/perception/common/graph/hungarian_optimizer.h">[36]<i class="fa fa-external-link"></i></span>。MKM 通过“膨胀补 0”的方式来处理代价矩阵为非方阵的情形，例如，如果代价矩阵维度为 $4\times 3$，则 MKM 会为代价矩阵额外补充一个 0 元素列使之成为方阵。Apollo Hungarian Optimizer 中应用的 MKM 算法流程如下图所示：</p>
+<p><img data-src="https://image.shipengx.com/%E6%94%B9%E8%BF%9B%E7%9A%84%20KM%20%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B.png" alt="改进的 KM 算法流程"></p>
+<p>可见，MKM 中也使用了反复搜索增广路的方式来逐步扩展部分匹配。此外，MKM 的步骤 6 与匈牙利算法原始流程中的步骤 4 是等价的。</p>
+<h2 id="4-2-操作示例" class="heading-control"><a href="#4-2-操作示例" class="headerlink" title="4.2 操作示例"></a>4.2 操作示例<a class="heading-anchor" href="#4-2-操作示例" aria-hidden="true"></a></h2><p>为演示 MKM 的操作流程，假设我们的航迹量测代价矩阵是个 $4\times 3$ 的非方阵（4 个航迹 3 个量测，意味着传感器出现了漏检）：</p>
+<p><img data-src="https://image.shipengx.com/%E8%88%AA%E8%BF%B9%E9%87%8F%E6%B5%8B%E4%BB%A3%E4%BB%B7%E7%9F%A9%E9%98%B5%E4%B8%BA%E9%9D%9E%E6%96%B9%E9%98%B5.png" alt="航迹量测代价矩阵为非方阵"></p>
+<p>我们将上述的 MKM 算法流程步骤应用到该代价矩阵上，则求解其最小权匹配的流程如下图所示：</p>
+<p><img data-src="https://image.shipengx.com/%E6%94%B9%E8%BF%9B%E7%9A%84%20KM%20%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E7%A4%BA%E4%BE%8B.png" alt="改进的 KM 算法流程示例"></p>
+<p>最终根据矩阵中标星 0 的位置我们就可以得到航迹量测的匹配关系：track2→object2，track3→object3，track4→object1，至于 track1，没有找到与它匹配的量测。这个匹配满足航迹量测构成的二分图上的匹配边总权重最小，即总的匹配距离最小，代价最低。</p>
+<p>对于代价矩阵为非方阵的二分图最大权匹配问题，我们同样可以像前文所述的那样首先对其进行转化，然后再实施 MKM 算法流程求解最小权匹配问题即可。</p>
+<h2 id="4-3-代码实现" class="heading-control"><a href="#4-3-代码实现" class="headerlink" title="4.3 代码实现"></a>4.3 代码实现<a class="heading-anchor" href="#4-3-代码实现" aria-hidden="true"></a></h2><p>这里我们抽取了 Apollo Hungarian Optimizer 的关键代码并整理成了一个 C++ demo 示例，主要的算法代码是一个名为 <code>HungarianOptimizer</code> 的模板类，该模板类具备如下主要特性：</p>
+<ul>
+<li>适配代价矩阵为非方阵的情形</li>
+<li>可求解最小权匹配问题</li>
+<li>可求解最大权匹配问题</li>
+<li>可输出部分匹配</li>
+</ul>
+<p>可以点击<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9odW5nYXJpYW5fb3B0aW1pemVy" title="https://github.com/RocShi/hungarian_optimizer">这里<i class="fa fa-external-link"></i></span>查看 GitHub 项目主页，编译工程后运行可执行程序可以得到下面的终端打印结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">The assignments are:</span><br><span class="line"></span><br><span class="line">    (1, 1)</span><br><span class="line">    (2, 2)</span><br><span class="line">    (3, 0)</span><br></pre></td></tr></table></figure>
+<p>这里的结果是代价矩阵行列索引（从 0 开始）间的匹配关系，将其映射成 track id 和 object id 后会发现与我们上文中的手动演算结果一致。</p>
+<p>需要说明的是，Apollo 在优化给定的航迹量测代价矩阵前，会首先将其切割为多个连通子图，然后对每个连通子图分别实施 MKM 流程，以达到提升效率的目的。这里我们只关心 MKM 的核心算法流程，所以省略了这一步骤，直接对给定的代价矩阵进行最小权匹配求解。</p>
+<p><strong>程序入口：main</strong></p>
+<p>示例工程的主入口如下所示，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt;&gt; association_mat = &#123;&#123;<span class="number">82.0f</span>, <span class="number">83.0f</span>, <span class="number">69.0f</span>&#125;,</span><br><span class="line">                                                     &#123;<span class="number">77.0f</span>, <span class="number">37.0f</span>, <span class="number">49.0f</span>&#125;,</span><br><span class="line">                                                     &#123;<span class="number">11.0f</span>, <span class="number">69.0f</span>, <span class="number">5.0f</span>&#125;,</span><br><span class="line">                                                     &#123;<span class="number">8.0f</span>, <span class="number">9.0f</span>, <span class="number">98.0f</span>&#125;&#125;;</span><br><span class="line">  HungarianOptimizer&lt;<span class="keyword">float</span>&gt; optimizer;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::pair&lt;<span class="keyword">size_t</span>, <span class="keyword">size_t</span>&gt;&gt; assignments;</span><br><span class="line"></span><br><span class="line">  UpdateCosts(association_mat, optimizer.costs());</span><br><span class="line"></span><br><span class="line">  <span class="comment">// entry of hungarian optimizer minimum-weighted matching</span></span><br><span class="line">  optimizer.Minimize(&amp;assignments);</span><br><span class="line"></span><br><span class="line">  PrintAssignments(assignments);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>main</code> 函数主要做了四件事：</p>
+<ul>
+<li>设定代价矩阵</li>
+<li>更新 HungarianOptimizer 内部代价</li>
+<li>最小权匹配问题求解</li>
+<li>打印航迹量测关联结果</li>
+</ul>
+<p><strong>MKM 最小权匹配入口：Minimize</strong></p>
+<p><code>Minimize</code> 函数是 <code>HungarianOptimizer</code> 的最小权匹配问题求解入口：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Find an assignment which minimizes the overall costs.</span></span><br><span class="line"><span class="comment"> * Return an array of pairs of integers. Each pair (i, j) corresponds to</span></span><br><span class="line"><span class="comment"> * assigning agent i to task j. */</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> HungarianOptimizer&lt;T&gt;::Minimize(</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::pair&lt;<span class="keyword">size_t</span>, <span class="keyword">size_t</span>&gt;&gt;* assignments) &#123;</span><br><span class="line">  OptimizationInit();</span><br><span class="line">  DoMunkres();</span><br><span class="line">  FindAssignments(assignments);</span><br><span class="line">  OptimizationClear();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Minimize</code> 函数主要做了四件事：</p>
+<ul>
+<li>算法初始化 <code>OptimizationInit</code>：对应我们上文中提到的 MKM 初始化步</li>
+<li>运行算法主流程 <code>DoMunkres</code>：对应我们上文中提到的 MKM 步骤 1 到步骤 6</li>
+<li>生成匹配结果 <code>FindAssignments</code></li>
+<li>清除初始化标志 <code>OptimizationClear</code></li>
+</ul>
+<p>需要说明的是，<code>HungarianOptimizer</code> 同样可以用于求解最大权匹配问题，对原代价矩阵直接调用其 <code>Maximize</code> 函数即可。</p>
+<p>下面我们对 <code>OptimizationInit</code> 和 <code>DoMunkres</code> 的代码实现进行简要讲解并给出必要的中文注释。</p>
+<h3 id="4-3-1-算法初始化" class="heading-control"><a href="#4-3-1-算法初始化" class="headerlink" title="4.3.1 算法初始化"></a>4.3.1 算法初始化<a class="heading-anchor" href="#4-3-1-算法初始化" aria-hidden="true"></a></h3><p><code>OptimizationInit</code> 函数对应了我们上文中提到的 MKM 初始化步，其主要完成了代价矩阵“膨胀补 0”、代价矩阵标记初始化、增广路初始化等工作。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> HungarianOptimizer&lt;T&gt;::OptimizationInit() &#123;</span><br><span class="line">  <span class="comment">// 已完成初始化，返回</span></span><br><span class="line">  <span class="keyword">if</span> (optimization_initialized_) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  width_ = costs_.width();</span><br><span class="line">  <span class="keyword">if</span> (width_ &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    height_ = costs_.height();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    height_ = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  matrix_size_ = <span class="built_in">std</span>::max(height_, width_);</span><br><span class="line">  max_cost_ = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* generate the expanded cost matrix by adding extra 0s in order to make a</span></span><br><span class="line"><span class="comment">   * square matrix. Meanwhile, find the max cost in the matrix. It may be used</span></span><br><span class="line"><span class="comment">   * later, if we want to maximizing rather than minimizing the overall costs.*/</span></span><br><span class="line">  <span class="comment">// 代价矩阵膨胀补 0，确保代价矩阵为方阵</span></span><br><span class="line">  costs_.Resize(matrix_size_, matrix_size_);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> row = <span class="number">0</span>; row &lt; matrix_size_; ++row) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> col = <span class="number">0</span>; col &lt; matrix_size_; ++col) &#123;</span><br><span class="line">      <span class="keyword">if</span> ((row &gt;= height_) || (col &gt;= width_)) &#123;</span><br><span class="line">        costs_(row, col) = <span class="number">0</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        max_cost_ = <span class="built_in">std</span>::max(max_cost_, costs_(row, col));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* initially, none of the cells of the matrix are marked. */</span></span><br><span class="line">  <span class="comment">// 代价矩阵标记初始化</span></span><br><span class="line">  marks_.Resize(matrix_size_, matrix_size_);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> row = <span class="number">0</span>; row &lt; matrix_size_; ++row) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> col = <span class="number">0</span>; col &lt; matrix_size_; ++col) &#123;</span><br><span class="line">      marks_(row, col) = Mark::NONE;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  stars_in_col_.assign(matrix_size_, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  rows_covered_.assign(matrix_size_, <span class="literal">false</span>);</span><br><span class="line">  cols_covered_.assign(matrix_size_, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 增广路初始化</span></span><br><span class="line">  assignments_.resize(matrix_size_ * <span class="number">2</span>);</span><br><span class="line">  <span class="comment">// 初始化化标志置 true</span></span><br><span class="line">  optimization_initialized_ = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-2-算法主流程" class="heading-control"><a href="#4-3-2-算法主流程" class="headerlink" title="4.3.2 算法主流程"></a>4.3.2 算法主流程<a class="heading-anchor" href="#4-3-2-算法主流程" aria-hidden="true"></a></h3><p><strong>主流程入口：DoMunkres</strong></p>
+<p><code>DoMunkres</code> 函数对应了我们上文中提到的 MKM 步骤 1 到步骤 6，步骤循环迭代，求解成功或达到指定迭代次数阈值结束循环。同时，若达到指定迭代次数阈值，则取消最终的代价矩阵中存在不止一个标星 0 的行里的所有星号标记，以实现部分匹配输出。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Run the Munkres algorithm */</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> HungarianOptimizer&lt;T&gt;::DoMunkres() &#123;</span><br><span class="line">  <span class="keyword">int</span> max_num_iter = <span class="number">1000</span>;</span><br><span class="line">  <span class="keyword">int</span> num_iter = <span class="number">0</span>;</span><br><span class="line">  <span class="comment">// fn_state_ 代表算法当前状态，即执行到了哪一步</span></span><br><span class="line">  fn_state_ = <span class="built_in">std</span>::bind(&amp;HungarianOptimizer::ReduceRows, <span class="keyword">this</span>);</span><br><span class="line">  <span class="comment">// 从步骤 1 开始循环迭代，直至求解成功或达到指定迭代次数阈值</span></span><br><span class="line">  <span class="keyword">while</span> (fn_state_ != <span class="literal">nullptr</span> &amp;&amp; num_iter &lt; max_num_iter) &#123;</span><br><span class="line">    fn_state_();</span><br><span class="line">    ++num_iter;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* 若达到指定迭代次数阈值，则取消最终的代价矩阵中存在不止一个标星 0 的行里的所有星号</span></span><br><span class="line"><span class="comment">   * 标记，实现部分匹配输出 */</span></span><br><span class="line">  <span class="keyword">if</span> (num_iter &gt;= max_num_iter) &#123;</span><br><span class="line">    CheckStar();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>步骤 1：ReduceRows</strong></p>
+<p>代价矩阵的每一行元素减去该行元素中的最小值，然后执行步骤 2。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Step 1:</span></span><br><span class="line"><span class="comment"> * For each row of the matrix, find the smallest element and substract it</span></span><br><span class="line"><span class="comment"> * from every element in its row. Then, go to Step 2. */</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> HungarianOptimizer&lt;T&gt;::ReduceRows() &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> row = <span class="number">0</span>; row &lt; matrix_size_; ++row) &#123;</span><br><span class="line">    T min_cost = costs_(row, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> col = <span class="number">1</span>; col &lt; matrix_size_; ++col) &#123;</span><br><span class="line">      min_cost = <span class="built_in">std</span>::min(min_cost, costs_(row, col));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> col = <span class="number">0</span>; col &lt; matrix_size_; ++col) &#123;</span><br><span class="line">      costs_(row, col) -= min_cost;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 执行步骤 2</span></span><br><span class="line">  fn_state_ = <span class="built_in">std</span>::bind(&amp;HungarianOptimizer::StarZeroes, <span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>步骤 2：StarZeroes</strong></p>
+<p>对代价矩阵中所在行和列中都没有标星 0 的 0 元素标记星号 *，然后执行步骤 3。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Step 2:</span></span><br><span class="line"><span class="comment"> * Find a zero Z in the matrix. If there is no starred zero in its row</span></span><br><span class="line"><span class="comment"> * or column, star Z. Repeat for every element in the matrix. Then, go to</span></span><br><span class="line"><span class="comment"> * Step3. */</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> HungarianOptimizer&lt;T&gt;::StarZeroes() &#123;</span><br><span class="line">  <span class="comment">/* since no rows or columns are covered on entry to this step, we use the</span></span><br><span class="line"><span class="comment">   * covers as a quick way of making which rows &amp; columns have stars in them */</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> row = <span class="number">0</span>; row &lt; matrix_size_; ++row) &#123;</span><br><span class="line">    <span class="keyword">if</span> (RowCovered(row)) &#123;</span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> col = <span class="number">0</span>; col &lt; matrix_size_; ++col) &#123;</span><br><span class="line">      <span class="keyword">if</span> (ColCovered(col)) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (costs_(row, col) == <span class="number">0</span>) &#123;</span><br><span class="line">        Star(row, col);</span><br><span class="line">        CoverRow(row);</span><br><span class="line">        CoverCol(col);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ClearCovers();</span><br><span class="line">  <span class="comment">// 执行步骤 3</span></span><br><span class="line">  fn_state_ = <span class="built_in">std</span>::bind(&amp;HungarianOptimizer::CoverStarredZeroes, <span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>步骤 3：CoverStarredZeroes</strong></p>
+<p>覆盖代价矩阵中所有含有标星 0 的列，若所有的列都已被覆盖则结束迭代，否则执行步骤 4。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Step 3:</span></span><br><span class="line"><span class="comment"> * Cover each column containing a starred zero. If all columns are covered,</span></span><br><span class="line"><span class="comment"> * the starred zeros describe a complete set of unique assignments. In this</span></span><br><span class="line"><span class="comment"> * case, terminate the algorithm. Otherwise, go to Step 4. */</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> HungarianOptimizer&lt;T&gt;::CoverStarredZeroes() &#123;</span><br><span class="line">  <span class="keyword">size_t</span> num_covered = <span class="number">0</span>;</span><br><span class="line">  <span class="comment">// 统计被覆盖的列的数量</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> col = <span class="number">0</span>; col &lt; matrix_size_; ++col) &#123;</span><br><span class="line">    <span class="keyword">if</span> (ColContainsStar(col)) &#123;</span><br><span class="line">      CoverCol(col);</span><br><span class="line">      num_covered++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 若所有的列都已被覆盖则结束迭代</span></span><br><span class="line">  <span class="keyword">if</span> (num_covered &gt;= matrix_size_) &#123;</span><br><span class="line">    fn_state_ = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 执行步骤 4</span></span><br><span class="line">  fn_state_ = <span class="built_in">std</span>::bind(&amp;HungarianOptimizer::PrimeZeroes, <span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>步骤 4：PrimeZeroes</strong></p>
+<p>查找当前代价矩阵中是否存在未被覆盖的 0 元素：</p>
+<ul>
+<li>存在：对未被覆盖的 0 元素标记撇号 ’，并判断标撇 0 所在的行是否含有标星 0<ul>
+<li>含有：覆盖标撇 0 所在的行，取消覆盖标撇 0 所在行里的标星 0 所在的列，继续查找当前代价矩阵中是否存在未被覆盖的 0 元素</li>
+<li>不含有：将该标撇 0 置为增广路的首条边，执行步骤 5</li>
+</ul>
+</li>
+<li>不存在：执行步骤 6</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Step 4:</span></span><br><span class="line"><span class="comment"> * Find a noncovered zero and prime it. If there is no starred zero in the</span></span><br><span class="line"><span class="comment"> * row containing this primed zero, go to Step 5. Otherwise, cover this row</span></span><br><span class="line"><span class="comment"> * and uncover the column containing the starred zero. Continue in this manner</span></span><br><span class="line"><span class="comment"> * until there are no uncovered zeros left, then go to Step 6. */</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> HungarianOptimizer&lt;T&gt;::PrimeZeroes() &#123;</span><br><span class="line">  <span class="comment">// this loop is guaranteed to terminate in at most matrix_size_ iterations,</span></span><br><span class="line">  <span class="comment">// as FindZero() returns a location only if there is at least one uncovered</span></span><br><span class="line">  <span class="comment">// zero in the matrix.  Each iteration, either one row is covered or the</span></span><br><span class="line">  <span class="comment">// loop terminates.  Since there are matrix_size_ rows, after that many</span></span><br><span class="line">  <span class="comment">// iterations there are no uncovered cells and hence no uncovered zeroes,</span></span><br><span class="line">  <span class="comment">// so the loop terminates.</span></span><br><span class="line">  <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">    <span class="keyword">size_t</span> zero_row = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">size_t</span> zero_col = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 若当前的代价矩阵不存在未被覆盖的 0</span></span><br><span class="line">    <span class="keyword">if</span> (!FindZero(&amp;zero_row, &amp;zero_col)) &#123;</span><br><span class="line">      <span class="comment">// No uncovered zeroes.</span></span><br><span class="line">      <span class="comment">// 执行步骤 6</span></span><br><span class="line">      fn_state_ = <span class="built_in">std</span>::bind(&amp;HungarianOptimizer::AugmentPath, <span class="keyword">this</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 对未被覆盖的 0 标记撇号</span></span><br><span class="line">    Prime(zero_row, zero_col);</span><br><span class="line">    <span class="keyword">int</span> star_col = FindStarInRow(zero_row);</span><br><span class="line">    <span class="comment">// 若标撇 0 所在的行含有标星 0</span></span><br><span class="line">    <span class="keyword">if</span> (star_col != kHungarianOptimizerColNotFound) &#123;</span><br><span class="line">      <span class="comment">// 覆盖标撇 0 所在的行</span></span><br><span class="line">      CoverRow(zero_row);</span><br><span class="line">      <span class="comment">// 取消覆盖标撇 0 所在行里的标星 0 所在的列</span></span><br><span class="line">      UncoverCol(star_col);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// 若标撇 0 所在的行不含有标星 0</span></span><br><span class="line">      <span class="built_in">std</span>::pair&lt;<span class="keyword">size_t</span>, <span class="keyword">size_t</span>&gt; first_assignment =</span><br><span class="line">          <span class="built_in">std</span>::make_pair(zero_row, zero_col);</span><br><span class="line">      <span class="comment">// 将该标撇 0 置为增广路的首条边</span></span><br><span class="line">      assignments_[<span class="number">0</span>] = first_assignment;</span><br><span class="line">      <span class="comment">// 执行步骤 5</span></span><br><span class="line">      fn_state_ = <span class="built_in">std</span>::bind(&amp;HungarianOptimizer::MakeAugmentingPath, <span class="keyword">this</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>步骤 5：MakeAugmentingPath</strong></p>
+<p>首先，构建增广路，从增广路首条边开始，若标撇 0 所在列存在标星 0 则将该标星 0 置为增广路当前边的下一条边，若标星 0 所在行存在标撇 0 则将该标撇 0 置为增广路当前边的下一条边，直至找不到新的标星 0；然后，执行增广操作，取消增广路中标星 0 的标记，并将增广路中的标撇 0 重新标记为标星 0；最后，取消代价矩阵中的所有行列覆盖，清除代价矩阵中所有标撇 0 的标记，返回步骤 3。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Step 5:</span></span><br><span class="line"><span class="comment"> * Construct a series of alternating primed and starred zeros as follows.</span></span><br><span class="line"><span class="comment"> * Let Z0 represent the uncovered primed zero found in Step 4.  Let Z1 denote</span></span><br><span class="line"><span class="comment"> * the starred zero in the column of Z0 (if any). Let Z2 denote the primed</span></span><br><span class="line"><span class="comment"> * zero in the row of Z1 (there will always be one).  Continue until the</span></span><br><span class="line"><span class="comment"> * series terminates at a primed zero that has no starred zero in its column.</span></span><br><span class="line"><span class="comment"> * unstar each starred zero of the series, star each primed zero of the</span></span><br><span class="line"><span class="comment"> * series, erase all primes and uncover every line in the matrix. Return to</span></span><br><span class="line"><span class="comment"> * Step 3. */</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> HungarianOptimizer&lt;T&gt;::MakeAugmentingPath() &#123;</span><br><span class="line">  <span class="keyword">bool</span> done = <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">size_t</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* note: this loop is guaranteed to terminate within matrix_size_ iterations</span></span><br><span class="line"><span class="comment">   * because:</span></span><br><span class="line"><span class="comment">   * 1) on entry to this step, there is at least 1 column with no starred zero</span></span><br><span class="line"><span class="comment">   *    (otherwise we would have terminated the algorithm already.)</span></span><br><span class="line"><span class="comment">   * 2) each row containing a star also contains exactly one primed zero.</span></span><br><span class="line"><span class="comment">   * 4) each column contains at most one starred zero.</span></span><br><span class="line"><span class="comment">   *</span></span><br><span class="line"><span class="comment">   * Since the path_ we construct visits primed and starred zeroes alternately,</span></span><br><span class="line"><span class="comment">   * and terminates if we reach a primed zero in a column with no star, our</span></span><br><span class="line"><span class="comment">   * path_ must either contain matrix_size_ or fewer stars (in which case the</span></span><br><span class="line"><span class="comment">   * loop iterates fewer than matrix_size_ times), or it contains more.  In</span></span><br><span class="line"><span class="comment">   * that case, because (1) implies that there are fewer than matrix_size_</span></span><br><span class="line"><span class="comment">   * stars, we must have visited at least one star more than once. Consider</span></span><br><span class="line"><span class="comment">   * the first such star that we visit more than once; it must have been reached</span></span><br><span class="line"><span class="comment">   * immediately after visiting a prime in the same row.  By (2), this prime</span></span><br><span class="line"><span class="comment">   * is unique and so must have also been visited more than once.</span></span><br><span class="line"><span class="comment">   * Therefore, that prime must be in the same column as a star that has been</span></span><br><span class="line"><span class="comment">   * visited more than once, contradicting the assumption that we chose the</span></span><br><span class="line"><span class="comment">   * first multiply visited star, or it must be in the same column as more</span></span><br><span class="line"><span class="comment">   * than one star, contradicting (3). Therefore, we never visit any star</span></span><br><span class="line"><span class="comment">   * more than once and the loop terminates within matrix_size_ iterations. */</span></span><br><span class="line">  <span class="comment">// 构造增广路</span></span><br><span class="line">  <span class="keyword">while</span> (!done) &#123;</span><br><span class="line">    <span class="comment">/* first construct the alternating path... */</span></span><br><span class="line">    <span class="comment">// 标撇 0 所在的列查找标星 0</span></span><br><span class="line">    <span class="keyword">int</span> row = FindStarInCol(assignments_[count].second);</span><br><span class="line">    <span class="comment">// 标撇 0 所在的列含有标星 0</span></span><br><span class="line">    <span class="keyword">if</span> (row != kHungarianOptimizerRowNotFound) &#123;</span><br><span class="line">      <span class="comment">// 增广路游标加 1</span></span><br><span class="line">      count++;</span><br><span class="line">      <span class="comment">// 找到的标星 0 置为标撇 0 的下一条边</span></span><br><span class="line">      assignments_[count].first = row;</span><br><span class="line">      assignments_[count].second = assignments_[count - <span class="number">1</span>].second;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// 标撇 0 所在的列不含有标星 0，增广路构造终止</span></span><br><span class="line">      done = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 若增广路构造尚未终止</span></span><br><span class="line">    <span class="keyword">if</span> (!done) &#123;</span><br><span class="line">      <span class="comment">// 标星 0 所在的行查找标撇 0</span></span><br><span class="line">      <span class="keyword">int</span> col = FindPrimeInRow(assignments_[count].first);</span><br><span class="line">      <span class="comment">// 增广路游标加 1</span></span><br><span class="line">      count++;</span><br><span class="line">      <span class="comment">// 找到的标撇 0 置为标星 0 的下一条边</span></span><br><span class="line">      assignments_[count].first = assignments_[count - <span class="number">1</span>].first;</span><br><span class="line">      assignments_[count].second = col;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* then, modify it. */</span></span><br><span class="line">  <span class="comment">// 增广操作：遍历增广路中的每一个 0 元素（代表一条匹配边或未匹配边）</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt;= count; ++i) &#123;</span><br><span class="line">    <span class="keyword">size_t</span> row = assignments_[i].first;</span><br><span class="line">    <span class="keyword">size_t</span> col = assignments_[i].second;</span><br><span class="line">    <span class="comment">// 若当前 0 标记了星号（增广路中的匹配边）</span></span><br><span class="line">    <span class="keyword">if</span> (IsStarred(row, col)) &#123;</span><br><span class="line">      <span class="comment">// 取消当前标星 0 的星号标记（变成全局未匹配边）</span></span><br><span class="line">      Unstar(row, col);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// 若当前 0 标记了撇号（增广路中的未匹配边）</span></span><br><span class="line">      <span class="comment">// 将当前标撇 0 重新标记为标星 0（变成匹配边）</span></span><br><span class="line">      Star(row, col);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 取消代价矩阵中的所有行列覆盖</span></span><br><span class="line">  ClearCovers();</span><br><span class="line">  <span class="comment">// 清除代价矩阵中所有标撇 0 的标记</span></span><br><span class="line">  ClearPrimes();</span><br><span class="line">  <span class="comment">// 返回步骤 3</span></span><br><span class="line">  fn_state_ = <span class="built_in">std</span>::bind(&amp;HungarianOptimizer::CoverStarredZeroes, <span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>步骤 6：AugmentPath</strong></p>
+<p>查找未被覆盖元素中的最小值 minval，被覆盖行中的每一个元素加上 minval，未被覆盖列中的每一个元素减去 minval。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Step 6:</span></span><br><span class="line"><span class="comment"> * Add the smallest uncovered value in the matrix to every element of each</span></span><br><span class="line"><span class="comment"> * covered row, and subtract it from every element of each uncovered column.</span></span><br><span class="line"><span class="comment"> * Return to Step 4 without altering any stars, primes, or covered lines. */</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> HungarianOptimizer&lt;T&gt;::AugmentPath() &#123;</span><br><span class="line">  <span class="comment">// 查找未被覆盖元素中的最小值 minval</span></span><br><span class="line">  T minval = FindSmallestUncovered();</span><br><span class="line">  <span class="comment">// 被覆盖行中的每一个元素加上 minval</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> row = <span class="number">0</span>; row &lt; matrix_size_; ++row) &#123;</span><br><span class="line">    <span class="keyword">if</span> (RowCovered(row)) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">size_t</span> c = <span class="number">0</span>; c &lt; matrix_size_; ++c) &#123;</span><br><span class="line">        costs_(row, c) += minval;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 未被覆盖列中的每一个元素减去 minval</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> col = <span class="number">0</span>; col &lt; matrix_size_; ++col) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!ColCovered(col)) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">size_t</span> r = <span class="number">0</span>; r &lt; matrix_size_; ++r) &#123;</span><br><span class="line">        costs_(r, col) -= minval;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 返回步骤 4</span></span><br><span class="line">  fn_state_ = <span class="built_in">std</span>::bind(&amp;HungarianOptimizer::PrimeZeroes, <span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-3-生成匹配结果" class="heading-control"><a href="#4-3-3-生成匹配结果" class="headerlink" title="4.3.3 生成匹配结果"></a>4.3.3 生成匹配结果<a class="heading-anchor" href="#4-3-3-生成匹配结果" aria-hidden="true"></a></h3><p>完成最小权匹配问题求解后，需要遍历最终的代价矩阵中的所有元素，根据矩阵中标星 0 的行索引和列索引即可生成航迹量测匹配关系。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Convert the final costs matrix into a set of assignments of agents to tasks.</span></span><br><span class="line"><span class="comment"> * Return an array of pairs of integers, the same as the return values of</span></span><br><span class="line"><span class="comment"> * Minimize() and Maximize() */</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> HungarianOptimizer&lt;T&gt;::FindAssignments(</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::pair&lt;<span class="keyword">size_t</span>, <span class="keyword">size_t</span>&gt;&gt;* assignments) &#123;</span><br><span class="line">  assignments-&gt;clear();</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> row = <span class="number">0</span>; row &lt; height_; ++row) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> col = <span class="number">0</span>; col &lt; width_; ++col) &#123;</span><br><span class="line">      <span class="keyword">if</span> (IsStarred(row, col)) &#123;</span><br><span class="line">        assignments-&gt;push_back(<span class="built_in">std</span>::make_pair(row, col));</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-4-清除初始化标志" class="heading-control"><a href="#4-3-4-清除初始化标志" class="headerlink" title="4.3.4 清除初始化标志"></a>4.3.4 清除初始化标志<a class="heading-anchor" href="#4-3-4-清除初始化标志" aria-hidden="true"></a></h3><p>实际工程开发中，当前帧信息处理完成后，需要将初始化标志置 <code>false</code>，以使得处理下一帧信息时重新执行初始化操作，因为不同帧间的代价矩阵一般来说是不同的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> HungarianOptimizer&lt;T&gt;::OptimizationClear() &#123;</span><br><span class="line">  optimization_initialized_ = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，Apollo Hungarian Optimizer 核心代码分析结束。</p>
+<h1 id="5-后记" class="heading-control"><a href="#5-后记" class="headerlink" title="5 后记"></a>5 后记<a class="heading-anchor" href="#5-后记" aria-hidden="true"></a></h1><p>首先，本文给出了图论中的一些基本概念并由此引出了二分图最大权匹配问题与最小权匹配问题；然后，通过大量原始参考文献厘清了匈牙利算法的发展脉络，并驳斥了一些具有误导性的说法；其次，给出了匈牙利算法的原始流程与操作示例；最后，给出了改进的 KM 算法流程以及一个非方阵代价矩阵的操作示例，并基于 Apollo Hungarian Optimizer 给出了具体的代码实现。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL2hlbHAvZnVzaW9uL3VnL2ludHJvZHVjdGlvbi10by1tdWx0aXBsZS10YXJnZXQtdHJhY2tpbmcuaHRtbA==" title="https://ww2.mathworks.cn/help/fusion/ug/introduction-to-multiple-target-tracking.html">Introduction to Multiple Target Tracking<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL2hlbHAvZnVzaW9uL3VnL2ludHJvZHVjdGlvbi10by1hc3NpZ25tZW50LW1ldGhvZHMtaW4tdHJhY2tpbmctc3lzdGVtcy5odG1s" title="https://ww2.mathworks.cn/help/fusion/ug/introduction-to-assignment-methods-in-tracking-systems.html">Introduction to Assignment Methods in Tracking Systems<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMWs0NHkxejdnNi8/c3BtX2lkX2Zyb209MzMzLjk5OS4wLjAmYW1wO3ZkX3NvdXJjZT1iYmY0MzVmZGUxNzU0ZTgwMTRiNjBkZDE0MmFhNGZkNQ==" title="https://www.bilibili.com/video/BV1k44y1z7g6/?spm_id_from=333.999.0.0&amp;vd_source=bbf435fde1754e8014b60dd142aa4fd5">图的基本概念和数据结构 Graph Basics and Data Structures<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQmlwYXJ0aXRlX2dyYXBo" title="https://en.wikipedia.org/wiki/Bipartite_graph">Bipartite Graph<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMTRxNHkxajc3Ni8/c3BtX2lkX2Zyb209MzMzLjk5OS4wLjAmYW1wO3ZkX3NvdXJjZT1iYmY0MzVmZGUxNzU0ZTgwMTRiNjBkZDE0MmFhNGZkNQ==" title="https://www.bilibili.com/video/BV14q4y1j776/?spm_id_from=333.999.0.0&amp;vd_source=bbf435fde1754e8014b60dd142aa4fd5">二部图及其判定算法 Bipartite Graphs<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvR3JhcGhfY29sb3JpbmcjVmVydGV4X2NvbG9yaW5n" title="https://en.wikipedia.org/wiki/Graph_coloring#Vertex_coloring">Graph coloring<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZ2Vla3Nmb3JnZWVrcy5vcmcvYmlwYXJ0aXRlLWdyYXBoLw==" title="https://www.geeksforgeeks.org/bipartite-graph/">Check whether a given graph is Bipartite or not<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMUc1NHkxNTdIQS8/c3BtX2lkX2Zyb209MzMzLjk5OS4wLjAmYW1wO3ZkX3NvdXJjZT1iYmY0MzVmZGUxNzU0ZTgwMTRiNjBkZDE0MmFhNGZkNQ==" title="https://www.bilibili.com/video/BV1G54y157HA/?spm_id_from=333.999.0.0&amp;vd_source=bbf435fde1754e8014b60dd142aa4fd5">无权二部图中的最大匹配 Maximum-Cardinality Bipartite Matching (MCBM)<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMU1CNHkxZzdGeC8/c3BtX2lkX2Zyb209MzMzLjk5OS4wLjAmYW1wO3ZkX3NvdXJjZT1iYmY0MzVmZGUxNzU0ZTgwMTRiNjBkZDE0MmFhNGZkNQ==" title="https://www.bilibili.com/video/BV1MB4y1g7Fx/?spm_id_from=333.999.0.0&amp;vd_source=bbf435fde1754e8014b60dd142aa4fd5">有权二部图中的最大匹配 Maximum-Weight Bipartite Matching<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQmVyZ2UlMjdzX3RoZW9yZW0=" title="https://en.wikipedia.org/wiki/Berge%27s_theorem">Berge’s theorem<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvU3ltbWV0cmljX2RpZmZlcmVuY2U=" title="https://en.wikipedia.org/wiki/Symmetric_difference">Symmetric difference<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rhcmtfc2NvcGUvYXJ0aWNsZS9kZXRhaWxzLzg4ODA1NDc=" title="https://blog.csdn.net/dark_scope/article/details/8880547">趣写算法系列之—匈牙利算法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvSHVuZ2FyaWFuX2FsZ29yaXRobSNjaXRlX3JlZi1rdWhuMTk1Nl8yLTA=" title="https://en.wikipedia.org/wiki/Hungarian_algorithm#cite_ref-kuhn1956_2-0">Hungarian algorithm<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ib29rLmRvdWJhbi5jb20vc3ViamVjdC8yMzI4NjE5Lw==" title="https://book.douban.com/subject/2328619/">Design and Analysis of Modern Tracking Systems<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kbC5hY20ub3JnL2RvaS9wZGYvMTAuMTE0NS82NDYyLjY1MDI=" title="https://dl.acm.org/doi/pdf/10.1145/6462.6502">Efficient Algorithms for Finding Maximum Matching in Graphs<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjEwMDIvbmF2LjM4MDAwMjAxMDk=" title="https://sci-hub.wf/10.1002/nav.3800020109">The Hungarian method for the assignment problem<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjEwMDIvbmF2LjM4MDAwMzA0MDQ=" title="https://sci-hub.wf/10.1002/nav.3800030404">VARIANTS OF THE HUNGARIAN METHOD FOR ASSIGNMENT PROBLEMS<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjEyODcvb3ByZS40LjEuNjE=" title="https://sci-hub.wf/10.1287/opre.4.1.61">THE TRAVELING-SALESMAN PROBLEM<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjExMzcvMDEwNTAwMw==" title="https://sci-hub.wf/10.1137/0105003">Algorithms for the Assignment and Transportation Problems<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvSmFja19FZG1vbmRz" title="https://en.wikipedia.org/wiki/Jack_Edmonds">Jack Edmonds<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQmxvc3NvbV9hbGdvcml0aG0=" title="https://en.wikipedia.org/wiki/Blossom_algorithm">Blossom Algorithm<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY2FtYnJpZGdlLm9yZy9jb3JlL3NlcnZpY2VzL2FvcC1jYW1icmlkZ2UtY29yZS9jb250ZW50L3ZpZXcvMDhCNDkyQjcyMzIyQzQxMzBBRTgwMEMwNjEwRTBFMjEvUzAwMDg0MTRYMDAwMzk0MTlhLnBkZi9wYXRocy10cmVlcy1hbmQtZmxvd2Vycy5wZGY=" title="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/08B492B72322C4130AE800C0610E0E21/S0008414X00039419a.pdf/paths-trees-and-flowers.pdf">PATHS, TREES, AND FLOWERS<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udmxwdWJzLm5pc3QuZ292L25pc3RwdWJzL2pyZXMvNjlCL2pyZXN2NjlCbjEtMnAxMjVfQTFiLnBkZg==" title="https://nvlpubs.nist.gov/nistpubs/jres/69B/jresv69Bn1-2p125_A1b.pdf">Maximum Matching and a Polyhedron With 0,1-Vertices<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjExNDUvMzYyOTE5LjM2Mjk0NQ==" title="https://sci-hub.wf/10.1145/362919.362945">An Extension of the Munkres Algorithm for the Assignment Problem to Rectangular Matrices<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvSG9wY3JvZnQlRTIlODAlOTNLYXJwX2FsZ29yaXRobQ==" title="https://en.wikipedia.org/wiki/Hopcroft%E2%80%93Karp_algorithm">Hopcroft–Karp algorithm<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93ZWIuZWVjcy51bWljaC5lZHUvfnBldHRpZS9tYXRjaGluZy9Ib3Bjcm9mdC1LYXJwLWJpcGFydGl0ZS1tYXRjaGluZy5wZGY=" title="https://web.eecs.umich.edu/~pettie/matching/Hopcroft-Karp-bipartite-matching.pdf">An n5/2 algorithm for maximum matchings in bipartite graphs<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjEwMDcvYmYwMTkzMDk5NA==" title="https://sci-hub.wf/10.1007/bf01930994">A NEW IMPLEMENTATION OF AN ALGORITHM FOR THE OPTIMAL ASSIGNMENT PROBLEM: AN IMPROVED VERSION OF MUNKRES’ ALGORITHM<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC82Mjk4MTkwMQ==" title="https://zhuanlan.zhihu.com/p/62981901">带你入门多目标跟踪（三）匈牙利算法 &amp; KM 算法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zY2ktaHViLndmLzEwLjEwMDcvYmYwMjI3ODcxMA==" title="https://sci-hub.wf/10.1007/bf02278710">A Shortest Augmenting Path Algorithm for Dense and Sparse Linear Assignment Problems<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kc3BhY2UubWl0LmVkdS9iaXRzdHJlYW0vaGFuZGxlLzE3MjEuMS8zMjY1L1AtMjEwOC0yNjkxMjY1Mi5wZGY=" title="https://dspace.mit.edu/bitstream/handle/1721.1/3265/P-2108-26912652.pdf">The Auction Algorithm for Assignment and Other Network Flow Problem<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL2hlbHAvZnVzaW9uL3JlZi90cmFja2VyZ25uLXN5c3RlbS1vYmplY3QuaHRtbA==" title="https://ww2.mathworks.cn/help/fusion/ref/trackergnn-system-object.html">Matlab GNN 跟踪器 trackerGNN<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9icmMyLmNvbS90aGUtYWxnb3JpdGhtLXdvcmtzaG9wLw==" title="https://brc2.com/the-algorithm-workshop/">Munkres’ Assignment Algorithm-Modified for Rectangular Matrices<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93dzIubWF0aHdvcmtzLmNuL21hdGxhYmNlbnRyYWwvZmlsZWV4Y2hhbmdlLzIwNjUyLWh1bmdhcmlhbi1hbGdvcml0aG0tZm9yLWxpbmVhci1hc3NpZ25tZW50LXByb2JsZW1zLXYyLTM/c190aWQ9dGFfZnhfcmVzdWx0cw==" title="https://ww2.mathworks.cn/matlabcentral/fileexchange/20652-hungarian-algorithm-for-linear-assignment-problems-v2-3?s_tid=ta_fx_results">Hungarian Algorithm for Linear Assignment Problems<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3NvZnR3YXJlLmNsYXBwZXIub3JnL211bmtyZXMv" title="http://software.clapper.org/munkres/">munkres — Munkres implementation for Python<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0Fwb2xsb0F1dG8vYXBvbGxvL2Jsb2IvcjMuMC4wL2RvY3Mvc3BlY3MvM2Rfb2JzdGFjbGVfcGVyY2VwdGlvbl9jbi5tZCNobSVFNSVBRiVCOSVFOCVCMSVBMSVFOCVCNyU5RiVFOCVCOCVBQQ==" title="https://github.com/ApolloAuto/apollo/blob/r3.0.0/docs/specs/3d_obstacle_perception_cn.md#hm%E5%AF%B9%E8%B1%A1%E8%B7%9F%E8%B8%AA">Apollo HM 对象跟踪<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0Fwb2xsb0F1dG8vYXBvbGxvL2Jsb2IvbWFzdGVyL21vZHVsZXMvcGVyY2VwdGlvbi9jb21tb24vZ3JhcGgvaHVuZ2FyaWFuX29wdGltaXplci5o" title="https://github.com/ApolloAuto/apollo/blob/master/modules/perception/common/graph/hungarian_optimizer.h">Apollo Hungarian Optimizer<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cudGhpbmthdXRvbm9tb3VzLmFpL2Jsb2cvP3A9aHVuZ2FyaWFuLWFsZ29yaXRobQ==" title="https://www.thinkautonomous.ai/blog/?p=hungarian-algorithm">Inside the Hungarian Algorithm: A Self-Driving Car Example<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzE1MjE1Mi9hcnRpY2xlL2RldGFpbHMvMTE0MjM1ODIwP3NwbT0xMDAxLjIwMTQuMzAwMS41NTAx" title="https://blog.csdn.net/weixin_43152152/article/details/114235820?spm=1001.2014.3001.5501">Apollo perception 源码阅读 | fusion 之匈牙利算法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9saWFtLnBhZ2UvMjAxNi8wNC8wMy9IdW5nYXJpYW4tYWxnb3JpdGhtLWluLXRoZS1tYXhpbXVtLW1hdGNoaW5nLXByb2JsZW0tb2YtYmlncmFwaC8/dXRtX3NvdXJjZT13ZWNoYXRfc2Vzc2lvbiZhbXA7dXRtX21lZGl1bT1zb2NpYWwmYW1wO3V0bV9vaT01NzQ5ODEyMTM1MjYxNjc1NTI=" title="https://liam.page/2016/04/03/Hungarian-algorithm-in-the-maximum-matching-problem-of-bigraph/?utm_source=wechat_session&amp;utm_medium=social&amp;utm_oi=574981213526167552">二分图最大匹配问题与匈牙利算法的核心思想<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY3MucHJpbmNldG9uLmVkdS9jb3Vyc2VzL2FyY2hpdmUvc3ByMTEvY29zNDIzL0xlY3R1cmVzL0dyYXBoTWF0Y2hpbmcucGRm" title="https://www.cs.princeton.edu/courses/archive/spr11/cos423/Lectures/GraphMatching.pdf">COS 423 Lecture 19 Graph Matching - cs.Princeton<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMzk2MjIxNjU=" title="https://zhuanlan.zhihu.com/p/339622165">二部图最大匹配——新数据结构 Augmenting graph 与 Hopcroft-Karp 算法的复杂度证明<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x4X3Jvcy9hcnRpY2xlL2RldGFpbHMvMTIzOTgwOTUz" title="https://blog.csdn.net/lx_ros/article/details/123980953">匈牙利算法简介<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9tZWRpdW0uY29tL0ByaXlhLnRlbmR1bGthci90aGUtYXNzaWdubWVudC1wcm9ibGVtLXVzaW5nLWh1bmdhcmlhbi1hbGdvcml0aG0tNGYxMDU3MjlhZjE4" title="https://medium.com/@riya.tendulkar/the-assignment-problem-using-hungarian-algorithm-4f105729af18">The Assignment Problem (Using Hungarian Algorithm)<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvbno1MTMwL2FydGljbGUvZGV0YWlscy84MDY3ODQxMA==" title="https://blog.csdn.net/Wonz5130/article/details/80678410">指派问题：匈牙利算法<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMTZLNHkxWDdQaC8/c3BtX2lkX2Zyb209MzMzLjk5OS4wLjAmYW1wO3ZkX3NvdXJjZT1iYmY0MzVmZGUxNzU0ZTgwMTRiNjBkZDE0MmFhNGZkNQ==" title="https://www.bilibili.com/video/BV16K4y1X7Ph/?spm_id_from=333.999.0.0&amp;vd_source=bbf435fde1754e8014b60dd142aa4fd5">匈牙利算法 Hungarian Algorithm<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC85MDgzNTI2Ng==" title="https://zhuanlan.zhihu.com/p/90835266">目标跟踪初探（DeepSORT）<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9odW5nYXJpYW5hbGdvcml0aG0uY29tL2V4YW1wbGVodW5nYXJpYW5hbGdvcml0aG0ucGhw" title="https://hungarianalgorithm.com/examplehungarianalgorithm.php">The Hungarian algorithm: An example<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e8e6ccc3.html" rel="bookmark">Apollo 6.0 Perception 模块 Fusion 组件（一）：构建与启动流程分析</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\e7b86cce.html" rel="bookmark">当我们谈融合时我们在谈些什么？</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\46155f38.html" rel="bookmark">Apollo 6.0 Perception 模块 Fusion 组件（二）：主体算法流程分析</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\9fb25cec.html" rel="bookmark">从概率到贝叶斯滤波</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\3bb74af.html" rel="bookmark">从贝叶斯滤波到卡尔曼滤波</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/1a7e45e5.html" title="多目标跟踪数据关联之匈牙利算法">https://blog.shipengx.com/archives/1a7e45e5.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%9A%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BF%A1%E6%81%AF%E8%9E%8D%E5%90%88/" rel="tag"><i class="fa fa-tag"></i> 多传感器信息融合</a>
+              <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i> 数学</a>
+              <a href="/tags/%E5%A4%9A%E7%9B%AE%E6%A0%87%E8%B7%9F%E8%B8%AA/" rel="tag"><i class="fa fa-tag"></i> 多目标跟踪</a>
+              <a href="/tags/%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 匈牙利算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/47ff6431.html" rel="prev" title="在 Ubuntu 18.04 中搭建 Wiki.js">
+      <i class="fa fa-chevron-left"></i> 在 Ubuntu 18.04 中搭建 Wiki.js
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/3df505e0.html" rel="next" title="Apollo Planning 模块参考线平滑：离散点平滑原理与代码解析">
+      Apollo Planning 模块参考线平滑：离散点平滑原理与代码解析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-基本概念"><span class="nav-text">1 基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-图"><span class="nav-text">1.1 图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-二分图"><span class="nav-text">1.2 二分图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-二分图的概念"><span class="nav-text">1.2.1 二分图的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-二分图的判定"><span class="nav-text">1.2.2 二分图的判定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-匹配"><span class="nav-text">1.3 匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-最大匹配"><span class="nav-text">1.4 最大匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-最大权匹配和最小权匹配"><span class="nav-text">1.5 最大权匹配和最小权匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-交替路"><span class="nav-text">1.6 交替路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-增广路"><span class="nav-text">1.7 增广路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-1-增广路的概念"><span class="nav-text">1.7.1 增广路的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-2-增广路的性质"><span class="nav-text">1.7.2 增广路的性质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-匈牙利算法的发展脉络"><span class="nav-text">2 匈牙利算法的发展脉络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-原始匈牙利算法"><span class="nav-text">3 原始匈牙利算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-算法流程"><span class="nav-text">3.1 算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-操作示例"><span class="nav-text">3.2 操作示例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-改进的-KM-算法"><span class="nav-text">4 改进的 KM 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-算法流程"><span class="nav-text">4.1 算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-操作示例"><span class="nav-text">4.2 操作示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-代码实现"><span class="nav-text">4.3 代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-1-算法初始化"><span class="nav-text">4.3.1 算法初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-2-算法主流程"><span class="nav-text">4.3.2 算法主流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-3-生成匹配结果"><span class="nav-text">4.3.3 生成匹配结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-4-清除初始化标志"><span class="nav-text">4.3.4 清除初始化标志</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-后记"><span class="nav-text">5 后记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号    </span>
+      <img src="https://blog.shipengx.com/download/备案图标.png" style="display: inline-block;"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5nb3YuY24vcG9ydGFsL3JlZ2lzdGVyU3lzdGVtSW5mbz9yZWNvcmRjb2RlPTMxMDExNDAyMDA2MzA5">沪公网安备31011402006309号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

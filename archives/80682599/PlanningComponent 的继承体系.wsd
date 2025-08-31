@@ -1,0 +1,53 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+
+interface ComponentBase {
+    + bool GetProtoConfig(T* config)
+    # void LoadConfigFiles(const ComponentConfig& config)
+    + virtual bool Initialize(const ComponentConfig& config)
+    # virtual bool Init() = 0
+    - std::string config_file_path_
+}
+
+class Component<M0, M1, M2, NullType> {
+    + bool Initialize(const ComponentConfig& config) override
+}
+
+class PlanningComponent {
+    + bool Init() override
+    - PlanningConfig config_
+}
+
+note left of ComponentBase::config_file_path_
+    ProtoBuf 参数配置文件的绝对路径
+end note
+
+note right of ComponentBase::GetProtoConfig #SkyBlue
+    ④ 调用 common::GetProtoFromFile 工具函数将 config_file_path_ 
+    中的内容读入 ProtoBuf 参数存储对象
+end note
+
+note right of ComponentBase::LoadConfigFiles #SkyBlue
+    ② 获取 ProtoBuf 参数和 gflags 命令行参数配置文件的绝对路径，
+    解析 gflags 命令行参数
+end note
+
+note right of Component::Initialize #SkyBlue
+    ① 组件的泛化初始化方法，重写了直接继承自 ComponentBase 的版本，
+    先后调用 ComponentBase::LoadConfigFiles 方法和组件的特化初始化方法
+end note
+
+note left of PlanningComponent::config_
+    ProtoBuf 参数存储对象
+end note
+
+note right of PlanningComponent::Init #SkyBlue
+    ③ 组件的特化初始化方法，重写了间接继承自 ComponentBase 的版本，
+    调用 ComponentBase::GetProtoConfig 方法
+end note
+
+ComponentBase <|.. Component
+Component <|.. PlanningComponent
+
+@enduml

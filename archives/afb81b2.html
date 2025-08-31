@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本文旨在总结使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成的具体细节与注意事项。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成">
+<meta property="og:url" content="https://blog.shipengx.com/archives/afb81b2.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本文旨在总结使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成的具体细节与注意事项。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20%2B%20Git%20Hook%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E6%89%98%E7%AE%A1%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90.png">
+<meta property="og:image" content="https://image.shipengx.com/gitea%20service%20%E6%88%90%E5%8A%9F%E8%BF%90%E8%A1%8C.png">
+<meta property="og:image" content="https://image.shipengx.com/gitea%20%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E7%BD%AE%E4%B8%8E%E4%B8%80%E8%88%AC%E8%AE%BE%E7%BD%AE.png">
+<meta property="og:image" content="https://image.shipengx.com/gitea%20%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE-%E5%8F%AF%E9%80%89%E8%AE%BE%E7%BD%AE.png">
+<meta property="og:image" content="https://image.shipengx.com/%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE%20gitea.png">
+<meta property="og:image" content="https://image.shipengx.com/%E7%99%BB%E5%BD%95%20gitea.png">
+<meta property="og:image" content="https://image.shipengx.com/Nginx%20%E8%A6%81%E6%B1%82%E8%BE%93%E5%85%A5%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E5%AF%86%E7%A0%81.png">
+<meta property="og:image" content="https://image.shipengx.com/%E9%80%9A%E8%BF%87%203000%20%E7%AB%AF%E5%8F%A3%E8%AE%BF%E9%97%AE%20gitea%20%E5%8F%AF%E4%BB%A5%E7%BB%95%E8%BF%87%20Nginx%20%E7%99%BB%E5%BD%95%E9%AA%8C%E8%AF%81.png">
+<meta property="og:image" content="https://image.shipengx.com/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%E8%AE%BE%E7%BD%AE%E4%B8%BA%E6%8B%92%E7%BB%9D%E5%A4%96%E9%83%A8%E5%AF%B9%203000%20%E7%AB%AF%E5%8F%A3%E7%9A%84%E8%AE%BF%E9%97%AE%E8%AF%B7%E6%B1%82.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E9%9D%A2%E6%9D%BF%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E7%9A%84%E8%A3%B8%E4%BB%93%EF%BC%881%EF%BC%89.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E9%9D%A2%E6%9D%BF%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E7%9A%84%E8%A3%B8%E4%BB%93%EF%BC%882%EF%BC%89.png">
+<meta property="article:published_time" content="2022-08-21T10:34:18.000Z">
+<meta property="article:modified_time" content="2025-08-31T15:42:11.736Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="Gitea">
+<meta property="article:tag" content="Hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20%2B%20Git%20Hook%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E6%89%98%E7%AE%A1%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/afb81b2.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">49</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">99</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/afb81b2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-21 18:34:18" itemprop="dateCreated datePublished" datetime="2022-08-21T18:34:18+08:00">2022-08-21</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%88%E7%8E%87/" itemprop="url" rel="index">
+                    <span itemprop="name">效率</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%88%E7%8E%87/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/afb81b2.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/afb81b2.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本文旨在总结使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成的具体细节与注意事项。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20%2B%20Git%20Hook%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E6%89%98%E7%AE%A1%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90.png" alt="目录-使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成"></p>
+<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>在此前的文章<a href="https://blog.shipengx.com/archives/e3e71b8.html">《在 Ubuntu 18.04 中搭建 GitLab 环境》</a>中，笔者尝试了在 2 核 + 4G 的阿里云 ECS 上搭建 GitLab，无奈由于 GitLab 太占性能，最后只能卸载放弃。本文中，将使用更加轻量的开源解决方案 <span class="exturl" data-url="aHR0cHM6Ly9naXRlYS5pby96aC1jbi8=" title="https://gitea.io/zh-cn/">Gitea<i class="fa fa-external-link"></i></span> 来完成私有 Git 托管服务的搭建，并通过搭建好的 Gitea 管理 Hexo 博客工程的源码。</p>
+<p>同时，还将通过 Git Hook 将 Hexo 博客的构建过程转移到线上，本地只需专注于创作与推送。借助 Gitea 仓库的在线编辑提交，还可实现 Hexo 博客的跨平台异地更新。</p>
+<p>在实践本文内容前，读者应具备以下前提条件：</p>
+<ul>
+<li>一台云服务器</li>
+<li>域名 + ICP 备案 + DNS 解析</li>
+<li>SSL 证书</li>
+</ul>
+<p>关于前提条件，可以参考此前的文章<a href="https://blog.shipengx.com/archives/3955f5ec.html">《将 Hexo 搭建的博客站点从 GitHub Pages 迁移到腾讯云 VPS》</a>。</p>
+<h1 id="1-安装-Gitea" class="heading-control"><a href="#1-安装-Gitea" class="headerlink" title="1 安装 Gitea"></a>1 安装 Gitea<a class="heading-anchor" href="#1-安装-Gitea" aria-hidden="true"></a></h1><h2 id="1-1-安装前置依赖" class="heading-control"><a href="#1-1-安装前置依赖" class="headerlink" title="1.1 安装前置依赖"></a>1.1 安装前置依赖<a class="heading-anchor" href="#1-1-安装前置依赖" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install sqlite3 git nginx</span><br></pre></td></tr></table></figure>
+<p>配置 Nginx 服务自启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl <span class="built_in">enable</span> nginx</span><br></pre></td></tr></table></figure>
+<h2 id="1-2-创建工作用户" class="heading-control"><a href="#1-2-创建工作用户" class="headerlink" title="1.2 创建工作用户"></a>1.2 创建工作用户<a class="heading-anchor" href="#1-2-创建工作用户" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo adduser \</span><br><span class="line"> --system \</span><br><span class="line"> --shell /bin/bash \</span><br><span class="line"> --gecos <span class="string">'Git Version Control'</span> \</span><br><span class="line"> --group \</span><br><span class="line"> --disabled-password \</span><br><span class="line"> --home /home/git \</span><br><span class="line"> git</span><br></pre></td></tr></table></figure>
+<p>上面的命令将分别创建一个名为 <code>git</code> 的新用户和组，并将其主目录设置为 <code>/home/git</code>。</p>
+<h2 id="1-3-下载-Gitea-二进制文件，并添加可执行权限" class="heading-control"><a href="#1-3-下载-Gitea-二进制文件，并添加可执行权限" class="headerlink" title="1.3 下载 Gitea 二进制文件，并添加可执行权限"></a>1.3 下载 Gitea 二进制文件，并添加可执行权限<a class="heading-anchor" href="#1-3-下载-Gitea-二进制文件，并添加可执行权限" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/bin</span><br><span class="line">sudo wget -O gitea https://dl.gitea.io/gitea/1.17.0/gitea-1.17.0-linux-amd64</span><br><span class="line">sudo chmod +x /usr/<span class="built_in">local</span>/bin/gitea</span><br></pre></td></tr></table></figure>
+<h2 id="1-4-创建-Gitea-工作目录，并修改用户组及权限" class="heading-control"><a href="#1-4-创建-Gitea-工作目录，并修改用户组及权限" class="headerlink" title="1.4 创建 Gitea 工作目录，并修改用户组及权限"></a>1.4 创建 Gitea 工作目录，并修改用户组及权限<a class="heading-anchor" href="#1-4-创建-Gitea-工作目录，并修改用户组及权限" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /var/lib/gitea/&#123;custom,data,<span class="built_in">log</span>&#125;</span><br><span class="line">sudo chown -R git:git /var/lib/gitea/</span><br><span class="line">sudo chmod -R 750 /var/lib/gitea/</span><br><span class="line">sudo mkdir /etc/gitea</span><br><span class="line">sudo chown root:git /etc/gitea</span><br><span class="line">sudo chmod 770 /etc/gitea</span><br></pre></td></tr></table></figure>
+<h2 id="1-5-配置-Gitea-服务自启动" class="heading-control"><a href="#1-5-配置-Gitea-服务自启动" class="headerlink" title="1.5 配置 Gitea 服务自启动"></a>1.5 配置 Gitea 服务自启动<a class="heading-anchor" href="#1-5-配置-Gitea-服务自启动" aria-hidden="true"></a></h2><p>编辑 gitea 的 service 文件 <code>/etc/systemd/system/gitea.service</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/systemd/system/gitea.service</span><br></pre></td></tr></table></figure>
+<p>将下面的内容粘贴进去（来源于<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dvLWdpdGVhL2dpdGVhL2Jsb2IvbWFpbi9jb250cmliL3N5c3RlbWQvZ2l0ZWEuc2VydmljZQ==" title="https://github.com/go-gitea/gitea/blob/main/contrib/systemd/gitea.service">这里<i class="fa fa-external-link"></i></span>，不同版本间可能略有区别）：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=Gitea (Git with a cup of tea)</span><br><span class="line"><span class="attr">After</span>=syslog.target</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># Don't forget to add the database service dependencies</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#Wants=mysql.service</span></span><br><span class="line"><span class="comment">#After=mysql.service</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#Wants=mariadb.service</span></span><br><span class="line"><span class="comment">#After=mariadb.service</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#Wants=postgresql.service</span></span><br><span class="line"><span class="comment">#After=postgresql.service</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#Wants=memcached.service</span></span><br><span class="line"><span class="comment">#After=memcached.service</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#Wants=redis.service</span></span><br><span class="line"><span class="comment">#After=redis.service</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># If using socket activation for main http/s</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#After=gitea.main.socket</span></span><br><span class="line"><span class="comment">#Requires=gitea.main.socket</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># (You can also provide gitea an http fallback and/or ssh socket too)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># An example of /etc/systemd/system/gitea.main.socket</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment">##</span></span><br><span class="line"><span class="comment">## [Unit]</span></span><br><span class="line"><span class="comment">## Description=Gitea Web Socket</span></span><br><span class="line"><span class="comment">## PartOf=gitea.service</span></span><br><span class="line"><span class="comment">##</span></span><br><span class="line"><span class="comment">## [Socket]</span></span><br><span class="line"><span class="comment">## Service=gitea.service</span></span><br><span class="line"><span class="comment">## ListenStream=&lt;some_port&gt;</span></span><br><span class="line"><span class="comment">## NoDelay=true</span></span><br><span class="line"><span class="comment">##</span></span><br><span class="line"><span class="comment">## [Install]</span></span><br><span class="line"><span class="comment">## WantedBy=sockets.target</span></span><br><span class="line"><span class="comment">##</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="comment"># Modify these two values and uncomment them if you have</span></span><br><span class="line"><span class="comment"># repos with lots of files and get an HTTP error 500 because</span></span><br><span class="line"><span class="comment"># of that</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment">#LimitMEMLOCK=infinity</span></span><br><span class="line"><span class="comment">#LimitNOFILE=65535</span></span><br><span class="line"><span class="attr">RestartSec</span>=<span class="number">2</span>s</span><br><span class="line"><span class="attr">Type</span>=simple</span><br><span class="line"><span class="attr">User</span>=git</span><br><span class="line"><span class="attr">Group</span>=git</span><br><span class="line"><span class="attr">WorkingDirectory</span>=/var/lib/gitea/</span><br><span class="line"><span class="comment"># If using Unix socket: tells systemd to create the /run/gitea folder, which will contain the gitea.sock file</span></span><br><span class="line"><span class="comment"># (manually creating /run/gitea doesn't work, because it would not persist across reboots)</span></span><br><span class="line"><span class="comment">#RuntimeDirectory=gitea</span></span><br><span class="line"><span class="attr">ExecStart</span>=/usr/local/bin/gitea web --config /etc/gitea/app.ini</span><br><span class="line"><span class="attr">Restart</span>=always</span><br><span class="line"><span class="attr">Environment</span>=USER=git HOME=/home/git GITEA_WORK_DIR=/var/lib/gitea</span><br><span class="line"><span class="comment"># If you install Git to directory prefix other than default PATH (which happens</span></span><br><span class="line"><span class="comment"># for example if you install other versions of Git side-to-side with</span></span><br><span class="line"><span class="comment"># distribution version), uncomment below line and add that prefix to PATH</span></span><br><span class="line"><span class="comment"># Don't forget to place git-lfs binary on the PATH below if you want to enable</span></span><br><span class="line"><span class="comment"># Git LFS support</span></span><br><span class="line"><span class="comment">#Environment=PATH=/path/to/git/bin:/bin:/sbin:/usr/bin:/usr/sbin</span></span><br><span class="line"><span class="comment"># If you want to bind Gitea to a port below 1024, uncomment</span></span><br><span class="line"><span class="comment"># the two values below, or use socket activation to pass Gitea its ports as above</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment">#CapabilityBoundingSet=CAP_NET_BIND_SERVICE</span></span><br><span class="line"><span class="comment">#AmbientCapabilities=CAP_NET_BIND_SERVICE</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># In some cases, when using CapabilityBoundingSet and AmbientCapabilities option, you may want to</span></span><br><span class="line"><span class="comment"># set the following value to false to allow capabilities to be applied on gitea process. The following</span></span><br><span class="line"><span class="comment"># value if set to true sandboxes gitea service and prevent any processes from running with privileges</span></span><br><span class="line"><span class="comment"># in the host user namespace.</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment">#PrivateUsers=false</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"></span><br><span class="line"><span class="section">[Install]</span></span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>配置 Gitea 服务自启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> --now gitea</span><br></pre></td></tr></table></figure>
+<p>查看 Gitea 服务运行状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status gitea</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://image.shipengx.com/gitea%20service%20%E6%88%90%E5%8A%9F%E8%BF%90%E8%A1%8C.png" alt="gitea service 成功运行"></p>
+<p>重启 Gitea：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart gitea</span><br></pre></td></tr></table></figure>
+<h2 id="1-6-初始化安装" class="heading-control"><a href="#1-6-初始化安装" class="headerlink" title="1.6 初始化安装"></a>1.6 初始化安装<a class="heading-anchor" href="#1-6-初始化安装" aria-hidden="true"></a></h2><p>若服务器的 3000 端口已经暴露到外部访问，那么通过在浏览器中访问 <code>IP:3000</code> 我们会来到 Gitea 的初始化安装页面，参考下述图片进行配置（大多数内容是我们在上文中编辑 Gitea 的 service 文件时写入的）：</p>
+<p><img data-src="https://image.shipengx.com/gitea%20%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E7%BD%AE%E4%B8%8E%E4%B8%80%E8%88%AC%E8%AE%BE%E7%BD%AE.png" alt="gitea 安装初始配置-数据库设置与一般设置"></p>
+<p><img data-src="https://image.shipengx.com/gitea%20%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE-%E5%8F%AF%E9%80%89%E8%AE%BE%E7%BD%AE.png" alt="gitea 安装初始配置-可选设置"></p>
+<p>所有的配置最终会写入 <code>/etc/gitea/app.ini</code> 中，完成初始化安装后，我们随时可以通过编辑该文件修改配置。</p>
+<h2 id="1-7-配置-Nginx-反向代理" class="heading-control"><a href="#1-7-配置-Nginx-反向代理" class="headerlink" title="1.7 配置 Nginx 反向代理"></a>1.7 配置 Nginx 反向代理<a class="heading-anchor" href="#1-7-配置-Nginx-反向代理" aria-hidden="true"></a></h2><p>本节的内容将实现通过自有域名访问 Gitea 服务。</p>
+<p><strong>首先</strong>，参考以下内容编辑 <code>/etc/nginx/nginx.conf</code> 文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">user www-data;</span><br><span class="line">worker_processes auto;</span><br><span class="line">pid &#x2F;run&#x2F;nginx.pid;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">  worker_connections  768;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">  include  mime.types;</span><br><span class="line">  default_type  application&#x2F;octet-stream;</span><br><span class="line"></span><br><span class="line">  sendfile on;</span><br><span class="line"></span><br><span class="line">  # for gitea</span><br><span class="line">  server &#123;</span><br><span class="line">    listen 82;</span><br><span class="line">    server_name gitea.shipengx.com;</span><br><span class="line">    # http 访问强制定向到 https 访问</span><br><span class="line">    return 301 https:&#x2F;&#x2F;gitea.shipengx.com$request_uri;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  # 加载 ssl 配置文件</span><br><span class="line">  include &#x2F;etc&#x2F;nginx&#x2F;ssl&#x2F;*.conf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Nginx 默认监听 80 端口，但笔者服务器的 80 端口和 81 端口都已经分配给了其它服务，所以这里选择监听 82 端口。</p>
+<p><strong>然后</strong>，创建 <code>/etc/nginx/ssl</code> 目录并将自有域名的 SSL 证书上传到该目录。</p>
+<p><strong>其次</strong>，创建 SSL 配置文件 <code>/etc/nginx/ssl/ssl.conf</code>，并参考以下内容对其进行编辑：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># for gitea</span><br><span class="line">server &#123;</span><br><span class="line">     # SSL 访问端口号为 443</span><br><span class="line">     listen 443;</span><br><span class="line">     # 填写绑定证书的域名</span><br><span class="line">     server_name gitea.shipengx.com;</span><br><span class="line">     ssl on;</span><br><span class="line">     # 证书文件名称</span><br><span class="line">     ssl_certificate ssl&#x2F;gitea.shipengx.com_bundle.crt;</span><br><span class="line">     # 私钥文件名称</span><br><span class="line">     ssl_certificate_key ssl&#x2F;gitea.shipengx.com.key;</span><br><span class="line">     ssl_session_timeout 5m;</span><br><span class="line">     # 请按照以下协议配置</span><br><span class="line">     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">     # 请按照以下套件配置，配置加密套件，写法遵循 openssl 标准</span><br><span class="line">     ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;</span><br><span class="line">     ssl_prefer_server_ciphers on;</span><br><span class="line">     location &#x2F; &#123;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;localhost:3000&#x2F;;</span><br><span class="line">        proxy_set_header X-Forwarded-Host $host;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从两个配置文件的内容我们不难发现，对 <code>IP:82</code> 和 <code>gitea.shipengx.com</code> 的访问都将被重定向到 443 端口，对 443 端口的访问又会被代理到 <code>localhost:3000</code>，最终实现通过 82 端口和域名访问云服务器的 Gitea 服务。</p>
+<p><strong>最后</strong>，重启 Nginx 服务，并在浏览器中输入域名我们便可访问自建 Gitea：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart nginx.service</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://image.shipengx.com/%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE%20gitea.png" alt="通过自定义域名访问 gitea"></p>
+<p><img data-src="https://image.shipengx.com/%E7%99%BB%E5%BD%95%20gitea.png" alt="登录 gitea"></p>
+<h2 id="1-8-为数据安全再加一道锁：配置-Nginx-登录验证" class="heading-control"><a href="#1-8-为数据安全再加一道锁：配置-Nginx-登录验证" class="headerlink" title="1.8 为数据安全再加一道锁：配置 Nginx 登录验证"></a>1.8 为数据安全再加一道锁：配置 Nginx 登录验证<a class="heading-anchor" href="#1-8-为数据安全再加一道锁：配置-Nginx-登录验证" aria-hidden="true"></a></h2><p>虽然我们可以设置 Gitea 的登录账户及密码，但为了安全，我们还可以再加一道 Nginx 登录验证，实现只有通过该验证才可以访问到 Gitea 登录界面的效果。</p>
+<p><strong>首先</strong>，安装 <code>apache2-utils</code> 工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install apache2-utils</span><br></pre></td></tr></table></figure>
+<p><strong>然后</strong>，创建 Gitea 登录账户并为其设置密码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo htpasswd -c /etc/nginx/.htpasswd new_user_name</span><br></pre></td></tr></table></figure>
+<p>回车后会要求为新建用户设置密码。</p>
+<p><strong>其次</strong>，编辑 <code>/etc/nginx/ssl/ssl.conf</code> 文件，在 <code>location /</code> 项中添加 <code>auth_basic</code> 指令打开身份验证，并添加 <code>auth_basic_user_file</code> 指令指定我们上文中创建的登录凭证文件 <code>/etc/nginx/.htpasswd</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"># for gitea</span><br><span class="line">server &#123;</span><br><span class="line">     # SSL 访问端口号为 443</span><br><span class="line">     listen 443;</span><br><span class="line">     # 填写绑定证书的域名</span><br><span class="line">     server_name gitea.shipengx.com;</span><br><span class="line">     ssl on;</span><br><span class="line">     # 证书文件名称</span><br><span class="line">     ssl_certificate ssl&#x2F;gitea.shipengx.com_bundle.crt;</span><br><span class="line">     # 私钥文件名称</span><br><span class="line">     ssl_certificate_key ssl&#x2F;gitea.shipengx.com.key;</span><br><span class="line">     ssl_session_timeout 5m;</span><br><span class="line">     # 请按照以下协议配置</span><br><span class="line">     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">     # 请按照以下套件配置，配置加密套件，写法遵循 openssl 标准</span><br><span class="line">     ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;</span><br><span class="line">     ssl_prefer_server_ciphers on;</span><br><span class="line">     location &#x2F; &#123;</span><br><span class="line">        auth_basic &quot;Please enter your account password&quot;;</span><br><span class="line">        auth_basic_user_file &#x2F;etc&#x2F;nginx&#x2F;.htpasswd;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;localhost:3000&#x2F;;</span><br><span class="line">        proxy_set_header X-Forwarded-Host $host;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>最后</strong>，重启 Nginx 服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart nginx.service</span><br></pre></td></tr></table></figure>
+<p>此时通过<code>IP:82</code> 或域名访问 Gitea 时首先会来到 Nginx 的登录验证页面，只有输入 <code>/etc/nginx/.htpasswd</code> 中存在的用户名及密码才可通过验证：</p>
+<p><img data-src="https://image.shipengx.com/Nginx%20%E8%A6%81%E6%B1%82%E8%BE%93%E5%85%A5%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E5%AF%86%E7%A0%81.png" alt="Nginx 要求输入用户名和密码"></p>
+<p>但还有个问题，此前我们配置了 3000 端口作为 Gitea 服务的外部访问端口，因此通过访问 <code>IP:3000</code> 可以直接绕过 Nginx 的登录验证：</p>
+<p><img data-src="https://image.shipengx.com/%E9%80%9A%E8%BF%87%203000%20%E7%AB%AF%E5%8F%A3%E8%AE%BF%E9%97%AE%20gitea%20%E5%8F%AF%E4%BB%A5%E7%BB%95%E8%BF%87%20Nginx%20%E7%99%BB%E5%BD%95%E9%AA%8C%E8%AF%81.png" alt="通过 3000 端口访问 gitea 可以绕过 Nginx 登录验证"></p>
+<p>所以为确保安全，我们需要在云服务器的安全策略设置中拒绝外部对 3000 端口的访问请求：</p>
+<p><img data-src="https://image.shipengx.com/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%E8%AE%BE%E7%BD%AE%E4%B8%BA%E6%8B%92%E7%BB%9D%E5%A4%96%E9%83%A8%E5%AF%B9%203000%20%E7%AB%AF%E5%8F%A3%E7%9A%84%E8%AE%BF%E9%97%AE%E8%AF%B7%E6%B1%82.png" alt="云服务器安全策略设置为拒绝外部对 3000 端口的访问请求"></p>
+<h2 id="1-9-导入本地裸仓" class="heading-control"><a href="#1-9-导入本地裸仓" class="headerlink" title="1.9 导入本地裸仓"></a>1.9 导入本地裸仓<a class="heading-anchor" href="#1-9-导入本地裸仓" aria-hidden="true"></a></h2><p>如果服务器中已经有了此前建立的裸仓，我们可以将其直接导入到 Gitea 中进行管理。</p>
+<p><strong>首先</strong>，将已有的裸仓拷贝到 Gitea 的仓库存储目录下，并将其所有权变更为上文中所建立的 <code>git:git</code> 用户：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp -r ~/blog_test.git /var/lib/gitea/data/gitea-repositories/shipeng/</span><br><span class="line">chown -R git:git /var/lib/gitea/data/gitea-repositories/shipeng/blog_test.git</span><br></pre></td></tr></table></figure>
+<p><strong>然后</strong>，依次执行下述图片中的步骤即可：</p>
+<p><img data-src="https://image.shipengx.com/%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E9%9D%A2%E6%9D%BF%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E7%9A%84%E8%A3%B8%E4%BB%93%EF%BC%881%EF%BC%89.png" alt="在管理员面板导入已有的裸仓（1）"></p>
+<p><img data-src="https://image.shipengx.com/%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E9%9D%A2%E6%9D%BF%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E7%9A%84%E8%A3%B8%E4%BB%93%EF%BC%882%EF%BC%89.png" alt="在管理员面板导入已有的裸仓（2）"></p>
+<blockquote>
+<p>导入到 Gitea 中的裸仓与原裸仓将不再有任何关联。</p>
+</blockquote>
+<h1 id="2-为服务器安装-Node-js-与-Hexo" class="heading-control"><a href="#2-为服务器安装-Node-js-与-Hexo" class="headerlink" title="2 为服务器安装 Node.js 与 Hexo"></a>2 为服务器安装 Node.js 与 Hexo<a class="heading-anchor" href="#2-为服务器安装-Node-js-与-Hexo" aria-hidden="true"></a></h1><p>实现 Hexo 博客的线上管理与持续集成前，我们需要先为服务器配置好 Node.js 与 Hexo 环境，为确保稳定可靠，请尽量使用本文中对应的版本。</p>
+<h2 id="2-1-安装-Node-js" class="heading-control"><a href="#2-1-安装-Node-js" class="headerlink" title="2.1 安装 Node.js"></a>2.1 安装 Node.js<a class="heading-anchor" href="#2-1-安装-Node-js" aria-hidden="true"></a></h2><p>下载二进制文件（本文中使用 <span class="exturl" data-url="aHR0cHM6Ly9ub2RlanMub3JnL2Rvd25sb2FkL3JlbGVhc2UvdjEyLjE0LjEvbm9kZS12MTIuMTQuMS1saW51eC14NjQudGFyLmd6" title="https://nodejs.org/download/release/v12.14.1/node-v12.14.1-linux-x64.tar.gz">v12.14.1<i class="fa fa-external-link"></i></span> 版本）并上传到服务器的 <code>/usr/local</code> 目录下，然后解压：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf node-v12.14.1-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+<p>为 <code>node</code> 和 <code>npm</code> 添加可执行权限并创建软链接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x /usr/<span class="built_in">local</span>/node-v12.14.1-linux-x64/bin/node</span><br><span class="line">sudo chmod +x /usr/<span class="built_in">local</span>/node-v12.14.1-linux-x64/bin/npm</span><br><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/node-v12.14.1-linux-x64/bin/node /usr/<span class="built_in">local</span>/bin/node</span><br><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/node-v12.14.1-linux-x64/bin/npm /usr/<span class="built_in">local</span>/bin/npm</span><br></pre></td></tr></table></figure>
+<h2 id="2-2-安装-Hexo" class="heading-control"><a href="#2-2-安装-Hexo" class="headerlink" title="2.2 安装 Hexo"></a>2.2 安装 Hexo<a class="heading-anchor" href="#2-2-安装-Hexo" aria-hidden="true"></a></h2><p>通过 <code>npm</code> 安装 Hexo（本文中使用 4.2.0 版本）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g hexo@4.2.0</span><br></pre></td></tr></table></figure>
+<p>为 Hexo 可执行程序创建软链接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/node-v12.14.1-linux-x64/lib/node_modules/hexo/bin/hexo /usr/<span class="built_in">local</span>/bin/hexo</span><br></pre></td></tr></table></figure>
+<h1 id="3-创建-Hexo-博客仓库并配置-Git-Hook-钩子" class="heading-control"><a href="#3-创建-Hexo-博客仓库并配置-Git-Hook-钩子" class="headerlink" title="3 创建 Hexo 博客仓库并配置 Git Hook 钩子"></a>3 创建 Hexo 博客仓库并配置 Git Hook 钩子<a class="heading-anchor" href="#3-创建-Hexo-博客仓库并配置-Git-Hook-钩子" aria-hidden="true"></a></h1><p>完成上述步骤后，我们已经可以开始进行 Hexo 博客仓库的创建，并为其配置 Git Hook 钩子，并最终实现从线下创作到线上更新的自动化流程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">线下创作并推送提交 → 触发远程 Git Hook → 线上构建部署 → 站点更新</span><br></pre></td></tr></table></figure>
+<p>通过将博客的构建过程移到线上，不仅节约了本地的运算资源，而且可以让我们更专注于本地创作。</p>
+<h2 id="3-1-创建-Hexo-博客仓库" class="heading-control"><a href="#3-1-创建-Hexo-博客仓库" class="headerlink" title="3.1 创建 Hexo 博客仓库"></a>3.1 创建 Hexo 博客仓库<a class="heading-anchor" href="#3-1-创建-Hexo-博客仓库" aria-hidden="true"></a></h2><p>直接通过 Web 界面完成 Hexo 博客仓库的创建，并通过 https 克隆链接或 ssh 克隆链接将仓库克隆到本地，然后将本地仓库初始化（<code>hexo init</code>）为 Hexo 工程或将已有的 Hexo 工程拷贝到本地仓库。我们应该为仓库添加一个 <code>.gitignore</code> 文件，并添加一些不应被 git 管理的忽略项：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*.log</span><br><span class="line">public&#x2F;</span><br><span class="line">.deploy*&#x2F;</span><br></pre></td></tr></table></figure>
+<p>最好再创建一个部署脚本，方便后面线上构建时直接被 Git Hook 钩子脚本调用，下面是笔者的部署脚本 <code>deploy.sh</code>，该脚本被调用时会构建出博客的 HTML 静态页面，并将构建日志同时输出到终端和文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">file_log=deploy.log</span><br><span class="line">file_fifo=run.fifo</span><br><span class="line">rm -f <span class="string">"<span class="variable">$file_log</span>"</span> <span class="string">"<span class="variable">$file_fifo</span>"</span></span><br><span class="line">mkfifo <span class="variable">$file_fifo</span></span><br><span class="line">cat <span class="variable">$file_fifo</span> | tee -a <span class="variable">$file_log</span> &amp;</span><br><span class="line"><span class="built_in">exec</span> 3&gt;&amp;1</span><br><span class="line"><span class="built_in">exec</span> 4&gt;&amp;2</span><br><span class="line"><span class="built_in">exec</span> 1&gt;<span class="variable">$file_fifo</span></span><br><span class="line"><span class="built_in">exec</span> 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">gbError=<span class="string">"\033[1;31m[ERROR]\033[0m"</span></span><br><span class="line">gbWarning=<span class="string">"\033[1;33m[WARNING]\033[0m"</span></span><br><span class="line">gbInfo=<span class="string">"\033[1;32m[INFO]\033[0m"</span></span><br><span class="line">gbGood=<span class="string">"\033[1;32m[GOOD]\033[0m"</span></span><br><span class="line"></span><br><span class="line">current_time=$(date <span class="string">"+%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\n &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; <span class="variable">$current_time</span> &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; \n"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"<span class="variable">$gbInfo</span> Start to build and deploy hexo blog...\n"</span></span><br><span class="line"></span><br><span class="line">hexo clean</span><br><span class="line">hexo douban -b</span><br><span class="line">hexo g</span><br><span class="line"><span class="comment"># hexo deploy</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ $? -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">"\n<span class="variable">$gbGood</span> Successfully built and deployed hexo blog!"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">"\n<span class="variable">$gbError</span> Faild to deploy hexo blog, please check it!"</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span> <span class="string">"\015"</span></span><br><span class="line"><span class="built_in">exec</span> 1&gt;&amp;3</span><br><span class="line"><span class="built_in">exec</span> 2&gt;&amp;4</span><br><span class="line">rm -f <span class="string">"<span class="variable">$file_fifo</span>"</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-2-配置-Git-Hook-钩子" class="heading-control"><a href="#3-2-配置-Git-Hook-钩子" class="headerlink" title="3.2 配置 Git Hook 钩子"></a>3.2 配置 Git Hook 钩子<a class="heading-anchor" href="#3-2-配置-Git-Hook-钩子" aria-hidden="true"></a></h2><p>创建 <code>/var/lib/gitea/data/gitea-repositories/shipeng/blog.git/hooks/post-receive.d/post-receive</code> 钩子脚本，输入下述内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">gbError=<span class="string">"\033[1;31m[ERROR]\033[0m"</span></span><br><span class="line">gbWarning=<span class="string">"\033[1;33m[WARNING]\033[0m"</span></span><br><span class="line">gbInfo=<span class="string">"\033[1;32m[INFO]\033[0m"</span></span><br><span class="line">gbGood=<span class="string">"\033[1;32m[GOOD]\033[0m"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\n<span class="variable">$gbInfo</span> Hexo blog post-receive git hook is running...\n"</span></span><br><span class="line"></span><br><span class="line">bare_repo=/var/lib/gitea/data/gitea-repositories/shipeng/blog.git</span><br><span class="line">cloned_repo=/var/lib/gitea/data/gitea-repositories/shipeng/blog</span><br><span class="line">blog_dir=/var/www/blog</span><br><span class="line"></span><br><span class="line">rm -rf <span class="variable">$cloned_repo</span></span><br><span class="line">git <span class="built_in">clone</span> <span class="variable">$bare_repo</span> <span class="variable">$cloned_repo</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$cloned_repo</span></span><br><span class="line">chmod +x deploy.sh</span><br><span class="line">./deploy.sh</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ $? -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">    rm -rf <span class="variable">$&#123;blog_dir&#125;</span>/*</span><br><span class="line">    cp -rf public/* <span class="variable">$&#123;blog_dir&#125;</span>/</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>其中，<code>blog_dir</code> 指代的是博客站点的 Nginx 代理目录，需要提前将其所有权设定为上文中所创建的 <code>git:git</code> 用户：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R git:git /var/www/blog</span><br></pre></td></tr></table></figure>
+<p>Git Hook 的具体工作原理是，每发生一个推送提交的行为，会首先调用 Gitea 创建的钩子脚本 <code>/var/lib/gitea/data/gitea-repositories/shipeng/blog.git/hooks/post-receive</code>，该钩子脚本会调用上文中我们自定义的钩子脚本，自定义钩子脚本执行时，会将博客裸仓克隆出一个实体仓，并进入到实体仓中执行部署脚本 <code>deploy.sh</code>，若博客构建成功，则会将实体仓中生成的 <code>public</code> 目录下的博客站点内容拷贝到博客站点的 Nginx 代理目录，最终实现从本地创作到博客更新的自动化。</p>
+<h1 id="4-后记" class="heading-control"><a href="#4-后记" class="headerlink" title="4 后记"></a>4 后记<a class="heading-anchor" href="#4-后记" aria-hidden="true"></a></h1><blockquote>
+<p>生命不息，折腾不止！</p>
+</blockquote>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9qc2tjdy5jb20vcG9zdC9ob3ctdG8taW5zdGFsbC1naXRlYS1vbi11YnVudHUtMjAtMDQv" title="https://jskcw.com/post/how-to-install-gitea-on-ubuntu-20-04/">在 Ubuntu20.04 上怎样安装 Gitea<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9qc2tjdy5jb20vcG9zdC9ob3ctdG8tYWRkLWFuZC1kZWxldGUtdXNlcnMtb24tdWJ1bnR1LTIwLTA0Lw==" title="https://jskcw.com/post/how-to-add-and-delete-users-on-ubuntu-20-04/">在 Ubuntu20.04 上怎样添加和删除用户<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9jbG91ZC50ZW5jZW50LmNvbS9kZXZlbG9wZXIvYXJ0aWNsZS8xNjg0Nzk0" title="https://cloud.tencent.com/developer/article/1684794">GIT 仓库、源码管理服务器 gitea 的安装、htttps 访问<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRib29rLnBwdGZ6LmNuL2xpbnV4LyVFOCU4NyVBQSVFNSU4QSVBOCVFNSU4QyU5NiVFOCVCRiU5MCVFNyVCQiVCNCVFNSVCOSVCMyVFNSU4RiVCMC9naXRlYS9naXRlYSVFNSVBRSU4OSVFOCVBMyU4NS5odG1s" title="https://gitbook.pptfz.cn/linux/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0/gitea/gitea%E5%AE%89%E8%A3%85.html">gitea 安装<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGVhLmlvL3poLWNuLw==" title="https://docs.gitea.io/zh-cn/">Gitea 官方文档<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dvLWdpdGVhL2dpdGVh" title="https://github.com/go-gitea/gitea">gitea<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cucHVkbi5jb20vbmV3cy82MmQ3YTI2ZDg2NGQ1YzczYWNkMmRiM2YuaHRtbA==" title="https://www.pudn.com/news/62d7a26d864d5c73acd2db3f.html">如何在 Ubuntu 上使用 Nginx 设置密码验证<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\2577fd4c.html" rel="bookmark">使用 Gitea Actions 实现 Hexo 博客持续集成与持续部署</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\586b7559.html" rel="bookmark">Git版本库管理最佳实践——以创建新分支加入某个项目为例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\77718b2.html" rel="bookmark">Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f390ae43.html" rel="bookmark">git的cherry-pick命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\ba569070.html" rel="bookmark">gitignore与gitkeep的作用</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/afb81b2.html" title="使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成">https://blog.shipengx.com/archives/afb81b2.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
+              <a href="/tags/Gitea/" rel="tag"><i class="fa fa-tag"></i> Gitea</a>
+              <a href="/tags/Hexo/" rel="tag"><i class="fa fa-tag"></i> Hexo</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/e3e71b8.html" rel="prev" title="在 Ubuntu 18.04 中搭建 GitLab 环境">
+      <i class="fa fa-chevron-left"></i> 在 Ubuntu 18.04 中搭建 GitLab 环境
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/a5459cd3.html" rel="next" title="使用 nvm 进行 Node.js 版本管理">
+      使用 nvm 进行 Node.js 版本管理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-安装-Gitea"><span class="nav-text">1 安装 Gitea</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-安装前置依赖"><span class="nav-text">1.1 安装前置依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-创建工作用户"><span class="nav-text">1.2 创建工作用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-下载-Gitea-二进制文件，并添加可执行权限"><span class="nav-text">1.3 下载 Gitea 二进制文件，并添加可执行权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-创建-Gitea-工作目录，并修改用户组及权限"><span class="nav-text">1.4 创建 Gitea 工作目录，并修改用户组及权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-配置-Gitea-服务自启动"><span class="nav-text">1.5 配置 Gitea 服务自启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-初始化安装"><span class="nav-text">1.6 初始化安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-配置-Nginx-反向代理"><span class="nav-text">1.7 配置 Nginx 反向代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-为数据安全再加一道锁：配置-Nginx-登录验证"><span class="nav-text">1.8 为数据安全再加一道锁：配置 Nginx 登录验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-9-导入本地裸仓"><span class="nav-text">1.9 导入本地裸仓</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-为服务器安装-Node-js-与-Hexo"><span class="nav-text">2 为服务器安装 Node.js 与 Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-安装-Node-js"><span class="nav-text">2.1 安装 Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-安装-Hexo"><span class="nav-text">2.2 安装 Hexo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-创建-Hexo-博客仓库并配置-Git-Hook-钩子"><span class="nav-text">3 创建 Hexo 博客仓库并配置 Git Hook 钩子</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-创建-Hexo-博客仓库"><span class="nav-text">3.1 创建 Hexo 博客仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-配置-Git-Hook-钩子"><span class="nav-text">3.2 配置 Git Hook 钩子</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-后记"><span class="nav-text">4 后记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号    </span>
+      <img src="https://blog.shipengx.com/download/备案图标.png" style="display: inline-block;"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5nb3YuY24vcG9ydGFsL3JlZ2lzdGVyU3lzdGVtSW5mbz9yZWNvcmRjb2RlPTMxMDExNDAyMDA2MzA5">沪公网安备31011402006309号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

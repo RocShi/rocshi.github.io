@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="PNikZLgEROlB0REDk-jntc-fTWVFIkSNJZbICyge9H4">
+  <meta name="msvalidate.01" content="5D5B4EDEB3F20663D4B0CBA6229645B0">
+  <meta name="baidu-site-verification" content="N9MkUFl4G3">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.loli.net/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Cinzel Decorative:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.shipengx.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.1',
+    exturl: true,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="本文旨在记录使用 nvm 进行 Node.js 多版本管理的详细操作步骤，包括 Linux 平台和 Windows 平台。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 nvm 进行 Node.js 版本管理">
+<meta property="og:url" content="https://blog.shipengx.com/archives/a5459cd3.html">
+<meta property="og:site_name" content="朝花夕拾">
+<meta property="og:description" content="本文旨在记录使用 nvm 进行 Node.js 多版本管理的详细操作步骤，包括 Linux 平台和 Windows 平台。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20nvm%20%E8%BF%9B%E8%A1%8C%20Node.js%20%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86.png">
+<meta property="og:image" content="https://image.shipengx.com/%E5%BC%80%E5%90%AF%20Windows%20%E7%9A%84%E5%BC%80%E5%8F%91%E8%80%85%E6%A8%A1%E5%BC%8F.png">
+<meta property="article:published_time" content="2022-08-28T03:50:58.000Z">
+<meta property="article:modified_time" content="2023-03-06T15:59:04.594Z">
+<meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="Node.js">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20nvm%20%E8%BF%9B%E8%A1%8C%20Node.js%20%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86.png">
+
+<link rel="canonical" href="https://blog.shipengx.com/archives/a5459cd3.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+  <title>使用 nvm 进行 Node.js 版本管理 | 朝花夕拾</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝花夕拾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">输出倒逼思考</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">49</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">99</span></a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>读书</a>
+
+  </li>
+        <li class="menu-item menu-item-zhihu">
+
+    <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JvY3NoaQ==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/a5459cd3.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ShiPeng">
+      <meta itemprop="description" content="Stay hungry, stay foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝花夕拾">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          使用 nvm 进行 Node.js 版本管理
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-28 11:50:58" itemprop="dateCreated datePublished" datetime="2022-08-28T11:50:58+08:00">2022-08-28</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%88%E7%8E%87/" itemprop="url" rel="index">
+                    <span itemprop="name">效率</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%88%E7%8E%87/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/archives/a5459cd3.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/a5459cd3.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">本文旨在记录使用 nvm 进行 Node.js 多版本管理的详细操作步骤，包括 Linux 平台和 Windows 平台。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20nvm%20%E8%BF%9B%E8%A1%8C%20Node.js%20%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86.png" alt="目录-使用 nvm 进行 Node.js 版本管理"></p>
+<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>此前一直使用印象笔记进行零散笔记（不同于博客的长篇大论）的记录，但一直以来印象笔记对 Markdown 的支持都差强人意，这无疑会降低创作的欲望，所以最近决定进行个人知识管理系统的重构，期间尝试了多种方案：</p>
+<ul>
+<li>Hexo + hexo-theme-Wikitten 主题</li>
+<li>GitBook</li>
+<li>Docsify</li>
+</ul>
+<p>以上方案无论从颜值、页面布局还是功能性上都无法满足笔者的需求，最终决定采用 <span class="exturl" data-url="aHR0cHM6Ly92Mi52dWVwcmVzcy52dWVqcy5vcmcvemgvZ3VpZGUv" title="https://v2.vuepress.vuejs.org/zh/guide/">VuePress 2.0<i class="fa fa-external-link"></i></span> + <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3Z1ZXByZXNzLXRoZW1lLWhvcGUvdnVlcHJlc3MtdGhlbWUtaG9wZQ==" title="https://github.com/vuepress-theme-hope/vuepress-theme-hope">vuepress-theme-hope<i class="fa fa-external-link"></i></span> 主题的方案。</p>
+<p>类似此前云端部署 Hexo 博客的思路，本地整理好 VuePress 工程同时云端配置好相应环境后，本地负责“搜集信息 + 思考 + 创作”并使用 Git 进行版本管理，将修改推送到云端后，由云端裸仓的 Git Hook 负责笔记的自动构建与部署，Nginx 负责 Web 反向代理。</p>
+<p>期间发现，VuePress 2.0 <span class="exturl" data-url="aHR0cHM6Ly92Mi52dWVwcmVzcy52dWVqcy5vcmcvemgvZ3VpZGUvZ2V0dGluZy1zdGFydGVkLmh0bWw=" title="https://v2.vuepress.vuejs.org/zh/guide/getting-started.html">要求<i class="fa fa-external-link"></i></span> Node.js 版本 v14.18.0+，但此前在搭建 Hexo 博客的过程中使用的 Node.js 版本是 v12.14.1，为不污染博客开发环境，决定使用 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL252bS1zaC9udm0=" title="https://github.com/nvm-sh/nvm">nvm<i class="fa fa-external-link"></i></span>（node version manager）进行 Node.js 的多版本管理，对于 Linux 平台和 Windows 平台有着不同的操作步骤。</p>
+<h1 id="1-Linux" class="heading-control"><a href="#1-Linux" class="headerlink" title="1 Linux"></a>1 Linux<a class="heading-anchor" href="#1-Linux" aria-hidden="true"></a></h1><p>在 Linux 平台下需要使用官方的 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL252bS1zaC9udm0=" title="https://github.com/nvm-sh/nvm">nvm<i class="fa fa-external-link"></i></span> 版本。</p>
+<h2 id="1-1-安装" class="heading-control"><a href="#1-1-安装" class="headerlink" title="1.1 安装"></a>1.1 安装<a class="heading-anchor" href="#1-1-安装" aria-hidden="true"></a></h2><h3 id="1-1-1-通过脚本为单一用户安装" class="heading-control"><a href="#1-1-1-通过脚本为单一用户安装" class="headerlink" title="1.1.1 通过脚本为单一用户安装"></a>1.1.1 通过脚本为单一用户安装<a class="heading-anchor" href="#1-1-1-通过脚本为单一用户安装" aria-hidden="true"></a></h3><p>通过执行下述命令可实现为当前用户安装 nvm（官方安装方式）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash</span><br></pre></td></tr></table></figure>
+<p>由于网络原因可能需要多尝试几次，看到类似如下输出即为成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                               Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100 15037  100 15037    0     0    448      0  0:00:33  0:00:33 --:--:--  4537</span><br><span class="line">&#x3D;&gt; nvm is already installed in &#x2F;root&#x2F;.nvm, trying to update using git</span><br><span class="line">&#x3D;&gt; * (HEAD detached at FETCH_HEAD)</span><br><span class="line">  master</span><br><span class="line">&#x3D;&gt; Compressing and cleaning up git repository</span><br><span class="line"></span><br><span class="line">&#x3D;&gt; Appending nvm source string to &#x2F;root&#x2F;.bashrc</span><br><span class="line">&#x3D;&gt; Appending bash_completion source string to &#x2F;root&#x2F;.bashrc</span><br><span class="line">&#x3D;&gt; You currently have modules installed globally with &#96;npm&#96;. These will no</span><br><span class="line">&#x3D;&gt; longer be linked to the active version of Node when you install a new node</span><br><span class="line">&#x3D;&gt; with &#96;nvm&#96;; and they may (depending on how you construct your &#96;$PATH&#96;)</span><br><span class="line">&#x3D;&gt; override the binaries of modules installed with &#96;nvm&#96;:</span><br><span class="line"></span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;node-v12.14.1-linux-x64&#x2F;lib</span><br><span class="line">├── gitbook-cli@2.3.2</span><br><span class="line">├── hexo@4.2.0</span><br><span class="line">&#x3D;&gt; If you wish to uninstall them at a later point (or re-install them under your</span><br><span class="line">&#x3D;&gt; &#96;nvm&#96; Nodes), you can remove them from the system Node as follows:</span><br><span class="line"></span><br><span class="line">     $ nvm use system</span><br><span class="line">     $ npm uninstall -g a_module</span><br><span class="line"></span><br><span class="line">&#x3D;&gt; Close and reopen your terminal to start using nvm or run the following to use   it now:</span><br><span class="line"></span><br><span class="line">export NVM_DIR&#x3D;&quot;$HOME&#x2F;.nvm&quot;</span><br><span class="line">[ -s &quot;$NVM_DIR&#x2F;nvm.sh&quot; ] &amp;&amp; \. &quot;$NVM_DIR&#x2F;nvm.sh&quot;  # This loads nvm</span><br><span class="line">[ -s &quot;$NVM_DIR&#x2F;bash_completion&quot; ] &amp;&amp; \. &quot;$NVM_DIR&#x2F;bash_completion&quot;  # This loads   nvm bash_completion</span><br></pre></td></tr></table></figure>
+<h3 id="1-1-2-为所有用户安装" class="heading-control"><a href="#1-1-2-为所有用户安装" class="headerlink" title="1.1.2 为所有用户安装"></a>1.1.2 为所有用户安装<a class="heading-anchor" href="#1-1-2-为所有用户安装" aria-hidden="true"></a></h3><p>有时我们希望系统的所有用户都能使用已安装好的 nvm 和 Node.js 环境（<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL252bS1zaC9udm0vaXNzdWVzLzE1MzM=" title="https://github.com/nvm-sh/nvm/issues/1533">nvm 并不推荐这样做<i class="fa fa-external-link"></i></span>），此时我们可以通过下面的方式来安装全局的 nvm。</p>
+<p>首先，以 root 用户的身份执行下述命令安装 nvm：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/nvm-sh/nvm.git</span><br><span class="line">chmod -R 777 nvm/</span><br></pre></td></tr></table></figure>
+<p>然后，对于任意用户，执行一次下述代码后则该用户新开的终端中即可正常使用 nvm（当前终端需要 <code>source ~/.bashrc</code>）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"export NVM_DIR=/usr/local/nvm"</span> &gt;&gt;~/.bashrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"source /usr/local/nvm/nvm.sh"</span> &gt;&gt;~/.bashrc</span><br></pre></td></tr></table></figure>
+<h2 id="1-2-卸载此前已安装的-Node-js-并重新安装" class="heading-control"><a href="#1-2-卸载此前已安装的-Node-js-并重新安装" class="headerlink" title="1.2 卸载此前已安装的 Node.js 并重新安装"></a>1.2 卸载此前已安装的 Node.js 并重新安装<a class="heading-anchor" href="#1-2-卸载此前已安装的-Node-js-并重新安装" aria-hidden="true"></a></h2><p>对于已经安装的 Node.js，可以通过执行 <code>nvm use system</code> 使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm use system</span><br><span class="line"><span class="comment"># Now using system version of node: v12.14.1 (npm v6.13.4)</span></span><br></pre></td></tr></table></figure>
+<p>但无法通过指定版本号的方式进行使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nvm use 12.14.1</span><br><span class="line"><span class="comment"># N/A: version "12.14.1 -&gt; N/A" is not yet installed.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You need to run "nvm install 12.14.1" to install it before using it.</span></span><br></pre></td></tr></table></figure>
+<p>所以这里我们先将 Node.js 及相关的 npm 功能包、软链接等都卸载，再重新安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/node-v12.14.1-linux-x64</span><br><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/bin/node /usr/<span class="built_in">local</span>/bin/npm /usr/<span class="built_in">local</span>/bin/hexo /usr/<span class="built_in">local</span>/bin/gitbook</span><br><span class="line"></span><br><span class="line">nvm install 12.14.1</span><br><span class="line">nvm use 12.14.1</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-卸载" class="heading-control"><a href="#1-3-卸载" class="headerlink" title="1.3 卸载"></a>1.3 卸载<a class="heading-anchor" href="#1-3-卸载" aria-hidden="true"></a></h2><p>首先，移除安装目录。若采用的单一用户安装方式，则执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf <span class="string">"<span class="variable">$NVM_DIR</span>"</span></span><br></pre></td></tr></table></figure>
+<p>若采用的所有用户安装方式，则执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /usr/<span class="built_in">local</span>/nvm</span><br></pre></td></tr></table></figure>
+<p>然后，编辑 <code>~/.bashrc</code> 文件，删除 nvm 相关的内容。对于单一用户安装方式，需删除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> NVM_DIR=<span class="string">"<span class="variable">$HOME</span>/.nvm"</span></span><br><span class="line">[ -s <span class="string">"<span class="variable">$NVM_DIR</span>/nvm.sh"</span> ] &amp;&amp; \. <span class="string">"<span class="variable">$NVM_DIR</span>/nvm.sh"</span> <span class="comment"># This loads nvm</span></span><br><span class="line">[[ -r <span class="variable">$NVM_DIR</span>/bash_completion ]] &amp;&amp; \. <span class="variable">$NVM_DIR</span>/bash_completion</span><br></pre></td></tr></table></figure>
+<p>对于所有用户安装方式，需删除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> NVM_DIR=/usr/<span class="built_in">local</span>/nvm</span><br><span class="line"><span class="built_in">source</span> /usr/<span class="built_in">local</span>/nvm/nvm.sh</span><br></pre></td></tr></table></figure>
+<h1 id="2-Windows" class="heading-control"><a href="#2-Windows" class="headerlink" title="2 Windows"></a>2 Windows<a class="heading-anchor" href="#2-Windows" aria-hidden="true"></a></h1><p>官方并没有提供 Windows 版本的 nvm，可以使用另一个开源实现：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NvcmV5YnV0bGVyL252bS13aW5kb3dz" title="https://github.com/coreybutler/nvm-windows">nvm-windows<i class="fa fa-external-link"></i></span>，具体操作步骤如下。</p>
+<h2 id="2-1-卸载旧版本的-Node-js" class="heading-control"><a href="#2-1-卸载旧版本的-Node-js" class="headerlink" title="2.1 卸载旧版本的 Node.js"></a>2.1 卸载旧版本的 Node.js<a class="heading-anchor" href="#2-1-卸载旧版本的-Node-js" aria-hidden="true"></a></h2><p>首先控制面板中卸载已安装的 Node.js，然后删除残留目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /c/Program Files/nodejs</span><br><span class="line">rm -rf ~/AppData/Roaming/npm ~/AppData/Roaming/npm-cache</span><br></pre></td></tr></table></figure>
+<h2 id="2-2-安装-nvm-windows" class="heading-control"><a href="#2-2-安装-nvm-windows" class="headerlink" title="2.2 安装 nvm-windows"></a>2.2 安装 nvm-windows<a class="heading-anchor" href="#2-2-安装-nvm-windows" aria-hidden="true"></a></h2><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NvcmV5YnV0bGVyL252bS13aW5kb3dzL3JlbGVhc2VzL2Rvd25sb2FkLzEuMS45L252bS1zZXR1cC56aXA=" title="https://github.com/coreybutler/nvm-windows/releases/download/1.1.9/nvm-setup.zip">下载<i class="fa fa-external-link"></i></span> nvm-windows 安装包进行安装，该安装方式会自动添加相关环境变量，无需再手动添加。</p>
+<h2 id="2-3-修改-Node-js-与-npm-镜像源地址" class="heading-control"><a href="#2-3-修改-Node-js-与-npm-镜像源地址" class="headerlink" title="2.3 修改 Node.js 与 npm 镜像源地址"></a>2.3 修改 Node.js 与 npm 镜像源地址<a class="heading-anchor" href="#2-3-修改-Node-js-与-npm-镜像源地址" aria-hidden="true"></a></h2><p>编辑 nvm 安装目录下的 <code>settings.txt</code> 配置文件，将 <code>node_mirror</code> 项和 <code>npm_mirror</code> 项修改为淘宝镜像地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node_mirror: https:&#x2F;&#x2F;npm.taobao.org&#x2F;mirrors&#x2F;node&#x2F;</span><br><span class="line">npm_mirror: https:&#x2F;&#x2F;npm.taobao.org&#x2F;mirrors&#x2F;npm&#x2F;</span><br></pre></td></tr></table></figure>
+<h2 id="2-4-安装-Node-js" class="heading-control"><a href="#2-4-安装-Node-js" class="headerlink" title="2.4 安装 Node.js"></a>2.4 安装 Node.js<a class="heading-anchor" href="#2-4-安装-Node-js" aria-hidden="true"></a></h2><p>比如安装 v12.14.1 版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm install 12.14.1</span><br></pre></td></tr></table></figure>
+<p>可能会出现版本找不到的问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Node.js v12.14.1 is not yet released or available.</span><br></pre></td></tr></table></figure>
+<p><span class="exturl" data-url="aHR0cHM6Ly9ub2RlanMub3JnL2Rvd25sb2FkL3JlbGVhc2Uv" title="https://nodejs.org/download/release/">下载<i class="fa fa-external-link"></i></span> Node.js 对应版本的压缩包到 nvm 安装目录下并解压即可。</p>
+<h2 id="2-5-使用指定-Node-js-版本" class="heading-control"><a href="#2-5-使用指定-Node-js-版本" class="headerlink" title="2.5 使用指定 Node.js 版本"></a>2.5 使用指定 Node.js 版本<a class="heading-anchor" href="#2-5-使用指定-Node-js-版本" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm use 12.14.1</span><br></pre></td></tr></table></figure>
+<p>大概率会遇到权限不够的问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit status 1: You do not have sufficient privilege to perform this operation.</span><br></pre></td></tr></table></figure>
+<p>有两个解决办法：</p>
+<ol>
+<li>以管理员身份再单独开个终端执行上述切换 Node.js 的命令（不优雅）；</li>
+<li>开启 Windows 中的“设置 → 更新和安全 → 开发者选项 → 开发者模式”，如下图所示（一劳永逸）。</li>
+</ol>
+<p><img data-src="https://image.shipengx.com/%E5%BC%80%E5%90%AF%20Windows%20%E7%9A%84%E5%BC%80%E5%8F%91%E8%80%85%E6%A8%A1%E5%BC%8F.png" alt="开启 Windows 的开发者模式"></p>
+<p>总体而言，nvm-windows 的使用方法与 nvm 大体相近。</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly92Mi52dWVwcmVzcy52dWVqcy5vcmcvemgvZ3VpZGUv" title="https://v2.vuepress.vuejs.org/zh/guide/">VuePress 2.0 指南<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL252bS1zaC9udm0=" title="https://github.com/nvm-sh/nvm">nvm<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wcGFwZXIuY29tL2luc3RhbGwtbnZtLW9uLWxpbnV4LWZvci1hbGwtdXNlcnMv" title="https://developpaper.com/install-nvm-on-linux-for-all-users/">Install NVM on Linux for all users<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NvcmV5YnV0bGVyL252bS13aW5kb3dz" title="https://github.com/coreybutler/nvm-windows">nvm-windows<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zZWJoYXN0aWFuLmNvbS9ub2RlLW52bS1leGl0LTEtYWNjZXNzLWRlbmllZC8=" title="https://sebhastian.com/node-nvm-exit-1-access-denied/">Fix NVM error - exit status 1: Access is denied<i class="fa fa-external-link"></i></span></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+
+        <div class="reward-container">
+  <div>Thank you for your donate!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="ShiPeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="ShiPeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>ShiPeng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.shipengx.com/archives/a5459cd3.html" title="使用 nvm 进行 Node.js 版本管理">https://blog.shipengx.com/archives/a5459cd3.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Node-js/" rel="tag"><i class="fa fa-tag"></i> Node.js</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/afb81b2.html" rel="prev" title="使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成">
+      <i class="fa fa-chevron-left"></i> 使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/168abf6c.html" rel="next" title="note_docusaurus：一个适用于构建个人 Wiki 的 Docusaurus 2 工程示例">
+      note_docusaurus：一个适用于构建个人 Wiki 的 Docusaurus 2 工程示例 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Linux"><span class="nav-text">1 Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-安装"><span class="nav-text">1.1 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-通过脚本为单一用户安装"><span class="nav-text">1.1.1 通过脚本为单一用户安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-为所有用户安装"><span class="nav-text">1.1.2 为所有用户安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-卸载此前已安装的-Node-js-并重新安装"><span class="nav-text">1.2 卸载此前已安装的 Node.js 并重新安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-卸载"><span class="nav-text">1.3 卸载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Windows"><span class="nav-text">2 Windows</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-卸载旧版本的-Node-js"><span class="nav-text">2.1 卸载旧版本的 Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-安装-nvm-windows"><span class="nav-text">2.2 安装 nvm-windows</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-修改-Node-js-与-npm-镜像源地址"><span class="nav-text">2.3 修改 Node.js 与 npm 镜像源地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-安装-Node-js"><span class="nav-text">2.4 安装 Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-使用指定-Node-js-版本"><span class="nav-text">2.5 使用指定 Node.js 版本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="ShiPeng"
+        src="/images/avatar.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">ShiPeng</p>
+  <div class="site-description" itemprop="description">Stay hungry, stay foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RocShi"><i class="fa fa-fw fa-github"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号    </span>
+      <img src="https://blog.shipengx.com/download/备案图标.png" style="display: inline-block;"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5nb3YuY24vcG9ydGFsL3JlZ2lzdGVyU3lzdGVtSW5mbz9yZWNvcmRjb2RlPTMxMDExNDAyMDA2MzA5">沪公网安备31011402006309号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ShiPeng</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.1' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'qTmJq982bELvDc6itJCViXS7-gzGzoHsz',
+      appKey: '5d8qvijq5fYokwrhKWKYu5F0',
+      placeholder: "请写下您的评论，如果您想及时收到回复并被告知，请在上方填写您的昵称与个人邮箱。",
+      avatar: 'monsterid',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: true,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

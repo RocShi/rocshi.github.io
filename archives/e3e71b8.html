@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/myfavicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/myfavicon-16x16.png">
@@ -52,22 +52,25 @@
   };
 </script>
 
-  <meta name="description" content="0 前言最近突然又有了梳理个人知识管理体系的冲动，决定彻底解决当前 workflow 中的痛点。目前，个人知识管理体系主要包含三部分：  印象笔记 Hexo 博客 GitBook 笔记  每一部分有着各自的用途与痛点：  .tg  {border-collapse:collapse;border-spacing:0;} .tg td{border-color:black;border-style:">
+  <meta name="description" content="最近在云服务器上搭建私有 Git 托管服务的过程中尝试了 GitLab，本文旨在简要记录其安装及配置过程。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在 Ubuntu 18.04 中搭建 GitLab 环境">
 <meta property="og:url" content="https://blog.shipengx.com/archives/e3e71b8.html">
 <meta property="og:site_name" content="朝花夕拾">
-<meta property="og:description" content="0 前言最近突然又有了梳理个人知识管理体系的冲动，决定彻底解决当前 workflow 中的痛点。目前，个人知识管理体系主要包含三部分：  印象笔记 Hexo 博客 GitBook 笔记  每一部分有着各自的用途与痛点：  .tg  {border-collapse:collapse;border-spacing:0;} .tg td{border-color:black;border-style:">
+<meta property="og:description" content="最近在云服务器上搭建私有 Git 托管服务的过程中尝试了 GitLab，本文旨在简要记录其安装及配置过程。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/gitlab%20%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F.png">
+<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E5%9C%A8%20Ubuntu%2018.04%20%E4%B8%AD%E6%90%AD%E5%BB%BA%20GitLab%20%E7%8E%AF%E5%A2%83.png">
+<meta property="og:image" content="https://image.shipengx.com/GitLab%20%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F.png">
 <meta property="og:image" content="https://image.shipengx.com/%E9%85%8D%E7%BD%AE%20GitLab%20%E6%97%B6%E5%8D%A1%E5%9C%A8%20ruby_block.png">
 <meta property="og:image" content="https://image.shipengx.com/GitLab%20%E9%85%8D%E7%BD%AE%E6%88%90%E5%8A%9F.png">
 <meta property="og:image" content="https://image.shipengx.com/%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2.png">
 <meta property="article:published_time" content="2022-08-07T14:34:11.000Z">
-<meta property="article:modified_time" content="2022-08-13T19:21:39.651Z">
+<meta property="article:modified_time" content="2022-08-21T16:04:53.941Z">
 <meta property="article:author" content="ShiPeng">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="GitLab">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/gitlab%20%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F.png">
+<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E5%9C%A8%20Ubuntu%2018.04%20%E4%B8%AD%E6%90%AD%E5%BB%BA%20GitLab%20%E7%8E%AF%E5%A2%83.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/e3e71b8.html">
 
@@ -85,7 +88,7 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
-  <title>在 Ubuntu 18.04 中搭建 GitLab 环境 | 朝花夕拾</title><meta name="robots" content="noindex">
+  <title>在 Ubuntu 18.04 中搭建 GitLab 环境 | 朝花夕拾</title>
   
 
 
@@ -162,12 +165,12 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">49</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">86</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">99</span></a>
 
   </li>
         <li class="menu-item menu-item-books">
@@ -178,11 +181,6 @@
         <li class="menu-item menu-item-zhihu">
 
     <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04"><i class="fa fa-fw fa-columns"></i>知乎</span>
-
-  </li>
-        <li class="menu-item menu-item-gitbook">
-
-    <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ=="><i class="fa fa-fw fa-pencil"></i>GitBook</span>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -269,15 +267,25 @@
 
               <time title="创建时间：2022-08-07 22:34:11" itemprop="dateCreated datePublished" datetime="2022-08-07T22:34:11+08:00">2022-08-07</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-14 03:21:39" itemprop="dateModified" datetime="2022-08-14T03:21:39+08:00">2022-08-14</time>
-              </span>
 
           <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%88%E7%8E%87/" itemprop="url" rel="index">
+                    <span itemprop="name">效率</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%88%E7%8E%87/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+            </span>
 
           
   
@@ -294,6 +302,7 @@
   </span>
   
   
+            <div class="post-description">最近在云服务器上搭建私有 Git 托管服务的过程中尝试了 GitLab，本文旨在简要记录其安装及配置过程。</div>
 
         </div>
       </header>
@@ -304,83 +313,69 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>最近突然又有了梳理个人知识管理体系的冲动，决定彻底解决当前 workflow 中的痛点。目前，个人知识管理体系主要包含三部分：</p>
-<ul>
-<li>印象笔记</li>
-<li>Hexo 博客</li>
-<li>GitBook 笔记</li>
-</ul>
-<p>每一部分有着各自的用途与痛点：</p>
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-fymr{border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
-.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-</style>
-
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-fymr">类别</th>
-    <th class="tg-fymr">用途</th>
-    <th class="tg-fymr">内容特点</th>
-    <th class="tg-fymr">当前使用痛点</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-0pky">印象笔记</td>
-    <td class="tg-0pky">日常灵感、随笔、笔记、文献阅读等</td>
-    <td class="tg-0pky">私密</td>
-    <td class="tg-0pky">臃肿、昂贵、markdown 支持差</td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">Hexo 博客</td>
-    <td class="tg-0pky">成体系的文章输出</td>
-    <td class="tg-0pky">体系性强</td>
-    <td class="tg-0pky">本地渲染，无法实现多终端协同创作</td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">GitBook 笔记</td>
-    <td class="tg-0pky">leetcode 笔记</td>
-    <td class="tg-0pky">内容单一</td>
-    <td class="tg-0pky">本地渲染，无法实现多终端协同创作</td>
-  </tr>
-</tbody>
-</table>
-
-<p>印象笔记使用了很长时间，它具有跨平台、功能丰富等很多优点，但它对 markdown 的支持</p>
-<h1 id="1-安装" class="heading-control"><a href="#1-安装" class="headerlink" title="1 安装"></a>1 安装<a class="heading-anchor" href="#1-安装" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade -y</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install curl openssh-server ca-certificates -y</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install gitlab-ce -y</span><br></pre></td></tr></table></figure>
-<p><img data-src="https://image.shipengx.com/gitlab%20%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F.png" alt="gitlab 安装成功"></p>
-<h1 id="2-配置" class="heading-control"><a href="#2-配置" class="headerlink" title="2 配置"></a>2 配置<a class="heading-anchor" href="#2-配置" aria-hidden="true"></a></h1><figure class="highlight rb"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">external_url <span class="string">'https://gitlab.shipengx.com'</span></span><br></pre></td></tr></table></figure>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E5%9C%A8%20Ubuntu%2018.04%20%E4%B8%AD%E6%90%AD%E5%BB%BA%20GitLab%20%E7%8E%AF%E5%A2%83.png" alt="目录-在 Ubuntu 18.04 中搭建 GitLab 环境"></p>
+<h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>最近在云服务器上搭建私有 Git 托管服务的过程中尝试了 GitLab，本文旨在简要记录其安装及配置过程，但 GitLab 资源消耗太大（2 核 + 4G 的阿里云 ECS 跑着很吃力），最后只能卸载。</p>
+<h1 id="1-安装" class="heading-control"><a href="#1-安装" class="headerlink" title="1 安装"></a>1 安装<a class="heading-anchor" href="#1-安装" aria-hidden="true"></a></h1><h2 id="1-1-更新并升级基础软件" class="heading-control"><a href="#1-1-更新并升级基础软件" class="headerlink" title="1.1 更新并升级基础软件"></a>1.1 更新并升级基础软件<a class="heading-anchor" href="#1-1-更新并升级基础软件" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade -y</span><br></pre></td></tr></table></figure>
+<h2 id="1-2-安装前置依赖" class="heading-control"><a href="#1-2-安装前置依赖" class="headerlink" title="1.2 安装前置依赖"></a>1.2 安装前置依赖<a class="heading-anchor" href="#1-2-安装前置依赖" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install curl openssh-server ca-certificates -y</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-在线执行安装配置脚本" class="heading-control"><a href="#1-3-在线执行安装配置脚本" class="headerlink" title="1.3 在线执行安装配置脚本"></a>1.3 在线执行安装配置脚本<a class="heading-anchor" href="#1-3-在线执行安装配置脚本" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash</span><br></pre></td></tr></table></figure>
+<h2 id="1-4-安装-GitLab-社区版" class="heading-control"><a href="#1-4-安装-GitLab-社区版" class="headerlink" title="1.4 安装 GitLab 社区版"></a>1.4 安装 GitLab 社区版<a class="heading-anchor" href="#1-4-安装-GitLab-社区版" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install gitlab-ce -y</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://image.shipengx.com/GitLab%20%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F.png" alt="GitLab 安装成功"></p>
+<h1 id="2-配置" class="heading-control"><a href="#2-配置" class="headerlink" title="2 配置"></a>2 配置<a class="heading-anchor" href="#2-配置" aria-hidden="true"></a></h1><p>完成 GitLab 社区版的安装后需要进行一些基础配置，这里我们想要通过 https 进行安全访问，所以进行了如下配置（配置文件 <code>/etc/gitlab/gitlab.rb</code>）：</p>
+<h2 id="2-1-自定义域名" class="heading-control"><a href="#2-1-自定义域名" class="headerlink" title="2.1 自定义域名"></a>2.1 自定义域名<a class="heading-anchor" href="#2-1-自定义域名" aria-hidden="true"></a></h2><figure class="highlight rb"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">external_url <span class="string">'https://gitlab.example.com'</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-2-配置-https-访问" class="heading-control"><a href="#2-2-配置-https-访问" class="headerlink" title="2.2 配置 https 访问"></a>2.2 配置 https 访问<a class="heading-anchor" href="#2-2-配置-https-访问" aria-hidden="true"></a></h2><p>我的顶级域名是此前从腾讯云申请的，可以直接从腾讯云申请并下载子域名的免费 SSL 证书。</p>
+<p>关闭 <code>letsencrypt</code>：</p>
 <figure class="highlight rb"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">letsencrypt[<span class="string">'enable'</span>] = <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>新建证书存储目录，修改权限后将下载的 SSL 证书（<code>.crt</code> 证书文件和 <code>.key</code> 密钥文件）上传到该目录：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/gitlab/ssl</span><br><span class="line">sudo chmod 755 /etc/gitlab/ssl</span><br></pre></td></tr></table></figure>
+<p>配置 SSL 证书路径：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nginx[<span class="string">'ssl_certificate'</span>] = <span class="string">"/etc/gitlab/ssl/gitlab.example.com.crt"</span></span><br><span class="line">nginx[<span class="string">'ssl_certificate_key'</span>] = <span class="string">"/etc/gitlab/ssl/gitlab.example.com.key"</span></span><br></pre></td></tr></table></figure>
+<p>http 访问重定向到 https 访问：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx[<span class="string">'redirect_http_to_https'</span>] = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
-<p>卡住</p>
+<h2 id="2-3-重配置-GitLab" class="heading-control"><a href="#2-3-重配置-GitLab" class="headerlink" title="2.3 重配置 GitLab"></a>2.3 重配置 GitLab<a class="heading-anchor" href="#2-3-重配置-GitLab" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
+<p><strong>⚠ 注意</strong></p>
+<p>在执行 GitLab 重配置的过程中可能会卡住：</p>
 <p><img data-src="https://image.shipengx.com/%E9%85%8D%E7%BD%AE%20GitLab%20%E6%97%B6%E5%8D%A1%E5%9C%A8%20ruby_block.png" alt="配置 GitLab 时卡在 ruby_block"></p>
+<p>此时，另开一个终端，并执行下述命令即可继续后面的过程：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /opt/gitlab/embedded/bin/runsvdir-start &amp;</span><br></pre></td></tr></table></figure>
 <p><img data-src="https://image.shipengx.com/GitLab%20%E9%85%8D%E7%BD%AE%E6%88%90%E5%8A%9F.png" alt="GitLab 配置成功"></p>
-<p>成功后要稍微等待两分钟</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gitlab-ctl restart</span><br></pre></td></tr></table></figure>
-<p>若重启失败，也可</p>
+<p>重配置成功后要稍微等待两分钟（此时我的服务器已经满载了）。</p>
+<h1 id="2-4-重启-GitLab" class="heading-control"><a href="#2-4-重启-GitLab" class="headerlink" title="2.4 重启 GitLab"></a>2.4 重启 GitLab<a class="heading-anchor" href="#2-4-重启-GitLab" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gitlab-ctl restart</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>若重启失败，也可尝试上文中处理 GitLab 重配置卡住时的解决办法。</p>
+</blockquote>
+<p>此时，通过访问上文中配置的自定义域名，我们会来到 GitLab 的登录界面：</p>
 <p><img data-src="https://image.shipengx.com/%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2.png" alt="登录界面"></p>
-<h1 id="3-卸载" class="heading-control"><a href="#3-卸载" class="headerlink" title="3 卸载"></a>3 卸载<a class="heading-anchor" href="#3-卸载" aria-hidden="true"></a></h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove gitlab-ce -y</span><br><span class="line">sudo rm -rf /var/opt/gitlab</span><br><span class="line">sudo pkill -f gitlab</span><br><span class="line">sudo rm -rf /opt/gitlab /etc/gitlab</span><br></pre></td></tr></table></figure>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><p><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vb21uaWJ1cy9zZXR0aW5ncy9uZ2lueC5odG1s" title="https://docs.gitlab.com/omnibus/settings/nginx.html">https://docs.gitlab.com/omnibus/settings/nginx.html<i class="fa fa-external-link"></i></span></p>
+<h1 id="3-卸载" class="heading-control"><a href="#3-卸载" class="headerlink" title="3 卸载"></a>3 卸载<a class="heading-anchor" href="#3-卸载" aria-hidden="true"></a></h1><p>GitLab 资源消耗很大，需要卸载得话可以依次执行下述命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove gitlab-ce -y</span><br><span class="line">sudo rm -rf /var/opt/gitlab</span><br><span class="line">sudo pkill -f gitlab</span><br><span class="line">sudo rm -rf /opt/gitlab /etc/gitlab</span><br></pre></td></tr></table></figure>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vb21uaWJ1cy9zZXR0aW5ncy9uZ2lueC5odG1s" title="https://docs.gitlab.com/omnibus/settings/nginx.html">https://docs.gitlab.com/omnibus/settings/nginx.html<i class="fa fa-external-link"></i></span></li>
+</ol>
 <hr>
-<!-- flag of hidden posts -->
+
     </div>
 
     
     
     
       
+  <div class="popular-posts-header">猜你喜欢</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\586b7559.html" rel="bookmark">Git版本库管理最佳实践——以创建新分支加入某个项目为例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\77718b2.html" rel="bookmark">Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\f390ae43.html" rel="bookmark">git的cherry-pick命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\ba569070.html" rel="bookmark">gitignore与gitkeep的作用</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\2577fd4c.html" rel="bookmark">使用 Gitea Actions 实现 Hexo 博客持续集成与持续部署</a></div>
+    </li>
+  </ul>
 
         <div class="reward-container">
   <div>Thank you for your donate!</div>
@@ -421,11 +416,26 @@
 
 
       <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
+              <a href="/tags/GitLab/" rel="tag"><i class="fa fa-tag"></i> GitLab</a>
+          </div>
 
         
 
 
         
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/19236f69.html" rel="prev" title="使用 gperftools 进行 C++ 代码性能分析">
+      <i class="fa fa-chevron-left"></i> 使用 gperftools 进行 C++ 代码性能分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/afb81b2.html" rel="next" title="使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成">
+      使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
     
   </article>
@@ -485,7 +495,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-安装"><span class="nav-text">1 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-配置"><span class="nav-text">2 配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-卸载"><span class="nav-text">3 卸载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-安装"><span class="nav-text">1 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-更新并升级基础软件"><span class="nav-text">1.1 更新并升级基础软件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-安装前置依赖"><span class="nav-text">1.2 安装前置依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-在线执行安装配置脚本"><span class="nav-text">1.3 在线执行安装配置脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-安装-GitLab-社区版"><span class="nav-text">1.4 安装 GitLab 社区版</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-配置"><span class="nav-text">2 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-自定义域名"><span class="nav-text">2.1 自定义域名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-配置-https-访问"><span class="nav-text">2.2 配置 https 访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-重配置-GitLab"><span class="nav-text">2.3 重配置 GitLab</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-4-重启-GitLab"><span class="nav-text">2.4 重启 GitLab</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-卸载"><span class="nav-text">3 卸载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -503,7 +513,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">99</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -516,7 +526,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -527,9 +537,6 @@
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9zaGktcGVuZy04" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;shi-peng-8"><i class="fa fa-fw fa-columns"></i></span>
-      </span>
-      <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9ib29rLnNoaXBlbmd4LmNvbQ==" title="GitBook → https:&#x2F;&#x2F;book.shipengx.com"><i class="fa fa-fw fa-pencil"></i></span>
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="bWFpbHRvOlJvY1NoaUBvdXRsb29rLmNvbQ==" title="E-Mail → mailto:RocShi@outlook.com"><i class="fa fa-fw fa-envelope"></i></span>
@@ -554,13 +561,14 @@
     <footer class="footer">
       <div class="footer-inner">
         
-  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号 </span>
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">冀ICP备20003148号    </span>
+      <img src="https://blog.shipengx.com/download/备案图标.png" style="display: inline-block;"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5nb3YuY24vcG9ydGFsL3JlZ2lzdGVyU3lzdGVtSW5mbz9yZWNvcmRjb2RlPTMxMDExNDAyMDA2MzA5">沪公网安备31011402006309号 </span>
   </div>
 
 <div class="copyright">
   
   &copy; 2020 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
