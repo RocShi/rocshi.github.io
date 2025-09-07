@@ -59,16 +59,16 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="Hexo搭建的博客站点部署在GitHub Pages访问速度感人，迁移到腾讯云VPS访问速度得到质的提升。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/VPS%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
-<meta property="og:image" content="https://image.shipengx.com/Welcome%20to%20nginx!.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/VPS%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/Welcome%20to%20nginx!.png">
 <meta property="article:published_time" content="2020-02-07T05:38:19.000Z">
-<meta property="article:modified_time" content="2025-09-06T07:39:40.032Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:17.267Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Hexo">
 <meta property="article:tag" content="Blog">
 <meta property="article:tag" content="VPS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/VPS%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/VPS%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/3955f5ec.html">
 
@@ -309,7 +309,7 @@
 <p>在上一篇文章<a href="https://blog.shipengx.com/archives/208e6058.html">《使用 Hexo + GitHub Pages 搭建个人博客站点》</a>中我们介绍了如何使用 Hexo 搭建自己的个人博客站点并部署到 GitHub Pages。将个人站点部署到 GitHub Pages 的显著优点是便捷、免费，但由于 GitHub 服务器位于国外，所以多数情况下，你访问你的 GitHub Pages 的速度将非常缓慢。为提升访问速度，将个人站点部署到腾讯云、阿里云或其它国内云服务提供商的云服务器上是一个很好的选择。当然，你也可以通过树莓派 + 内网穿透搭建自己的私有云服务器。</p>
 </blockquote>
 <h1 id="2-原理" class="heading-control"><a href="#2-原理" class="headerlink" title="2 原理"></a>2 原理<a class="heading-anchor" href="#2-原理" aria-hidden="true"></a></h1><p>使用 VPS 部署博客的原理如下图所示（图片来自<span class="exturl" data-url="aHR0cHM6Ly9zZWdtZW50ZmF1bHQuY29tL2EvMTE5MDAwMDAxNjEwNjU4NA==" title="https://segmentfault.com/a/1190000016106584">这里<i class="fa fa-external-link"></i></span>）：</p>
-<p><img data-src="https://image.shipengx.com/VPS%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="VPS搭建Hexo博客原理示意图"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/VPS%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="VPS搭建Hexo博客原理示意图"></p>
 <p>使用 VPS 部署博客的主要思路分为四步：</p>
 <ul>
 <li><code>hexo -g</code>将 source/_posts 目录下的 markdown 文件渲染为静态资源，并将静态资源放置到 public 目录下；</li>
@@ -339,7 +339,7 @@
 <h2 id="3-2-VPS-端配置——Nginx" class="heading-control"><a href="#3-2-VPS-端配置——Nginx" class="headerlink" title="3.2 VPS 端配置——Nginx"></a>3.2 VPS 端配置——Nginx<a class="heading-anchor" href="#3-2-VPS-端配置——Nginx" aria-hidden="true"></a></h2><h3 id="3-2-1-安装-Nginx" class="heading-control"><a href="#3-2-1-安装-Nginx" class="headerlink" title="3.2.1 安装 Nginx"></a>3.2.1 安装 Nginx<a class="heading-anchor" href="#3-2-1-安装-Nginx" aria-hidden="true"></a></h3><p>直接通过终端命令进行安装：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
 <p>安装完成后，在浏览器中输入 VPS 公网 IP，出现如下页面即表示安装成功：</p>
-<p><img data-src="https://image.shipengx.com/Welcome%20to%20nginx!.png" alt="Welcome to nginx!"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/Welcome%20to%20nginx!.png" alt="Welcome to nginx!"></p>
 <p>安装成功后，可通过<code>nginx -v</code>命令查看版本信息，本文中所使用版本为 1.14.0；可通过 <code>service nginx status</code>或<code>systemctl status nginx</code>命令来查看 Nginx 运行状态；可通过<code>nginx -V</code>命令查看安装的 Nginx 所包含组件。</p>
 <h3 id="3-1-2-配置-Nginx" class="heading-control"><a href="#3-1-2-配置-Nginx" class="headerlink" title="3.1.2 配置 Nginx"></a>3.1.2 配置 Nginx<a class="heading-anchor" href="#3-1-2-配置-Nginx" aria-hidden="true"></a></h3><p>Nginx 安装成功后，所有配置文件将位于/etc/nginx 目录下，/etc/nginx/nginx.conf 是主配置文件。本文中对 Nginx 的配置主要做了以下五件事：</p>
 <ul>

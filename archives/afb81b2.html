@@ -59,25 +59,25 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="本文旨在总结使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成的具体细节与注意事项。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20%2B%20Git%20Hook%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E6%89%98%E7%AE%A1%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90.png">
-<meta property="og:image" content="https://image.shipengx.com/gitea%20service%20%E6%88%90%E5%8A%9F%E8%BF%90%E8%A1%8C.png">
-<meta property="og:image" content="https://image.shipengx.com/gitea%20%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E7%BD%AE%E4%B8%8E%E4%B8%80%E8%88%AC%E8%AE%BE%E7%BD%AE.png">
-<meta property="og:image" content="https://image.shipengx.com/gitea%20%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE-%E5%8F%AF%E9%80%89%E8%AE%BE%E7%BD%AE.png">
-<meta property="og:image" content="https://image.shipengx.com/%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE%20gitea.png">
-<meta property="og:image" content="https://image.shipengx.com/%E7%99%BB%E5%BD%95%20gitea.png">
-<meta property="og:image" content="https://image.shipengx.com/Nginx%20%E8%A6%81%E6%B1%82%E8%BE%93%E5%85%A5%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E5%AF%86%E7%A0%81.png">
-<meta property="og:image" content="https://image.shipengx.com/%E9%80%9A%E8%BF%87%203000%20%E7%AB%AF%E5%8F%A3%E8%AE%BF%E9%97%AE%20gitea%20%E5%8F%AF%E4%BB%A5%E7%BB%95%E8%BF%87%20Nginx%20%E7%99%BB%E5%BD%95%E9%AA%8C%E8%AF%81.png">
-<meta property="og:image" content="https://image.shipengx.com/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%E8%AE%BE%E7%BD%AE%E4%B8%BA%E6%8B%92%E7%BB%9D%E5%A4%96%E9%83%A8%E5%AF%B9%203000%20%E7%AB%AF%E5%8F%A3%E7%9A%84%E8%AE%BF%E9%97%AE%E8%AF%B7%E6%B1%82.png">
-<meta property="og:image" content="https://image.shipengx.com/%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E9%9D%A2%E6%9D%BF%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E7%9A%84%E8%A3%B8%E4%BB%93%EF%BC%881%EF%BC%89.png">
-<meta property="og:image" content="https://image.shipengx.com/%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E9%9D%A2%E6%9D%BF%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E7%9A%84%E8%A3%B8%E4%BB%93%EF%BC%882%EF%BC%89.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20%2B%20Git%20Hook%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E6%89%98%E7%AE%A1%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/gitea%20service%20%E6%88%90%E5%8A%9F%E8%BF%90%E8%A1%8C.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/gitea%20%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E7%BD%AE%E4%B8%8E%E4%B8%80%E8%88%AC%E8%AE%BE%E7%BD%AE.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/gitea%20%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE-%E5%8F%AF%E9%80%89%E8%AE%BE%E7%BD%AE.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE%20gitea.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%99%BB%E5%BD%95%20gitea.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/Nginx%20%E8%A6%81%E6%B1%82%E8%BE%93%E5%85%A5%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E5%AF%86%E7%A0%81.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%80%9A%E8%BF%87%203000%20%E7%AB%AF%E5%8F%A3%E8%AE%BF%E9%97%AE%20gitea%20%E5%8F%AF%E4%BB%A5%E7%BB%95%E8%BF%87%20Nginx%20%E7%99%BB%E5%BD%95%E9%AA%8C%E8%AF%81.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%E8%AE%BE%E7%BD%AE%E4%B8%BA%E6%8B%92%E7%BB%9D%E5%A4%96%E9%83%A8%E5%AF%B9%203000%20%E7%AB%AF%E5%8F%A3%E7%9A%84%E8%AE%BF%E9%97%AE%E8%AF%B7%E6%B1%82.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E9%9D%A2%E6%9D%BF%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E7%9A%84%E8%A3%B8%E4%BB%93%EF%BC%881%EF%BC%89.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E9%9D%A2%E6%9D%BF%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E7%9A%84%E8%A3%B8%E4%BB%93%EF%BC%882%EF%BC%89.png">
 <meta property="article:published_time" content="2022-08-21T10:34:18.000Z">
-<meta property="article:modified_time" content="2025-08-31T15:42:11.736Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:16.984Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Git">
 <meta property="article:tag" content="Gitea">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20%2B%20Git%20Hook%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E6%89%98%E7%AE%A1%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20%2B%20Git%20Hook%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E6%89%98%E7%AE%A1%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/afb81b2.html">
 
@@ -320,7 +320,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20%2B%20Git%20Hook%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E6%89%98%E7%AE%A1%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90.png" alt="目录-使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成"></p>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20%2B%20Git%20Hook%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E6%89%98%E7%AE%A1%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90.png" alt="目录-使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成"></p>
 <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>在此前的文章<a href="https://blog.shipengx.com/archives/e3e71b8.html">《在 Ubuntu 18.04 中搭建 GitLab 环境》</a>中，笔者尝试了在 2 核 + 4G 的阿里云 ECS 上搭建 GitLab，无奈由于 GitLab 太占性能，最后只能卸载放弃。本文中，将使用更加轻量的开源解决方案 <span class="exturl" data-url="aHR0cHM6Ly9naXRlYS5pby96aC1jbi8=" title="https://gitea.io/zh-cn/">Gitea<i class="fa fa-external-link"></i></span> 来完成私有 Git 托管服务的搭建，并通过搭建好的 Gitea 管理 Hexo 博客工程的源码。</p>
 <p>同时，还将通过 Git Hook 将 Hexo 博客的构建过程转移到线上，本地只需专注于创作与推送。借助 Gitea 仓库的在线编辑提交，还可实现 Hexo 博客的跨平台异地更新。</p>
 <p>在实践本文内容前，读者应具备以下前提条件：</p>
@@ -345,12 +345,12 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> --now gitea</span><br></pre></td></tr></table></figure>
 <p>查看 Gitea 服务运行状态：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status gitea</span><br></pre></td></tr></table></figure>
-<p><img data-src="https://image.shipengx.com/gitea%20service%20%E6%88%90%E5%8A%9F%E8%BF%90%E8%A1%8C.png" alt="gitea service 成功运行"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/gitea%20service%20%E6%88%90%E5%8A%9F%E8%BF%90%E8%A1%8C.png" alt="gitea service 成功运行"></p>
 <p>重启 Gitea：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart gitea</span><br></pre></td></tr></table></figure>
 <h2 id="1-6-初始化安装" class="heading-control"><a href="#1-6-初始化安装" class="headerlink" title="1.6 初始化安装"></a>1.6 初始化安装<a class="heading-anchor" href="#1-6-初始化安装" aria-hidden="true"></a></h2><p>若服务器的 3000 端口已经暴露到外部访问，那么通过在浏览器中访问 <code>IP:3000</code> 我们会来到 Gitea 的初始化安装页面，参考下述图片进行配置（大多数内容是我们在上文中编辑 Gitea 的 service 文件时写入的）：</p>
-<p><img data-src="https://image.shipengx.com/gitea%20%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E7%BD%AE%E4%B8%8E%E4%B8%80%E8%88%AC%E8%AE%BE%E7%BD%AE.png" alt="gitea 安装初始配置-数据库设置与一般设置"></p>
-<p><img data-src="https://image.shipengx.com/gitea%20%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE-%E5%8F%AF%E9%80%89%E8%AE%BE%E7%BD%AE.png" alt="gitea 安装初始配置-可选设置"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/gitea%20%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E7%BD%AE%E4%B8%8E%E4%B8%80%E8%88%AC%E8%AE%BE%E7%BD%AE.png" alt="gitea 安装初始配置-数据库设置与一般设置"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/gitea%20%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE-%E5%8F%AF%E9%80%89%E8%AE%BE%E7%BD%AE.png" alt="gitea 安装初始配置-可选设置"></p>
 <p>所有的配置最终会写入 <code>/etc/gitea/app.ini</code> 中，完成初始化安装后，我们随时可以通过编辑该文件修改配置。</p>
 <h2 id="1-7-配置-Nginx-反向代理" class="heading-control"><a href="#1-7-配置-Nginx-反向代理" class="headerlink" title="1.7 配置 Nginx 反向代理"></a>1.7 配置 Nginx 反向代理<a class="heading-anchor" href="#1-7-配置-Nginx-反向代理" aria-hidden="true"></a></h2><p>本节的内容将实现通过自有域名访问 Gitea 服务。</p>
 <p><strong>首先</strong>，参考以下内容编辑 <code>/etc/nginx/nginx.conf</code> 文件：</p>
@@ -362,8 +362,8 @@
 <p>从两个配置文件的内容我们不难发现，对 <code>IP:82</code> 和 <code>gitea.shipengx.com</code> 的访问都将被重定向到 443 端口，对 443 端口的访问又会被代理到 <code>localhost:3000</code>，最终实现通过 82 端口和域名访问云服务器的 Gitea 服务。</p>
 <p><strong>最后</strong>，重启 Nginx 服务，并在浏览器中输入域名我们便可访问自建 Gitea：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart nginx.service</span><br></pre></td></tr></table></figure>
-<p><img data-src="https://image.shipengx.com/%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE%20gitea.png" alt="通过自定义域名访问 gitea"></p>
-<p><img data-src="https://image.shipengx.com/%E7%99%BB%E5%BD%95%20gitea.png" alt="登录 gitea"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE%20gitea.png" alt="通过自定义域名访问 gitea"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%99%BB%E5%BD%95%20gitea.png" alt="登录 gitea"></p>
 <h2 id="1-8-为数据安全再加一道锁：配置-Nginx-登录验证" class="heading-control"><a href="#1-8-为数据安全再加一道锁：配置-Nginx-登录验证" class="headerlink" title="1.8 为数据安全再加一道锁：配置 Nginx 登录验证"></a>1.8 为数据安全再加一道锁：配置 Nginx 登录验证<a class="heading-anchor" href="#1-8-为数据安全再加一道锁：配置-Nginx-登录验证" aria-hidden="true"></a></h2><p>虽然我们可以设置 Gitea 的登录账户及密码，但为了安全，我们还可以再加一道 Nginx 登录验证，实现只有通过该验证才可以访问到 Gitea 登录界面的效果。</p>
 <p><strong>首先</strong>，安装 <code>apache2-utils</code> 工具：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install apache2-utils</span><br></pre></td></tr></table></figure>
@@ -375,17 +375,17 @@
 <p><strong>最后</strong>，重启 Nginx 服务：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart nginx.service</span><br></pre></td></tr></table></figure>
 <p>此时通过<code>IP:82</code> 或域名访问 Gitea 时首先会来到 Nginx 的登录验证页面，只有输入 <code>/etc/nginx/.htpasswd</code> 中存在的用户名及密码才可通过验证：</p>
-<p><img data-src="https://image.shipengx.com/Nginx%20%E8%A6%81%E6%B1%82%E8%BE%93%E5%85%A5%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E5%AF%86%E7%A0%81.png" alt="Nginx 要求输入用户名和密码"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/Nginx%20%E8%A6%81%E6%B1%82%E8%BE%93%E5%85%A5%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E5%AF%86%E7%A0%81.png" alt="Nginx 要求输入用户名和密码"></p>
 <p>但还有个问题，此前我们配置了 3000 端口作为 Gitea 服务的外部访问端口，因此通过访问 <code>IP:3000</code> 可以直接绕过 Nginx 的登录验证：</p>
-<p><img data-src="https://image.shipengx.com/%E9%80%9A%E8%BF%87%203000%20%E7%AB%AF%E5%8F%A3%E8%AE%BF%E9%97%AE%20gitea%20%E5%8F%AF%E4%BB%A5%E7%BB%95%E8%BF%87%20Nginx%20%E7%99%BB%E5%BD%95%E9%AA%8C%E8%AF%81.png" alt="通过 3000 端口访问 gitea 可以绕过 Nginx 登录验证"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%80%9A%E8%BF%87%203000%20%E7%AB%AF%E5%8F%A3%E8%AE%BF%E9%97%AE%20gitea%20%E5%8F%AF%E4%BB%A5%E7%BB%95%E8%BF%87%20Nginx%20%E7%99%BB%E5%BD%95%E9%AA%8C%E8%AF%81.png" alt="通过 3000 端口访问 gitea 可以绕过 Nginx 登录验证"></p>
 <p>所以为确保安全，我们需要在云服务器的安全策略设置中拒绝外部对 3000 端口的访问请求：</p>
-<p><img data-src="https://image.shipengx.com/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%E8%AE%BE%E7%BD%AE%E4%B8%BA%E6%8B%92%E7%BB%9D%E5%A4%96%E9%83%A8%E5%AF%B9%203000%20%E7%AB%AF%E5%8F%A3%E7%9A%84%E8%AE%BF%E9%97%AE%E8%AF%B7%E6%B1%82.png" alt="云服务器安全策略设置为拒绝外部对 3000 端口的访问请求"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%E8%AE%BE%E7%BD%AE%E4%B8%BA%E6%8B%92%E7%BB%9D%E5%A4%96%E9%83%A8%E5%AF%B9%203000%20%E7%AB%AF%E5%8F%A3%E7%9A%84%E8%AE%BF%E9%97%AE%E8%AF%B7%E6%B1%82.png" alt="云服务器安全策略设置为拒绝外部对 3000 端口的访问请求"></p>
 <h2 id="1-9-导入本地裸仓" class="heading-control"><a href="#1-9-导入本地裸仓" class="headerlink" title="1.9 导入本地裸仓"></a>1.9 导入本地裸仓<a class="heading-anchor" href="#1-9-导入本地裸仓" aria-hidden="true"></a></h2><p>如果服务器中已经有了此前建立的裸仓，我们可以将其直接导入到 Gitea 中进行管理。</p>
 <p><strong>首先</strong>，将已有的裸仓拷贝到 Gitea 的仓库存储目录下，并将其所有权变更为上文中所建立的 <code>git:git</code> 用户：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp -r ~/blog_test.git /var/lib/gitea/data/gitea-repositories/shipeng/</span><br><span class="line">chown -R git:git /var/lib/gitea/data/gitea-repositories/shipeng/blog_test.git</span><br></pre></td></tr></table></figure>
 <p><strong>然后</strong>，依次执行下述图片中的步骤即可：</p>
-<p><img data-src="https://image.shipengx.com/%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E9%9D%A2%E6%9D%BF%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E7%9A%84%E8%A3%B8%E4%BB%93%EF%BC%881%EF%BC%89.png" alt="在管理员面板导入已有的裸仓（1）"></p>
-<p><img data-src="https://image.shipengx.com/%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E9%9D%A2%E6%9D%BF%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E7%9A%84%E8%A3%B8%E4%BB%93%EF%BC%882%EF%BC%89.png" alt="在管理员面板导入已有的裸仓（2）"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E9%9D%A2%E6%9D%BF%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E7%9A%84%E8%A3%B8%E4%BB%93%EF%BC%881%EF%BC%89.png" alt="在管理员面板导入已有的裸仓（1）"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E9%9D%A2%E6%9D%BF%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E7%9A%84%E8%A3%B8%E4%BB%93%EF%BC%882%EF%BC%89.png" alt="在管理员面板导入已有的裸仓（2）"></p>
 <blockquote>
 <p>导入到 Gitea 中的裸仓与原裸仓将不再有任何关联。</p>
 </blockquote>
@@ -436,10 +436,10 @@
       <div class="popular-posts-title"><a href="\archives\2577fd4c.html" rel="bookmark">使用 Gitea Actions 实现 Hexo 博客持续集成与持续部署</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\586b7559.html" rel="bookmark">Git版本库管理最佳实践——以创建新分支加入某个项目为例</a></div>
+      <div class="popular-posts-title"><a href="\archives\77718b2.html" rel="bookmark">Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\77718b2.html" rel="bookmark">Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</a></div>
+      <div class="popular-posts-title"><a href="\archives\586b7559.html" rel="bookmark">Git版本库管理最佳实践——以创建新分支加入某个项目为例</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\ba569070.html" rel="bookmark">gitignore与gitkeep的作用</a></div>

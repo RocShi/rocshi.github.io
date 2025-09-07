@@ -59,15 +59,15 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="LeetCode 第 341 题“扁平化嵌套列表迭代器”题解及解题过程中的一丝小插曲。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/N%20%E5%8F%89%E6%A0%91%E4%B8%BE%E4%BE%8B.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/N%20%E5%8F%89%E6%A0%91%E4%B8%BE%E4%BE%8B.png">
 <meta property="article:published_time" content="2021-05-06T14:52:49.000Z">
-<meta property="article:modified_time" content="2022-05-12T05:54:26.404Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:16.248Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="数据结构与算法">
 <meta property="article:tag" content="LeetCode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/N%20%E5%8F%89%E6%A0%91%E4%B8%BE%E4%BE%8B.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/N%20%E5%8F%89%E6%A0%91%E4%B8%BE%E4%BE%8B.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/ef26ff66.html">
 
@@ -330,7 +330,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">NestedIterator <span class="title">i</span><span class="params">(nestedList)</span></span>;</span><br><span class="line"><span class="keyword">while</span> (i.hasNext()) <span class="built_in">cout</span> &lt;&lt; i.next();</span><br></pre></td></tr></table></figure>
 <p>其实就是想要得到输入的 <code>nestedList</code> 中的所有真正的数字，这和 1.1 中的描述就对应起来了，我们最终需要填充 <code>NestedIterator</code> 类中的构造函数、<code>next</code> 方法 和 <code>hasNext</code> 方法。</p>
 <h1 id="2-解题思路" class="heading-control"><a href="#2-解题思路" class="headerlink" title="2 解题思路"></a>2 解题思路<a class="heading-anchor" href="#2-解题思路" aria-hidden="true"></a></h1><p>题目的关键是将输入 <code>nestedList</code> 视作一个 <strong>N 叉树</strong>，这样题目便可以转化为 N 叉树的遍历问题，所有的叶子节点即所有的数字。例如，输入是<code>[[1,1],2,[1,1]]</code>，则其对应的 N 叉树结构为：</p>
-<p><img data-src="https://image.shipengx.com/N%20%E5%8F%89%E6%A0%91%E4%B8%BE%E4%BE%8B.png" alt="N 叉树举例"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/N%20%E5%8F%89%E6%A0%91%E4%B8%BE%E4%BE%8B.png" alt="N 叉树举例"></p>
 <p>遍历的过程中，将得到的叶子节点值插入到一个 <code>vector</code> 中，用于被 <code>next</code> 方法间接调用输出数值。</p>
 <h1 id="3-代码实现" class="heading-control"><a href="#3-代码实现" class="headerlink" title="3 代码实现"></a>3 代码实现<a class="heading-anchor" href="#3-代码实现" aria-hidden="true"></a></h1><p>代码实现很简单，主要是新建递归方法 <code>traverse</code>、用于存储节点值的 <code>result</code>、用于遍历 <code>result</code> 的迭代器 <code>iter</code>：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NestedIterator</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    NestedIterator(<span class="built_in">vector</span>&lt;NestedInteger&gt; &amp;nestedList)</span><br><span class="line">        : result&#123;&#125;,</span><br><span class="line">          iter(result.begin())</span><br><span class="line">    &#123;</span><br><span class="line">        traverse(nestedList);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">next</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> *(iter++);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasNext</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> iter != result.end();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result;         <span class="comment">// store all values of leaf nodes</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator iter; <span class="comment">// iterstor of result</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * traverse the nestedList just like traversing a N tree, and store all values</span></span><br><span class="line"><span class="comment">     * in a vector</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">traverse</span><span class="params">(<span class="built_in">vector</span>&lt;NestedInteger&gt; &amp;nestedList)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;item : nestedList)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (item.isInteger())</span><br><span class="line">                result.push_back(item.getInteger());</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                traverse(item.getList());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -369,16 +369,16 @@
       <div class="popular-posts-title"><a href="\archives\c6c7f3af.html" rel="bookmark">【OJ】表示数字</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
     </li>
   </ul>
 

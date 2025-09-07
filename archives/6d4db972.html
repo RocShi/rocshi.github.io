@@ -59,14 +59,14 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="gflags 是由 Google 开发维护的 C++ 命令行参数解析库，在百度 Apollo 自动驾驶框架中被广泛用于各模块内部的命令行参数处理。本文简要介绍了 gflags 的安装步骤和使用方法。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E4%BD%BF%E7%94%A8%20gflags%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%E5%A4%84%E7%90%86.png">
-<meta property="og:image" content="https://image.shipengx.com/gflags%20C%2B%2B%20%E5%B7%A5%E7%A8%8B%E7%A4%BA%E4%BE%8B%E4%B8%BB%E8%A6%81%E4%BB%A3%E7%A0%81%E5%8F%8A%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%BD%BF%E7%94%A8%20gflags%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%E5%A4%84%E7%90%86.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/gflags%20C%2B%2B%20%E5%B7%A5%E7%A8%8B%E7%A4%BA%E4%BE%8B%E4%B8%BB%E8%A6%81%E4%BB%A3%E7%A0%81%E5%8F%8A%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.png">
 <meta property="article:published_time" content="2023-08-11T16:26:22.000Z">
-<meta property="article:modified_time" content="2025-08-31T15:42:11.738Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:18.136Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E4%BD%BF%E7%94%A8%20gflags%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%E5%A4%84%E7%90%86.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%BD%BF%E7%94%A8%20gflags%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%E5%A4%84%E7%90%86.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/6d4db972.html">
 
@@ -315,7 +315,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E4%BD%BF%E7%94%A8%20gflags%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%E5%A4%84%E7%90%86.png" alt="使用 gflags 进行 C++ 命令行参数处理"></p>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%BD%BF%E7%94%A8%20gflags%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%E5%A4%84%E7%90%86.png" alt="使用 gflags 进行 C++ 命令行参数处理"></p>
 <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><span class="exturl" data-url="aHR0cHM6Ly9nZmxhZ3MuZ2l0aHViLmlvL2dmbGFncy8=" title="https://gflags.github.io/gflags/">gflags<i class="fa fa-external-link"></i></span> 是由 Google 开发维护的 C++ 命令行参数解析库，在百度 Apollo 自动驾驶框架中被广泛用于各模块内部的命令行参数处理。本文简要介绍了 gflags 的安装和使用方法。</p>
 <h1 id="1-安装" class="heading-control"><a href="#1-安装" class="headerlink" title="1 安装"></a>1 安装<a class="heading-anchor" href="#1-安装" aria-hidden="true"></a></h1><p>本文中采用源码编译的方式进行 gflags 的安装。以 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dmbGFncy9nZmxhZ3MvcmVsZWFzZXMvdGFnL3YyLjIuMg==" title="https://github.com/gflags/gflags/releases/tag/v2.2.2">v2.2.2 版本<i class="fa fa-external-link"></i></span>为例，依次执行下述命令即可完成安装：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/gflags/gflags/archive/refs/tags/v2.2.2.tar.gz</span><br><span class="line">tar -xzvf v2.2.2.tar.gz</span><br><span class="line"><span class="built_in">cd</span> gflags-2.2.2/</span><br><span class="line">mkdir build &amp;&amp; <span class="built_in">cd</span> build</span><br><span class="line">cmake ..</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
@@ -372,7 +372,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// flags.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../inc/flags.hpp"</span></span></span><br><span class="line"></span><br><span class="line">DEFINE_int32(demo_flag_int32, <span class="number">0</span>, <span class="string">"A int32 demo flag."</span>);</span><br><span class="line">DEFINE_bool(demo_flag_bool, <span class="literal">false</span>, <span class="string">"A bool demo flag."</span>);</span><br><span class="line"></span><br><span class="line">DEFINE_validator(demo_flag_int32,</span><br><span class="line">                 [](<span class="keyword">const</span> <span class="keyword">char</span> *flag_name, <span class="keyword">int32_t</span> flag_value) -&gt; <span class="keyword">bool</span> &#123;</span><br><span class="line">                   <span class="keyword">return</span> flag_value &lt; <span class="number">25</span>;</span><br><span class="line">                 &#125;);</span><br></pre></td></tr></table></figure>
 <p><code>DEFINE_validator</code> 宏的第一参数是 flag 的名称，第二参数是校验函数，<code>DEFINE_validator</code> 通过调用 <code>google::RegisterFlagValidator</code> 函数将传入的 flag 和校验函数进行绑定，后续我们通过命令行或 <code>google::SetCommandLineOption</code> 函数对 flag 进行赋值时，gflags 会自动调用校验函数对赋给 flag 的值进行检查，不满足条件的值将触发程序抛出异常。值得注意的是，通过变量对 flag 进行直接赋值并不在校验范围内。</p>
 <p>下图直观地展示了本文第 2 章节的相关结论：</p>
-<p><img data-src="https://image.shipengx.com/gflags%20C%2B%2B%20%E5%B7%A5%E7%A8%8B%E7%A4%BA%E4%BE%8B%E4%B8%BB%E8%A6%81%E4%BB%A3%E7%A0%81%E5%8F%8A%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.png" alt="gflags C++ 工程示例主要代码及程序运行结果"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/gflags%20C%2B%2B%20%E5%B7%A5%E7%A8%8B%E7%A4%BA%E4%BE%8B%E4%B8%BB%E8%A6%81%E4%BB%A3%E7%A0%81%E5%8F%8A%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.png" alt="gflags C++ 工程示例主要代码及程序运行结果"></p>
 <p>可以看到，当我们通过命令行为 <code>demo_flag_int32</code> 赋值 100 时触发了“值校验失败”的异常，当我们指定未定义 flag <code>demo_flag</code> 时触发了“未知命令行 flag”的异常。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly9nZmxhZ3MuZ2l0aHViLmlvL2dmbGFncy8=" title="https://gflags.github.io/gflags/">How To Use gflags (formerly Google Commandline Flags)<i class="fa fa-external-link"></i></span></li>
@@ -390,19 +390,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
+      <div class="popular-posts-title"><a href="\archives\5ac252d6.html" rel="bookmark">C++ Primer - 第 14 章 操作重载与类型转换</a></div>
     </li>
   </ul>
 

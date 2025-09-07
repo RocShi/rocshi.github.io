@@ -59,21 +59,21 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="无迹卡尔曼滤波基于无迹变换，无迹变换研究的是如何通过确定的采样点捕获经非线性变换的高斯随机变量的后验分布的问题。通过无迹变换得到相应的统计特性后，再结合标准卡尔曼滤波框架，便得到无迹卡尔曼滤波。标准无迹卡尔曼滤波的计算量与扩展卡尔曼滤波相当，但滤波精度要优于扩展卡尔曼滤波。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%88%B0%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2.png">
-<meta property="og:image" content="https://image.shipengx.com/%E6%97%A0%E8%BF%B9%E5%8F%98%E6%8D%A2%E7%A4%BA%E4%BE%8B.png">
-<meta property="og:image" content="https://image.shipengx.com/alpha%20%E5%8F%96%E4%B8%8D%E5%90%8C%E5%80%BC%E6%97%B6%20sigma%20%E7%82%B9%E7%9A%84%E6%95%A3%E5%B8%83%E7%A4%BA%E4%BE%8B.png">
-<meta property="og:image" content="https://image.shipengx.com/%E5%8F%AF%E5%8A%A0%E6%80%A7%E5%99%AA%E5%A3%B0%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%9A%84%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
-<meta property="og:image" content="https://image.shipengx.com/%E9%9D%9E%E5%8F%AF%E5%8A%A0%E6%80%A7%E5%99%AA%E5%A3%B0%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%9A%84%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
-<meta property="og:image" content="https://image.shipengx.com/CTRV%20%E8%BF%90%E5%8A%A8%E6%A8%A1%E5%9E%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%88%B0%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%97%A0%E8%BF%B9%E5%8F%98%E6%8D%A2%E7%A4%BA%E4%BE%8B.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/alpha%20%E5%8F%96%E4%B8%8D%E5%90%8C%E5%80%BC%E6%97%B6%20sigma%20%E7%82%B9%E7%9A%84%E6%95%A3%E5%B8%83%E7%A4%BA%E4%BE%8B.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%8F%AF%E5%8A%A0%E6%80%A7%E5%99%AA%E5%A3%B0%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%9A%84%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%9D%9E%E5%8F%AF%E5%8A%A0%E6%80%A7%E5%99%AA%E5%A3%B0%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%9A%84%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/CTRV%20%E8%BF%90%E5%8A%A8%E6%A8%A1%E5%9E%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
 <meta property="article:published_time" content="2020-10-03T04:43:54.000Z">
-<meta property="article:modified_time" content="2022-05-12T06:03:08.534Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:17.758Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
 <meta property="article:tag" content="无迹卡尔曼滤波">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%88%B0%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%88%B0%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/cfd8b171.html">
 
@@ -316,7 +316,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%88%B0%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2.png" alt="目录-从贝叶斯滤波到无迹卡尔曼滤波"></p>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%88%B0%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2.png" alt="目录-从贝叶斯滤波到无迹卡尔曼滤波"></p>
 <h1 id="0-引言" class="heading-control"><a href="#0-引言" class="headerlink" title="0 引言"></a>0 引言<a class="heading-anchor" href="#0-引言" aria-hidden="true"></a></h1><p>在此前的文章<a href="https://blog.shipengx.com/archives/ea375326.html">《从贝叶斯滤波到扩展卡尔曼滤波》</a>中，我们讲述了扩展卡尔曼滤波通过一阶泰勒级数展开将非线性高斯系统的状态转移函数 $f(x)$ 和（或）观测函数 $h(x)$ 线性化，然后采用标准卡尔曼滤波框架实现状态量的滤波过程。扩展卡尔曼滤波存在两方面的明显缺点：</p>
 <ul>
 <li>一阶泰勒级数展开忽略了二阶及以上的高阶项，因此精度一般（通常称为一阶精度），对于高度非线性问题效果较差；</li>
@@ -333,7 +333,7 @@
 <p>(2) 将每一个 sigma 点进行<strong>非线性变换</strong>，得到新的 sigma 点；</p>
 <p>(3) 对非线性变换后的新的 sigma 点进行<strong>加权求和</strong>，分别计算加权均值和加权方差，用加权均值和加权方差<strong>近似表征</strong>随机变量经非线性变换后的概率分布。</p>
 <p>如下图所示（《概率机器人》第 3.4 节 P49）：</p>
-<p><img data-src="https://image.shipengx.com/%E6%97%A0%E8%BF%B9%E5%8F%98%E6%8D%A2%E7%A4%BA%E4%BE%8B.png" alt="无迹变换示例"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%97%A0%E8%BF%B9%E5%8F%98%E6%8D%A2%E7%A4%BA%E4%BE%8B.png" alt="无迹变换示例"></p>
 <p>无迹卡尔曼滤波中使用的确定性采样方法是 sigma 点采样方法的一种具体实现，中心差分卡尔曼滤波（Central Difference Kalman Filter，CDKF）使用了 sigma 点采样方法的另一种具体实现，这类滤波算法我们统称为 sigma 点卡尔曼滤波（Sigma-Point Kalman Filter，SPKF）算法。</p>
 <p>按照历史发展脉络来讲，无迹变换主要包括两种形式：一般形式的无迹变换和比例无迹变换（Scaled Unscented Transform，SUT）。两种无迹变换的区别主要体现在采样规则和权重计算上，下面将分别进行阐述。</p>
 <h2 id="1-2-一般形式的无迹变换" class="heading-control"><a href="#1-2-一般形式的无迹变换" class="headerlink" title="1.2 一般形式的无迹变换"></a>1.2 一般形式的无迹变换<a class="heading-anchor" href="#1-2-一般形式的无迹变换" aria-hidden="true"></a></h2><p>假设存在 $n$ 维随机向量 $X$，其服从均值 $\mu_x$ 和协方差 $\Sigma_x$ 的正态分布：</p>
@@ -379,7 +379,7 @@ W_c^{(i)} =
 <script type="math/tex; mode=display">
 \lambda = \alpha^2(n+\kappa)-n</script><p>参数 $\alpha$ 和 $\kappa$ 为确定 sigma 点分布在均值多远的范围内的比例参数。$\alpha$ 满足 $10^{-4} \le \alpha \le 1$，为避免强非线性系统中的非局部效应问题，$\alpha$ 通常取一个较小值；$\kappa$ 满足 $\kappa \ge 0$，通常取 $\kappa = 3-n$ 或 $\kappa = 0$。</p>
 <p>下图呈现了当 $\alpha$ 取值分别为 $0.3$ 和 $1$ 时，sigma 点的分布情况，从图中可以发现，$\alpha$ 取值越大，非均值处的 sigma 点距离均值越远。</p>
-<p><img data-src="https://image.shipengx.com/alpha%20%E5%8F%96%E4%B8%8D%E5%90%8C%E5%80%BC%E6%97%B6%20sigma%20%E7%82%B9%E7%9A%84%E6%95%A3%E5%B8%83%E7%A4%BA%E4%BE%8B.png" alt="alpha 取不同值时 sigma 点的散布示例"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/alpha%20%E5%8F%96%E4%B8%8D%E5%90%8C%E5%80%BC%E6%97%B6%20sigma%20%E7%82%B9%E7%9A%84%E6%95%A3%E5%B8%83%E7%A4%BA%E4%BE%8B.png" alt="alpha 取不同值时 sigma 点的散布示例"></p>
 <p>参数 $\beta$ 用于引入随机变量概率分布的高阶矩信息，如果分布是精确的高斯分布，则 $\beta = 2$ 是最优选择。</p>
 <p><strong>步骤二：确定性采样</strong></p>
 <p>通常情况下，siama 点位于均值处及对称分布于主轴的协方差处（每维两个）。按照如下方法采样得到 $2n + 1$ 个 sigma 点，构成 $n \times (2n + 1)$ 的点集矩阵 $\mathcal{X}$：</p>
@@ -483,7 +483,7 @@ K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$
 <script type="math/tex; mode=display">
 \mu_{X_k}^+ = \mu_{X_k}^- + K_k(z_k-\mu_{Z_k})</script><script type="math/tex; mode=display">
 \Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤三、四构成了可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤六、七、八、九、十则构成了更新步。可加性噪声条件下的无迹卡尔曼滤波算法流程可总结为：</p>
-<p><img data-src="https://image.shipengx.com/%E5%8F%AF%E5%8A%A0%E6%80%A7%E5%99%AA%E5%A3%B0%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%9A%84%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="可加性噪声条件下的无迹卡尔曼滤波算法流程图"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%8F%AF%E5%8A%A0%E6%80%A7%E5%99%AA%E5%A3%B0%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%9A%84%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="可加性噪声条件下的无迹卡尔曼滤波算法流程图"></p>
 <h2 id="3-2-非可加性噪声条件下的无迹卡尔曼滤波" class="heading-control"><a href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波" class="headerlink" title="3.2 非可加性噪声条件下的无迹卡尔曼滤波"></a>3.2 非可加性噪声条件下的无迹卡尔曼滤波<a class="heading-anchor" href="#3-2-非可加性噪声条件下的无迹卡尔曼滤波" aria-hidden="true"></a></h2><p>很多时候，噪声对系统的状态转移和观测的影响并非线性的，此种情况下，$Q_k$ 与 $X_k$ 不一定是同维的，$R_k$ 与 $Y_k$ 也不一定是同维的。此时，系统的状态方程和观测方程演变为：</p>
 <script type="math/tex; mode=display">
 \begin{cases}
@@ -579,11 +579,11 @@ K_k = \Sigma_{X_kZ_k}\Sigma_{Z_k}^{-1}</script><p><strong>步骤十：计算 $k$
 <script type="math/tex; mode=display">
 \mu_{X_k}^+ = \mu_{X_k}^- + K_k(z_k-\mu_{Z_k})</script><script type="math/tex; mode=display">
 \Sigma_{X_k}^+ = \Sigma_{X_k}^- - K_k\Sigma_{Z_k}K_k^T</script><p>步骤四、五构成了非可加性噪声条件下的无迹卡尔曼滤波算法的预测步，步骤六、七、八、九、十则构成了更新步。非可加性噪声条件下的无迹卡尔曼滤波算法流程可总结为：</p>
-<p><img data-src="https://image.shipengx.com/%E9%9D%9E%E5%8F%AF%E5%8A%A0%E6%80%A7%E5%99%AA%E5%A3%B0%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%9A%84%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="非可加性噪声条件下的无迹卡尔曼滤波算法流程图"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%9D%9E%E5%8F%AF%E5%8A%A0%E6%80%A7%E5%99%AA%E5%A3%B0%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%9A%84%E6%97%A0%E8%BF%B9%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="非可加性噪声条件下的无迹卡尔曼滤波算法流程图"></p>
 <p>在某些系统中，过程噪声和观测噪声可能其中一个对系统的影响是线性的（可加性噪声），而另一个对系统的影响是非线性的（非可加性噪声），这时需要结合 3.1 节与 3.2 节的方法来进行无迹卡尔曼滤波算法的设计，在下面的应用示例中你会看到具体是如何做的。</p>
 <h1 id="4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" class="heading-control"><a href="#4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" class="headerlink" title="4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪"></a>4 应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪<a class="heading-anchor" href="#4-应用实例——基于毫米波雷达与无迹卡尔曼滤波的目标跟踪" aria-hidden="true"></a></h1><h2 id="4-1-系统分析" class="heading-control"><a href="#4-1-系统分析" class="headerlink" title="4.1 系统分析"></a>4.1 系统分析<a class="heading-anchor" href="#4-1-系统分析" aria-hidden="true"></a></h2><h3 id="4-1-1-状态转移过程分析" class="heading-control"><a href="#4-1-1-状态转移过程分析" class="headerlink" title="4.1.1 状态转移过程分析"></a>4.1.1 状态转移过程分析<a class="heading-anchor" href="#4-1-1-状态转移过程分析" aria-hidden="true"></a></h3><p>在<a href="https://blog.shipengx.com/archives/ea375326.html">《从贝叶斯滤波到扩展卡尔曼滤波》</a>中，我们讲解了毫米波雷达的检测原理，并基于扩展卡尔曼滤波算法实现了 CV 运动模型下的目标跟踪。此处，我们仍以毫米波雷达传感器为例，来讲解基于无迹卡尔曼滤波算法的目标跟踪过程。</p>
 <p>不同的是，此次我们假设被跟踪目标近似地作匀速圆周运动，即运动模型为<strong>恒定转率和速度模型（Constant Turn Rate and Velocity，CTRV）</strong>，如下图所示（图片来自 Udacity）。</p>
-<p><img data-src="https://image.shipengx.com/CTRV%20%E8%BF%90%E5%8A%A8%E6%A8%A1%E5%9E%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="CTRV 运动模型示意图"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/CTRV%20%E8%BF%90%E5%8A%A8%E6%A8%A1%E5%9E%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="CTRV 运动模型示意图"></p>
 <p>在 CTRV 模型中，我们通常对目标在笛卡尔坐标系内的横坐标 $p_x$、纵坐标 $p_y$、线速率 $v$、航向角 $\psi$ 和航向角速率 $\omega$ 进行跟踪，其中 $\omega = \dot{\psi}$。状态量可设为：</p>
 <script type="math/tex; mode=display">
 X=

@@ -59,13 +59,13 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="Git 仓库包含每个文件的每个版本，但对于一些文件类型来说，这是不实际的，多次修订大文件会增加仓库其他用户克隆和获取的时间。本文旨在简述如何通过 Git Large File Storage (LFS) 管理带有大型文件（文件大小超过 100 MB）的 GitHub 项目。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/Git%20LFS.gif">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/Git%20LFS.gif">
 <meta property="article:published_time" content="2021-07-06T14:57:12.000Z">
-<meta property="article:modified_time" content="2022-05-12T06:06:00.028Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:16.826Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/Git%20LFS.gif">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/Git%20LFS.gif">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/af0e9080.html">
 
@@ -309,7 +309,7 @@
 
       
         <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>某天下午在远程工作站上装 ROS 把我搞烦了，抽时间写了个开源脚本工具 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9yb3N0YWxsZXI=" title="https://github.com/RocShi/rostaller">rostaller<i class="fa fa-external-link"></i></span>，完全一键安装，自动在线更新 <code>YAML</code> 文件，不用再去应对手动安装时必然会遇到的 <code>rosdep init</code> 报错和 <code>rosdep update</code> 报错。工具最初的版本包含一个 <code>.tar.gz</code> 格式的压缩文件，向 GitHub 进行推送时被拒绝：文件大小超限（100 MB）。对于该问题，可以使用 Git Large File Storage (LFS) 对要上传的大文件进行托管。</p>
-<p><img data-src="https://image.shipengx.com/Git%20LFS.gif" alt="Git LFS"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/Git%20LFS.gif" alt="Git LFS"></p>
 <h1 id="1-准备工作" class="heading-control"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作<a class="heading-anchor" href="#1-准备工作" aria-hidden="true"></a></h1><h2 id="1-1-安装-Git-LFS" class="heading-control"><a href="#1-1-安装-Git-LFS" class="headerlink" title="1.1 安装 Git LFS"></a>1.1 安装 Git LFS<a class="heading-anchor" href="#1-1-安装-Git-LFS" aria-hidden="true"></a></h2><p><strong>Windows</strong></p>
 <p>直接<span class="exturl" data-url="aHR0cHM6Ly9naXQtbGZzLmdpdGh1Yi5jb20v" title="https://git-lfs.github.com/">官网<i class="fa fa-external-link"></i></span>下载二进制文件进行安装即可。</p>
 <p><strong>Ubuntu</strong></p>
@@ -365,10 +365,10 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\586b7559.html" rel="bookmark">Git版本库管理最佳实践——以创建新分支加入某个项目为例</a></div>
+      <div class="popular-posts-title"><a href="\archives\77718b2.html" rel="bookmark">Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\77718b2.html" rel="bookmark">Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</a></div>
+      <div class="popular-posts-title"><a href="\archives\586b7559.html" rel="bookmark">Git版本库管理最佳实践——以创建新分支加入某个项目为例</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\ba569070.html" rel="bookmark">gitignore与gitkeep的作用</a></div>

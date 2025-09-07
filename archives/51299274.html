@@ -59,14 +59,14 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="本文结合实际工作情况简单讲解了Linux性能调优工具Perf的使用。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/perf%20report%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%A4%BA%E4%BE%8B.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/perf%20report%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%A4%BA%E4%BE%8B.png">
 <meta property="article:published_time" content="2019-08-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-01T16:07:35.080Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:16.170Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="性能优化">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/perf%20report%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%A4%BA%E4%BE%8B.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/perf%20report%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%A4%BA%E4%BE%8B.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/51299274.html">
 
@@ -315,7 +315,7 @@
 <li><p>最后，分析 perf 数据</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">perf report</span><br></pre></td></tr></table></figure>
 <p>可将 perf 数据文件拷贝至台架 iECU 的任意目录进行离线分析，<code>Self</code>是最后一列的符号（可以理解为函数）本身所占比例，<code>Self</code>列所有数据的和为 100%，<code>Children</code>是这个符号调用的其它符号（可以理解为子函数，包括直接和间接调用）占用的比例之和。若<code>Children</code>列和<code>Self</code>列的数据都比较高(<strong>飙红</strong>)，说明该进程或函数存在资源消耗过高的情况，可按回车键展开该进程查看调用情况，如下图所示：</p>
-<p><img data-src="https://image.shipengx.com/perf%20report%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%A4%BA%E4%BE%8B.png" alt="perf report数据分析示例"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/perf%20report%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%A4%BA%E4%BE%8B.png" alt="perf report数据分析示例"></p>
 <p>图中从上至下表明 CPU 占用较高进程的函数调用层级关系，可以发现，CPU 占用较高的原因是使用 ipc 库时出现了读写锁死锁。</p>
 </li>
 </ul>
@@ -339,13 +339,13 @@
       <div class="popular-posts-title"><a href="\archives\8b42591c.html" rel="bookmark">Linux gcc/g++中的-I、-l、-L</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\f52fa610.html" rel="bookmark">Linux中使用core dump进行程序调试</a></div>
+      <div class="popular-posts-title"><a href="\archives\31e5f0fe.html" rel="bookmark">Linux中使用sed命令进行字符串查找和替换</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\c5106d85.html" rel="bookmark">Linux中的ld-so与ld-linux-so</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\31e5f0fe.html" rel="bookmark">Linux中使用sed命令进行字符串查找和替换</a></div>
+      <div class="popular-posts-title"><a href="\archives\f52fa610.html" rel="bookmark">Linux中使用core dump进行程序调试</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\ffbee3f1.html" rel="bookmark">Not able to execute a .sh file: /bin/bash^M: bad interpreter</a></div>

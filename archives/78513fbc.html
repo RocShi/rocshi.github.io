@@ -59,18 +59,18 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="无人车中的CAN数据解析。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E5%8D%95%E5%B8%A7CAN%E6%B6%88%E6%81%AF%E7%9A%84%E5%AE%9A%E4%B9%89.jpg">
-<meta property="og:image" content="https://image.shipengx.com/CAN%E6%95%B0%E6%8D%AE%E7%A4%BA%E4%BE%8B.jpg">
-<meta property="og:image" content="https://image.shipengx.com/Mobileye%E8%BD%A6%E9%81%93%E7%BA%BFdbc%E7%89%87%E6%AE%B5.jpg">
-<meta property="og:image" content="https://image.shipengx.com/LKA_Left_Lane_A%20layout.jpg">
-<meta property="og:image" content="https://image.shipengx.com/CAN%E6%95%B0%E6%8D%AEdata%E5%9B%BE.jpg">
-<meta property="og:image" content="https://image.shipengx.com/Apollo%20CAN%E8%A7%A3%E6%9E%90%E6%BA%90%E7%A0%81%E7%A4%BA%E4%BE%8B.jpg">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%8D%95%E5%B8%A7CAN%E6%B6%88%E6%81%AF%E7%9A%84%E5%AE%9A%E4%B9%89.jpg">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/CAN%E6%95%B0%E6%8D%AE%E7%A4%BA%E4%BE%8B.jpg">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/Mobileye%E8%BD%A6%E9%81%93%E7%BA%BFdbc%E7%89%87%E6%AE%B5.jpg">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/LKA_Left_Lane_A%20layout.jpg">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/CAN%E6%95%B0%E6%8D%AEdata%E5%9B%BE.jpg">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/Apollo%20CAN%E8%A7%A3%E6%9E%90%E6%BA%90%E7%A0%81%E7%A4%BA%E4%BE%8B.jpg">
 <meta property="article:published_time" content="2018-09-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-12T05:50:22.993Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:16.639Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E5%8D%95%E5%B8%A7CAN%E6%B6%88%E6%81%AF%E7%9A%84%E5%AE%9A%E4%B9%89.jpg">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%8D%95%E5%B8%A7CAN%E6%B6%88%E6%81%AF%E7%9A%84%E5%AE%9A%E4%B9%89.jpg">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/78513fbc.html">
 
@@ -317,23 +317,23 @@
 <p>本文章学习总结自知乎大 V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zOTYyNDE2Mw==" title="https://zhuanlan.zhihu.com/p/39624163">这里<i class="fa fa-external-link"></i></span>。</p>
 </blockquote>
 <h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>实现一个无人驾驶系统，会有几个层级：感知层 → 融合层 → 规划层 → 控制层。更具体一点为：传感器层 → 驱动层 → 信息融合层 → 决策规划层 → 底层控制层。以百度推出的 Apollo 开源的代码为例做 CAN 消息的讲解，我们先看到每一帧的 CAN 消息是如何被定义的：</p>
-<p><img data-src="https://image.shipengx.com/%E5%8D%95%E5%B8%A7CAN%E6%B6%88%E6%81%AF%E7%9A%84%E5%AE%9A%E4%B9%89.jpg" alt="单帧CAN消息的定义"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%8D%95%E5%B8%A7CAN%E6%B6%88%E6%81%AF%E7%9A%84%E5%AE%9A%E4%B9%89.jpg" alt="单帧CAN消息的定义"></p>
 <p>可以发现，这个名为 CanFrame 的消息结构体中包含 4 个关键信息，分别为：</p>
 <p><strong>(1) CAN 消息的 ID 号：uint32_t id</strong><br>由于 CAN 总线上传播着大量 CAN 消息，因此两个节点进行通信时，会先看 id 号，以确保这是节点想要的 CAN 消息。最初 CAN 消息 id 号的范围是 000-7FF（16 进制数），但随着汽车电控信号的增多，需要传递的消息变多，信息不太够用了，工程师在 CAN 消息基础上，扩展了 id 号的范围，大大增加了 id 号的上限，并将改进后的 CAN 消息称为“扩展帧”，旧版 CAN 消息称为“普通帧”。</p>
 <p><strong>(2) CAN 消息的有效长度：uint8_t len</strong><br>每一帧 CAN 消息最多能够传递 8 个 8 位无符号整形数据，或者说能够传递 8*8 的<code>bool</code>类型的数据，此处的 len 的最大值为 8。</p>
 <p><strong>(3) CAN 消息的实际数据：uint8_t data[8]</strong><br>正如上文所述，每一帧 CAN 消息都至多包含 8*8 个<code>bool</code>类型数据，因此可通过 8*8 的矩阵，可视化 CAN 消息中的 data。如下图所示：</p>
-<p><img data-src="https://image.shipengx.com/CAN%E6%95%B0%E6%8D%AE%E7%A4%BA%E4%BE%8B.jpg" alt="CAN数据示例"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/CAN%E6%95%B0%E6%8D%AE%E7%A4%BA%E4%BE%8B.jpg" alt="CAN数据示例"></p>
 <p><strong>(4) CAN 消息的时间戳：timestamp</strong><br>时间戳表示收到该 CAN 消息的时刻。通过连续多帧的时间戳，可计算出 CAN 消息的发送周期，也可用于判断 CAN 消息是否被持续收到。<br>如下图所示，为 Mobileye 提供的车道线的 dbc 文件：</p>
-<p><img data-src="https://image.shipengx.com/Mobileye%E8%BD%A6%E9%81%93%E7%BA%BFdbc%E7%89%87%E6%AE%B5.jpg" alt="Mobileye车道线dbc片段"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/Mobileye%E8%BD%A6%E9%81%93%E7%BA%BFdbc%E7%89%87%E6%AE%B5.jpg" alt="Mobileye车道线dbc片段"></p>
 <p>每个信号的具体描述显示在软件右侧，其中与解析直接相关的三个要素已用<br>绿色框选中：</p>
 <ul>
 <li>Value Type（Unsigned 或 Signed）<br>某些物理量在描述时是有符号的，例如温度；而有些物理量则是没有符号的，例如曲率。</li>
 <li>Factor 和 Offset<br>Factor 是倍率，Offset 是偏移量，二者需要参与实际的物理量运算。例如 Lane_Type 和 Quality 信号的 Factor 为 1，Offset 为 0，而其他信号的 Factor 均为小数。</li>
 </ul>
 <p>双击 LKA_Left_Lane_A，打开 Layout 页，如下图所示：</p>
-<p><img data-src="https://image.shipengx.com/LKA_Left_Lane_A%20layout.jpg" alt="LKA_Left_Lane_A layout"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/LKA_Left_Lane_A%20layout.jpg" alt="LKA_Left_Lane_A layout"></p>
 <p>将上文所述两图进行叠加，将得到如下图所示的 data 图：</p>
-<p><img data-src="https://image.shipengx.com/CAN%E6%95%B0%E6%8D%AEdata%E5%9B%BE.jpg" alt="CAN数据data图"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/CAN%E6%95%B0%E6%8D%AEdata%E5%9B%BE.jpg" alt="CAN数据data图"></p>
 <p>每个信号物理量的计算公式为：</p>
 <script type="math/tex; mode=display">
 实际值=(十进制值*Factor)+Offset</script><p><strong>对于 Factor 为 1 的物理量：</strong><br>由于 Lane_Type 和 Quality 的 Factor 为 1，Offset 为 0，因此十进制值为多少，实际物理量即为多少。从图中可以看出 Quality 信号占据两个位，二进制数 0011，对应的十进制数为：</p>
@@ -342,7 +342,7 @@
 <script type="math/tex; mode=display">
 (0*8 + 0*4 + 1*2 + 0*1)=2</script><p>故此帧信号表示此时的左车道线 Lane_Type 值为 2，Quality 值为 3。对于整数值，通信双方可以约定规则，例如 Mobileye 规定：Quality 为 0 或 1 时表示车道线的置信度较低，不推荐使用此时的值；2 表示置信度中等，3 表示置信度较高，可放心使用。</p>
 <p><strong>Factor 为小数的物理量：</strong><br>对于 Factor 不为 1 的物理量，比如 Position，需要使用移位的方法进行解析，但解析公式保持不变。以百度 Apollo 提供的源码为例：</p>
-<p><img data-src="https://image.shipengx.com/Apollo%20CAN%E8%A7%A3%E6%9E%90%E6%BA%90%E7%A0%81%E7%A4%BA%E4%BE%8B.jpg" alt="Apollo CAN解析源码示例"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/Apollo%20CAN%E8%A7%A3%E6%9E%90%E6%BA%90%E7%A0%81%E7%A4%BA%E4%BE%8B.jpg" alt="Apollo CAN解析源码示例"></p>
 <p>bytes 即为 CAN 消息中的 data，首先将 Position 信号所在的行取出来，将第 1 行的 8 个 bool 值存储在变量 t1 中，将第二行的 8 个 bool 值存储在变量 t0 中。由于在这条 CAN 消息中，Position 同时占据了高 8 位和低 8 位，因此需要将第一行和第二行所有的 bool 位拿来计算，高 8 位存储在 32 位的变量 x 中，低 8 位存储在 32 位的变量 t 中。现在需要将高 8 位和低 8 位拼接，将高 8 位左移 8 位，然后与低 8 位进行求或运算，即可得到 Position 的二进制值。随后进行的左移 16 位，再右移 16 位的操作是为了将 32 位的变量 x 的高 16 位全部初始化为 0（为什么不直接和 0x0000FFFF 进行按位与的操作？）。之后将 x 乘以 Factor 再加上 Offset 即可得到真实的 Position 值，给真实值加上单位 meter，即可获取实际的物理量。<strong>VCU、雷达等通过 CAN 总线传递信号，随着 CAN 的负载越来越高，很多传感器使用了其它通信方式，比如激光雷达的点云数据量太过庞大，使用的是局域网通信，而 GPS 和惯导使用的是串口通信。</strong></p>
 <h1 id="2-参考" class="heading-control"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考<a class="heading-anchor" href="#2-参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zOTYyNDE2Mw==" title="https://zhuanlan.zhihu.com/p/39624163">无人驾驶技术入门（十一）| 无人驾驶中的 CAN 消息解析<i class="fa fa-external-link"></i></span></li>

@@ -59,22 +59,22 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="本文将从基本概念入手，简要介绍如何通过 Gitea Actions 实现 Hexo 博客的持续集成与持续部署。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20Actions%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2.png">
-<meta property="og:image" content="https://image.shipengx.com/%E5%85%B8%E5%9E%8B%E7%9A%84%20Gitea%20Actions%20%E5%B7%A5%E4%BD%9C%E6%B5%81.png">
-<meta property="og:image" content="https://image.shipengx.com/%E4%B8%BA%E6%8C%87%E5%AE%9A%E4%BB%93%E5%BA%93%E5%BC%80%E5%90%AF%20Actions.png">
-<meta property="og:image" content="https://image.shipengx.com/%E8%8E%B7%E5%8F%96%E7%94%A8%E4%BA%8E%E6%B3%A8%E5%86%8C%20runner%20%E7%9A%84%20gitea%20token.png">
-<meta property="og:image" content="https://image.shipengx.com/runner%20%E7%9A%84%E6%B3%A8%E5%86%8C%E8%BF%87%E7%A8%8B.png">
-<meta property="og:image" content="https://image.shipengx.com/%E6%96%B0%E6%B3%A8%E5%86%8C%E7%9A%84%20runner.png">
-<meta property="og:image" content="https://image.shipengx.com/Hexo%20%E5%8D%9A%E5%AE%A2%20CICD%20%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
-<meta property="og:image" content="https://image.shipengx.com/%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%20Gitea%20Actions%20%E5%B7%A5%E4%BD%9C%E6%B5%81.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20Actions%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%85%B8%E5%9E%8B%E7%9A%84%20Gitea%20Actions%20%E5%B7%A5%E4%BD%9C%E6%B5%81.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%B8%BA%E6%8C%87%E5%AE%9A%E4%BB%93%E5%BA%93%E5%BC%80%E5%90%AF%20Actions.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E8%8E%B7%E5%8F%96%E7%94%A8%E4%BA%8E%E6%B3%A8%E5%86%8C%20runner%20%E7%9A%84%20gitea%20token.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/runner%20%E7%9A%84%E6%B3%A8%E5%86%8C%E8%BF%87%E7%A8%8B.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%96%B0%E6%B3%A8%E5%86%8C%E7%9A%84%20runner.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/Hexo%20%E5%8D%9A%E5%AE%A2%20CICD%20%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%20Gitea%20Actions%20%E5%B7%A5%E4%BD%9C%E6%B5%81.png">
 <meta property="article:published_time" content="2023-09-05T04:32:22.000Z">
-<meta property="article:modified_time" content="2025-08-31T15:42:11.735Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:21.562Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Git">
 <meta property="article:tag" content="Gitea">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20Actions%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20Actions%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/2577fd4c.html">
 
@@ -317,7 +317,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20Actions%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2.png" alt="目录-使用 Gitea Actions 实现 Hexo 博客持续集成与持续部署"></p>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20Gitea%20Actions%20%E5%AE%9E%E7%8E%B0%20Hexo%20%E5%8D%9A%E5%AE%A2%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2.png" alt="目录-使用 Gitea Actions 实现 Hexo 博客持续集成与持续部署"></p>
 <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>在此前的文章<a href="https://blog.shipengx.com/archives/afb81b2.html">《使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成》</a>中，我们介绍了如何使用 Gitea v1.17.0 进行 Hexo 博客的源码托管，并借助 Git Hook 实现博客的持续集成（Continuous Integratgion，CI）和持续部署（Continuous Deployment，CD）。</p>
 <p>Gitea 自 v1.19.0 版本起引入了类似于 <span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGh1Yi5jb20vemgvYWN0aW9ucw==" title="https://docs.github.com/zh/actions">GitHub Actions<i class="fa fa-external-link"></i></span> 的内置 CI/CD 解决方案 <span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGVhLmNvbS91c2FnZS9hY3Rpb25zL292ZXJ2aWV3" title="https://docs.gitea.com/usage/actions/overview">Gitea Actions<i class="fa fa-external-link"></i></span>。本文将从基本概念入手，简要介绍如何通过 Gitea Actions 功能更优雅地实现 Hexo 博客的 CI/CD。</p>
 <h1 id="1-基本概念" class="heading-control"><a href="#1-基本概念" class="headerlink" title="1 基本概念"></a>1 基本概念<a class="heading-anchor" href="#1-基本概念" aria-hidden="true"></a></h1><p>类似于 GitHub Actions，Gitea Actions 同样包含了工作流（Workflow）、事件（Event）、任务（Job）、步骤（Step）、运行器（Runner）等几项重要的基本概念。</p>
@@ -328,7 +328,7 @@
 <p>我们可以配置工作流中任务间的依赖关系（默认无依赖关系，并行运行），当一个任务依赖于另一个任务时，它将等待所依赖任务完成后才能开始运行。</p>
 <h2 id="1-4-运行器" class="heading-control"><a href="#1-4-运行器" class="headerlink" title="1.4 运行器"></a>1.4 运行器<a class="heading-anchor" href="#1-4-运行器" aria-hidden="true"></a></h2><p><strong>运行器</strong>是执行工作流任务的软件程序，工作流中的每个任务都需要指定运行器，不同的任务可以指定不同的运行器。</p>
 <p>一个典型的 Gitea Actions 工作流如下图所示：</p>
-<p><img data-src="https://image.shipengx.com/%E5%85%B8%E5%9E%8B%E7%9A%84%20Gitea%20Actions%20%E5%B7%A5%E4%BD%9C%E6%B5%81.png" alt="典型的 Gitea Actions 工作流"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%85%B8%E5%9E%8B%E7%9A%84%20Gitea%20Actions%20%E5%B7%A5%E4%BD%9C%E6%B5%81.png" alt="典型的 Gitea Actions 工作流"></p>
 <h1 id="2-环境配置" class="heading-control"><a href="#2-环境配置" class="headerlink" title="2 环境配置"></a>2 环境配置<a class="heading-anchor" href="#2-环境配置" aria-hidden="true"></a></h1><h2 id="2-1-安装-Gitea-v1-20-3" class="heading-control"><a href="#2-1-安装-Gitea-v1-20-3" class="headerlink" title="2.1 安装 Gitea v1.20.3"></a>2.1 安装 Gitea v1.20.3<a class="heading-anchor" href="#2-1-安装-Gitea-v1-20-3" aria-hidden="true"></a></h2><p>本文中使用的 Gitea 版本是 v1.20.3，Gitea 的从零安装可直接参考<a href="https://blog.shipengx.com/archives/afb81b2.html">《使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成》</a>中的相应章节。由于此前我们已经安装了 v1.17.0 版本，所以这里我们需要解决的是如何将 Gitea 由 v1.17.0 升级到 v1.20.3。</p>
 <p>关于 Gitea 的版本升级，<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGVhLmNvbS9pbnN0YWxsYXRpb24vdXBncmFkZS1mcm9tLWdpdGVh" title="https://docs.gitea.com/installation/upgrade-from-gitea">官方<i class="fa fa-external-link"></i></span>提供了多种方式，这里我们选择二进制的升级方式，升级步骤下面逐一展开。</p>
 <h3 id="2-1-1-停止-Gitea-服务" class="heading-control"><a href="#2-1-1-停止-Gitea-服务" class="headerlink" title="2.1.1 停止 Gitea 服务"></a>2.1.1 停止 Gitea 服务<a class="heading-anchor" href="#2-1-1-停止-Gitea-服务" aria-hidden="true"></a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop gitea.service</span><br></pre></td></tr></table></figure>
@@ -343,7 +343,7 @@
 <p>随后重启 Gitea 服务：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart gitea.service</span><br></pre></td></tr></table></figure>
 <h3 id="2-1-4-为指定仓库开启-Actions-功能" class="heading-control"><a href="#2-1-4-为指定仓库开启-Actions-功能" class="headerlink" title="2.1.4 为指定仓库开启 Actions 功能"></a>2.1.4 为指定仓库开启 Actions 功能<a class="heading-anchor" href="#2-1-4-为指定仓库开启-Actions-功能" aria-hidden="true"></a></h3><p>即使 Gitea Actions 已经在配置文件中开启，对于某个指定的仓库而言其 Actions 功能仍是默认关闭的，需要针对仓库进行单独配置：</p>
-<p><img data-src="https://image.shipengx.com/%E4%B8%BA%E6%8C%87%E5%AE%9A%E4%BB%93%E5%BA%93%E5%BC%80%E5%90%AF%20Actions.png" alt="为指定仓库开启 Actions"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%B8%BA%E6%8C%87%E5%AE%9A%E4%BB%93%E5%BA%93%E5%BC%80%E5%90%AF%20Actions.png" alt="为指定仓库开启 Actions"></p>
 <h2 id="2-2-部署-act-runner" class="heading-control"><a href="#2-2-部署-act-runner" class="headerlink" title="2.2 部署 act runner"></a>2.2 部署 act runner<a class="heading-anchor" href="#2-2-部署-act-runner" aria-hidden="true"></a></h2><p>Gitea 使用 <span class="exturl" data-url="aHR0cHM6Ly9naXRlYS5jb20vZ2l0ZWEvYWN0X3J1bm5lcg==" title="https://gitea.com/gitea/act_runner">act runner<i class="fa fa-external-link"></i></span> 来执行具体的工作流任务，act runner 可通过下述三种方式进行部署：</p>
 <ul>
 <li>直接下载预构建的二进制可执行文件</li>
@@ -369,7 +369,7 @@
 <p>我们可以通过 <code>ifconfig</code> 命令查看云服务器公网 IP。</p>
 <p><strong>2）runner token</strong></p>
 <p>token 用于 Gitea 和 runner 间的相互认证，可按照下图所示的步骤获取 token 用于 runner 注册：</p>
-<p><img data-src="https://image.shipengx.com/%E8%8E%B7%E5%8F%96%E7%94%A8%E4%BA%8E%E6%B3%A8%E5%86%8C%20runner%20%E7%9A%84%20gitea%20token.png" alt="获取用于注册 runner 的 gitea token"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E8%8E%B7%E5%8F%96%E7%94%A8%E4%BA%8E%E6%B3%A8%E5%86%8C%20runner%20%E7%9A%84%20gitea%20token.png" alt="获取用于注册 runner 的 gitea token"></p>
 <p>图中的 <code>blog_ci_cd</code> 是笔者此前已创建好的用于博客 CI/CD 工作流的 runner，可以看到它目前处于空闲（Idle）状态。需要注意的是，每个 token 只能用于一次注册，不能多次使用。</p>
 <p><strong>3）runner name</strong></p>
 <p>runner 的名称，若留空得话将使用主机名。</p>
@@ -377,9 +377,9 @@
 <p>runner 的标签，是个以逗号分隔开的列表，工作流的 YAML 描述文件通过 runner labels 为任务分配 runner。runner labels 若留空得话将使用默认值：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ubuntu-latest:docker:&#x2F;&#x2F;node:16-bullseye,ubuntu-22.04:docker:&#x2F;&#x2F;node:16-bullseye,ubuntu-20.04:docker:&#x2F;&#x2F;node:16-bullseye,ubuntu-18.04:docker:&#x2F;&#x2F;node:16-buster</span><br></pre></td></tr></table></figure>
 <p>典型的 runner 注册过程如下图所示：</p>
-<p><img data-src="https://image.shipengx.com/runner%20%E7%9A%84%E6%B3%A8%E5%86%8C%E8%BF%87%E7%A8%8B.png" alt="runner 的注册过程"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/runner%20%E7%9A%84%E6%B3%A8%E5%86%8C%E8%BF%87%E7%A8%8B.png" alt="runner 的注册过程"></p>
 <p>完成注册后，将在 act runner 所在目录下生成一个名为 <code>.runner</code> 的文件，里面存储了 runner 的注册信息。同时，我们也将在方才获取 token 的页面看到新增了一个尚处于离线（Offline）状态的 runner，它的 name 和 labels 分别为 <code>test_runner</code> 和 <code>test</code>：</p>
-<p><img data-src="https://image.shipengx.com/%E6%96%B0%E6%B3%A8%E5%86%8C%E7%9A%84%20runner.png" alt="新注册的 runner"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%96%B0%E6%B3%A8%E5%86%8C%E7%9A%84%20runner.png" alt="新注册的 runner"></p>
 <h3 id="2-2-4-运行" class="heading-control"><a href="#2-2-4-运行" class="headerlink" title="2.2.4 运行"></a>2.2.4 运行<a class="heading-anchor" href="#2-2-4-运行" aria-hidden="true"></a></h3><p>经过注册的 runner 只是建立了与 Gitea 实例间的联系，还无法运行工作流任务，我们还需要通过运行 act runner 可执行程序来唤醒它：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup act_runner-0.2.5-linux-amd64 &gt;/dev/null 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
 <p>这里我们指定 <code>act_runner-0.2.5-linux-amd64</code> 无挂起地在后台运行，并忽略了标准输出和错误输出。再次查看方才注册的 runner，会发现它的运行状态已由 Offline 变为 Idle，表示 runner 已被唤醒，随时可以执行工作流任务。</p>
@@ -400,9 +400,9 @@
 </ul>
 <p>两个任务都通过 <code>runs-on</code> 关键字指定由 labels 被注册为 <code>blog_ci_cd</code> 的 runner 运行，每个任务所包含的步骤通过 <code>steps</code> 关键字指定，每个步骤所要执行的操作命令通过 <code>run</code> 关键字指定（分隔符 <code>|</code> 表示多行命令，单行命令时可省略），<code>env</code> 关键字则指定了工作流中的全局环境变量。完整的工作流 YAML 语法详见<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGh1Yi5jb20vemgvYWN0aW9ucy91c2luZy13b3JrZmxvd3Mvd29ya2Zsb3ctc3ludGF4LWZvci1naXRodWItYWN0aW9ucw==" title="https://docs.github.com/zh/actions/using-workflows/workflow-syntax-for-github-actions">参考 7<i class="fa fa-external-link"></i></span>。</p>
 <p>上述工作流的示意图如下所示：</p>
-<p><img data-src="https://image.shipengx.com/Hexo%20%E5%8D%9A%E5%AE%A2%20CICD%20%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="Hexo 博客 CICD 工作流示意图"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/Hexo%20%E5%8D%9A%E5%AE%A2%20CICD%20%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="Hexo 博客 CICD 工作流示意图"></p>
 <p>正常情况下，将工作流 YAML 脚本 <code>push</code> 到远程云服务器的 Gitea 仓库后，将在 Gitea 的 Actions 页面看到正在运行的工作流：</p>
-<p><img data-src="https://image.shipengx.com/%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%20Gitea%20Actions%20%E5%B7%A5%E4%BD%9C%E6%B5%81.png" alt="正在运行的 Gitea Actions 工作流"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%20Gitea%20Actions%20%E5%B7%A5%E4%BD%9C%E6%B5%81.png" alt="正在运行的 Gitea Actions 工作流"></p>
 <h1 id="4-后记" class="heading-control"><a href="#4-后记" class="headerlink" title="4 后记"></a>4 后记<a class="heading-anchor" href="#4-后记" aria-hidden="true"></a></h1><p>类似于 GitHub Actions，Gitea Acitons 是 Gitea 的内置 CI/CD 解决方案。本文从基本概念入手，简要介绍了通过 Gitea Actions 实现 Hexo 博客 CI/CD 的基本流程。</p>
 <p>笔者已将 Gitea Actions 应用到了生产环境中，用于智能驾驶算法应用层中某融合算法模块的持续集成，目前体验良好。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
@@ -428,10 +428,10 @@
       <div class="popular-posts-title"><a href="\archives\afb81b2.html" rel="bookmark">使用 Gitea + Git Hook 实现 Hexo 博客源码托管与持续集成</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\586b7559.html" rel="bookmark">Git版本库管理最佳实践——以创建新分支加入某个项目为例</a></div>
+      <div class="popular-posts-title"><a href="\archives\77718b2.html" rel="bookmark">Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\77718b2.html" rel="bookmark">Git版本库管理最佳实践——以跟踪仓库指定分支下的代码为例</a></div>
+      <div class="popular-posts-title"><a href="\archives\586b7559.html" rel="bookmark">Git版本库管理最佳实践——以创建新分支加入某个项目为例</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\ba569070.html" rel="bookmark">gitignore与gitkeep的作用</a></div>

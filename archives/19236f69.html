@@ -59,14 +59,14 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="本文主要介绍了在 Ubuntu 中使用 gperftools CPU profiler 进行 C++ 代码性能分析的基本步骤。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E4%BD%BF%E7%94%A8%20gperftools%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90.png">
-<meta property="og:image" content="https://image.shipengx.com/%E5%9B%BE%E5%BD%A2%E5%8C%96%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%BD%BF%E7%94%A8%20gperftools%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%9B%BE%E5%BD%A2%E5%8C%96%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A.png">
 <meta property="article:published_time" content="2022-06-21T03:34:31.000Z">
-<meta property="article:modified_time" content="2022-08-13T19:52:47.616Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:16.288Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E4%BD%BF%E7%94%A8%20gperftools%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%BD%BF%E7%94%A8%20gperftools%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/19236f69.html">
 
@@ -315,7 +315,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E4%BD%BF%E7%94%A8%20gperftools%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90.png" alt="使用 gperftools 进行 C++ 代码性能分析"></p>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%BD%BF%E7%94%A8%20gperftools%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90.png" alt="使用 gperftools 进行 C++ 代码性能分析"></p>
 <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>在进行模块的负载优化时，使用到了 Google 开发的 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dwZXJmdG9vbHMvZ3BlcmZ0b29scw==" title="https://github.com/gperftools/gperftools">gperftools<i class="fa fa-external-link"></i></span> 工具来进行代码性能分析。正如 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dwZXJmdG9vbHMvZ3BlcmZ0b29scw==" title="https://github.com/gperftools/gperftools">gperftools wiki<i class="fa fa-external-link"></i></span> 中所描述的：</p>
 <blockquote>
 <p>gperftools is a collection of a high-performance multi-threaded <code>malloc()</code> implementation, plus some pretty nifty performance analysis tools.</p>
@@ -364,7 +364,7 @@
 <h2 id="2-4-生成图形化分析报告" class="heading-control"><a href="#2-4-生成图形化分析报告" class="headerlink" title="2.4 生成图形化分析报告"></a>2.4 生成图形化分析报告<a class="heading-anchor" href="#2-4-生成图形化分析报告" aria-hidden="true"></a></h2><p>最后，通过上文提到的 pprof 解析 <code>.prof</code> 文件。pprof 有多种使用方法，下面的命令行将 <code>.prof</code> 文件解析为 <code>.pdf</code> 文件：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pprof --pdf cpp_demo cpp_demo_perf.prof &gt; cpp_demo_perf.pdf</span><br></pre></td></tr></table></figure>
 <p>解析得到的 <code>.pdf</code> 文件中保存了图形化的代码性能分析结果，从中我们可以查找代码的性能瓶颈：</p>
-<p><img data-src="https://image.shipengx.com/%E5%9B%BE%E5%BD%A2%E5%8C%96%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A.png" alt="图形化性能分析报告"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%9B%BE%E5%BD%A2%E5%8C%96%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A.png" alt="图形化性能分析报告"></p>
 <p>每一个方框表示一个进程，有向边表示进程间的调用关系。方框越大，表示该进程耗时越高，这里我们可以发现，<code>Func2</code> 函数占了程序总耗时的 67%，是程序的性能瓶颈。需要注意的是，gperftools 的 CPU Profiler 是通过采样的方式工作的，如果程序运行时间太短，会导致样本不足从而造成分析结果不准确。</p>
 <p>关于图形化分析结果更详细的解释，可以参考<span class="exturl" data-url="aHR0cHM6Ly9ncGVyZnRvb2xzLmdpdGh1Yi5pby9ncGVyZnRvb2xzL2NwdXByb2ZpbGUuaHRtbA==" title="https://gperftools.github.io/gperftools/cpuprofile.html">这里<i class="fa fa-external-link"></i></span>。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
@@ -385,19 +385,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
+      <div class="popular-posts-title"><a href="\archives\5ac252d6.html" rel="bookmark">C++ Primer - 第 14 章 操作重载与类型转换</a></div>
     </li>
   </ul>
 

@@ -59,15 +59,15 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="使用Hexo静态博客框架 + NexT主题生成静态HTML，并托管到GitHub Pages搭建个人博客站点。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E5%9C%A8Google%20Fonts%E4%B8%8A%E6%9F%A5%E6%89%BE%E5%96%9C%E6%AC%A2%E7%9A%84%E5%AD%97%E4%BD%93.gif">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%9C%A8Google%20Fonts%E4%B8%8A%E6%9F%A5%E6%89%BE%E5%96%9C%E6%AC%A2%E7%9A%84%E5%AD%97%E4%BD%93.gif">
 <meta property="og:image" content="https://blog.shipengx.com/archives/208e6058/%E6%97%A0%E6%B3%95%E6%8C%81%E7%BB%AD%E6%AD%A3%E5%B8%B8%E6%98%BE%E7%A4%BA%E8%B1%86%E7%93%A3%E8%AF%BB%E4%B9%A6%E9%A1%B5%E9%9D%A2.gif">
 <meta property="article:published_time" content="2020-01-30T09:42:15.000Z">
-<meta property="article:modified_time" content="2022-05-19T06:13:19.544Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:22.394Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Hexo">
 <meta property="article:tag" content="Blog">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E5%9C%A8Google%20Fonts%E4%B8%8A%E6%9F%A5%E6%89%BE%E5%96%9C%E6%AC%A2%E7%9A%84%E5%AD%97%E4%BD%93.gif">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%9C%A8Google%20Fonts%E4%B8%8A%E6%9F%A5%E6%89%BE%E5%96%9C%E6%AC%A2%E7%9A%84%E5%AD%97%E4%BD%93.gif">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/208e6058.html">
 
@@ -373,7 +373,7 @@
 <li><p>修改 hexo/themes/next/source/css/_variables/base.styl 中的中文字体</p>
 <figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// Font families.</span><br><span class="line"><span class="deletion">- $font-family-chinese      = "PingFang SC", "Microsoft YaHei";</span></span><br><span class="line"><span class="addition">+ $font-family-chinese      = "Noto Serif SC";</span></span><br></pre></td></tr></table></figure></li>
 <li><p>在 hexo/source/_data/head.swig 中添加中文字体<code>Noto Serif SC</code>的<code>&lt;link&gt;</code>代码段<br>进入<span class="exturl" data-url="aHR0cHM6Ly9mb250cy5nb29nbGUuY29tLw==" title="https://fonts.google.com/">Google Fonts<i class="fa fa-external-link"></i></span>，搜索<code>Noto Serif SC</code>，按照下面动图中所示获取字体的<code>&lt;link&gt;</code>代码，其它字体操作相同</p>
-<p><img data-src="https://image.shipengx.com/%E5%9C%A8Google%20Fonts%E4%B8%8A%E6%9F%A5%E6%89%BE%E5%96%9C%E6%AC%A2%E7%9A%84%E5%AD%97%E4%BD%93.gif" alt="在Google Fonts上查找喜欢的字体"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%9C%A8Google%20Fonts%E4%B8%8A%E6%9F%A5%E6%89%BE%E5%96%9C%E6%AC%A2%E7%9A%84%E5%AD%97%E4%BD%93.gif" alt="在Google Fonts上查找喜欢的字体"></p>
 <p>将<code>&lt;link&gt;</code>代码中的将<code>googleapis.com</code>修改为<code>loli.net</code>后添加到 hexo/source/_data/head.swig 中</p>
 <figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="addition">+ &lt;link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"&gt;</span></span><br></pre></td></tr></table></figure>
 <p>若 hexo/source/_data/head.swig 文件不存在，需要开启 hexo/themes/next/_config.yml 中<code>custom_file_path</code>的相关选项，默认是注释掉的</p>

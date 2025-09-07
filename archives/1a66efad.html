@@ -59,14 +59,14 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="本系列文章旨在记录学习《Effective C++》过程中的一些书摘及学习笔记，并穿插了一些个人总结。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E3%80%8AEffective%20C%2B%2B%E3%80%8B%EF%BC%88%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%89%E4%B9%A6%E6%91%98%E4%B8%8E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E3%80%8AEffective%20C%2B%2B%E3%80%8B%EF%BC%88%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%89%E4%B9%A6%E6%91%98%E4%B8%8E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.png">
 <meta property="article:published_time" content="2021-10-24T07:05:44.000Z">
-<meta property="article:modified_time" content="2022-08-13T19:44:19.730Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:17.636Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="Effective C++">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E3%80%8AEffective%20C%2B%2B%E3%80%8B%EF%BC%88%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%89%E4%B9%A6%E6%91%98%E4%B8%8E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E3%80%8AEffective%20C%2B%2B%E3%80%8B%EF%BC%88%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%89%E4%B9%A6%E6%91%98%E4%B8%8E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/1a66efad.html">
 
@@ -315,7 +315,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E3%80%8AEffective%20C%2B%2B%E3%80%8B%EF%BC%88%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%89%E4%B9%A6%E6%91%98%E4%B8%8E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.png" alt="目录-《Effective C++》（第三版）书摘与学习笔记"></p>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E3%80%8AEffective%20C%2B%2B%E3%80%8B%EF%BC%88%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%89%E4%B9%A6%E6%91%98%E4%B8%8E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.png" alt="目录-《Effective C++》（第三版）书摘与学习笔记"></p>
 <h1 id="7-模板与泛型编程" class="heading-control"><a href="#7-模板与泛型编程" class="headerlink" title="7 模板与泛型编程"></a>7 模板与泛型编程<a class="heading-anchor" href="#7-模板与泛型编程" aria-hidden="true"></a></h1><h2 id="条款-41：了解隐式接口和编译期多态" class="heading-control"><a href="#条款-41：了解隐式接口和编译期多态" class="headerlink" title="条款 41：了解隐式接口和编译期多态"></a>条款 41：了解隐式接口和编译期多态<a class="heading-anchor" href="#条款-41：了解隐式接口和编译期多态" aria-hidden="true"></a></h2><h2 id="条款-42：了解-typename-的双重意义" class="heading-control"><a href="#条款-42：了解-typename-的双重意义" class="headerlink" title="条款 42：了解 typename 的双重意义"></a>条款 42：了解 typename 的双重意义<a class="heading-anchor" href="#条款-42：了解-typename-的双重意义" aria-hidden="true"></a></h2><h2 id="条款-43：学习处理模板化基类内的名称" class="heading-control"><a href="#条款-43：学习处理模板化基类内的名称" class="headerlink" title="条款 43：学习处理模板化基类内的名称"></a>条款 43：学习处理模板化基类内的名称<a class="heading-anchor" href="#条款-43：学习处理模板化基类内的名称" aria-hidden="true"></a></h2><h2 id="条款-44：将与参数无关的代码抽离-template" class="heading-control"><a href="#条款-44：将与参数无关的代码抽离-template" class="headerlink" title="条款 44：将与参数无关的代码抽离 template"></a>条款 44：将与参数无关的代码抽离 template<a class="heading-anchor" href="#条款-44：将与参数无关的代码抽离-template" aria-hidden="true"></a></h2><h2 id="条款-45：运用成员函数模板接受所有兼容类型" class="heading-control"><a href="#条款-45：运用成员函数模板接受所有兼容类型" class="headerlink" title="条款 45：运用成员函数模板接受所有兼容类型"></a>条款 45：运用成员函数模板接受所有兼容类型<a class="heading-anchor" href="#条款-45：运用成员函数模板接受所有兼容类型" aria-hidden="true"></a></h2><h2 id="条款-46：需要类型转换时请为模板定义非成员函数" class="heading-control"><a href="#条款-46：需要类型转换时请为模板定义非成员函数" class="headerlink" title="条款 46：需要类型转换时请为模板定义非成员函数"></a>条款 46：需要类型转换时请为模板定义非成员函数<a class="heading-anchor" href="#条款-46：需要类型转换时请为模板定义非成员函数" aria-hidden="true"></a></h2><h2 id="条款-47：请使用-traits-classes-表现类型信息" class="heading-control"><a href="#条款-47：请使用-traits-classes-表现类型信息" class="headerlink" title="条款 47：请使用 traits classes 表现类型信息"></a>条款 47：请使用 traits classes 表现类型信息<a class="heading-anchor" href="#条款-47：请使用-traits-classes-表现类型信息" aria-hidden="true"></a></h2><h2 id="条款-48：认识-template-元编程" class="heading-control"><a href="#条款-48：认识-template-元编程" class="headerlink" title="条款 48：认识 template 元编程"></a>条款 48：认识 template 元编程<a class="heading-anchor" href="#条款-48：认识-template-元编程" aria-hidden="true"></a></h2><h1 id="8-定制-new-和-delete" class="heading-control"><a href="#8-定制-new-和-delete" class="headerlink" title="8 定制 new 和 delete"></a>8 定制 new 和 delete<a class="heading-anchor" href="#8-定制-new-和-delete" aria-hidden="true"></a></h1><h2 id="条款-49：了解-new-handler-的行为" class="heading-control"><a href="#条款-49：了解-new-handler-的行为" class="headerlink" title="条款 49：了解 new-handler 的行为"></a>条款 49：了解 new-handler 的行为<a class="heading-anchor" href="#条款-49：了解-new-handler-的行为" aria-hidden="true"></a></h2><h2 id="条款-50：了解-new-和-delete-的合理替换时机" class="heading-control"><a href="#条款-50：了解-new-和-delete-的合理替换时机" class="headerlink" title="条款 50：了解 new 和 delete 的合理替换时机"></a>条款 50：了解 new 和 delete 的合理替换时机<a class="heading-anchor" href="#条款-50：了解-new-和-delete-的合理替换时机" aria-hidden="true"></a></h2><h2 id="条款-51：编写-new-和-delete-时需固守常规" class="heading-control"><a href="#条款-51：编写-new-和-delete-时需固守常规" class="headerlink" title="条款 51：编写 new 和 delete 时需固守常规"></a>条款 51：编写 new 和 delete 时需固守常规<a class="heading-anchor" href="#条款-51：编写-new-和-delete-时需固守常规" aria-hidden="true"></a></h2><h2 id="条款-52：写了-placement-new-也要写-placement-delete" class="heading-control"><a href="#条款-52：写了-placement-new-也要写-placement-delete" class="headerlink" title="条款 52：写了 placement new 也要写 placement delete"></a>条款 52：写了 placement new 也要写 placement delete<a class="heading-anchor" href="#条款-52：写了-placement-new-也要写-placement-delete" aria-hidden="true"></a></h2><h1 id="9-杂项讨论" class="heading-control"><a href="#9-杂项讨论" class="headerlink" title="9 杂项讨论"></a>9 杂项讨论<a class="heading-anchor" href="#9-杂项讨论" aria-hidden="true"></a></h1><h2 id="条款-53：不要轻忽编译器的警告" class="heading-control"><a href="#条款-53：不要轻忽编译器的警告" class="headerlink" title="条款 53：不要轻忽编译器的警告"></a>条款 53：不要轻忽编译器的警告<a class="heading-anchor" href="#条款-53：不要轻忽编译器的警告" aria-hidden="true"></a></h2><h2 id="条款-54：让自己熟悉-TR1-在内的标准程序库" class="heading-control"><a href="#条款-54：让自己熟悉-TR1-在内的标准程序库" class="headerlink" title="条款 54：让自己熟悉 TR1 在内的标准程序库"></a>条款 54：让自己熟悉 TR1 在内的标准程序库<a class="heading-anchor" href="#条款-54：让自己熟悉-TR1-在内的标准程序库" aria-hidden="true"></a></h2><h2 id="条款-55：让自己熟悉-Boost" class="heading-control"><a href="#条款-55：让自己熟悉-Boost" class="headerlink" title="条款 55：让自己熟悉 Boost"></a>条款 55：让自己熟悉 Boost<a class="heading-anchor" href="#条款-55：让自己熟悉-Boost" aria-hidden="true"></a></h2><hr>
 <!-- flag of hidden posts -->
     </div>
@@ -330,16 +330,16 @@
       <div class="popular-posts-title"><a href="\archives\cc0b7731.html" rel="bookmark">《Effective C++》第三版总结（一）：第 0 - 3 章</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
     </li>
   </ul>
 

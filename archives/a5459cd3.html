@@ -59,14 +59,14 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="本文旨在记录使用 nvm 进行 Node.js 多版本管理的详细操作步骤，包括 Linux 平台和 Windows 平台。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20nvm%20%E8%BF%9B%E8%A1%8C%20Node.js%20%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86.png">
-<meta property="og:image" content="https://image.shipengx.com/%E5%BC%80%E5%90%AF%20Windows%20%E7%9A%84%E5%BC%80%E5%8F%91%E8%80%85%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20nvm%20%E8%BF%9B%E8%A1%8C%20Node.js%20%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%BC%80%E5%90%AF%20Windows%20%E7%9A%84%E5%BC%80%E5%8F%91%E8%80%85%E6%A8%A1%E5%BC%8F.png">
 <meta property="article:published_time" content="2022-08-28T03:50:58.000Z">
-<meta property="article:modified_time" content="2023-03-06T15:59:04.594Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:16.210Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Node.js">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20nvm%20%E8%BF%9B%E8%A1%8C%20Node.js%20%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20nvm%20%E8%BF%9B%E8%A1%8C%20Node.js%20%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/a5459cd3.html">
 
@@ -309,7 +309,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20nvm%20%E8%BF%9B%E8%A1%8C%20Node.js%20%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86.png" alt="目录-使用 nvm 进行 Node.js 版本管理"></p>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BD%BF%E7%94%A8%20nvm%20%E8%BF%9B%E8%A1%8C%20Node.js%20%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86.png" alt="目录-使用 nvm 进行 Node.js 版本管理"></p>
 <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>此前一直使用印象笔记进行零散笔记（不同于博客的长篇大论）的记录，但一直以来印象笔记对 Markdown 的支持都差强人意，这无疑会降低创作的欲望，所以最近决定进行个人知识管理系统的重构，期间尝试了多种方案：</p>
 <ul>
 <li>Hexo + hexo-theme-Wikitten 主题</li>
@@ -362,7 +362,7 @@
 <li>以管理员身份再单独开个终端执行上述切换 Node.js 的命令（不优雅）；</li>
 <li>开启 Windows 中的“设置 → 更新和安全 → 开发者选项 → 开发者模式”，如下图所示（一劳永逸）。</li>
 </ol>
-<p><img data-src="https://image.shipengx.com/%E5%BC%80%E5%90%AF%20Windows%20%E7%9A%84%E5%BC%80%E5%8F%91%E8%80%85%E6%A8%A1%E5%BC%8F.png" alt="开启 Windows 的开发者模式"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%BC%80%E5%90%AF%20Windows%20%E7%9A%84%E5%BC%80%E5%8F%91%E8%80%85%E6%A8%A1%E5%BC%8F.png" alt="开启 Windows 的开发者模式"></p>
 <p>总体而言，nvm-windows 的使用方法与 nvm 大体相近。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly92Mi52dWVwcmVzcy52dWVqcy5vcmcvemgvZ3VpZGUv" title="https://v2.vuepress.vuejs.org/zh/guide/">VuePress 2.0 指南<i class="fa fa-external-link"></i></span></li>

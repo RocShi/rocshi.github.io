@@ -59,16 +59,17 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="应用标准最小二乘法拟合多项式时，我们认为各个样本点的权重是相同的，即每个样本点对总的拟合误差的贡献是相同的，但在工程应用中，有时需要为样本点赋予不同的权重，即我们允许最终的拟合结果在更加贴合某些高权重样本点的基础上偏离某些低权重样本点。本文将给出加权最小二乘多项式拟合的数学推导及其 C++ 实现。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E6%A0%87%E5%87%86%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E4%B8%8E%E5%8A%A0%E6%9D%83%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E7%9A%84%E5%AF%B9%E6%AF%94.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E5%86%8D%E8%B0%88%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95%EF%BC%9A%E5%8A%A0%E6%9D%83%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%8B%9F%E5%90%88%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC%E5%8F%8A%E5%85%B6%20C%2B%2B%20%E5%AE%9E%E7%8E%B0.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%A0%87%E5%87%86%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E4%B8%8E%E5%8A%A0%E6%9D%83%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E7%9A%84%E5%AF%B9%E6%AF%94.png">
 <meta property="article:published_time" content="2023-10-05T11:54:45.000Z">
-<meta property="article:modified_time" content="2025-09-07T15:11:08.149Z">
+<meta property="article:modified_time" content="2025-09-07T16:09:58.714Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="最小二乘法">
 <meta property="article:tag" content="多项式曲线拟合">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E6%A0%87%E5%87%86%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E4%B8%8E%E5%8A%A0%E6%9D%83%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E7%9A%84%E5%AF%B9%E6%AF%94.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E5%86%8D%E8%B0%88%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95%EF%BC%9A%E5%8A%A0%E6%9D%83%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%8B%9F%E5%90%88%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC%E5%8F%8A%E5%85%B6%20C%2B%2B%20%E5%AE%9E%E7%8E%B0.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/f2f67899.html">
 
@@ -311,7 +312,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E5%86%8D%E8%B0%88%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95%EF%BC%9A%E5%8A%A0%E6%9D%83%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%8B%9F%E5%90%88%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC%E5%8F%8A%E5%85%B6%20C%2B%2B%20%E5%AE%9E%E7%8E%B0.png" alt="目录-再谈最小二乘法：加权最小二乘多项式拟合数学推导及其 C++ 实现"></p>
 <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>在此前的文章<a href="https://blog.shipengx.com/archives/e0ebe48c.html">《最小二乘法多项式曲线拟合数学原理及其 C++ 实现》</a>中，我们给出了标准最小二乘法用于多项式拟合的数学原理推导及其 C++ 代码实现。</p>
 <p>应用标准最小二乘法拟合多项式时，我们认为各个样本点的权重是相同的，即每个样本点对总的拟合误差的贡献是相同的，但在工程应用中，有时需要为样本点赋予不同的权重，即我们允许最终的拟合结果在更加贴合某些高权重样本点的基础上偏离某些低权重样本点。</p>
 <p>本文将在前文的基础上给出加权最小二乘多项式拟合的数学推导及其 C++ 实现。</p>
@@ -440,7 +441,7 @@ y=4+3x+1.2x^2-0.001x^3 \tag{3.1}</script><p>以及在 $[-500.0, 500.0]$ 区间�
 </ul>
 <p>通过执行工程根目录下的 <code>run.sh</code> 脚本完成工程编译与运行后，原始数据点以及三组拟合结果将分别存放在工程根目录的 <code>data</code> 目录下的对应 <code>.txt</code> 文本文件中。由于数据量较少，最终拟合得到的多项式与式 (3.1) 可能差别较大，这是正常现象。</p>
 <p>通过执行工程根目录下的 <code>plot.py</code> 脚本，绘制原始数据点及拟合结果：</p>
-<p><img data-src="https://image.shipengx.com/%E6%A0%87%E5%87%86%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E4%B8%8E%E5%8A%A0%E6%9D%83%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E7%9A%84%E5%AF%B9%E6%AF%94.png" alt="标准最小二乘与加权最小二乘的对比"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%A0%87%E5%87%86%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E4%B8%8E%E5%8A%A0%E6%9D%83%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E7%9A%84%E5%AF%B9%E6%AF%94.png" alt="标准最小二乘与加权最小二乘的对比"></p>
 <p>从上图中我们可以发现：</p>
 <ul>
 <li>调高前半部分数据点的权重时，拟合得到的多项式曲线与原始数据点后半部分存在较大偏差</li>

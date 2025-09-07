@@ -59,13 +59,13 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="无人车中的VCU信号。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E8%87%AA%E8%A1%8C%E8%BD%A6%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E8%87%AA%E8%A1%8C%E8%BD%A6%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
 <meta property="article:published_time" content="2018-09-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-08-13T19:21:59.958Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:17.075Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E8%87%AA%E8%A1%8C%E8%BD%A6%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E8%87%AA%E8%A1%8C%E8%BD%A6%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/fde458ab.html">
 
@@ -316,7 +316,7 @@
 <p>作为上层算法和底盘控制的接口，VCU 不仅承担着控制汽车加减速、转向的工作，还承担着将底盘信息精确且及时传递到算法层的工作。<strong>无人驾驶中常用的 VCU 信号有：汽车车速、汽车方向盘转角、汽车航向角变化率、油门踏板开度、制动踏板开度等。</strong>对 VCU 信号的应用有多种方式，这里主要介绍两种：</p>
 <p><strong>(1) 障碍物运动状态计算</strong><br>车载传感器（激光雷达、毫米波雷达、摄像机）检测的障碍物速度都是相对速度，因此需要结合自车车速才能确定障碍物的绝对速度，进而根据绝对速度确定障碍物的运动状态（静止、靠近、远离）；</p>
 <p><strong>(2) 航位推算</strong><br><strong>航位推算（Dead reckoning，DR）</strong>是指在丢失定位的情况下，使用自车传感器的信息，推测当前时刻自车所在位置与上一时刻所在位置的相对关系。在进行航位推算时，使用了汽车四轮运动学模型的简化模型——<strong>自行车模型</strong>，如下图所示：</p>
-<p><img data-src="https://image.shipengx.com/%E8%87%AA%E8%A1%8C%E8%BD%A6%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="自行车模型原理示意图"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E8%87%AA%E8%A1%8C%E8%BD%A6%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="自行车模型原理示意图"></p>
 <p>汽车的<strong>前轮转角</strong>为$δ_f$，但这并不意味着汽车的运动角度为$δ_f$。分别做垂直于后轮和前轮的射线并交于 O 点，两轮模型会绕 O 点进行运动，在微小时间段 dt 内，认为 O 点静止。连接 O 点和汽车的质心，汽车的实际运动方向$v$垂直于该线段。运动方向$v$与车身方向所成的夹角$β$一般被称为<strong>侧偏角</strong>（<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNjY1NDg3NA==" title="https://zhuanlan.zhihu.com/p/36654874">参考 1<i class="fa fa-external-link"></i></span>中表述有误，将$β$称为了偏航角——博主注），车身方向与大地坐标系横轴间的夹角称为<strong>横摆角</strong>。根据几何关系，可推出$β$和$δ_f$的近似关系为：</p>
 <script type="math/tex; mode=display">
 β=tan^{-1}(\frac{l_r}{l_f+l_r}tan(δ_f))</script><p>假设 t 时刻汽车的状态为$x_t$，$y_t$，经过微小时间段 dt 后的 t+1 时刻，状态为$x_{t+1}$，$y_{t+1}$，根据几何关系，可推出：</p>

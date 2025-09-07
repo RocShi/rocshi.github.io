@@ -59,16 +59,16 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="单例模式广泛应用于全局参数管理等应用场景，本文旨在详细分析百度 Apollo 项目中的懒汉式单例模式实现。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95.png">
-<meta property="og:image" content="https://image.shipengx.com/%E4%B8%8D%E5%90%8C%E5%8D%95%E4%BE%8B%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%B8%8D%E5%90%8C%E5%8D%95%E4%BE%8B%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83.png">
 <meta property="article:published_time" content="2021-07-18T07:56:48.000Z">
-<meta property="article:modified_time" content="2022-05-12T06:09:52.894Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:16.389Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Apollo">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/f61b5eee.html">
 
@@ -305,7 +305,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95.png" alt="目录"></p>
+        <p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95.png" alt="目录"></p>
 <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><strong>单例模式</strong>（Singleton Pattern）广泛应用于全局配置参数管理等应用场景，笔者近期在阅读百度 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0Fwb2xsb0F1dG8vYXBvbGxv" title="https://github.com/ApolloAuto/apollo">Apollo<i class="fa fa-external-link"></i></span> 项目过程中发现其使用了一种优雅、强泛化且线程安全的懒汉式单例实现。首先，本文给出了单例模式的设计要点，并分别实现了饿汉式单例、懒汉式单例（单检锁，双检锁 + 原子变量）、Meyers 单例；随后，以 Apollo 6.0 源码 <code>master</code> 分支上的最新提交 <code>a75f30b697</code>（截至 2021 年 7 月 19 日）为基础，详细分析了其单例模式实现；最后，对其实现方式进行了多线程安全性验证。</p>
 <h1 id="1-单例模式的设计要点" class="heading-control"><a href="#1-单例模式的设计要点" class="headerlink" title="1 单例模式的设计要点"></a>1 单例模式的设计要点<a class="heading-anchor" href="#1-单例模式的设计要点" aria-hidden="true"></a></h1><p>单例模式是一种创建型设计模式，能够保证一个类只有唯一的实例存在， 并提供一个访问该实例的全局节点，基于该特性，单例模式广泛应用于线程池管理、日志管理和全局配置参数管理等场景。</p>
 <p>单例模式有以下三个设计要点：</p>
@@ -417,7 +417,7 @@
 <p>点击<a href="https://blog.shipengx.com/download/singleton.zip">这里</a>下载完整工程，通过 <code>#include</code> 工程中的 <code>macro.hpp</code> 头文件，我们可以将任意一个类修饰为多线程安全的单例类。</p>
 <h1 id="6-总结" class="heading-control"><a href="#6-总结" class="headerlink" title="6 总结"></a>6 总结<a class="heading-anchor" href="#6-总结" aria-hidden="true"></a></h1><p>本文首先给出了单例模式的设计要点，并分别实现了饿汉式单例、懒汉式单例（单检锁，双检锁 + 原子变量）、Meyers 单例；随后以 Apollo 6.0 源码为基础，详细分析了其单例模式实现；最后对 Apollo 的实现方式进行了线程安全性验证。</p>
 <p><span class="exturl" data-url="aHR0cHM6Ly93d3cubW9kZXJuZXNjcHAuY29tL2luZGV4LnBocC90aHJlYWQtc2FmZS1pbml0aWFsaXphdGlvbi1vZi1hLXNpbmdsZXRvbg==" title="https://www.modernescpp.com/index.php/thread-safe-initialization-of-a-singleton">下图<i class="fa fa-external-link"></i></span>是几种单例实现方式的性能比较（数值越小，效率越高）：</p>
-<p><img data-src="https://image.shipengx.com/%E4%B8%8D%E5%90%8C%E5%8D%95%E4%BE%8B%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83.png" alt="不同单例实现的性能比较"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%B8%8D%E5%90%8C%E5%8D%95%E4%BE%8B%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83.png" alt="不同单例实现的性能比较"></p>
 <p>可以发现：Meyers 单例不仅形式优雅，效率在多线程场景下也是最优的；单检锁的实现方式虽然能保证多线程安全，但性能太差；<code>call_once</code> 的实现方式与双检锁 + 原子变量的实现方式相比，效率低了 2 ~ 3 倍，所以 Apollo 的单例实现也还有优化空间。</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cubW9kZXJuZXNjcHAuY29tL2luZGV4LnBocC90aHJlYWQtc2FmZS1pbml0aWFsaXphdGlvbi1vZi1kYXRh" title="https://www.modernescpp.com/index.php/thread-safe-initialization-of-data">Thread-Safe Initialization of Data<i class="fa fa-external-link"></i></span></li>
@@ -455,7 +455,7 @@
       <div class="popular-posts-title"><a href="\archives\46155f38.html" rel="bookmark">Apollo 6.0 Perception 模块 Fusion 组件（二）：主体算法流程分析</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
     </li>
   </ul>
 

@@ -59,16 +59,16 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="良好统一的代码风格在多人协同开发中至关重要，本文阐述了如何通过 clang-format 工具进行 C++ 代码风格管理。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E4%BD%BF%E7%94%A8%20clang-format%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E7%AE%A1%E7%90%86.png">
-<meta property="og:image" content="https://image.shipengx.com/vscode%20C%2B%2B%20%E6%8F%92%E4%BB%B6%E5%86%85%E7%BD%AE%E7%9A%84%20LLVM%20clang-format.png">
-<meta property="og:image" content="https://image.shipengx.com/vscode%20%E7%9A%84%20Clang-Format%20%E6%8F%92%E4%BB%B6.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%BD%BF%E7%94%A8%20clang-format%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E7%AE%A1%E7%90%86.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/vscode%20C%2B%2B%20%E6%8F%92%E4%BB%B6%E5%86%85%E7%BD%AE%E7%9A%84%20LLVM%20clang-format.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/vscode%20%E7%9A%84%20Clang-Format%20%E6%8F%92%E4%BB%B6.png">
 <meta property="article:published_time" content="2022-05-14T09:05:25.000Z">
-<meta property="article:modified_time" content="2022-08-21T10:36:43.935Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:21.841Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="Clang-Format">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E4%BD%BF%E7%94%A8%20clang-format%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E7%AE%A1%E7%90%86.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%BD%BF%E7%94%A8%20clang-format%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E7%AE%A1%E7%90%86.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/ed6ff3ad.html">
 
@@ -317,7 +317,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><img data-src="https://image.shipengx.com/%E4%BD%BF%E7%94%A8%20clang-format%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E7%AE%A1%E7%90%86.png" alt="使用 clang-format 进行 C++ 代码风格管理"></p>
+        <p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E4%BD%BF%E7%94%A8%20clang-format%20%E8%BF%9B%E8%A1%8C%20C%2B%2B%20%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E7%AE%A1%E7%90%86.png" alt="使用 clang-format 进行 C++ 代码风格管理"></p>
 <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>良好统一的代码风格在多人协同开发中至关重要，不统一的代码风格会在代码版本管理中引入由于格式修改而带来的代码变更，使版本维护变得困难且容易出错。</p>
 <p><span class="exturl" data-url="aHR0cHM6Ly9jbGFuZy5sbHZtLm9yZy9kb2NzL0NsYW5nRm9ybWF0Lmh0bWw=" title="https://clang.llvm.org/docs/ClangFormat.html">clang-format<i class="fa fa-external-link"></i></span> 是 LLVM 开发的用于格式化 C/C++/Java/JavaScript/Objective-C/Objective-C++/Protobuf 等多种语言代码的工具，借助 clang-format 可以实现代码仓库的风格统一，提升开发效率，本文将阐述使用该工具进行代码风格管理的基本步骤。</p>
 <h1 id="1-操作步骤" class="heading-control"><a href="#1-操作步骤" class="headerlink" title="1 操作步骤"></a>1 操作步骤<a class="heading-anchor" href="#1-操作步骤" aria-hidden="true"></a></h1><h2 id="1-1-安装-clang-format" class="heading-control"><a href="#1-1-安装-clang-format" class="headerlink" title="1.1 安装 clang-format"></a>1.1 安装 clang-format<a class="heading-anchor" href="#1-1-安装-clang-format" aria-hidden="true"></a></h2><p>clang-format 有诸多版本可供使用，目前最新版本为 clang-format 15。不同版本所支持的格式化选项不尽相同，但向后兼容。实际开发中，我们应统一所使用的 clang-format 版本，这里我们选择 clang-format 10。对于 Windows 平台，可以<span class="exturl" data-url="aHR0cHM6Ly9yZWxlYXNlcy5sbHZtLm9yZy8=" title="https://releases.llvm.org/">下载<i class="fa fa-external-link"></i></span>预编译的二进制文件进行安装；对于 Linux 平台（以 Ubuntu 为例），可以通过命令行直接安装：</p>
@@ -329,7 +329,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100</span><br></pre></td></tr></table></figure>
 <p>后面当我们使用 <code>clang-format</code> 命令时，指代的即为 <code>clang-format-10</code>。</p>
 <p>通过 vscode 进行 C++ 开发时，我们一般会安装微软官方的 <span class="exturl" data-url="aHR0cHM6Ly9tYXJrZXRwbGFjZS52aXN1YWxzdHVkaW8uY29tL2l0ZW1zP2l0ZW1OYW1lPW1zLXZzY29kZS5jcHB0b29scw==" title="https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools">C/C++<i class="fa fa-external-link"></i></span> 插件，打开该插件的安装目录我们会发现，该插件已经封装了一个内置的 clang-format：</p>
-<p><img data-src="https://image.shipengx.com/vscode%20C%2B%2B%20%E6%8F%92%E4%BB%B6%E5%86%85%E7%BD%AE%E7%9A%84%20LLVM%20clang-format.png" alt="vscode C++ 插件内置的 LLVM clang-format"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/vscode%20C%2B%2B%20%E6%8F%92%E4%BB%B6%E5%86%85%E7%BD%AE%E7%9A%84%20LLVM%20clang-format.png" alt="vscode C++ 插件内置的 LLVM clang-format"></p>
 <p>那为什么不直接使用这个 C/C++ 插件内置的 clang-format 呢？两个原因：</p>
 <ul>
 <li>不同版本的 C/C++ 插件内置的 clang-format 版本往往不同，统一 clang-format 版本间接需要统一 C/C++ 插件版本；</li>
@@ -341,7 +341,7 @@
 <p>上面的命令表示：使用 Google 编码风格对 demo.cpp 文件进行格式化。但使用 vscode 进行 C++ 开发时，我们一般并不会使用终端去格式化代码，而是会在 vscode 设置中为 C++ 指定一个默认的 formatter，并开启设置中的 <code>autoSave</code> 选项和 <code>formatOnSave</code> 选项，实现代码修改后的自动格式化保存：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"files.autoSave"</span>: <span class="string">"afterDelay"</span>,</span><br><span class="line">  <span class="attr">"editor.formatOnSave"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"[cpp]"</span>: &#123;</span><br><span class="line">    <span class="attr">"editor.defaultFormatter"</span>: <span class="string">"ms-vscode.cpptools"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>&quot;editor.defaultFormatter&quot;: &quot;ms-vscode.cpptools&quot;</code> 表示使用 C++ 插件作为默认的 formatter。为了使用步骤 1.1 中为系统安装的 clang-format，这里我们为 vscode 安装 <span class="exturl" data-url="aHR0cHM6Ly9tYXJrZXRwbGFjZS52aXN1YWxzdHVkaW8uY29tL2l0ZW1zP2l0ZW1OYW1lPXhhdmVyLmNsYW5nLWZvcm1hdA==" title="https://marketplace.visualstudio.com/items?itemName=xaver.clang-format">Clang-Format 插件<i class="fa fa-external-link"></i></span>：</p>
-<p><img data-src="https://image.shipengx.com/vscode%20%E7%9A%84%20Clang-Format%20%E6%8F%92%E4%BB%B6.png" alt="vscode 的 Clang-Format 插件"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/vscode%20%E7%9A%84%20Clang-Format%20%E6%8F%92%E4%BB%B6.png" alt="vscode 的 Clang-Format 插件"></p>
 <p>可以在插件商店中搜索 Clang-Format 并点击安装，或直接通过命令行进行安装（例如当我们要实现流程自动化时）：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">code --install-extension xaver.clang-format</span><br></pre></td></tr></table></figure>
 <p>安装完成后将其指定为默认的 formatter：</p>
@@ -372,19 +372,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
+      <div class="popular-posts-title"><a href="\archives\5ac252d6.html" rel="bookmark">C++ Primer - 第 14 章 操作重载与类型转换</a></div>
     </li>
   </ul>
 

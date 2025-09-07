@@ -59,16 +59,16 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="无人驾驶中的坐标转换。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E8%BD%A6%E8%BE%86%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
-<meta property="og:image" content="https://image.shipengx.com/%E8%A7%92%E9%9B%B7%E8%BE%BE%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
-<meta property="og:image" content="https://image.shipengx.com/%E6%97%8B%E8%BD%AC%E8%A7%92%E9%9B%B7%E8%BE%BE%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BD%BF%E4%B9%8B%E4%B8%8E%E8%87%AA%E8%BD%A6%E5%9D%90%E6%A0%87%E7%B3%BB%E5%B9%B3%E8%A1%8C.jpg">
-<meta property="og:image" content="https://image.shipengx.com/%E5%81%9A%E8%BE%85%E5%8A%A9%E7%BA%BF%E5%90%8E%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E8%BD%A6%E8%BE%86%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E8%A7%92%E9%9B%B7%E8%BE%BE%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%97%8B%E8%BD%AC%E8%A7%92%E9%9B%B7%E8%BE%BE%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BD%BF%E4%B9%8B%E4%B8%8E%E8%87%AA%E8%BD%A6%E5%9D%90%E6%A0%87%E7%B3%BB%E5%B9%B3%E8%A1%8C.jpg">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%81%9A%E8%BE%85%E5%8A%A9%E7%BA%BF%E5%90%8E%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
 <meta property="article:published_time" content="2018-09-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-12T05:45:45.403Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:16.531Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E8%BD%A6%E8%BE%86%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E8%BD%A6%E8%BE%86%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/b10733db.html">
 
@@ -315,14 +315,14 @@
 <p>本文章学习总结自知乎大 V<span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9DaGVuR3Vhbmc5MjQ=" title="https://www.zhihu.com/people/ChenGuang924">陈光<i class="fa fa-external-link"></i></span>的<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vY18xNDczMDkzMzk=" title="https://zhuanlan.zhihu.com/c_147309339">《无人驾驶干货铺》<i class="fa fa-external-link"></i></span>专栏，查阅原文请移步<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80MTI2MzcwMQ==" title="https://zhuanlan.zhihu.com/p/41263701">这里<i class="fa fa-external-link"></i></span></p>
 </blockquote>
 <h1 id="1-正文" class="heading-control"><a href="#1-正文" class="headerlink" title="1 正文"></a>1 正文<a class="heading-anchor" href="#1-正文" aria-hidden="true"></a></h1><p>车辆坐标系的原点在车辆后轮轴的中心，如下图所示：</p>
-<p><img data-src="https://image.shipengx.com/%E8%BD%A6%E8%BE%86%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="车辆坐标系示意图"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E8%BD%A6%E8%BE%86%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="车辆坐标系示意图"></p>
 <p>以安装在无人车左前方的角雷达（Corner radar）为例，角雷达的安装位置和坐标系如下图绿线所示：</p>
-<p><img data-src="https://image.shipengx.com/%E8%A7%92%E9%9B%B7%E8%BE%BE%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="角雷达坐标系示意图"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E8%A7%92%E9%9B%B7%E8%BE%BE%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="角雷达坐标系示意图"></p>
 <p>角雷达检测到的障碍物如图中的绿点所示，绿点在雷达坐标系下的坐标为$(x_1, y_1)$，为了便于理解暂不加入$z$方向的坐标，绿点转换到自车坐标系下需要经过一定的数学运算：</p>
 <p><strong>(1) 旋转</strong><br>将角雷达坐标系沿着$z$轴进行一定角度的旋转，新坐标系与自车坐标系相平行，</p>
-<p><img data-src="https://image.shipengx.com/%E6%97%8B%E8%BD%AC%E8%A7%92%E9%9B%B7%E8%BE%BE%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BD%BF%E4%B9%8B%E4%B8%8E%E8%87%AA%E8%BD%A6%E5%9D%90%E6%A0%87%E7%B3%BB%E5%B9%B3%E8%A1%8C.jpg" alt="旋转角雷达坐标系使之与自车坐标系平行"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%97%8B%E8%BD%AC%E8%A7%92%E9%9B%B7%E8%BE%BE%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BD%BF%E4%B9%8B%E4%B8%8E%E8%87%AA%E8%BD%A6%E5%9D%90%E6%A0%87%E7%B3%BB%E5%B9%B3%E8%A1%8C.jpg" alt="旋转角雷达坐标系使之与自车坐标系平行"></p>
 <p>障碍物在角雷达坐标系下的坐标为$(x_1, y_1)$，假设障碍物在旋转后的新坐标系下的坐标为$(x_0, y_0)$，安装角度$α$（可测量），做辅助线后如下图所示：</p>
-<p><img data-src="https://image.shipengx.com/%E5%81%9A%E8%BE%85%E5%8A%A9%E7%BA%BF%E5%90%8E%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="做辅助线后坐标系示意图"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%81%9A%E8%BE%85%E5%8A%A9%E7%BA%BF%E5%90%8E%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="做辅助线后坐标系示意图"></p>
 <p>根据几何关系可得：</p>
 <script type="math/tex; mode=display">
 x_0=x_1*cosα-y_1*sinα \\

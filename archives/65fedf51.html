@@ -59,14 +59,14 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="勾选Code Runner插件的“Run In Terminal”选项，在VS Code Terminal中调试C++代码，cout输出中文乱码。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E9%99%84%E5%9B%BE.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%99%84%E5%9B%BE.png">
 <meta property="article:published_time" content="2019-08-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-12T08:15:47.331Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:16.256Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="VS Code">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E9%99%84%E5%9B%BE.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%99%84%E5%9B%BE.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/65fedf51.html">
 
@@ -319,7 +319,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Please input your string: "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">'\n'</span> &lt;&lt; <span class="string">"The string is: "</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>起初使用 Code Runner 插件的 OUTPUT 窗口进行调试，发现 OUTPUT 窗口只读，无法进行输入交互；后勾选了 Code Runner 插件的“Run In Terminal”选项（勾选方法不再赘述），从而在 VS Code Terminal 中进行调试，发现 cin 读取中文后，cout 输出为乱码。</p>
 <h1 id="2-问题解决" class="heading-control"><a href="#2-问题解决" class="headerlink" title="2 问题解决"></a>2 问题解决<a class="heading-anchor" href="#2-问题解决" aria-hidden="true"></a></h1><p>将 Windows 自带的 CMD 终端的属性设置为旧版，<strong>但这会导致点击 TERMINAL 时弹出系统终端，而非 vscode 内置终端</strong>：</p>
-<p><img data-src="https://image.shipengx.com/%E9%99%84%E5%9B%BE.png" alt="附图"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%99%84%E5%9B%BE.png" alt="附图"></p>
 <h1 id="3-结论" class="heading-control"><a href="#3-结论" class="headerlink" title="3 结论"></a>3 结论<a class="heading-anchor" href="#3-结论" aria-hidden="true"></a></h1><p>Windows 自带 CMD 终端属性的修改影响所有 IDE 及代码编辑器。</p>
 <hr>
 
@@ -335,16 +335,16 @@
       <div class="popular-posts-title"><a href="\archives\f27f966b.html" rel="bookmark">Linux 下使用 vscode 调试 C++ 程序的一般步骤</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
     </li>
   </ul>
 

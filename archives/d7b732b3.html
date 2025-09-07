@@ -59,15 +59,15 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="TODO">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/PonyAI%20%E7%9A%84%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E6%96%B9%E6%A1%88.jpg">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/PonyAI%20%E7%9A%84%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E6%96%B9%E6%A1%88.jpg">
 <meta property="article:published_time" content="2021-04-25T02:47:26.000Z">
-<meta property="article:modified_time" content="2022-05-12T06:09:16.547Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:17.025Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta property="article:tag" content="时空同步">
 <meta property="article:tag" content="运动补偿">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/PonyAI%20%E7%9A%84%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E6%96%B9%E6%A1%88.jpg">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/PonyAI%20%E7%9A%84%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E6%96%B9%E6%A1%88.jpg">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/d7b732b3.html">
 
@@ -344,7 +344,7 @@
 <p>如果需要通过量测/量测关联生成伪量测，这才是必须的步骤</p>
 <h3 id="1-1-3-同步各传感器的采样触发时刻与采样节拍" class="heading-control"><a href="#1-1-3-同步各传感器的采样触发时刻与采样节拍" class="headerlink" title="1.1.3 同步各传感器的采样触发时刻与采样节拍"></a>1.1.3 同步各传感器的采样触发时刻与采样节拍<a class="heading-anchor" href="#1-1-3-同步各传感器的采样触发时刻与采样节拍" aria-hidden="true"></a></h3><p>前融合，硬件系统层面需要解决</p>
 <p>业界实践——PonyAI 的时间同步方案</p>
-<p><img data-src="https://image.shipengx.com/PonyAI%20%E7%9A%84%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E6%96%B9%E6%A1%88.jpg" alt="PonyAI 的时间同步方案"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/PonyAI%20%E7%9A%84%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E6%96%B9%E6%A1%88.jpg" alt="PonyAI 的时间同步方案"></p>
 <p>上图所示，传感器的时间同步，从 GNSS 定位信息开始能够提供一个比较准确的时间信息。到 navigation box 中后，我们会对它的信息进行解析，提供 PPS 信号，提供每秒的时钟，再加上 GPRMS 的定位和时间信息，给到雷达和 central computing。</p>
 <p>雷达在做扫描的时候，它会将扫描的信息和时间戳提供给 central computing，之后 central computing 会将信息传输给 PSPU，PSPU 会根据触发角和时间戳信息来触发相机的曝光。</p>
 <p>相机曝光后，PSPU 会将时间添加进每一帧的数据上，central computing 还会通过 PTP 将时间信息传送给雷达。</p>

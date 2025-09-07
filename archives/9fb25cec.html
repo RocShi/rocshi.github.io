@@ -59,19 +59,19 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="贝叶斯滤波通过上一时刻的状态及当前时刻的控制输入，对当前时刻的状态作出预测，并通过当前时刻的观测对预测作出更新（也可称为纠正），最终实现对当前时刻状态的估计。贝叶斯滤波思想是卡尔曼滤波、粒子滤波等滤波算法的基础。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E6%A6%82%E7%8E%87%E5%88%B0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2.png">
-<meta property="og:image" content="https://image.shipengx.com/%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png">
-<meta property="og:image" content="https://image.shipengx.com/%E7%A6%BB%E6%95%A3%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png">
-<meta property="og:image" content="https://image.shipengx.com/%E8%BF%9E%E7%BB%AD%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E6%A6%82%E7%8E%87%E5%88%B0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%A6%BB%E6%95%A3%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E8%BF%9E%E7%BB%AD%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png">
 <meta property="article:published_time" content="2020-08-16T10:22:26.000Z">
-<meta property="article:modified_time" content="2025-09-07T15:00:23.695Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:22.129Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="滤波">
 <meta property="article:tag" content="贝叶斯滤波">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E6%A6%82%E7%8E%87%E5%88%B0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E6%A6%82%E7%8E%87%E5%88%B0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/9fb25cec.html">
 
@@ -314,21 +314,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E6%A6%82%E7%8E%87%E5%88%B0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2.png" alt="目录-从概率到贝叶斯滤波"></p>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%9B%AE%E5%BD%95-%E4%BB%8E%E6%A6%82%E7%8E%87%E5%88%B0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2.png" alt="目录-从概率到贝叶斯滤波"></p>
 <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><strong>贝叶斯滤波</strong>基于贝叶斯公式，通过上一时刻的状态及当前时刻的输入，对当前时刻的状态作出预测，并通过当前时刻的观测对预测作出更新（也可称为纠正），最终实现对当前时刻状态的估计。贝叶斯滤波思想是卡尔曼滤波、粒子滤波等算法的基础。本文从概率基础概念出发，逐步进行贝叶斯滤波的推导。</p>
 <h1 id="1-概率基础概念拾遗" class="heading-control"><a href="#1-概率基础概念拾遗" class="headerlink" title="1 概率基础概念拾遗"></a>1 概率基础概念拾遗<a class="heading-anchor" href="#1-概率基础概念拾遗" aria-hidden="true"></a></h1><h2 id="1-1-随机变量" class="heading-control"><a href="#1-1-随机变量" class="headerlink" title="1.1 随机变量"></a>1.1 随机变量<a class="heading-anchor" href="#1-1-随机变量" aria-hidden="true"></a></h2><h3 id="1-1-1-定义" class="heading-control"><a href="#1-1-1-定义" class="headerlink" title="1.1.1 定义"></a>1.1.1 定义<a class="heading-anchor" href="#1-1-1-定义" aria-hidden="true"></a></h3><p>定义在样本空间 $\Omega$ 上的实值函数：</p>
 <script type="math/tex; mode=display">
 X = X(\omega), \omega \in \Omega</script><p>被称为<strong>随机变量</strong>（random variable），如下图所示。$\omega$ 表示样本空间 $\Omega$ 里的随机事件，可能与数量有关（如传感器随机测得的前方障碍物的距离值，随机掷骰子得到的点数），也可能与数量无关（如随机掷硬币的结果可能为正面或反面）。</p>
-<p><img data-src="https://image.shipengx.com/%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png" alt="随机变量"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png" alt="随机变量"></p>
 <p>随机变量表示随机试验各种结果的实值单值函数。随机事件不论与数量是否直接有关，都可以数量化，即都能用数量化的方式表达。</p>
 <p>“随机变量 $X$ 的取值为 $x$ ”就是满足等式 $X(\omega)=x$ 的一切 $\omega$ 组成的集合，简记为“ $X=x$”，这是 $\Omega$ 的一个子集，即：</p>
 <script type="math/tex; mode=display">
 “X=x”=\{\omega:X(\omega)=x\} \subset \Omega</script><p>类似地，有：</p>
 <script type="math/tex; mode=display">
 “X\leqslant x”=\{\omega:X(\omega)\leqslant x\} \subset \Omega</script><h3 id="1-1-2-离散型随机变量" class="heading-control"><a href="#1-1-2-离散型随机变量" class="headerlink" title="1.1.2 离散型随机变量"></a>1.1.2 离散型随机变量<a class="heading-anchor" href="#1-1-2-离散型随机变量" aria-hidden="true"></a></h3><p>如果随机变量的函数值是实数轴上孤立的点（有限个或者无限个），则称为<strong>离散型随机变量</strong>：</p>
-<p><img data-src="https://image.shipengx.com/%E7%A6%BB%E6%95%A3%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png" alt="离散型随机变量"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%A6%BB%E6%95%A3%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png" alt="离散型随机变量"></p>
 <h3 id="1-1-3-连续型随机变量" class="heading-control"><a href="#1-1-3-连续型随机变量" class="headerlink" title="1.1.3 连续型随机变量"></a>1.1.3 连续型随机变量<a class="heading-anchor" href="#1-1-3-连续型随机变量" aria-hidden="true"></a></h3><p>如果随机变量的函数值是实数轴上某个区间上所有的值（也可以是 $(-\infty, +\infty)$ 区间），则称为<strong>连续型随机变量</strong>：</p>
-<p><img data-src="https://image.shipengx.com/%E8%BF%9E%E7%BB%AD%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png" alt="连续型随机变量"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E8%BF%9E%E7%BB%AD%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F.png" alt="连续型随机变量"></p>
 <h2 id="1-2-累积分布函数" class="heading-control"><a href="#1-2-累积分布函数" class="headerlink" title="1.2 累积分布函数"></a>1.2 累积分布函数<a class="heading-anchor" href="#1-2-累积分布函数" aria-hidden="true"></a></h2><p>设 $X$ 为一个随机变量，对于任意实数 $x$，称：</p>
 <script type="math/tex; mode=display">
 F(x)=P(X\le x)</script><p>为随机变量 $X$ 的<strong>累积分布函数</strong>（Cumulative Distribution Function，CDF），又称概率分布函数，简称<strong>分布函数</strong>。</p>

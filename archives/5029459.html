@@ -59,19 +59,19 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="本系列文章为阅读《C++ Primer》过程中的书摘与学习笔记，持续更新。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/%E6%A0%87%E5%87%86%20exception%20%E7%B1%BB%E5%B1%82%E6%AC%A1.png">
-<meta property="og:image" content="https://image.shipengx.com/Panda%20%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="https://image.shipengx.com/Panda%20%E7%9A%84%E8%99%9A%E7%BB%A7%E6%89%BF%E5%B1%82%E6%AC%A1.png">
-<meta property="og:image" content="https://image.shipengx.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%881%EF%BC%89.png">
-<meta property="og:image" content="https://image.shipengx.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%882%EF%BC%89.png">
-<meta property="og:image" content="https://image.shipengx.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%883%EF%BC%89.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%A0%87%E5%87%86%20exception%20%E7%B1%BB%E5%B1%82%E6%AC%A1.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/Panda%20%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/Panda%20%E7%9A%84%E8%99%9A%E7%BB%A7%E6%89%BF%E5%B1%82%E6%AC%A1.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%881%EF%BC%89.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%882%EF%BC%89.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%883%EF%BC%89.png">
 <meta property="article:published_time" content="2022-05-15T17:18:37.000Z">
-<meta property="article:modified_time" content="2022-05-22T12:55:12.759Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:15.633Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="C++ Primer">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/%E6%A0%87%E5%87%86%20exception%20%E7%B1%BB%E5%B1%82%E6%AC%A1.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%A0%87%E5%87%86%20exception%20%E7%B1%BB%E5%B1%82%E6%AC%A1.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/5029459.html">
 
@@ -468,7 +468,7 @@
 </ol>
 <h2 id="18-1-5-异常类层次" class="heading-control"><a href="#18-1-5-异常类层次" class="headerlink" title="18.1.5 异常类层次"></a>18.1.5 异常类层次<a class="heading-anchor" href="#18-1-5-异常类层次" aria-hidden="true"></a></h2><ol>
 <li><p>标准库异常类构成了如下图所示的继承体系：</p>
-<p><img data-src="https://image.shipengx.com/%E6%A0%87%E5%87%86%20exception%20%E7%B1%BB%E5%B1%82%E6%AC%A1.png" alt="标准 exception 类层次"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E6%A0%87%E5%87%86%20exception%20%E7%B1%BB%E5%B1%82%E6%AC%A1.png" alt="标准 exception 类层次"></p>
 <p>类型 <code>exception</code> 仅仅定义了拷贝构造函数、拷贝赋值运算符、一个虚析构函数和一个名为 <code>what</code> 的虚成员。其中 <code>what</code> 函数返回一个 <code>const char*</code>，该指针指向一个以 un11 结尾的字符数组，并且确保不会抛出任何异常。</p>
 <p>类 <code>exception</code>、<code>bad_cast</code> 和 <code>bad_alloc</code> 定义了默认构造函数。类 <code>runtime_error</code> 和 <code>logic_error</code> 没有默认构造函数，但是有一个可以接受 C 风格字符串或者标准库 <code>string</code> 类型实参的构造函数，这些实参负责提供关于错误的更多信息。在这些类中，<code>what</code> 负责返回用于初始化异常对象的信息。<strong>因为 <code>what</code> 是虚函数，所以当我们捕获基类的引用时，对 <code>what</code> 函数的调用将执行与异常对象动态类型对应的版本。</strong></p>
 </li>
@@ -670,7 +670,7 @@
 <p><strong>和只有一个基类的继承一样，多重继承的派生列表也只能包含已经被定义过的类，而且这些类不能是 <code>final</code> 的。对于派生类能够继承的基类个数，C++ 没有进行特殊规定；但是在某个给定的派生列表中，同一个基类只能出现一次。</strong></p>
 </li>
 <li><p>在多重继承关系中，派生类的对象包含有每个基类的子对象。如下图所示，在 <code>Panda</code> 对象中含有一个 <code>Bear</code> 部分（其中又含有一个 <code>ZooAnimal</code> 部分）、一个 <code>Endangered</code> 部分以及在 <code>Panda</code> 中声明的非静态数据成员。</p>
-<p><img data-src="https://image.shipengx.com/Panda%20%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png" alt="Panda 对象的概念结构"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/Panda%20%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png" alt="Panda 对象的概念结构"></p>
 </li>
 <li><p><strong>构造一个派生类的对象将同时构造并初始化它的所有基类子对象。与从一个基类进行的派生一样，多重继承的派生类的构造函数初始值也只能初始化它的直接基类</strong>：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 显式地初始化所有基类</span></span><br><span class="line">Panda::Panda(<span class="built_in">std</span>::<span class="built_in">string</span> name, <span class="keyword">bool</span> onExhibit)</span><br><span class="line">    : Bear(name, onExhibit, <span class="string">"Panda"</span>),</span><br><span class="line">      Endangered(Endangered::critical)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 隐式地使用 Bear 的默认构造函数初始化 Bear 子对象</span></span><br><span class="line">Panda::Panda() : Endangered(Endangered::critical) &#123;&#125;</span><br></pre></td></tr></table></figure>
@@ -797,7 +797,7 @@
 <p>在 C++ 语言中我们通过<strong>虚继承</strong>（virtual inheritance）的机制解决上述问题。<strong>虚继承的目的是令某个类做出声明，承诺愿意共享它的基类。其中，共享的基类子对象称为虚基类（virtual base class）。在这种机制下，不论虚基类在继承体系中出现了多少次，在派生类中都只包含唯一一个共享的虚基类子对象。</strong></p>
 </li>
 <li><p>我们可以对 <code>Panda</code> 类进行修改，令其同时继承 <code>Bear</code> 和 <code>Raccoon</code>。此时，为了避免赋予 <code>Panda</code> 两份 <code>ZooAnimal</code> 的子对象，我们将 <code>Bear</code> 和 <code>Raccoon</code> 继承 <code>ZooAnimal</code> 的方式定义为虚继承。</p>
-<p><img data-src="https://image.shipengx.com/Panda%20%E7%9A%84%E8%99%9A%E7%BB%A7%E6%89%BF%E5%B1%82%E6%AC%A1.png" alt="Panda 的虚继承层次"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/Panda%20%E7%9A%84%E8%99%9A%E7%BB%A7%E6%89%BF%E5%B1%82%E6%AC%A1.png" alt="Panda 的虚继承层次"></p>
 <p>观察这个新的继承体系，我们将发现虚继承的一个不太直观的特征：<strong>必须在虚派生的真实需求出现前就已经完成虚派生的操作。例如在我们的类中，当我们定义 <code>Panda</code> 时才出现了对虚派生的需求，但是如果 <code>Bear</code> 和 <code>Raccoon</code> 不是从 <code>ZooAnimal</code> 虚派生得到的，那么 <code>Panda</code> 的设计者就显得不太幸运了。</strong></p>
 <p>在实际的编程过程中，位于中间层次的基类将其继承声明为虚继承一般不会带来什么问题。</p>
 <blockquote>
@@ -877,9 +877,9 @@
 <p><strong>如果一个类是从多个基类直接继承而来的，那么有可能这些基类本身又其享了另一个基类。在这种情况下，中间类可以选择使用虚继承，从而声明愿意与层次中虚继承同一基类的其他类共享虚基类。用这种方法，后代派生类中将只有一个共享虚基类的副本。</strong></p>
 </li>
 </ol>
-<h1 id="术语表" class="heading-control"><a href="#术语表" class="headerlink" title="术语表"></a>术语表<a class="heading-anchor" href="#术语表" aria-hidden="true"></a></h1><p><img data-src="https://image.shipengx.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%881%EF%BC%89.png" alt="第 18 章术语表（1）"></p>
-<p><img data-src="https://image.shipengx.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%882%EF%BC%89.png" alt="第 18 章术语表（2）"></p>
-<p><img data-src="https://image.shipengx.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%883%EF%BC%89.png" alt="第 18 章术语表（3）"></p>
+<h1 id="术语表" class="heading-control"><a href="#术语表" class="headerlink" title="术语表"></a>术语表<a class="heading-anchor" href="#术语表" aria-hidden="true"></a></h1><p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%881%EF%BC%89.png" alt="第 18 章术语表（1）"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%882%EF%BC%89.png" alt="第 18 章术语表（2）"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E7%AC%AC%2018%20%E7%AB%A0%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%883%EF%BC%89.png" alt="第 18 章术语表（3）"></p>
 <hr>
 
     </div>
@@ -891,19 +891,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\4094be86.html" rel="bookmark">C++ Primer - 第 12 章 动态内存</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\f82eac24.html" rel="bookmark">C++ Primer - 第 10 章 泛型算法</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\19565df.html" rel="bookmark">C++ Primer - 第 11 章 关联容器</a></div>
+      <div class="popular-posts-title"><a href="\archives\3fc34abb.html" rel="bookmark">C++ Primer - 第 1 章 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\2eb22c6f.html" rel="bookmark">C++ Primer - 第 13 章 拷贝控制</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\9b53416f.html" rel="bookmark">C++ Primer - 第 15 章 面向对象程序设计</a></div>
+      <div class="popular-posts-title"><a href="\archives\5ac252d6.html" rel="bookmark">C++ Primer - 第 14 章 操作重载与类型转换</a></div>
     </li>
   </ul>
 

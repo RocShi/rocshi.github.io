@@ -59,16 +59,16 @@
 <meta property="og:site_name" content="朝花夕拾">
 <meta property="og:description" content="近期有 ROS 使用需求，本文旨在记录 ROS 1 的手动安装过程以及通过 rostaller 进行自动化安装的过程，安装环境为 Ubuntu 18.04 + ROS Melodic。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.shipengx.com/ROS-1-%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E4%BB%8E%E6%89%8B%E5%8A%A8%E5%88%B0%E8%87%AA%E5%8A%A8%EF%BC%9A%E4%BB%A5-Ubuntu-18-04-ROS-Melodic-%E4%B8%BA%E4%BE%8B.png">
-<meta property="og:image" content="https://image.shipengx.com/%E9%85%8D%E7%BD%AE%20Ubuntu%20%E8%BD%AF%E4%BB%B6%E4%BB%93%E5%BA%93.png">
-<meta property="og:image" content="https://image.shipengx.com/%E5%B0%8F%E6%B5%B7%E9%BE%9F.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/ROS-1-%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E4%BB%8E%E6%89%8B%E5%8A%A8%E5%88%B0%E8%87%AA%E5%8A%A8%EF%BC%9A%E4%BB%A5-Ubuntu-18-04-ROS-Melodic-%E4%B8%BA%E4%BE%8B.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%85%8D%E7%BD%AE%20Ubuntu%20%E8%BD%AF%E4%BB%B6%E4%BB%93%E5%BA%93.png">
+<meta property="og:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%B0%8F%E6%B5%B7%E9%BE%9F.png">
 <meta property="article:published_time" content="2021-07-11T05:02:00.000Z">
-<meta property="article:modified_time" content="2022-05-12T08:14:58.831Z">
+<meta property="article:modified_time" content="2025-09-07T16:13:16.866Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="自动驾驶">
 <meta property="article:tag" content="ROS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.shipengx.com/ROS-1-%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E4%BB%8E%E6%89%8B%E5%8A%A8%E5%88%B0%E8%87%AA%E5%8A%A8%EF%BC%9A%E4%BB%A5-Ubuntu-18-04-ROS-Melodic-%E4%B8%BA%E4%BE%8B.png">
+<meta name="twitter:image" content="https://shipengx.oss-cn-shanghai.aliyuncs.com/ROS-1-%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E4%BB%8E%E6%89%8B%E5%8A%A8%E5%88%B0%E8%87%AA%E5%8A%A8%EF%BC%9A%E4%BB%A5-Ubuntu-18-04-ROS-Melodic-%E4%B8%BA%E4%BE%8B.png">
 
 <link rel="canonical" href="https://blog.shipengx.com/archives/f969107a.html">
 
@@ -311,10 +311,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><img data-src="https://image.shipengx.com/ROS-1-%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E4%BB%8E%E6%89%8B%E5%8A%A8%E5%88%B0%E8%87%AA%E5%8A%A8%EF%BC%9A%E4%BB%A5-Ubuntu-18-04-ROS-Melodic-%E4%B8%BA%E4%BE%8B.png" alt="ROS-1-安装——从手动到自动：以-Ubuntu-18-04-ROS-Melodic-为例"></p>
+        <p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/ROS-1-%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E4%BB%8E%E6%89%8B%E5%8A%A8%E5%88%B0%E8%87%AA%E5%8A%A8%EF%BC%9A%E4%BB%A5-Ubuntu-18-04-ROS-Melodic-%E4%B8%BA%E4%BE%8B.png" alt="ROS-1-安装——从手动到自动：以-Ubuntu-18-04-ROS-Melodic-为例"></p>
 <h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>近期在 Ubuntu 18.04 下安装 ROS 1 Melodic 的过程中遇到 <code>rosdep init</code> 和 <code>rosdep update</code> 报错的问题，手动解决不免繁琐，而且 <code>rosdistro</code> 库会时常更新，如果 <code>rosdep update</code> 时使用了旧版的 <code>YAML</code> 文件，有可能导致后期安装其它 ROS 组件时出现问题，为此开发了完全一键安装开源工具 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY1NoaS9yb3N0YWxsZXI=" title="https://github.com/RocShi/rostaller">rostaller<i class="fa fa-external-link"></i></span>。</p>
 <h1 id="1-手动安装" class="heading-control"><a href="#1-手动安装" class="headerlink" title="1 手动安装"></a>1 手动安装<a class="heading-anchor" href="#1-手动安装" aria-hidden="true"></a></h1><h2 id="1-1-配置-Ubuntu-软件仓库" class="heading-control"><a href="#1-1-配置-Ubuntu-软件仓库" class="headerlink" title="1.1 配置 Ubuntu 软件仓库"></a>1.1 配置 Ubuntu 软件仓库<a class="heading-anchor" href="#1-1-配置-Ubuntu-软件仓库" aria-hidden="true"></a></h2><p>确保 restricted、universe 和 multiverse 被勾选，选择国内更稳定的镜像源，例如清华源：<span class="exturl" data-url="aHR0cHM6Ly9taXJyb3JzLnR1bmEudHNpbmdodWEuZWR1LmNuL3VidW50dS8=" title="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/<i class="fa fa-external-link"></i></span></p>
-<p><img data-src="https://image.shipengx.com/%E9%85%8D%E7%BD%AE%20Ubuntu%20%E8%BD%AF%E4%BB%B6%E4%BB%93%E5%BA%93.png" alt="配置 Ubuntu 软件仓库"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E9%85%8D%E7%BD%AE%20Ubuntu%20%E8%BD%AF%E4%BB%B6%E4%BB%93%E5%BA%93.png" alt="配置 Ubuntu 软件仓库"></p>
 <h2 id="1-2-添加-ros-源" class="heading-control"><a href="#1-2-添加-ros-源" class="headerlink" title="1.2 添加 ros 源"></a>1.2 添加 ros 源<a class="heading-anchor" href="#1-2-添加-ros-源" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh -c <span class="string">'. /etc/lsb-release &amp;&amp; echo "deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main" &gt; /etc/apt/sources.list.d/ros-latest.list'</span></span><br></pre></td></tr></table></figure>
 <h2 id="1-3-设置密钥" class="heading-control"><a href="#1-3-设置密钥" class="headerlink" title="1.3 设置密钥"></a>1.3 设置密钥<a class="heading-anchor" href="#1-3-设置密钥" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install curl</span><br><span class="line">curl -sSL <span class="string">'http://keyserver.ubuntu.com/pks/lookup?op=get&amp;search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654'</span> | sudo apt-key add -</span><br></pre></td></tr></table></figure>
 <h2 id="1-4-安装-ROS" class="heading-control"><a href="#1-4-安装-ROS" class="headerlink" title="1.4 安装 ROS"></a>1.4 安装 ROS<a class="heading-anchor" href="#1-4-安装-ROS" aria-hidden="true"></a></h2><p>这里以 ROS Melodic 桌面完全版为例：</p>
@@ -349,7 +349,7 @@
 <p>另开新的终端，执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun turtlesim turtlesim_node</span><br></pre></td></tr></table></figure>
 <p>弹出小海龟界面：</p>
-<p><img data-src="https://image.shipengx.com/%E5%B0%8F%E6%B5%B7%E9%BE%9F.png" alt="小海龟"></p>
+<p><img data-src="https://shipengx.oss-cn-shanghai.aliyuncs.com/%E5%B0%8F%E6%B5%B7%E9%BE%9F.png" alt="小海龟"></p>
 <p>另开新的终端，执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun turtle_teleop_key</span><br></pre></td></tr></table></figure>
 <p>保持该终端中的光标处于激活状态，通过方向键即可控制小海龟的移动。</p>
