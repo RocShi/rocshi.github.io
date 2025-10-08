@@ -52,22 +52,23 @@
   };
 </script>
 
-  <meta name="description" content="Linux环境下使用Git做某项目代码工程的版本控制时，发现在工程下打开终端后无法显示当前所处分支，很不方便，通过编辑.bashrc配置文件解决这个问题。">
+  <meta name="description" content="目录0 前言初识 WSL2：以 Ubuntu 24.04 安装为例 1 Windows NVIDIA 驱动安装和更新NVIDIA App 更新 2 Ubuntu换源1234567891011121314Types: debURIs: http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ubuntu&#x2F;Suites: noble noble-">
 <meta property="og:type" content="article">
-<meta property="og:title" content="配置Ubuntu下的shell默认显示所在git仓库的当前分支">
-<meta property="og:url" content="https://blog.shipengx.com/archives/74b2417b.html">
+<meta property="og:title" content="WSL2 + Ubuntu 24.04 深度学习环境配置">
+<meta property="og:url" content="https://blog.shipengx.com/archives/7e583c48.html">
 <meta property="og:site_name" content="朝花夕拾">
-<meta property="og:description" content="Linux环境下使用Git做某项目代码工程的版本控制时，发现在工程下打开终端后无法显示当前所处分支，很不方便，通过编辑.bashrc配置文件解决这个问题。">
+<meta property="og:description" content="目录0 前言初识 WSL2：以 Ubuntu 24.04 安装为例 1 Windows NVIDIA 驱动安装和更新NVIDIA App 更新 2 Ubuntu换源1234567891011121314Types: debURIs: http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ubuntu&#x2F;Suites: noble noble-">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2019-07-29T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-23T04:23:55.525Z">
+<meta property="article:published_time" content="2025-10-08T09:25:35.000Z">
+<meta property="article:modified_time" content="2025-10-08T12:00:59.578Z">
 <meta property="article:author" content="ShiPeng">
-<meta property="article:tag" content="Git">
 <meta property="article:tag" content="Linux">
-<meta property="article:tag" content="Shell">
+<meta property="article:tag" content="Ubuntu">
+<meta property="article:tag" content="WSL">
+<meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://blog.shipengx.com/archives/74b2417b.html">
+<link rel="canonical" href="https://blog.shipengx.com/archives/7e583c48.html">
 
 
 <script id="page-configurations">
@@ -83,7 +84,7 @@
 <link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <link href="https://fonts.loli.net/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
-  <title>配置Ubuntu下的shell默认显示所在git仓库的当前分支 | 朝花夕拾</title>
+  <title>WSL2 + Ubuntu 24.04 深度学习环境配置 | 朝花夕拾</title><meta name="robots" content="noindex">
   
 
 
@@ -237,7 +238,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/74b2417b.html">
+    <link itemprop="mainEntityOfPage" href="https://blog.shipengx.com/archives/7e583c48.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -250,7 +251,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          配置Ubuntu下的shell默认显示所在git仓库的当前分支
+          WSL2 + Ubuntu 24.04 深度学习环境配置
         </h2>
 
         <div class="post-meta">
@@ -259,16 +260,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2019-07-30 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-30T00:00:00+08:00">2019-07-30</time>
+              <time title="创建时间：2025-10-08 17:25:35 / 修改时间：20:00:59" itemprop="dateCreated datePublished" datetime="2025-10-08T17:25:35+08:00">2025-10-08</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 12:23:55" itemprop="dateModified" datetime="2020-07-23T12:23:55+08:00">2020-07-23</time>
-              </span>
 
           <br>
             <span class="post-meta-item">
@@ -292,13 +287,12 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/archives/74b2417b.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/archives/74b2417b.html" itemprop="commentCount"></span>
+    <a title="valine" href="/archives/7e583c48.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/archives/7e583c48.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-            <div class="post-description">Linux环境下使用Git做某项目代码工程的版本控制时，发现在工程下打开终端后无法显示当前所处分支，很不方便，通过编辑.bashrc配置文件解决这个问题。</div>
 
         </div>
       </header>
@@ -309,18 +303,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="背景" class="heading-control"><a href="#背景" class="headerlink" title="背景"></a>背景<a class="heading-anchor" href="#背景" aria-hidden="true"></a></h1><p>Linux环境下使用Git做某项目代码工程的版本控制时，发现在工程下打开终端后无法显示当前所处分支，很不方便，通过编辑<code>.bashrc</code>配置文件解决这个问题。</p>
-<h1 id="解决" class="heading-control"><a href="#解决" class="headerlink" title="解决"></a>解决<a class="heading-anchor" href="#解决" aria-hidden="true"></a></h1><ol>
-<li>在终端中打开bash shell的配置文件<code>.bashrc</code>：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure></li>
-<li>在文件末尾添加如下代码：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># These shell commands block are for the purpose of displaying the </span></span><br><span class="line"><span class="comment"># current branch name of the current repository.</span></span><br><span class="line">find_git_branch () </span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">local</span> dir=. head</span><br><span class="line">  until [ <span class="string">"<span class="variable">$dir</span>"</span> -ef / ]; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [ -f <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span> ]; <span class="keyword">then</span></span><br><span class="line">      head=$(&lt; <span class="string">"<span class="variable">$dir</span>/.git/HEAD"</span>)</span><br><span class="line">      <span class="keyword">if</span> [[ <span class="variable">$head</span> = ref:\ refs/heads/* ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*<span class="variable">$&#123;head#*/*/&#125;</span>)"</span></span><br><span class="line">      <span class="keyword">elif</span> [[ <span class="variable">$head</span> != <span class="string">''</span> ]]; <span class="keyword">then</span></span><br><span class="line">        git_branch=<span class="string">"(*(detached))"</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        git_branch=<span class="string">"(*(unknow))"</span></span><br><span class="line">      <span class="keyword">fi</span>  </span><br><span class="line">      <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span>  </span><br><span class="line">    dir=<span class="string">"../<span class="variable">$dir</span>"</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">  git_branch=<span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line">PROMPT_COMMAND=<span class="string">"find_git_branch; <span class="variable">$PROMPT_COMMAND</span>"</span></span><br><span class="line"><span class="built_in">export</span> PS1=<span class="string">"\[\e]0;\u@\h: \w\a\]<span class="variable">$&#123;debian_chroot:+($debian_chroot)&#125;</span>\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[0;32m\]\$git_branch\[\033[0m\] \$ "</span></span><br></pre></td></tr></table></figure></li>
-<li>使更改立即生效：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><ol>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI1Mjk1NDA3L2FydGljbGUvZGV0YWlscy83OTUwOTA1Ng==" title="https://blog.csdn.net/qq_25295407/article/details/79509056">linux命令行终端显示git当前所在分支<i class="fa fa-external-link"></i></span></li>
-</ol>
-<hr>
-
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><a href="https://blog.shipengx.com/archives/a24ddc92.html">初识 WSL2：以 Ubuntu 24.04 安装为例</a></p>
+<h1 id="1-Windows-NVIDIA-驱动安装和更新" class="heading-control"><a href="#1-Windows-NVIDIA-驱动安装和更新" class="headerlink" title="1 Windows NVIDIA 驱动安装和更新"></a>1 Windows NVIDIA 驱动安装和更新<a class="heading-anchor" href="#1-Windows-NVIDIA-驱动安装和更新" aria-hidden="true"></a></h1><p>NVIDIA App 更新</p>
+<h1 id="2-Ubuntu" class="heading-control"><a href="#2-Ubuntu" class="headerlink" title="2 Ubuntu"></a>2 Ubuntu<a class="heading-anchor" href="#2-Ubuntu" aria-hidden="true"></a></h1><h2 id="换源" class="heading-control"><a href="#换源" class="headerlink" title="换源"></a>换源<a class="heading-anchor" href="#换源" aria-hidden="true"></a></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ubuntu&#x2F;</span><br><span class="line">Suites: noble noble-updates</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ubuntu&#x2F;</span><br><span class="line">Suites: noble-backports</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ubuntu&#x2F;</span><br><span class="line">Suites: noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+<h2 id="安装-docker" class="heading-control"><a href="#安装-docker" class="headerlink" title="安装 docker"></a>安装 docker<a class="heading-anchor" href="#安装-docker" aria-hidden="true"></a></h2><p>在终端中直接执行下述命令即可完成 Docker 社区版的安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl https://get.docker.com | sh</span><br><span class="line">sudo systemctl start docker &amp;&amp; sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
+<p>重启 Docker 守护进程以使改动生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<p>完成 Docker 安装后，在终端中执行下述命令并重启系统，这样可以免去每次执行 Docker 命令时需要添加 <code>sudo</code> 的繁琐：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker</span><br><span class="line">sudo usermod -aG docker USER_NAME</span><br></pre></td></tr></table></figure>
+<h1 id="添加NVIDIA容器工具包仓库" class="heading-control"><a href="#添加NVIDIA容器工具包仓库" class="headerlink" title="添加NVIDIA容器工具包仓库"></a>添加NVIDIA容器工具包仓库<a class="heading-anchor" href="#添加NVIDIA容器工具包仓库" aria-hidden="true"></a></h1><p>curl -fsSL <span class="exturl" data-url="aHR0cHM6Ly9udmlkaWEuZ2l0aHViLmlvL2xpYm52aWRpYS1jb250YWluZXIvZ3Bna2V5" title="https://nvidia.github.io/libnvidia-container/gpgkey">https://nvidia.github.io/libnvidia-container/gpgkey<i class="fa fa-external-link"></i></span> | sudo gpg —dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg<br>curl -s -L <span class="exturl" data-url="aHR0cHM6Ly9udmlkaWEuZ2l0aHViLmlvL2xpYm52aWRpYS1jb250YWluZXIvc3RhYmxlL2RlYi9udmlkaWEtY29udGFpbmVyLXRvb2xraXQubGlzdA==" title="https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list">https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list<i class="fa fa-external-link"></i></span> | sed ‘s#deb <span class="exturl" data-url="aHR0cHM6Ly8jZGVi" title="https://#deb">https://#deb<i class="fa fa-external-link"></i></span> [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] <span class="exturl" data-url="aHR0cHM6Ly8jZw==" title="https://#g">https://#g<i class="fa fa-external-link"></i></span>‘ | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list</p>
+<h1 id="安装工具包" class="heading-control"><a href="#安装工具包" class="headerlink" title="安装工具包"></a>安装工具包<a class="heading-anchor" href="#安装工具包" aria-hidden="true"></a></h1><p>sudo apt update<br>sudo apt install -y nvidia-container-toolkit</p>
+<h1 id="配置Docker使用NVIDIA运行时" class="heading-control"><a href="#配置Docker使用NVIDIA运行时" class="headerlink" title="配置Docker使用NVIDIA运行时"></a>配置Docker使用NVIDIA运行时<a class="heading-anchor" href="#配置Docker使用NVIDIA运行时" aria-hidden="true"></a></h1><p>sudo nvidia-ctk runtime configure —runtime=docker<br>sudo systemctl restart docker</p>
+<h1 id="验证NVIDIA容器支持" class="heading-control"><a href="#验证NVIDIA容器支持" class="headerlink" title="验证NVIDIA容器支持"></a>验证NVIDIA容器支持<a class="heading-anchor" href="#验证NVIDIA容器支持" aria-hidden="true"></a></h1><p>docker run —rm —gpus all nvidia/cuda:12.2.2-base-ubuntu24.04 nvidia-smi</p>
+<h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><!-- flag of hidden posts -->
     </div>
 
     
@@ -330,19 +326,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\17c6bb1a.html" rel="bookmark">实用 Shell 脚本：自动拉取 Git 仓库所有远程分支代码到本地</a></div>
+      <div class="popular-posts-title"><a href="\archives\a24ddc92.html" rel="bookmark">初识 WSL2：以 Ubuntu 24.04 安装为例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\5103b2eb.html" rel="bookmark">Win 10 中通过 VMWare 16 在 UEFI 引导模式下安装 Ubuntu 18.04 虚拟机并自定义分区</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\51299274.html" rel="bookmark">Linux Perf性能优化工具使用说明</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\8b42591c.html" rel="bookmark">Linux gcc/g++中的-I、-l、-L</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\31e5f0fe.html" rel="bookmark">Linux中使用sed命令进行字符串查找和替换</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\ffbee3f1.html" rel="bookmark">Not able to execute a .sh file: /bin/bash^M: bad interpreter</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\17a8c28.html" rel="bookmark">Shell中各种括号的作用</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\55ffbd22.html" rel="bookmark">Shell中美元符$与数字及其它各种符号组合的含义</a></div>
     </li>
   </ul>
 
@@ -375,7 +371,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.shipengx.com/archives/74b2417b.html" title="配置Ubuntu下的shell默认显示所在git仓库的当前分支">https://blog.shipengx.com/archives/74b2417b.html</a>
+    <a href="https://blog.shipengx.com/archives/7e583c48.html" title="WSL2 + Ubuntu 24.04 深度学习环境配置">https://blog.shipengx.com/archives/7e583c48.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -387,25 +383,16 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
               <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
-              <a href="/tags/Shell/" rel="tag"><i class="fa fa-tag"></i> Shell</a>
+              <a href="/tags/Ubuntu/" rel="tag"><i class="fa fa-tag"></i> Ubuntu</a>
+              <a href="/tags/WSL/" rel="tag"><i class="fa fa-tag"></i> WSL</a>
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 深度学习</a>
           </div>
 
         
 
 
         
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/archives/296a9967.html" rel="prev" title="在腾讯云上搭建个人Git服务器">
-      <i class="fa fa-chevron-left"></i> 在腾讯云上搭建个人Git服务器
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/archives/51299274.html" rel="next" title="Linux Perf性能优化工具使用说明">
-      Linux Perf性能优化工具使用说明 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
       </footer>
     
   </article>
@@ -465,7 +452,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决"><span class="nav-text">解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Windows-NVIDIA-驱动安装和更新"><span class="nav-text">1 Windows NVIDIA 驱动安装和更新</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Ubuntu"><span class="nav-text">2 Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#换源"><span class="nav-text">换源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-docker"><span class="nav-text">安装 docker</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加NVIDIA容器工具包仓库"><span class="nav-text">添加NVIDIA容器工具包仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装工具包"><span class="nav-text">安装工具包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置Docker使用NVIDIA运行时"><span class="nav-text">配置Docker使用NVIDIA运行时</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#验证NVIDIA容器支持"><span class="nav-text">验证NVIDIA容器支持</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
