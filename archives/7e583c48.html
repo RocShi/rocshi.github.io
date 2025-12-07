@@ -52,15 +52,15 @@
   };
 </script>
 
-  <meta name="description" content="目录0 前言初识 WSL2：以 Ubuntu 24.04 安装为例 1 Windows NVIDIA 驱动安装和更新NVIDIA App 更新 2 Ubuntu换源1234567891011121314Types: debURIs: http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ubuntu&#x2F;Suites: noble noble-">
+  <meta name="description" content="目录0 前言在此前的文章《初识 WSL2：以 Ubuntu 24.04 安装为例》中，我们介绍了 1 Windows 主机 NVIDIA 驱动安装和更新NVIDIA App 更新 2 Ubuntu换源1sudo cp &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;ubuntu.sources &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;ubuntu.sources.bak 123456789">
 <meta property="og:type" content="article">
 <meta property="og:title" content="WSL2 + Ubuntu 24.04 深度学习环境配置">
 <meta property="og:url" content="https://blog.shipengx.com/archives/7e583c48.html">
 <meta property="og:site_name" content="朝花夕拾">
-<meta property="og:description" content="目录0 前言初识 WSL2：以 Ubuntu 24.04 安装为例 1 Windows NVIDIA 驱动安装和更新NVIDIA App 更新 2 Ubuntu换源1234567891011121314Types: debURIs: http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ubuntu&#x2F;Suites: noble noble-">
+<meta property="og:description" content="目录0 前言在此前的文章《初识 WSL2：以 Ubuntu 24.04 安装为例》中，我们介绍了 1 Windows 主机 NVIDIA 驱动安装和更新NVIDIA App 更新 2 Ubuntu换源1sudo cp &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;ubuntu.sources &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;ubuntu.sources.bak 123456789">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-10-08T09:25:35.000Z">
-<meta property="article:modified_time" content="2025-10-08T12:00:59.578Z">
+<meta property="article:modified_time" content="2025-11-29T06:36:58.747Z">
 <meta property="article:author" content="ShiPeng">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="Ubuntu">
@@ -161,12 +161,12 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">50</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">51</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">97</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">98</span></a>
 
   </li>
         <li class="menu-item menu-item-books">
@@ -260,10 +260,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-10-08 17:25:35 / 修改时间：20:00:59" itemprop="dateCreated datePublished" datetime="2025-10-08T17:25:35+08:00">2025-10-08</time>
+              <time title="创建时间：2025-10-08 17:25:35" itemprop="dateCreated datePublished" datetime="2025-10-08T17:25:35+08:00">2025-10-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-11-29 14:36:58" itemprop="dateModified" datetime="2025-11-29T14:36:58+08:00">2025-11-29</time>
+              </span>
 
           <br>
             <span class="post-meta-item">
@@ -303,19 +309,35 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p><a href="https://blog.shipengx.com/archives/a24ddc92.html">初识 WSL2：以 Ubuntu 24.04 安装为例</a></p>
-<h1 id="1-Windows-NVIDIA-驱动安装和更新" class="heading-control"><a href="#1-Windows-NVIDIA-驱动安装和更新" class="headerlink" title="1 Windows NVIDIA 驱动安装和更新"></a>1 Windows NVIDIA 驱动安装和更新<a class="heading-anchor" href="#1-Windows-NVIDIA-驱动安装和更新" aria-hidden="true"></a></h1><p>NVIDIA App 更新</p>
-<h1 id="2-Ubuntu" class="heading-control"><a href="#2-Ubuntu" class="headerlink" title="2 Ubuntu"></a>2 Ubuntu<a class="heading-anchor" href="#2-Ubuntu" aria-hidden="true"></a></h1><h2 id="换源" class="heading-control"><a href="#换源" class="headerlink" title="换源"></a>换源<a class="heading-anchor" href="#换源" aria-hidden="true"></a></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ubuntu&#x2F;</span><br><span class="line">Suites: noble noble-updates</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ubuntu&#x2F;</span><br><span class="line">Suites: noble-backports</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ubuntu&#x2F;</span><br><span class="line">Suites: noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+        <h1 id="目录" class="heading-control"><a href="#目录" class="headerlink" title="目录"></a>目录<a class="heading-anchor" href="#目录" aria-hidden="true"></a></h1><h1 id="0-前言" class="heading-control"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言<a class="heading-anchor" href="#0-前言" aria-hidden="true"></a></h1><p>在此前的文章<a href="https://blog.shipengx.com/archives/a24ddc92.html">《初识 WSL2：以 Ubuntu 24.04 安装为例》</a>中，我们介绍了</p>
+<h1 id="1-Windows-主机-NVIDIA-驱动安装和更新" class="heading-control"><a href="#1-Windows-主机-NVIDIA-驱动安装和更新" class="headerlink" title="1 Windows 主机 NVIDIA 驱动安装和更新"></a>1 Windows 主机 NVIDIA 驱动安装和更新<a class="heading-anchor" href="#1-Windows-主机-NVIDIA-驱动安装和更新" aria-hidden="true"></a></h1><p>NVIDIA App 更新</p>
+<h1 id="2-Ubuntu" class="heading-control"><a href="#2-Ubuntu" class="headerlink" title="2 Ubuntu"></a>2 Ubuntu<a class="heading-anchor" href="#2-Ubuntu" aria-hidden="true"></a></h1><h2 id="换源" class="heading-control"><a href="#换源" class="headerlink" title="换源"></a>换源<a class="heading-anchor" href="#换源" aria-hidden="true"></a></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources.bak</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">sudo tee /etc/apt/sources.list.d/ubuntu.sources &gt; /dev/null &lt;&lt;EOF</span><br><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.aliyun.com/ubuntu/</span><br><span class="line">Suites: noble noble-updates</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.aliyun.com/ubuntu/</span><br><span class="line">Suites: noble-backports</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.aliyun.com/ubuntu/</span><br><span class="line">Suites: noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>更新并升级软件包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update &amp;&amp; sudo apt upgrade -y</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install -y wget curl git vim build-essential</span><br></pre></td></tr></table></figure>
 <h2 id="安装-docker" class="heading-control"><a href="#安装-docker" class="headerlink" title="安装 docker"></a>安装 docker<a class="heading-anchor" href="#安装-docker" aria-hidden="true"></a></h2><p>在终端中直接执行下述命令即可完成 Docker 社区版的安装：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl https://get.docker.com | sh</span><br><span class="line">sudo systemctl start docker &amp;&amp; sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://get.docker.com | sudo sh -s -- --mirror Aliyun</span><br><span class="line">sudo systemctl start docker &amp;&amp; sudo systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
 <p>重启 Docker 守护进程以使改动生效：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-<p>完成 Docker 安装后，在终端中执行下述命令并重启系统，这样可以免去每次执行 Docker 命令时需要添加 <code>sudo</code> 的繁琐：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker</span><br><span class="line">sudo usermod -aG docker USER_NAME</span><br></pre></td></tr></table></figure>
-<h1 id="添加NVIDIA容器工具包仓库" class="heading-control"><a href="#添加NVIDIA容器工具包仓库" class="headerlink" title="添加NVIDIA容器工具包仓库"></a>添加NVIDIA容器工具包仓库<a class="heading-anchor" href="#添加NVIDIA容器工具包仓库" aria-hidden="true"></a></h1><p>curl -fsSL <span class="exturl" data-url="aHR0cHM6Ly9udmlkaWEuZ2l0aHViLmlvL2xpYm52aWRpYS1jb250YWluZXIvZ3Bna2V5" title="https://nvidia.github.io/libnvidia-container/gpgkey">https://nvidia.github.io/libnvidia-container/gpgkey<i class="fa fa-external-link"></i></span> | sudo gpg —dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg<br>curl -s -L <span class="exturl" data-url="aHR0cHM6Ly9udmlkaWEuZ2l0aHViLmlvL2xpYm52aWRpYS1jb250YWluZXIvc3RhYmxlL2RlYi9udmlkaWEtY29udGFpbmVyLXRvb2xraXQubGlzdA==" title="https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list">https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list<i class="fa fa-external-link"></i></span> | sed ‘s#deb <span class="exturl" data-url="aHR0cHM6Ly8jZGVi" title="https://#deb">https://#deb<i class="fa fa-external-link"></i></span> [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] <span class="exturl" data-url="aHR0cHM6Ly8jZw==" title="https://#g">https://#g<i class="fa fa-external-link"></i></span>‘ | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list</p>
-<h1 id="安装工具包" class="heading-control"><a href="#安装工具包" class="headerlink" title="安装工具包"></a>安装工具包<a class="heading-anchor" href="#安装工具包" aria-hidden="true"></a></h1><p>sudo apt update<br>sudo apt install -y nvidia-container-toolkit</p>
-<h1 id="配置Docker使用NVIDIA运行时" class="heading-control"><a href="#配置Docker使用NVIDIA运行时" class="headerlink" title="配置Docker使用NVIDIA运行时"></a>配置Docker使用NVIDIA运行时<a class="heading-anchor" href="#配置Docker使用NVIDIA运行时" aria-hidden="true"></a></h1><p>sudo nvidia-ctk runtime configure —runtime=docker<br>sudo systemctl restart docker</p>
-<h1 id="验证NVIDIA容器支持" class="heading-control"><a href="#验证NVIDIA容器支持" class="headerlink" title="验证NVIDIA容器支持"></a>验证NVIDIA容器支持<a class="heading-anchor" href="#验证NVIDIA容器支持" aria-hidden="true"></a></h1><p>docker run —rm —gpus all nvidia/cuda:12.2.2-base-ubuntu24.04 nvidia-smi</p>
+<p>完成 Docker 安装后，在终端中执行下述命令并重启 WSL，这样可以免去每次执行 Docker 命令时需要添加 <code>sudo</code> 的繁琐：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker &amp;&amp; sudo usermod -aG docker $(whoami)</span><br></pre></td></tr></table></figure>
+<p>编辑 Docker 的守护进程配置文件 <code>/etc/docker/daemon.json</code>（若不存在需新建），将以下国内镜像源地址添加到配置文件的 <code>registry-mirrors</code> 数组，用于镜像拉取加速：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-<span class="string">'EOF'</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"registry-mirrors"</span>: [</span><br><span class="line">    <span class="string">"https://docker.m.daocloud.io"</span>,</span><br><span class="line">    <span class="string">"https://dockerproxy.com"</span>,</span><br><span class="line">    <span class="string">"https://mirror.ccs.tencentyun.com"</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>执行以下命令使配置生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload &amp;&amp; sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<h1 id="安装-NVIDIA-Container-Toolkit" class="heading-control"><a href="#安装-NVIDIA-Container-Toolkit" class="headerlink" title="安装 NVIDIA Container Toolkit"></a>安装 NVIDIA Container Toolkit<a class="heading-anchor" href="#安装-NVIDIA-Container-Toolkit" aria-hidden="true"></a></h1><p>添加 NVIDIA 容器工具包仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \</span><br><span class="line">  &amp;&amp; curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \</span><br><span class="line">    sed <span class="string">'s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g'</span> | \</span><br><span class="line">    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:apt-fast/stable</span><br><span class="line">sudo apt update &amp;&amp; sudo apt install -y apt-fast</span><br></pre></td></tr></table></figure>
+<p>安装工具包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-fast install -y nvidia-container-toolkit</span><br></pre></td></tr></table></figure>
+<p>配置 docker 使用 NVIDIA 运行时</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nvidia-ctk runtime configure --runtime=docker</span><br></pre></td></tr></table></figure>
+<p>重启 docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<p>验证 NVIDIA 容器支持</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --rm --gpus all nvidia/cuda:12.5.0-base-ubuntu22.04 nvidia-smi</span><br></pre></td></tr></table></figure>
+<p>dockerfile</p>
 <h1 id="参考" class="heading-control"><a href="#参考" class="headerlink" title="参考"></a>参考<a class="heading-anchor" href="#参考" aria-hidden="true"></a></h1><!-- flag of hidden posts -->
     </div>
 
@@ -326,19 +348,19 @@
   <div class="popular-posts-header">猜你喜欢</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\archives\da4c79f3.html" rel="bookmark">my-dev-env：一个简洁的个人 Linux 开发环境通用配置框架</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\a24ddc92.html" rel="bookmark">初识 WSL2：以 Ubuntu 24.04 安装为例</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\5103b2eb.html" rel="bookmark">Win 10 中通过 VMWare 16 在 UEFI 引导模式下安装 Ubuntu 18.04 虚拟机并自定义分区</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\51299274.html" rel="bookmark">Linux Perf性能优化工具使用说明</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\archives\8b42591c.html" rel="bookmark">Linux gcc/g++中的-I、-l、-L</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\archives\31e5f0fe.html" rel="bookmark">Linux中使用sed命令进行字符串查找和替换</a></div>
+      <div class="popular-posts-title"><a href="\archives\51299274.html" rel="bookmark">Linux Perf性能优化工具使用说明</a></div>
     </li>
   </ul>
 
@@ -452,7 +474,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Windows-NVIDIA-驱动安装和更新"><span class="nav-text">1 Windows NVIDIA 驱动安装和更新</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Ubuntu"><span class="nav-text">2 Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#换源"><span class="nav-text">换源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-docker"><span class="nav-text">安装 docker</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加NVIDIA容器工具包仓库"><span class="nav-text">添加NVIDIA容器工具包仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装工具包"><span class="nav-text">安装工具包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置Docker使用NVIDIA运行时"><span class="nav-text">配置Docker使用NVIDIA运行时</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#验证NVIDIA容器支持"><span class="nav-text">验证NVIDIA容器支持</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Windows-主机-NVIDIA-驱动安装和更新"><span class="nav-text">1 Windows 主机 NVIDIA 驱动安装和更新</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Ubuntu"><span class="nav-text">2 Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#换源"><span class="nav-text">换源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-docker"><span class="nav-text">安装 docker</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-NVIDIA-Container-Toolkit"><span class="nav-text">安装 NVIDIA Container Toolkit</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -470,7 +492,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-count">98</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -483,7 +505,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-count">51</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
